@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "762769547790",
+    "firebase_url": "https://mipromo-03.firebaseio.com",
+    "project_id": "mipromo-03",
+    "storage_bucket": "mipromo-03.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762769547790:android:14f8ca4e9fe8b7c84c925f",
+        "android_client_info": {
+          "package_name": "com.sadje.mipromo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762769547790-l549s0dtgbikf5jvv30015rvoh0k6jbb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-URgA374YhSFvBFsU2ltA6YqSfaux990"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762769547790-l549s0dtgbikf5jvv30015rvoh0k6jbb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,104 @@
+name: mipromo
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 1.0.0+6
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  badges: ^2.0.1
+  bubble: ^1.2.1
+  carousel_slider: ^4.0.0
+  cloud_firestore: ^2.2.0
+  connectivity: ^3.0.4
+  cupertino_icons: ^1.0.3
+  firebase_auth: ^1.2.0
+  firebase_core: ^1.2.0
+  firebase_messaging: ^10.0.0
+  firebase_storage: ^8.1.0
+  flutter_card_swipper: ^0.4.0
+  flutter_hooks: ^0.16.0
+  flutter_local_notifications: ^6.0.0
+  flutter_rating_stars: ^1.0.3+1
+  flutter_svg: ^0.22.0
+  freezed_annotation: ^0.14.2
+  http: ^0.13.3
+  http_auth: ^1.0.0
+  image_cropper: ^1.4.0
+  image_picker: ^0.7.5+2
+  intl: ^0.17.0
+  json_annotation: ^4.0.1
+  path_provider: ^2.0.1
+  sprintf: ^6.0.0
+  stacked: ^2.1.6
+  stacked_hooks: ^0.2.0
+  stacked_services: ^0.8.6
+  stacked_themes: ^0.3.3
+  url_launcher: ^6.0.6
+  uuid: ^3.0.4
+  velocity_x: ^3.2.0
+  webview_flutter: ^2.0.8
+  fluttertoast: ^8.0.8
+  lottie: ^1.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: null
+  flutter_launcher_icons: ^0.9.0
+  freezed: ^0.14.2
+  json_serializable: ^4.1.2
+  lint: ^1.5.3
+  stacked_generator: ^0.4.6
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icon/icon_new.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/category/
+    - assets/icon/
+
+  fonts:
+    - family: Default
+      fonts:
+        - asset: assets/fonts/default.ttf
+
+    - family: Aladin
+      fonts:
+        - asset: assets/fonts/aladin.ttf
+
+    - family: Kaushan
+      fonts:
+        - asset: assets/fonts/kaushan.ttf
+
+    - family: Niconne
+      fonts:
+        - asset: assets/fonts/niconne.ttf
+
+    - family: Merienda
+      fonts:
+        - asset: assets/fonts/merienda.ttf
+
+    - family: Miriam
+      fonts:
+        - asset: assets/fonts/miriam.ttf
+
+    - family: Monts
+      fonts:
+        - asset: assets/fonts/montserrat.ttf
+
+    - family: Satisfy
+      fonts:
+        - asset: assets/fonts/satisfy.ttf
