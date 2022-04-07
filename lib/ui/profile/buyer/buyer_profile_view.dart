@@ -186,14 +186,14 @@ class BuyerProfileView extends StatelessWidget {
                             ),
                             SizedBox(height:8 ),
                             Text(
-                              "Photos and Video of You ",
+                              "No photos and videos",
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 18,
                               ),
                             ),
                             Text(
-                              "When you open a Shop your Post will appear here.",
+                              "When you open a shop your post will appear here.",
                             ),
                             SizedBox(height: 10),
                             if (viewingAsProfile == true)

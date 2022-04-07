@@ -54,9 +54,9 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
           
       }
 
-    if (model.currentIndex == 3) {
-      changePage(2);
-    }
+    // if (model.currentIndex == 3) {
+    //   changePage(2);
+    // }
 
     return Scaffold(
       body: PageView(

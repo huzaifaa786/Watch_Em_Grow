@@ -32,7 +32,7 @@ class Constants {
   static const String editProfileLabel = 'Edit Profile';
   static const String changeProfileImageLabel = 'Change Profile Image';
   static const String usernameLabel = 'Username';
-  static const String openShopLabel = 'Open a Shop';
+  static const String openShopLabel = 'Open a shop';
 
   static const String broughtLabel = "Product/Service brought";
   static const String referralsLabel = "Referrals";

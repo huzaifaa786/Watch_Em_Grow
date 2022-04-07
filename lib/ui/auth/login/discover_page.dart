@@ -78,7 +78,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                           height: 10,
                         ),
                         Text(
-                          "Find Services & shops",
+                          "Find services & shops",
                           style: TextStyle(fontSize: 26, color: Colors.white),
                         ),
                         Container(
@@ -95,7 +95,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 ),
 // ignore: prefer_const_constructors
                 Container(
-                  height: 290,
+                  height: MediaQuery.of(context).size.height*0.35,
                   margin: EdgeInsets.only(top: 140),
                   child: Image(
                     image: AssetImage(
@@ -160,7 +160,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                             Text(
                               'Promote your own',
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white, fontSize: 14),
+                              style: TextStyle(color: Colors.white, fontSize: 12),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 9.0),
