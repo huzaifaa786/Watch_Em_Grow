@@ -1,7 +1,11 @@
+import 'dart:convert';
+
+import 'package:mipromo/api/auth_api.dart';
 import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/app/app.router.dart';
 import 'package:mipromo/models/app_user.dart';
+import 'package:mipromo/models/follow.dart';
 import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:stacked/stacked.dart';
@@ -13,9 +17,11 @@ class SearchViewModel extends BaseViewModel {
 
   List<Shop> searchedShops = [];
 
-  late List<Shop> allShops;
-  late List<AppUser> shopOwners;
-  late List<ShopService> allServices;
+  List<Shop>? allShops;
+  List<Follow> _follows = [];
+
+  List<AppUser>? shopOwners;
+  List<ShopService>? allServices;
 
   void init() {
     setBusy(true);
@@ -23,7 +29,6 @@ class SearchViewModel extends BaseViewModel {
     _listenAllShops();
     _listenShopOwners();
     _listenAllServices();
-
     setBusy(false);
   }
 
@@ -31,9 +36,19 @@ class SearchViewModel extends BaseViewModel {
     _databaseApi.listenShops().listen(
       (shopsData) {
         allShops = shopsData;
+        searchedShops = shopsData;
+    _getFollowers();
+
         notifyListeners();
       },
     );
+  }
+
+  _getFollowers() async {
+    print('asdffffffffffffffffffffff');
+    var user = AuthApi().currentUser;
+    print(user);
+    // _follows = await _databaseApi.getFollowing(sellerId);
   }
 
   void _listenShopOwners() {
@@ -55,25 +70,30 @@ class SearchViewModel extends BaseViewModel {
   }
 
   void onSearchTextChanged(String text) {
-    searchedShops.clear();
+    searchedShops = [];
+    notifyListeners();
+    print(allShops);
     if (text.isEmpty) {
+      searchedShops = allShops!;
       notifyListeners();
       return;
     }
 
     // ignore: avoid_function_literals_in_foreach_calls
-    allShops.forEach((shop) {
-      if (shop.name
-          .trim()
-          .replaceAll(' ', '')
-          .toLowerCase()
-          .contains(text.trim().replaceAll(' ', '').toLowerCase())) {
+    allShops!.forEach((shop) {
+      if (shop.name.trim().replaceAll(' ', '').toLowerCase().contains(text.trim().replaceAll(' ', '').toLowerCase())) {
         searchedShops.add(shop);
         notifyListeners();
         return;
       } else {
         searchedShops.remove(shop);
         notifyListeners();
+        if (text.isEmpty) {
+          searchedShops = allShops!;
+
+          notifyListeners();
+          return;
+        }
         return;
       }
     });

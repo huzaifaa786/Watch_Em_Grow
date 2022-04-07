@@ -1,4 +1,5 @@
 // import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -27,7 +28,12 @@ class Avatar extends StatelessWidget {
           child: SizedBox.expand(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(100),
-              child: NetworkImageBuilder(imageUrl: imageUrl),
+              child:  CachedNetworkImage(
+                imageUrl: imageUrl,
+                placeholder: (context, url) =>
+                     Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
             ),
           ),
         ),

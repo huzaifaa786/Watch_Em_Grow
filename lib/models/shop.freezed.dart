@@ -27,8 +27,8 @@ class _$ShopTearOff {
       required String category,
       required String fontStyle,
       required int color,
-        int isFeatured = 0,
-        int isBestSeller = 0,
+      int isFeatured = 0,
+      int isBestSeller = 0,
       String description = '',
       String location = '',
       String borough = '',
@@ -45,6 +45,8 @@ class _$ShopTearOff {
       category: category,
       fontStyle: fontStyle,
       color: color,
+      isFeatured: isFeatured,
+      isBestSeller: isBestSeller,
       description: description,
       location: location,
       borough: borough,
@@ -101,6 +103,8 @@ abstract class $ShopCopyWith<$Res> {
       String category,
       String fontStyle,
       int color,
+      int isFeatured,
+      int isBestSeller,
       String description,
       String location,
       String borough,
@@ -128,6 +132,8 @@ class _$ShopCopyWithImpl<$Res> implements $ShopCopyWith<$Res> {
     Object? category = freezed,
     Object? fontStyle = freezed,
     Object? color = freezed,
+    Object? isFeatured = freezed,
+    Object? isBestSeller = freezed,
     Object? description = freezed,
     Object? location = freezed,
     Object? borough = freezed,
@@ -162,6 +168,14 @@ class _$ShopCopyWithImpl<$Res> implements $ShopCopyWith<$Res> {
       color: color == freezed
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
+              as int,
+      isFeatured: isFeatured == freezed
+          ? _value.isFeatured
+          : isFeatured // ignore: cast_nullable_to_non_nullable
+              as int,
+      isBestSeller: isBestSeller == freezed
+          ? _value.isBestSeller
+          : isBestSeller // ignore: cast_nullable_to_non_nullable
               as int,
       description: description == freezed
           ? _value.description
@@ -215,6 +229,8 @@ abstract class _$ShopCopyWith<$Res> implements $ShopCopyWith<$Res> {
       String category,
       String fontStyle,
       int color,
+      int isFeatured,
+      int isBestSeller,
       String description,
       String location,
       String borough,
@@ -243,6 +259,8 @@ class __$ShopCopyWithImpl<$Res> extends _$ShopCopyWithImpl<$Res>
     Object? category = freezed,
     Object? fontStyle = freezed,
     Object? color = freezed,
+    Object? isFeatured = freezed,
+    Object? isBestSeller = freezed,
     Object? description = freezed,
     Object? location = freezed,
     Object? borough = freezed,
@@ -277,6 +295,14 @@ class __$ShopCopyWithImpl<$Res> extends _$ShopCopyWithImpl<$Res>
       color: color == freezed
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
+              as int,
+      isFeatured: isFeatured == freezed
+          ? _value.isFeatured
+          : isFeatured // ignore: cast_nullable_to_non_nullable
+              as int,
+      isBestSeller: isBestSeller == freezed
+          ? _value.isBestSeller
+          : isBestSeller // ignore: cast_nullable_to_non_nullable
               as int,
       description: description == freezed
           ? _value.description
@@ -328,8 +354,8 @@ class _$_Shop implements _Shop {
       required this.category,
       required this.fontStyle,
       required this.color,
-        this.isFeatured = 0,
-        this.isBestSeller = 0,
+      this.isFeatured = 0,
+      this.isBestSeller = 0,
       this.description = '',
       this.location = '',
       this.borough = '',
@@ -355,12 +381,13 @@ class _$_Shop implements _Shop {
   final String fontStyle;
   @override
   final int color;
+  @JsonKey(defaultValue: 0)
   @override
   final int isFeatured;
   @JsonKey(defaultValue: 0)
   @override
   final int isBestSeller;
-  @JsonKey(defaultValue: 0)
+  @JsonKey(defaultValue: '')
   @override
   final String description;
   @JsonKey(defaultValue: '')
@@ -390,7 +417,7 @@ class _$_Shop implements _Shop {
 
   @override
   String toString() {
-    return 'Shop(id: $id, ownerId: $ownerId, name: $name, category: $category, fontStyle: $fontStyle, color: $color, description: $description, location: $location, borough: $borough, address: $address, ratingCount: $ratingCount, rating: $rating, lowestPrice: $lowestPrice, highestPrice: $highestPrice, hasService: $hasService)';
+    return 'Shop(id: $id, ownerId: $ownerId, name: $name, category: $category, fontStyle: $fontStyle, color: $color, isFeatured: $isFeatured, isBestSeller: $isBestSeller, description: $description, location: $location, borough: $borough, address: $address, ratingCount: $ratingCount, rating: $rating, lowestPrice: $lowestPrice, highestPrice: $highestPrice, hasService: $hasService)';
   }
 
   @override
@@ -412,6 +439,12 @@ class _$_Shop implements _Shop {
                     .equals(other.fontStyle, fontStyle)) &&
             (identical(other.color, color) ||
                 const DeepCollectionEquality().equals(other.color, color)) &&
+            (identical(other.isFeatured, isFeatured) ||
+                const DeepCollectionEquality()
+                    .equals(other.isFeatured, isFeatured)) &&
+            (identical(other.isBestSeller, isBestSeller) ||
+                const DeepCollectionEquality()
+                    .equals(other.isBestSeller, isBestSeller)) &&
             (identical(other.description, description) ||
                 const DeepCollectionEquality()
                     .equals(other.description, description)) &&
@@ -449,6 +482,8 @@ class _$_Shop implements _Shop {
       const DeepCollectionEquality().hash(category) ^
       const DeepCollectionEquality().hash(fontStyle) ^
       const DeepCollectionEquality().hash(color) ^
+      const DeepCollectionEquality().hash(isFeatured) ^
+      const DeepCollectionEquality().hash(isBestSeller) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(location) ^
       const DeepCollectionEquality().hash(borough) ^
@@ -478,8 +513,8 @@ abstract class _Shop implements Shop {
       required String category,
       required String fontStyle,
       required int color,
-        int isFeatured,
-        int isBestSeller,
+      int isFeatured,
+      int isBestSeller,
       String description,
       String location,
       String borough,

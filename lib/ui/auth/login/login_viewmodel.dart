@@ -170,7 +170,7 @@ class LoginViewModel extends BaseViewModel {
   Future<void> _navigateToMainView() async {
     await _navigateToLandingView();
 
-    await _navigationService.replaceWith(Routes.mainView);
+    await _navigationService.replaceWith(Routes.discoverPage);
   }
 
   Future<void> _navigateToLandingView() async {

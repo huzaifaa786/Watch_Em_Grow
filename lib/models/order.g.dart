@@ -82,5 +82,5 @@ const _$OrderStatusEnumMap = {
   OrderStatus.bookApproved: 5,
   OrderStatus.bookCancelled: 6,
   OrderStatus.refundCaseOpened: 7,
-  OrderStatus.refundCaseClosed: 8
+  OrderStatus.refundCaseClosed: 8,
 };

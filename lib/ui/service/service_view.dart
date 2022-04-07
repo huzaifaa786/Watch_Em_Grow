@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mipromo/models/order.dart';
@@ -9,8 +11,9 @@ import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
 import 'package:stacked/stacked.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:video_player/video_player.dart';
 
-class ServiceView extends StatelessWidget {
+class ServiceView extends StatefulWidget {
   final ShopService service;
   final int color;
   final String fontStyle;
@@ -23,18 +26,57 @@ class ServiceView extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _ServiceViewState createState() => _ServiceViewState();
+}
+
+class _ServiceViewState extends State<ServiceView> {
+  ChewieController? chewieController;
+  VideoPlayerController? videoPlayerController;
+  bool isMuted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.service.videoUrl != null) initializePlayer();
+  }
+
+  initializePlayer() async {
+    videoPlayerController = VideoPlayerController.network(widget.service.videoUrl.toString());
+
+    chewieController = ChewieController(
+      videoPlayerController: videoPlayerController!,
+      autoInitialize: true,
+      allowMuting: true,
+      looping: true,
+      materialProgressColors: ChewieProgressColors(
+        playedColor: Colors.purple,
+        bufferedColor: Colors.purple.withOpacity(0.4),
+      ),
+      showOptions: true,
+    );
+  }
+
+  @override
+  Future<void> dispose() async {
+    super.dispose(); //change here
+    videoPlayerController!.dispose();
+    chewieController!.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
     return ViewModelBuilder<ServiceViewModel>.reactive(
-      onModelReady: (model) => model.init(service),
+      onModelReady: (model) => model.init(widget.service),
       builder: (context, model, child) => model.isBusy
           ? const BasicLoader()
           : Scaffold(
               //backgroundColor: Colors.white,
               appBar: AppBar(
-                backgroundColor: Color(color),
+                backgroundColor: Color(widget.color),
                 centerTitle: true,
-                title: service.type == Constants.productLabel
+                title: widget.service.type == Constants.productLabel
                     ? const Text('Buy Product')
                     : const Text('Book Service'),
               ),
@@ -54,17 +96,40 @@ class ServiceView extends StatelessWidget {
                             child: PageView(
                               controller: model.viewController,
                               children: [
-                                if (service.imageUrl1 != null) ...[
-                                  Image.network(service.imageUrl1!,
-                                      fit: BoxFit.fill),
+                                if (widget.service.imageUrl1 != null) ...[
+                                  CachedNetworkImage(
+                                    imageUrl: widget.service.imageUrl1!,
+                                    fit: BoxFit.fill,
+                                    placeholder: (context, url) =>
+                                        Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                  ),
                                 ],
-                                if (service.imageUrl2 != null) ...[
-                                  Image.network(service.imageUrl2!,
-                                      fit: BoxFit.fill),
+                                if (widget.service.imageUrl2 != null) ...[
+                                  CachedNetworkImage(
+                                    imageUrl: widget.service.imageUrl2!,
+                                    fit: BoxFit.fill,
+                                    placeholder: (context, url) =>
+                                        Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                  ),
                                 ],
-                                if (service.imageUrl3 != null) ...[
-                                  Image.network(service.imageUrl3!,
-                                      fit: BoxFit.fill),
+                                if (widget.service.imageUrl3 != null) ...[
+                                   CachedNetworkImage(
+                                    imageUrl: widget.service.imageUrl3!,
+                                    fit: BoxFit.fill,
+                                    placeholder: (context, url) =>
+                                        Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                  ),
+                                ],
+                                if (widget.service.videoUrl != null) ...[
+                                  AspectRatio(
+                                    aspectRatio: 14 / 9,
+                                    child: Chewie(
+                                      controller: chewieController!,
+                                    ),
+                                  ),
                                 ]
                               ],
                             ),
@@ -72,16 +137,16 @@ class ServiceView extends StatelessWidget {
                           4.heightBox,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(model.imagesCount.length,
-                                (index) {
+                            children: List.generate(
+                                widget.service.videoUrl == null
+                                    ? model.imagesCount.length
+                                    : model.imagesCount.length + 1, (index) {
                               return Container(
                                 height: 8,
                                 width: 8,
                                 margin: EdgeInsets.only(left: 4),
                                 decoration: BoxDecoration(
-                                    color: model.selectedIndex == index
-                                        ? Color(color)
-                                        : Colors.grey[400],
+                                    color: model.selectedIndex == index ? Color(widget.color) : Colors.grey[400],
                                     borderRadius: BorderRadius.circular(55)),
                               );
                             }),
@@ -90,45 +155,37 @@ class ServiceView extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              service.name.text.xl.bold
+                              widget.service.name.text.xl.bold
                                   //.fontFamily(fontStyle)
                                   .maxLines(2)
                                   .make()
                                   .box
                                   .width(context.screenWidth / 1.5)
                                   .make(),
-                              "£${service.price.toStringAsFixed(2)}"
-                                  .text
-                                  .lg
-                                  .make(),
+                              "£${widget.service.price.toStringAsFixed(2)}".text.lg.make(),
                             ],
                           ).pOnly(top: 12, left: 20, right: 20),
-                          if (service.type == "Product")
-                            if (service.sizes == null || service.sizes!.isEmpty)
+                          if (widget.service.type == "Product")
+                            if (widget.service.sizes == null || widget.service.sizes!.isEmpty)
                               const SizedBox.shrink()
                             else
                               Column(
                                 children: [
                                   20.heightBox,
-                                  "Available Sizes"
-                                      .text
-                                      .size(15)
-                                      .fontWeight(FontWeight.w600)
-                                      .make(),
+                                  "Available Sizes".text.size(15).fontWeight(FontWeight.w600).make(),
                                   10.heightBox,
                                 ],
                               ).px(20),
-                          if (service.type == "Product")
-                            if (service.sizes == null || service.sizes!.isEmpty)
+                          if (widget.service.type == "Product")
+                            if (widget.service.sizes == null || widget.service.sizes!.isEmpty)
                               const SizedBox.shrink()
                             else
                               Wrap(
                                 runSpacing: 7,
-                                children: List.generate(service.sizes!.length,
-                                    (index) {
+                                children: List.generate(widget.service.sizes!.length, (index) {
                                   return InkWell(
                                     onTap: () {
-                                      if (service.ownerId == model.user.id) {
+                                      if (widget.service.ownerId == model.user.id) {
                                       } else {
                                         model.onSizeSelected(index);
                                       }
@@ -138,25 +195,17 @@ class ServiceView extends StatelessWidget {
                                       width: 35,
                                       margin: const EdgeInsets.only(right: 8),
                                       decoration: BoxDecoration(
-                                          color:
-                                              model.selectedSizeIndex == index
-                                                  ? Color(color)
-                                                  : null,
-                                          borderRadius:
-                                              BorderRadius.circular(2),
+                                          color: model.selectedSizeIndex == index ? Color(widget.color) : null,
+                                          borderRadius: BorderRadius.circular(2),
                                           border: Border.all(
-                                              color: model.selectedSizeIndex ==
-                                                      index
-                                                  ? Color(color)
+                                              color: model.selectedSizeIndex == index
+                                                  ? Color(widget.color)
                                                   : Color(0xFFEEEEEE))),
                                       child: Center(
                                         child: Text(
-                                          service.sizes![index],
+                                          widget.service.sizes![index],
                                           style: TextStyle(
-                                              color: model.selectedSizeIndex ==
-                                                      index
-                                                  ? Colors.white
-                                                  : null,
+                                              color: model.selectedSizeIndex == index ? Colors.white : null,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -171,27 +220,14 @@ class ServiceView extends StatelessWidget {
                             color: Colors.grey.withOpacity(0.30),
                           ),
                           20.heightBox,
-                          "Item Description"
-                              .text
-                              .size(15)
-                              .fontWeight(FontWeight.w600)
-                              .make()
-                              .px(20),
+                          "Item Description".text.size(15).fontWeight(FontWeight.w600).make().px(20),
 
-                          service.description!.text
-                              .color(Colors.grey)
-                              .make()
-                              .py8()
-                              .px(20),
+                          widget.service.description!.text.color(Colors.grey).make().py8().px(20),
                           10.heightBox,
                           Row(
                             children: [
                               Image.asset('assets/icon/shield.png', scale: 10),
-                              "Buyer Protection"
-                                  .text
-                                  .color(Colors.grey)
-                                  .make()
-                                  .px4()
+                              "Buyer Protection".text.color(Colors.grey).make().px4()
                             ],
                           ).px(20),
                           /*Row(
@@ -231,10 +267,7 @@ class ServiceView extends StatelessWidget {
                             width: double.infinity,
                             color: Colors.grey.withOpacity(0.30),
                           ),
-                          if (service.ownerId != model.user.id)
-                            20.heightBox
-                          else
-                            5.heightBox,
+                          if (widget.service.ownerId != model.user.id) 20.heightBox else 5.heightBox,
 
                           // model.user.chatIds != null &&
                           //         model.user.chatIds!.contains(service.ownerId)
@@ -280,14 +313,13 @@ class ServiceView extends StatelessWidget {
                 ],
               ),
               bottomNavigationBar: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
                 child: Row(
                   children: [
-                    if (service.ownerId == model.user.id)
+                    if (widget.service.ownerId == model.user.id)
                       InkWell(
                         onTap: () {
-                          model.deleteService(service);
+                          model.deleteService(widget.service);
                         },
                         child: Container(
                           height: size.height * 0.05,
@@ -296,7 +328,7 @@ class ServiceView extends StatelessWidget {
                               /*border: Border(
                                   top: BorderSide(color: Colors.red, width: 1),
                                   bottom: BorderSide(color: Colors.red, width: 1))*/
-                          ),
+                              ),
                           child: Row(
                             children: [
                               10.widthBox,
@@ -311,14 +343,13 @@ class ServiceView extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            if (service.type == Constants.productLabel)
+                            if (widget.service.type == Constants.productLabel)
                               Expanded(
                                 child: MaterialButton(
                                   minWidth: context.screenWidth,
-                                  color: Color(color),
+                                  color: Color(widget.color),
                                   onPressed: () {
-                                    if (service.sizes!.isEmpty ||
-                                        service.sizes == null) {
+                                    if (widget.service.sizes!.isEmpty || widget.service.sizes == null) {
                                       model.navigateToBuyServiceView();
                                     } else {
                                       model.isBuyServiceFormValidate();
@@ -328,14 +359,10 @@ class ServiceView extends StatelessWidget {
                                     alignment: Alignment.center,
                                     children: [
                                       Row(
-                                        children: const [
-                                          Icon(Icons.calendar_today,
-                                              size: 25, color: Colors.white)
-                                        ],
+                                        children: const [Icon(Icons.calendar_today, size: 25, color: Colors.white)],
                                       ),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: const [
                                           Text(
                                             'Buy',
@@ -358,19 +385,15 @@ class ServiceView extends StatelessWidget {
                                   onPressed: () {
                                     model.bookService();
                                   },
-                                  color: Color(color),
+                                  color: Color(widget.color),
                                   child: Stack(
                                     alignment: Alignment.center,
                                     children: [
                                       Row(
-                                        children: const [
-                                          Icon(Icons.calendar_today,
-                                              size: 25, color: Colors.white)
-                                        ],
+                                        children: const [Icon(Icons.calendar_today, size: 25, color: Colors.white)],
                                       ),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: const [
                                           Text(
                                             'Book',
@@ -393,16 +416,14 @@ class ServiceView extends StatelessWidget {
                                 //padding: EdgeInsets.symmetric(horizontal: 10),
                                 onPressed: () {
                                   if (model.user.chatIds != null &&
-                                      model.user.chatIds!
-                                          .contains(service.ownerId)) {
-                                    model.navigateToDirectChatView(
-                                        service.ownerId);
+                                      model.user.chatIds!.contains(widget.service.ownerId)) {
+                                    model.navigateToDirectChatView(widget.service.ownerId);
                                     //model.navigateToChatsView();
                                   } else {
-                                    model.updateChat(service.ownerId);
+                                    model.updateChat(widget.service.ownerId);
                                   }
                                 },
-                                color: Color(color),
+                                color: Color(widget.color),
                                 child: Stack(
                                   alignment: Alignment.center,
                                   children: [
@@ -410,13 +431,11 @@ class ServiceView extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         //Icon(Icons.chat, size: 20, color: Colors.white)
-                                        Image.asset('assets/icon/chat.png',
-                                            scale: 7),
+                                        Image.asset('assets/icon/chat.png', scale: 7),
                                       ],
                                     ),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: const [
                                         Text(
                                           'Message',

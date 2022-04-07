@@ -17,9 +17,10 @@ class SearchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SearchViewModel>.reactive(
-      onModelReady: (model) => model.init(),
-      builder: (context, model, child) =>
-          model.isBusy ? const BasicLoader() : SearchWidget(),
+      onModelReady: (model) => Future.delayed(Duration.zero, () async {
+        model.init();
+      }),
+      builder: (context, model, child) => model.isBusy ? const BasicLoader() : SearchWidget(),
       viewModelBuilder: () => SearchViewModel(),
     );
   }
@@ -43,12 +44,10 @@ class SearchWidget extends HookViewModelWidget<SearchViewModel> {
               },
             ),
             Expanded(
-              child: model.searchedShops.isNotEmpty ||
-                      controller.text.isNotEmpty
+              child: model.searchedShops.isNotEmpty || controller.text.isNotEmpty
                   ? GridView.builder(
                       physics: const BouncingScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         //crossAxisCount: 2,
                         crossAxisCount: 1,
                         //crossAxisSpacing: 8,
@@ -61,17 +60,12 @@ class SearchWidget extends HookViewModelWidget<SearchViewModel> {
                       itemBuilder: (context, i) {
                         final Shop shop = model.searchedShops[i];
 
-                        final owner = model.shopOwners
-                            .singleWhere((owner) => owner.shopId == shop.id);
+                        final owner = model.shopOwners!.singleWhere((owner) => owner.shopId == shop.id);
 
                         return ShopCard(
                           owner: owner,
                           shop: shop,
-                          services: model.allServices
-                              .where((service) =>
-                          service.shopId ==
-                              shop.id)
-                              .toList(),
+                          services: model.allServices!.where((service) => service.shopId == shop.id).toList(),
                         );
                         /*return SmallShopCard(
                           shop: shop,

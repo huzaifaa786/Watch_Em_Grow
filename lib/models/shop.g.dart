@@ -14,6 +14,8 @@ _$_Shop _$_$_ShopFromJson(Map<String, dynamic> json) {
     category: json['category'] as String,
     fontStyle: json['fontStyle'] as String,
     color: json['color'] as int,
+    isFeatured: json['isFeatured'] as int? ?? 0,
+    isBestSeller: json['isBestSeller'] as int? ?? 0,
     description: json['description'] as String? ?? '',
     location: json['location'] as String? ?? '',
     borough: json['borough'] as String? ?? '',
@@ -23,8 +25,6 @@ _$_Shop _$_$_ShopFromJson(Map<String, dynamic> json) {
     lowestPrice: (json['lowestPrice'] as num?)?.toDouble() ?? 0.0,
     highestPrice: (json['highestPrice'] as num?)?.toDouble() ?? 0.0,
     hasService: json['hasService'] as bool? ?? false,
-      isFeatured: json['isFeatured'] ?? 0,
-    isBestSeller: json['isBestSeller'] ?? 0,
   );
 }
 
@@ -35,6 +35,8 @@ Map<String, dynamic> _$_$_ShopToJson(_$_Shop instance) => <String, dynamic>{
       'category': instance.category,
       'fontStyle': instance.fontStyle,
       'color': instance.color,
+      'isFeatured': instance.isFeatured,
+      'isBestSeller': instance.isBestSeller,
       'description': instance.description,
       'location': instance.location,
       'borough': instance.borough,
@@ -44,6 +46,4 @@ Map<String, dynamic> _$_$_ShopToJson(_$_Shop instance) => <String, dynamic>{
       'lowestPrice': instance.lowestPrice,
       'highestPrice': instance.highestPrice,
       'hasService': instance.hasService,
-      'isFeatured': instance.isFeatured,
-      'isBestSeller': instance.isBestSeller
     };

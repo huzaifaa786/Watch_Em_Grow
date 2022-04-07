@@ -10,7 +10,7 @@ _$_Notification _$_$_NotificationFromJson(Map<String, dynamic> json) {
   return _$_Notification(
     title: json['title'] as String,
     body: json['body'] as String,
-    sound: json['orderId'] != null ? json['orderId'] : json['userId'] as String,
+    sound: json['sound'] as String,
     time: json['time'] as int,
     id: json['id'] as int,
     read: json['read'] as bool,

@@ -11,9 +11,14 @@ class StartUpViewModel extends BaseViewModel {
   /// Handle the startup screen according to User's authentication state
   Future<void> runStartupLogic() async {
     final user = _authApi.currentUser;
-
+    print("redirectin to next page");
     if (user != null && user.emailVerified) {
-      await _navigationService.replaceWith(Routes.mainView);
+      await _navigationService.replaceWith(
+        Routes.mainView,
+        arguments: MainViewArguments(
+          selectedIndex: 0,
+        ),
+      );
     } else {
       await _navigationService.replaceWith(Routes.landingView);
     }

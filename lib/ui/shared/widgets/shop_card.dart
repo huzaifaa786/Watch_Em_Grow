@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/app/app.router.dart';
@@ -51,9 +52,7 @@ class ShopCard extends StatelessWidget {
                     owner,
                   );
                 },
-                child: Constants.viewShopLabel.text
-                    .color(Theme.of(context).primaryColor)
-                    .make(),
+                child: Constants.viewShopLabel.text.color(Theme.of(context).primaryColor).make(),
               ),
             ],
           ),
@@ -67,16 +66,17 @@ class ShopCard extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: services[index].imageUrl1 == null ||
-                          services[index].imageUrl1!.isEmpty
+                  child: services[index].imageUrl1 == null || services[index].imageUrl1!.isEmpty
                       ? const Center(
                           child: Icon(Icons.broken_image_outlined),
                         )
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(6),
-                          child: Image.network(
-                            services[index].imageUrl1!,
+                          child: CachedNetworkImage(
+                            imageUrl: services[index].imageUrl1!,
                             fit: BoxFit.cover,
+                            placeholder: (context, url) => Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
                           ),
                         ),
                 ).box.width(context.screenWidth / 3.2).make().px2().mdClick(

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/api/image_selector_api.dart';
 import 'package:mipromo/api/storage_api.dart';
@@ -100,18 +101,17 @@ class CreateServiceViewModel extends BaseViewModel {
     if (_validateServiceForm()) {
       await _databaseApi.createService(
         ShopService(
-          id: _serviceId,
-          shopId: shop.id,
-          ownerId: shop.ownerId,
-          name: serviceName,
-          description: description.trimRight(),
-          price: double.parse(price),
-          type: selectedType!,
-          sizes: selectedType == "Product" ? sizes : null,
-          bookingNote: selectedType != "Product" ? noteController.text.toString() : null
-        ),
+            id: _serviceId,
+            shopId: shop.id,
+            ownerId: shop.ownerId,
+            name: serviceName,
+            description: description.trimRight(),
+            price: double.parse(price),
+            type: selectedType!,
+            sizes: selectedType == "Product" ? sizes : null,
+            bookingNote: selectedType != "Product" ? noteController.text.toString() : null),
       );
-
+      await _saveServiceVideo();
       await _saveServiceImage();
 
       await _databaseApi.updateShopService(
@@ -124,8 +124,7 @@ class CreateServiceViewModel extends BaseViewModel {
           shopId: shop.id,
           highestPrice: double.parse(price),
         );
-      } else if (double.parse(price) < shop.highestPrice &&
-          shop.lowestPrice == 0) {
+      } else if (double.parse(price) < shop.highestPrice && shop.lowestPrice == 0) {
         await _databaseApi.updateShopLowestPrice(
           shopId: shop.id,
           lowestPrice: double.parse(price),
@@ -189,6 +188,10 @@ class CreateServiceViewModel extends BaseViewModel {
     }
   }
 
+  var videoName;
+  File? _selectedVideo;
+  File? get selectedVideo => _selectedVideo;
+
   File? _selectedImage1;
   File? get selectedImage1 => _selectedImage1;
 
@@ -231,6 +234,33 @@ class CreateServiceViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future selectVideo() async {
+    final picker = ImagePicker();
+
+    final file = await picker.getVideo(
+      source: ImageSource.gallery,
+    );
+    _selectedVideo = File(file!.path);
+    videoName = file.path.split('/').last;
+    notifyListeners();
+  }
+
+  Future _saveServiceVideo() async {
+    if (selectedImage1 != null) {
+      final CloudStorageResult storageResult = await _storageApi.uploadServiceVideo(
+        serviceId: _serviceId,
+        videoToUpload: _selectedVideo!,
+      );
+
+      await _databaseApi.updateServiceVideo(
+        shopId: shop.id,
+        serviceId: _serviceId,
+        imageFileName: storageResult.imageFileName,
+        imageUrl: storageResult.imageUrl,
+      );
+    }
+  }
+
   Future selectImage2() async {
     final tempImage = await _imageSelectorApi.selectImage();
 
@@ -265,8 +295,7 @@ class CreateServiceViewModel extends BaseViewModel {
 
   Future _saveServiceImage() async {
     if (selectedImage1 != null) {
-      final CloudStorageResult storageResult =
-          await _storageApi.uploadServiceImages(
+      final CloudStorageResult storageResult = await _storageApi.uploadServiceImages(
         serviceId: _serviceId,
         imageNumber: '1',
         imageToUpload: _finalImage1!,
@@ -280,8 +309,7 @@ class CreateServiceViewModel extends BaseViewModel {
       );
     }
     if (selectedImage2 != null) {
-      final CloudStorageResult storageResult =
-          await _storageApi.uploadServiceImages(
+      final CloudStorageResult storageResult = await _storageApi.uploadServiceImages(
         serviceId: _serviceId,
         imageNumber: '2',
         imageToUpload: _finalImage2!,
@@ -295,8 +323,7 @@ class CreateServiceViewModel extends BaseViewModel {
       );
     }
     if (selectedImage3 != null) {
-      final CloudStorageResult storageResult =
-          await _storageApi.uploadServiceImages(
+      final CloudStorageResult storageResult = await _storageApi.uploadServiceImages(
         serviceId: _serviceId,
         imageNumber: '3',
         imageToUpload: _finalImage3!,

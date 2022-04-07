@@ -14,6 +14,7 @@ import '../models/order.dart';
 import '../models/shop.dart';
 import '../models/shop_service.dart';
 import '../ui/auth/buyer_signup/buyer_signup_view.dart';
+import '../ui/auth/login/discover_page.dart';
 import '../ui/auth/login/forgot_password_view.dart';
 import '../ui/auth/login/login_view.dart';
 import '../ui/auth/seller_signup/seller_signup_view.dart';
@@ -56,6 +57,7 @@ class Routes {
   static const String loginView = '/login-view';
   static const String forgotPasswordView = '/forgot-password-view';
   static const String mainView = '/main-view';
+  static const String discoverPage = '/discover-page';
   static const String buyerEditProfileView = '/buyer-edit-profile-view';
   static const String buyerProfileView = '/buyer-profile-view';
   static const String paypalVerificationView = '/paypal-verification-view';
@@ -93,6 +95,7 @@ class Routes {
     loginView,
     forgotPasswordView,
     mainView,
+    discoverPage,
     buyerEditProfileView,
     buyerProfileView,
     paypalVerificationView,
@@ -136,6 +139,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.loginView, page: LoginView),
     RouteDef(Routes.forgotPasswordView, page: ForgotPasswordView),
     RouteDef(Routes.mainView, page: MainView),
+    RouteDef(Routes.discoverPage, page: DiscoverPage),
     RouteDef(Routes.buyerEditProfileView, page: BuyerEditProfileView),
     RouteDef(Routes.buyerProfileView, page: BuyerProfileView),
     RouteDef(Routes.paypalVerificationView, page: PaypalVerificationView),
@@ -157,9 +161,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.messagesView, page: MessagesView),
     RouteDef(Routes.earningsView, page: EarningsView),
     RouteDef(Routes.ordersView, page: OrdersView),
-
     RouteDef(Routes.ordersBuyerView, page: OrdersView),
-
     RouteDef(Routes.orderDetailView, page: OrderDetailView),
     RouteDef(Routes.termsAndConditionsView, page: TermsAndConditionsView),
     RouteDef(Routes.privacyPolicyView, page: PrivacyPolicyView),
@@ -202,9 +204,25 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    // MainView: (data) {
+    //   return MaterialPageRoute<dynamic>(
+    //     builder: (context) => const MainView(),
+    //     settings: data,
+    //   );
+    // },
     MainView: (data) {
+      var args = data.getArgs<MainViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const MainView(),
+        builder: (context) => MainView(key: args.key, selectedIndex: args.selectedIndex),
+        settings: data,
+      );
+    },
+    DiscoverPage: (data) {
+      var args = data.getArgs<DiscoverPageArguments>(
+        orElse: () => DiscoverPageArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => DiscoverPage(key: args.key),
         settings: data,
       );
     },
@@ -212,16 +230,6 @@ class StackedRouter extends RouterBase {
       var args = data.getArgs<BuyerEditProfileViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
         builder: (context) => BuyerEditProfileView(
-          key: args.key,
-          user: args.user,
-        ),
-        settings: data,
-      );
-    },
-    BuyerProfileView: (data) {
-      var args = data.getArgs<BuyerProfileViewArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => BuyerProfileView(
           key: args.key,
           user: args.user,
         ),
@@ -436,18 +444,19 @@ class StackedRouter extends RouterBase {
     },
     PrivacyPolicyView: (data) {
       var args = data.getArgs<PrivacyPolicyViewArguments>(nullOk: false);
-      return MaterialPageRoute<PrivacyPolicyViewArguments>(
+      return MaterialPageRoute<dynamic>(
         builder: (context) => PrivacyPolicyView(
-          //key: args.key,
+          key: args.key,
           url: args.url,
         ),
         settings: data,
       );
     },
     AboutView: (data) {
-      var args = data.getArgs<PrivacyPolicyViewArguments>(nullOk: false);
+      var args = data.getArgs<AboutViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
         builder: (context) => AboutView(
+          key: args.key,
           url: args.url,
         ),
         settings: data,
@@ -490,18 +499,33 @@ class StackedRouter extends RouterBase {
 /// Arguments holder classes
 /// *************************************************************************
 
+/// DiscoverPage arguments holder class
+class DiscoverPageArguments {
+  final Key? key;
+  DiscoverPageArguments({this.key});
+}
+
+class MainViewArguments {
+  final Key? key;
+  final int selectedIndex;
+
+  MainViewArguments({this.key, this.selectedIndex = 0});
+}
+
 /// BuyerEditProfileView arguments holder class
 class BuyerEditProfileViewArguments {
   final Key? key;
   final AppUser user;
   BuyerEditProfileViewArguments({this.key, required this.user});
 }
+
 class BuyerProfileViewArguments {
   final Key? key;
   final AppUser user;
   final bool? viewingAsProfile;
   BuyerProfileViewArguments({this.key, required this.user, this.viewingAsProfile});
 }
+
 class PaypalVerificationViewArguments {
   final Key? key;
   final String email;
@@ -520,8 +544,7 @@ class SellerProfileViewArguments {
   final Key? key;
   final AppUser seller;
   final bool? viewingAsProfile;
-  SellerProfileViewArguments(
-      {this.key, required this.seller, this.viewingAsProfile});
+  SellerProfileViewArguments({this.key, required this.seller, this.viewingAsProfile});
 }
 
 /// SellerSignupView arguments holder class
@@ -550,8 +573,7 @@ class CreateServiceViewArguments {
   final Key? key;
   final AppUser user;
   final Shop shop;
-  CreateServiceViewArguments(
-      {this.key, required this.user, required this.shop});
+  CreateServiceViewArguments({this.key, required this.user, required this.shop});
 }
 
 /// ServiceView arguments holder class
@@ -560,11 +582,7 @@ class ServiceViewArguments {
   final ShopService service;
   final int color;
   final String fontStyle;
-  ServiceViewArguments(
-      {this.key,
-      required this.service,
-      required this.color,
-      required this.fontStyle});
+  ServiceViewArguments({this.key, required this.service, required this.color, required this.fontStyle});
 }
 
 /// BuyServiceView arguments holder class
@@ -573,8 +591,7 @@ class BuyServiceViewArguments {
   final AppUser user;
   final ShopService service;
   final int? selectedSize;
-  BuyServiceViewArguments(
-      {this.key, required this.user, required this.service, this.selectedSize});
+  BuyServiceViewArguments({this.key, required this.user, required this.service, this.selectedSize});
 }
 
 /// CategoryView arguments holder class
@@ -599,8 +616,7 @@ class ChatsViewArguments {
   final Key? key;
   final AppUser currentUser;
   final bool onMainView;
-  ChatsViewArguments(
-      {this.key, required this.currentUser, required this.onMainView});
+  ChatsViewArguments({this.key, required this.currentUser, required this.onMainView});
 }
 
 /// FollowersView arguments holder class
@@ -622,8 +638,7 @@ class MessagesViewArguments {
   final Key? key;
   final AppUser currentUser;
   final AppUser receiver;
-  MessagesViewArguments(
-      {this.key, required this.currentUser, required this.receiver});
+  MessagesViewArguments({this.key, required this.currentUser, required this.receiver});
 }
 
 /// EarningsView arguments holder class
@@ -641,25 +656,27 @@ class OrderDetailViewArguments {
   final String fontStyle;
   final AppUser currentUser;
   OrderDetailViewArguments(
-      {this.key,
-      required this.order,
-      required this.color,
-      required this.fontStyle,
-      required this.currentUser});
+      {this.key, required this.order, required this.color, required this.fontStyle, required this.currentUser});
+}
+
+/// PrivacyPolicyView arguments holder class
+class PrivacyPolicyViewArguments {
+  final Key? key;
+  final String url;
+  PrivacyPolicyViewArguments({this.key, required this.url});
+}
+
+/// AboutView arguments holder class
+class AboutViewArguments {
+  final Key? key;
+  final String url;
+  AboutViewArguments({this.key, required this.url});
 }
 
 /// BookServiceView arguments holder class
 class BookServiceViewArguments {
   final Key? key;
   final AppUser user;
-  //final Order order;
   final ShopService service;
   BookServiceViewArguments({this.key, required this.user, required this.service});
-}
-
-///privac arguments holder class
-class PrivacyPolicyViewArguments {
-  final Key? key;
-   final String url;
-  PrivacyPolicyViewArguments({this.key, this.url = ''});
 }

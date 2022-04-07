@@ -13,19 +13,19 @@ import 'package:stacked_hooks/stacked_hooks.dart';
 import 'package:badges/badges.dart';
 
 class MainView extends StatelessWidget {
-  const MainView({Key? key}) : super(key: key);
-
+  const MainView({Key? key, this.selectedIndex = 0}) : super(key: key);
+  final int selectedIndex;
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainViewModel>.reactive(
-      onModelReady: (model) => model.init(),
-      builder: (context, model, child) => viewSelector(model),
+      onModelReady: (model) => model.init(selectedIndex),
+      builder: (context, model, child) => viewSelector(model, selectedIndex),
       viewModelBuilder: () => MainViewModel(),
     );
   }
 
   /// Selects a View according to User Data
-  Widget viewSelector(MainViewModel model) {
+  Widget viewSelector(MainViewModel model, int index) {
     if (model.isBusy) {
       return const BasicLoader();
     } else {
@@ -44,8 +44,20 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
     BuildContext context,
     MainViewModel model,
   ) {
+    final mkey = GlobalKey<State<BottomNavigationBar>>();
     final pageController = usePageController();
     model.pageController = pageController;
+
+    changePage(int index) {
+      model.onNavigationIconTap(index);
+        pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
+          
+      }
+
+    if (model.currentIndex == 3) {
+      changePage(2);
+    }
+
     return Scaffold(
       body: PageView(
         controller: pageController,
@@ -67,6 +79,7 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
         children: [
           const Divider(),
           BottomNavigationBar(
+            key: mkey,
             type: BottomNavigationBarType.fixed,
             currentIndex: model.currentIndex,
             selectedItemColor: Styles.kcPrimaryColor,
@@ -85,15 +98,11 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
               ),
               BottomNavigationBarItem(
                 icon: model.badgeCnt == 0
-                    ? Icon(model.currentIndex == 2
-                        ? Icons.mail
-                        : Icons.mail_outlined)
+                    ? Icon(model.currentIndex == 2 ? Icons.mail : Icons.mail_outlined)
                     : Badge(
                         badgeContent: Text('${model.badgeCnt}'),
                         child: Icon(
-                          model.currentIndex == 2
-                              ? Icons.mail
-                              : Icons.mail_outlined,
+                          model.currentIndex == 2 ? Icons.mail : Icons.mail_outlined,
                         ),
                       ),
                 label: 'Inbox',
@@ -106,8 +115,7 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
               ),
             ],
             onTap: (index) {
-              model.onNavigationIconTap(index);
-              pageController.jumpToPage(index);
+              changePage(index);
             },
           ),
         ],

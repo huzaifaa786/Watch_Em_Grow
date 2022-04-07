@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
@@ -40,22 +41,19 @@ class SellerProfileView extends StatelessWidget {
                       )
                     : null,
                 actions: [
-                  if (model.shop!.ownerId != model.currentUser.id &&
-                      viewingAsProfile != true)
+                  if (model.shop!.ownerId != model.currentUser.id && viewingAsProfile != true)
                     Builder(
                         builder: (context) => InkWell(
                               onTap: () async {
                                 await model.handleReport(context);
                                 if (model.selectReport) {
-                                  Future.delayed(Duration(milliseconds: 800))
-                                      .then((value) {
+                                  Future.delayed(Duration(milliseconds: 800)).then((value) {
                                     model.reportedDone(context);
                                   });
                                 }
                               },
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -67,8 +65,7 @@ class SellerProfileView extends StatelessWidget {
                             ))
                   else
                     const SizedBox.shrink(),
-                  if (model.shop!.ownerId == model.currentUser.id &&
-                      viewingAsProfile == true)
+                  if (model.shop!.ownerId == model.currentUser.id && viewingAsProfile == true)
                     Builder(
                       builder: (context) => IconButton(
                         icon: const Icon(Icons.menu),
@@ -87,7 +84,6 @@ class SellerProfileView extends StatelessWidget {
                     children: [
                       Expanded(
                         child: ListView(
-
                           physics: const BouncingScrollPhysics(),
                           children: [
                             ListTile(
@@ -113,10 +109,7 @@ class SellerProfileView extends StatelessWidget {
                               leading: const Icon(Icons.copyright_rounded),
                               children: [
                                 ListTile(
-                                  title: model.currentUser.referCode
-                                      .toString()
-                                      .text
-                                      .make(),
+                                  title: model.currentUser.referCode.toString().text.make(),
                                   trailing: IconButton(
                                     icon: const Icon(
                                       Icons.copy,
@@ -125,8 +118,7 @@ class SellerProfileView extends StatelessWidget {
                                     onPressed: () {
                                       Clipboard.setData(
                                         ClipboardData(
-                                          text: model.currentUser.referCode
-                                              .toString(),
+                                          text: model.currentUser.referCode.toString(),
                                         ),
                                       );
                                     },
@@ -195,19 +187,15 @@ class SellerProfileView extends StatelessWidget {
                                           },
                                           child: 'Edit Profile'.text.make(),
                                         )
-                                      : model.currentfollowingIds
-                                              .contains(seller.id)
+                                      : model.currentfollowingIds.contains(seller.id)
                                           ? OutlinedButton(
                                               onPressed: model.unfollowed
                                                   ? null
                                                   : () {
                                                       //model.unfollowed = true;
                                                       //model.notifyListeners();
-                                                      model
-                                                          .unfollow(seller.id)
-                                                          .whenComplete(() {
-                                                        model.unfollowed =
-                                                            false;
+                                                      model.unfollow(seller.id).whenComplete(() {
+                                                        model.unfollowed = false;
                                                         model.notifyListeners();
                                                       });
                                                     },
@@ -218,36 +206,25 @@ class SellerProfileView extends StatelessWidget {
                                                 model.follow(seller.id);
                                               },
                                               style: ButtonStyle(
-                                                shape:
-                                                    MaterialStateProperty.all<
-                                                        RoundedRectangleBorder>(
+                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                   RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            6),
+                                                    borderRadius: BorderRadius.circular(6),
                                                   ),
                                                 ),
-                                                backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                        Color>(
+                                                backgroundColor: MaterialStateProperty.all<Color>(
                                                   Color(model.shop!.color),
                                                 ),
                                               ),
-                                              child: const Text('Follow',
-                                                  style: TextStyle(
-                                                      color: Colors.white)),
+                                              child: const Text('Follow', style: TextStyle(color: Colors.white)),
                                             )
-                                  : model.currentfollowingIds
-                                          .contains(seller.id)
+                                  : model.currentfollowingIds.contains(seller.id)
                                       ? OutlinedButton(
                                           onPressed: model.unfollowed
                                               ? null
                                               : () {
                                                   model.unfollowed = true;
                                                   model.notifyListeners();
-                                                  model
-                                                      .unfollow(seller.id)
-                                                      .whenComplete(() {
+                                                  model.unfollow(seller.id).whenComplete(() {
                                                     model.unfollowed = false;
                                                     model.notifyListeners();
                                                   });
@@ -259,19 +236,13 @@ class SellerProfileView extends StatelessWidget {
                                             model.follow(seller.id);
                                           },
                                           style: ButtonStyle(
-                                            shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
+                                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                               RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(6),
+                                                borderRadius: BorderRadius.circular(6),
                                               ),
                                             ),
-                                            backgroundColor:
-                                                MaterialStateProperty.all<
-                                                    Color>(
-                                              Color(model.shop != null
-                                                  ? model.shop!.color
-                                                  : 4284402649),
+                                            backgroundColor: MaterialStateProperty.all<Color>(
+                                              Color(model.shop != null ? model.shop!.color : 4284402649),
                                             ),
                                           ),
                                           child: const Text('Follow'),
@@ -293,11 +264,7 @@ class SellerProfileView extends StatelessWidget {
                                   onPressed: () {
                                     model.navigateToCreateShopView();
                                   },
-                                  child: "+ ${Constants.createShopLabel}"
-                                      .text
-                                      .bold
-                                      .color(Styles.kcPrimaryColor)
-                                      .make(),
+                                  child: "+ ${Constants.createShopLabel}".text.bold.color(Styles.kcPrimaryColor).make(),
                                 ),
                               ],
                             )
@@ -321,13 +288,11 @@ class SellerProfileView extends StatelessWidget {
                                 const Divider(
                                   thickness: 1,
                                 ),
-                                if (model.services.isEmpty &&
-                                    model.shop!.ownerId == model.currentUser.id)
+                                if (model.services.isEmpty && model.shop!.ownerId == model.currentUser.id)
                                   Column(
                                     children: [
                                       TextButton.icon(
-                                        label: Constants.addServiceLabel.text
-                                            .make(),
+                                        label: Constants.addServiceLabel.text.make(),
                                         icon: const Icon(
                                           Icons.add,
                                           size: 18,
@@ -353,13 +318,7 @@ class SellerProfileView extends StatelessWidget {
                                                     .make(),
                                           ),
                                         ],
-                                      )
-                                          .box
-                                          .border(color: Colors.amber)
-                                          .roundedSM
-                                          .p12
-                                          .make()
-                                          .p12()
+                                      ).box.border(color: Colors.amber).roundedSM.p12.make().p12()
                                     ],
                                   )
                                 else
@@ -367,15 +326,12 @@ class SellerProfileView extends StatelessWidget {
                                       padding: EdgeInsets.all(0),
                                       shrinkWrap: true,
                                       physics: const BouncingScrollPhysics(),
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 3,
                                         //crossAxisSpacing: 0,
                                         childAspectRatio: 1,
                                       ),
-                                      itemCount: model.shop!.ownerId ==
-                                                  model.currentUser.id &&
-                                              viewingAsProfile == true
+                                      itemCount: model.shop!.ownerId == model.currentUser.id && viewingAsProfile == true
                                           ? model.services.length
                                           : model.services.length,
                                       itemBuilder: (context, index) {
@@ -414,8 +370,7 @@ class SellerProfileView extends StatelessWidget {
                                         // } else {
                                         return Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Container(
                                               decoration: BoxDecoration(
@@ -426,16 +381,17 @@ class SellerProfileView extends StatelessWidget {
                                               //width: context.screenHeight / 2.5,
                                               child: ClipRRect(
                                                 //borderRadius: BorderRadius.circular(2),
-                                                child: Image.network(
-                                                  imageUrl(
-                                                    model.services[index]
-                                                        .imageUrl1,
-                                                    model.services[index]
-                                                        .imageUrl2,
-                                                    model.services[index]
-                                                        .imageUrl3,
+                                                child: CachedNetworkImage(
+                                                  imageUrl: imageUrl(
+                                                    model.services[index].imageUrl1,
+                                                    model.services[index].imageUrl2,
+                                                    model.services[index].imageUrl3,
                                                   ),
                                                   fit: BoxFit.contain,
+                                                  placeholder: (context, url) => Center(
+                                                      child: SizedBox(
+                                                          height: 35, child: const CircularProgressIndicator())),
+                                                  errorWidget: (context, url, error) => const Icon(Icons.error),
                                                 ),
                                               ),
                                             ),
@@ -469,18 +425,16 @@ class SellerProfileView extends StatelessWidget {
                   BusyLoader(busy: model.isApiLoading),
                 ],
               ),
-              floatingActionButton:
-                  (model.shop!.ownerId == model.currentUser.id &&
-                          viewingAsProfile == true)
-                      ? FloatingActionButton(
-                          onPressed: () {
-                            model.navigateToCreateServiceView(model.shop!);
-                          },
-                          child: Icon(Icons.add),
-                          backgroundColor: Styles.kcPrimaryColor,
-                          foregroundColor: Colors.white,
-                        )
-                      : null,
+              floatingActionButton: (model.shop!.ownerId == model.currentUser.id && viewingAsProfile == true)
+                  ? FloatingActionButton(
+                      onPressed: () {
+                        model.navigateToCreateServiceView(model.shop!);
+                      },
+                      child: Icon(Icons.add),
+                      backgroundColor: Styles.kcPrimaryColor,
+                      foregroundColor: Colors.white,
+                    )
+                  : null,
             ),
       viewModelBuilder: () => SellerProfileViewModel(),
     );

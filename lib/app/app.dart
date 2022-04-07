@@ -5,6 +5,7 @@ import 'package:mipromo/api/storage_api.dart';
 import 'package:mipromo/api/paypal_api.dart';
 import 'package:mipromo/services/user_service.dart';
 import 'package:mipromo/ui/auth/buyer_signup/buyer_signup_view.dart';
+import 'package:mipromo/ui/auth/login/discover_page.dart';
 import 'package:mipromo/ui/auth/login/forgot_password_view.dart';
 import 'package:mipromo/ui/auth/login/login_view.dart';
 import 'package:mipromo/ui/auth/seller_signup/seller_signup_view.dart';
@@ -48,6 +49,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: LoginView),
     MaterialRoute(page: ForgotPasswordView),
     MaterialRoute(page: MainView),
+    MaterialRoute(page: DiscoverPage),
     MaterialRoute(page: BuyerEditProfileView),
     MaterialRoute(page: SellerEditProfileView),
     MaterialRoute(page: SellerProfileView),

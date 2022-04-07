@@ -36,10 +36,7 @@ class MainViewModel extends BaseViewModel {
       _databaseApi.getShop(shopId).then((shopData) {
         _navigationService.navigateTo(Routes.orderDetailView,
             arguments: OrderDetailViewArguments(
-                order: order,
-                color: shopData.color,
-                currentUser: _currentUser,
-                fontStyle: shopData.fontStyle));
+                order: order, color: shopData.color, currentUser: _currentUser, fontStyle: shopData.fontStyle));
       });
     }
   }
@@ -67,6 +64,7 @@ class MainViewModel extends BaseViewModel {
       ),
     );
   }
+  
 
   Future navigateToShopView(
     AppUser owner,
@@ -79,8 +77,7 @@ class MainViewModel extends BaseViewModel {
     );
   }
 
-  Future onDidReceiveLocalNotification(
-      int id, String? title, String? body, String? payload) async {
+  Future onDidReceiveLocalNotification(int id, String? title, String? body, String? payload) async {
     onNavigationIconTap(2);
     pageController.jumpToPage(2);
   }
@@ -97,10 +94,8 @@ class MainViewModel extends BaseViewModel {
       print(mapData['forRole']);
       print(mapData['userID'].toString());
       if (mapData['forRole'] == 'order') {
-        _databaseApi
-            .getOrder(mapData['orderId']!)
-            .then((order) => navigateToOrderDetailView(order));
-      } else if (mapData['forRole'] == 'message'){
+        _databaseApi.getOrder(mapData['orderId']!).then((order) => navigateToOrderDetailView(order));
+      } else if (mapData['forRole'] == 'message') {
         final result = await _userService.syncUser();
         notifyListeners();
         _databaseApi.getUser(mapData['userID']!).then((receiver) async {
@@ -131,8 +126,7 @@ class MainViewModel extends BaseViewModel {
         title: 'Notification permission denied',
       );
     }
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, // Required to display a heads up notification
       badge: true,
       sound: true,
@@ -146,42 +140,32 @@ class MainViewModel extends BaseViewModel {
       //final orderId = message.data['orderId'] as String?;
       selectNotification(message.data.toString());
     });
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('ic_notification');
-    final IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(
+    final IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings(
       requestSoundPermission: false,
       requestBadgePermission: false,
       requestAlertPermission: false,
       onDidReceiveLocalNotification: onDidReceiveLocalNotification,
     );
     final InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
+        InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: selectNotification);
 
     if (Platform.isIOS) {
       await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              IOSFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
           ?.requestPermissions(
             alert: true,
             badge: true,
             sound: true,
           );
     }
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-            'your channel id', 'your channel name', 'your channel description',
-            importance: Importance.max,
-            priority: Priority.high,
-            showWhen: false);
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
+    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'your channel id', 'your channel name', 'your channel description',
+        importance: Importance.max, priority: Priority.high, showWhen: false);
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       final RemoteNotification? notification = message.notification;
       final AndroidNotification? android = message.notification?.android;
@@ -190,8 +174,7 @@ class MainViewModel extends BaseViewModel {
       // local notification to show to users using the created channel.
       if (notification != null && android != null) {
         if (Platform.isAndroid) {
-          await flutterLocalNotificationsPlugin.show(0, notification.title,
-              notification.body, platformChannelSpecifics,
+          await flutterLocalNotificationsPlugin.show(0, notification.title, notification.body, platformChannelSpecifics,
               //payload: message.data['orderId'].toString()
               payload: message.data.toString());
         }
@@ -204,8 +187,8 @@ class MainViewModel extends BaseViewModel {
         // local notification to show to users using the created channel.
         if (notification != null && android != null) {
           if (Platform.isAndroid) {
-            await flutterLocalNotificationsPlugin.show(0, notification.title,
-                notification.body, platformChannelSpecifics,
+            await flutterLocalNotificationsPlugin.show(
+                0, notification.title, notification.body, platformChannelSpecifics,
                 //payload: message.data['orderId'].toString()
                 payload: message.data.toString());
           }
@@ -219,7 +202,7 @@ class MainViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> init() async {
+  Future<void> init(int index) async {
     setBusy(true);
     notificationInit();
 
@@ -236,6 +219,9 @@ class MainViewModel extends BaseViewModel {
         setBusy(false);
       },
     );
+    currentIndex = index;
+    notifyListeners();
+
     // _databaseApi
     //     .listenNewNotifications(_userService.currentUser.id)
     //     .listen((notifications) {

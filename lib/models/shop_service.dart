@@ -18,6 +18,7 @@ class ShopService with _$ShopService {
     String? imageUrl2,
     String? imageId3,
     String? imageUrl3,
+    String? videoUrl,
     String? description,
     double? rating,
     List<String>? sizes,
