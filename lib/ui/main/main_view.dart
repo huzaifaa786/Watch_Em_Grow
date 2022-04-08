@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mipromo/ui/auth/buyer_signup/profile_update.dart';
 import 'package:mipromo/ui/home/home_view.dart';
 import 'package:mipromo/ui/inbox/inbox_view.dart';
 import 'package:mipromo/ui/main/create_username/create_username_view.dart';
@@ -31,7 +32,11 @@ class MainView extends StatelessWidget {
     } else {
       if (model.currentUser.username.isEmpty) {
         return const CreateUsernameView();
-      } else {
+      }
+      else if (model.currentUser.imageUrl.isEmpty && model.currentUser.skip == false) {
+        return ProfileUpdate(user: model.currentUser);
+      }
+      else {
         return _MainView();
       }
     }

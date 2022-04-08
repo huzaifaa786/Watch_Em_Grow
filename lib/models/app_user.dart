@@ -21,6 +21,7 @@ class AppUser with _$AppUser {
     @Default(0) int following,
     @Default('') String imageId,
     @Default('') String imageUrl,
+    @Default(0) int skip,
     @Default(0) int purchases,
     @Default(0) int referrals,
     @Default(0.0) double earnByRef,

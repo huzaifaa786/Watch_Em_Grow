@@ -35,6 +35,7 @@ class _$AppUserTearOff {
       int followers = 0,
       int following = 0,
       String imageId = '',
+      int skip = 0,
       String imageUrl = '',
       int purchases = 0,
       int referrals = 0,
@@ -58,6 +59,7 @@ class _$AppUserTearOff {
       followers: followers,
       following: following,
       imageId: imageId,
+      skip: skip,
       imageUrl: imageUrl,
       purchases: purchases,
       referrals: referrals,
@@ -94,6 +96,7 @@ mixin _$AppUser {
   int get following => throw _privateConstructorUsedError;
   String get imageId => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
+  int get skip => throw _privateConstructorUsedError;
   int get purchases => throw _privateConstructorUsedError;
   int get referrals => throw _privateConstructorUsedError;
   double get earnByRef => throw _privateConstructorUsedError;
@@ -127,6 +130,7 @@ abstract class $AppUserCopyWith<$Res> {
       int following,
       String imageId,
       String imageUrl,
+      int skip,
       int purchases,
       int referrals,
       double earnByRef,
@@ -161,6 +165,7 @@ class _$AppUserCopyWithImpl<$Res> implements $AppUserCopyWith<$Res> {
     Object? following = freezed,
     Object? imageId = freezed,
     Object? imageUrl = freezed,
+    Object? skip = freezed,
     Object? purchases = freezed,
     Object? referrals = freezed,
     Object? earnByRef = freezed,
@@ -230,6 +235,10 @@ class _$AppUserCopyWithImpl<$Res> implements $AppUserCopyWith<$Res> {
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      skip: skip == freezed
+          ? _value.skip
+          : skip // ignore: cast_nullable_to_non_nullable
+              as int,
       purchases: purchases == freezed
           ? _value.purchases
           : purchases // ignore: cast_nullable_to_non_nullable
@@ -283,6 +292,7 @@ abstract class _$AppUserCopyWith<$Res> implements $AppUserCopyWith<$Res> {
       int following,
       String imageId,
       String imageUrl,
+      int skip,
       int purchases,
       int referrals,
       double earnByRef,
@@ -318,6 +328,7 @@ class __$AppUserCopyWithImpl<$Res> extends _$AppUserCopyWithImpl<$Res>
     Object? following = freezed,
     Object? imageId = freezed,
     Object? imageUrl = freezed,
+    Object? skip = freezed,
     Object? purchases = freezed,
     Object? referrals = freezed,
     Object? earnByRef = freezed,
@@ -387,6 +398,10 @@ class __$AppUserCopyWithImpl<$Res> extends _$AppUserCopyWithImpl<$Res>
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      skip: skip == freezed
+          ? _value.skip
+          : skip // ignore: cast_nullable_to_non_nullable
+              as int,
       purchases: purchases == freezed
           ? _value.purchases
           : purchases // ignore: cast_nullable_to_non_nullable
@@ -438,6 +453,7 @@ class _$_AppUser implements _AppUser {
       this.following = 0,
       this.imageId = '',
       this.imageUrl = '',
+      this.skip = 0,
       this.purchases = 0,
       this.referrals = 0,
       this.earnByRef = 0.0,
@@ -492,6 +508,9 @@ class _$_AppUser implements _AppUser {
   final String imageUrl;
   @JsonKey(defaultValue: 0)
   @override
+  final int skip;
+  @JsonKey(defaultValue: 0)
+  @override
   final int purchases;
   @JsonKey(defaultValue: 0)
   @override
@@ -513,7 +532,7 @@ class _$_AppUser implements _AppUser {
 
   @override
   String toString() {
-    return 'AppUser(id: $id, email: $email, token: $token, userType: $userType, shopId: $shopId, referCode: $referCode, username: $username, fullName: $fullName, phoneNumber: $phoneNumber, gender: $gender, dateOfBirth: $dateOfBirth, followers: $followers, following: $following, imageId: $imageId, imageUrl: $imageUrl, purchases: $purchases, referrals: $referrals, earnByRef: $earnByRef, earnBySell: $earnBySell, address: $address, postCode: $postCode, chatIds: $chatIds)';
+    return 'AppUser(id: $id, email: $email, token: $token, userType: $userType, shopId: $shopId, referCode: $referCode, username: $username, fullName: $fullName, phoneNumber: $phoneNumber, gender: $gender, dateOfBirth: $dateOfBirth, followers: $followers, following: $following, imageId: $imageId, imageUrl: $imageUrl, skip: $skip,  purchases: $purchases, referrals: $referrals, earnByRef: $earnByRef, earnBySell: $earnBySell, address: $address, postCode: $postCode, chatIds: $chatIds)';
   }
 
   @override
@@ -560,6 +579,9 @@ class _$_AppUser implements _AppUser {
             (identical(other.imageUrl, imageUrl) ||
                 const DeepCollectionEquality()
                     .equals(other.imageUrl, imageUrl)) &&
+            (identical(other.skip, skip) ||
+                const DeepCollectionEquality()
+                    .equals(other.skip, skip)) &&
             (identical(other.purchases, purchases) ||
                 const DeepCollectionEquality()
                     .equals(other.purchases, purchases)) &&
@@ -600,6 +622,7 @@ class _$_AppUser implements _AppUser {
       const DeepCollectionEquality().hash(following) ^
       const DeepCollectionEquality().hash(imageId) ^
       const DeepCollectionEquality().hash(imageUrl) ^
+      const DeepCollectionEquality().hash(skip) ^
       const DeepCollectionEquality().hash(purchases) ^
       const DeepCollectionEquality().hash(referrals) ^
       const DeepCollectionEquality().hash(earnByRef) ^
@@ -636,6 +659,7 @@ abstract class _AppUser implements AppUser {
       int following,
       String imageId,
       String imageUrl,
+      int skip,
       int purchases,
       int referrals,
       double earnByRef,
@@ -676,6 +700,8 @@ abstract class _AppUser implements AppUser {
   String get imageId => throw _privateConstructorUsedError;
   @override
   String get imageUrl => throw _privateConstructorUsedError;
+  @override
+  int get skip => throw _privateConstructorUsedError;
   @override
   int get purchases => throw _privateConstructorUsedError;
   @override

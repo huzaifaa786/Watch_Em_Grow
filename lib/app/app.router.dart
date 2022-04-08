@@ -331,11 +331,9 @@ class StackedRouter extends RouterBase {
       );
     },
     ProfileUpdate: (data) {
-      var args = data.getArgs<ProfileUpdateArguments>(
-        orElse: () => ProfileUpdateArguments(),
-      );
+      var args = data.getArgs<ProfileUpdateArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => ProfileUpdate(key: args.key),
+        builder: (context) => ProfileUpdate(key: args.key,user: args.user,),
         settings: data,
       );
     },
@@ -619,7 +617,8 @@ class ServiceViewArguments {
 /// ProfileUpdate arguments holder class
 class ProfileUpdateArguments {
   final Key? key;
-  ProfileUpdateArguments({this.key});
+  final AppUser user;
+  ProfileUpdateArguments({this.key,required this.user});
 }
 
 /// BuyServiceView arguments holder class

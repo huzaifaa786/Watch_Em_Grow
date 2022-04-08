@@ -21,7 +21,7 @@ class LoginViewModel extends BaseViewModel {
   final _dialogService = locator<DialogService>();
   final _authApi = locator<AuthApi>();
   final _userService = locator<UserService>();
-
+ 
   bool isPasswordVisible = false;
 
   bool validateForm = false;
@@ -172,6 +172,7 @@ class LoginViewModel extends BaseViewModel {
 
     await _navigationService.replaceWith(Routes.discoverPage);
   }
+
 
   Future<void> _navigateToLandingView() async {
     _navigationService.popUntil(
