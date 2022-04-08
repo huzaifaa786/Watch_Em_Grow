@@ -55,13 +55,15 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
 
     changePage(int index) {
       model.onNavigationIconTap(index);
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
+      });
           
       }
 
-    // if (model.currentIndex == 3) {
-    //   changePage(2);
-    // }
+    if (model.currentIndex == 3) {
+      changePage(3);
+    }
 
     return Scaffold(
       body: PageView(
