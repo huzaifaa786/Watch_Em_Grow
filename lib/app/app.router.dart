@@ -14,6 +14,7 @@ import '../models/order.dart';
 import '../models/shop.dart';
 import '../models/shop_service.dart';
 import '../ui/auth/buyer_signup/buyer_signup_view.dart';
+import '../ui/auth/buyer_signup/profile_update.dart';
 import '../ui/auth/login/discover_page.dart';
 import '../ui/auth/login/forgot_password_view.dart';
 import '../ui/auth/login/login_view.dart';
@@ -68,6 +69,7 @@ class Routes {
   static const String editShopView = '/edit-shop-view';
   static const String createServiceView = '/create-service-view';
   static const String serviceView = '/service-view';
+  static const String profileUpdate = '/profile-update';
   static const String buyServiceView = '/buy-service-view';
   static const String categoryView = '/category-view';
   static const String categoryFilterView = '/category-filter-view';
@@ -106,6 +108,7 @@ class Routes {
     editShopView,
     createServiceView,
     serviceView,
+    profileUpdate,
     buyServiceView,
     categoryView,
     categoryFilterView,
@@ -150,6 +153,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.editShopView, page: EditShopView),
     RouteDef(Routes.createServiceView, page: CreateServiceView),
     RouteDef(Routes.serviceView, page: ServiceView),
+    RouteDef(Routes.profileUpdate, page: ProfileUpdate),
     RouteDef(Routes.buyServiceView, page: BuyServiceView),
     RouteDef(Routes.categoryView, page: CategoryView),
     RouteDef(Routes.categoryFilterView, page: CategoryFilterView),
@@ -211,9 +215,14 @@ class StackedRouter extends RouterBase {
     //   );
     // },
     MainView: (data) {
-      var args = data.getArgs<MainViewArguments>(nullOk: false);
+      var args = data.getArgs<MainViewArguments>(
+        orElse: () => MainViewArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => MainView(key: args.key, selectedIndex: args.selectedIndex),
+        builder: (context) => MainView(
+          key: args.key,
+          selectedIndex: args.selectedIndex,
+        ),
         settings: data,
       );
     },
@@ -318,6 +327,15 @@ class StackedRouter extends RouterBase {
           color: args.color,
           fontStyle: args.fontStyle,
         ),
+        settings: data,
+      );
+    },
+    ProfileUpdate: (data) {
+      var args = data.getArgs<ProfileUpdateArguments>(
+        orElse: () => ProfileUpdateArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ProfileUpdate(key: args.key),
         settings: data,
       );
     },
@@ -499,6 +517,13 @@ class StackedRouter extends RouterBase {
 /// Arguments holder classes
 /// *************************************************************************
 
+/// MainView arguments holder class
+// class MainViewArguments {
+//   final Key? key;
+//   final int selectedIndex;
+//   MainViewArguments({this.key, this.selectedIndex});
+// }
+
 /// DiscoverPage arguments holder class
 class DiscoverPageArguments {
   final Key? key;
@@ -544,7 +569,8 @@ class SellerProfileViewArguments {
   final Key? key;
   final AppUser seller;
   final bool? viewingAsProfile;
-  SellerProfileViewArguments({this.key, required this.seller, this.viewingAsProfile});
+  SellerProfileViewArguments(
+      {this.key, required this.seller, this.viewingAsProfile});
 }
 
 /// SellerSignupView arguments holder class
@@ -573,7 +599,8 @@ class CreateServiceViewArguments {
   final Key? key;
   final AppUser user;
   final Shop shop;
-  CreateServiceViewArguments({this.key, required this.user, required this.shop});
+  CreateServiceViewArguments(
+      {this.key, required this.user, required this.shop});
 }
 
 /// ServiceView arguments holder class
@@ -582,7 +609,17 @@ class ServiceViewArguments {
   final ShopService service;
   final int color;
   final String fontStyle;
-  ServiceViewArguments({this.key, required this.service, required this.color, required this.fontStyle});
+  ServiceViewArguments(
+      {this.key,
+      required this.service,
+      required this.color,
+      required this.fontStyle});
+}
+
+/// ProfileUpdate arguments holder class
+class ProfileUpdateArguments {
+  final Key? key;
+  ProfileUpdateArguments({this.key});
 }
 
 /// BuyServiceView arguments holder class
@@ -591,7 +628,8 @@ class BuyServiceViewArguments {
   final AppUser user;
   final ShopService service;
   final int? selectedSize;
-  BuyServiceViewArguments({this.key, required this.user, required this.service, this.selectedSize});
+  BuyServiceViewArguments(
+      {this.key, required this.user, required this.service, this.selectedSize});
 }
 
 /// CategoryView arguments holder class
@@ -616,7 +654,8 @@ class ChatsViewArguments {
   final Key? key;
   final AppUser currentUser;
   final bool onMainView;
-  ChatsViewArguments({this.key, required this.currentUser, required this.onMainView});
+  ChatsViewArguments(
+      {this.key, required this.currentUser, required this.onMainView});
 }
 
 /// FollowersView arguments holder class
@@ -638,7 +677,8 @@ class MessagesViewArguments {
   final Key? key;
   final AppUser currentUser;
   final AppUser receiver;
-  MessagesViewArguments({this.key, required this.currentUser, required this.receiver});
+  MessagesViewArguments(
+      {this.key, required this.currentUser, required this.receiver});
 }
 
 /// EarningsView arguments holder class
@@ -656,7 +696,11 @@ class OrderDetailViewArguments {
   final String fontStyle;
   final AppUser currentUser;
   OrderDetailViewArguments(
-      {this.key, required this.order, required this.color, required this.fontStyle, required this.currentUser});
+      {this.key,
+      required this.order,
+      required this.color,
+      required this.fontStyle,
+      required this.currentUser});
 }
 
 /// PrivacyPolicyView arguments holder class
@@ -678,5 +722,6 @@ class BookServiceViewArguments {
   final Key? key;
   final AppUser user;
   final ShopService service;
-  BookServiceViewArguments({this.key, required this.user, required this.service});
+  BookServiceViewArguments(
+      {this.key, required this.user, required this.service});
 }

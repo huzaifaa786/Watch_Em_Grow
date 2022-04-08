@@ -42,6 +42,7 @@ Map<String, dynamic> _$_$_ShopServiceToJson(_$_ShopService instance) =>
       'imageUrl2': instance.imageUrl2,
       'imageId3': instance.imageId3,
       'imageUrl3': instance.imageUrl3,
+      'videoUrl': instance.videoUrl,
       'description': instance.description,
       'rating': instance.rating,
       'sizes': instance.sizes,

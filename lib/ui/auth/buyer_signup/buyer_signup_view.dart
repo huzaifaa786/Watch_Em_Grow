@@ -102,6 +102,7 @@ class _SignUpForm extends ViewModelWidget<BuyerSignupViewModel> {
         ),
 
         // Password Field
+       
         InputField(
           focusNode: passwordFocusNode,
           validate: model.validateForm,
