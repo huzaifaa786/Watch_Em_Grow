@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mipromo/ui/auth/buyer_signup/profile_update.dart';
+import 'package:mipromo/ui/auth/login/discover_page.dart';
 import 'package:mipromo/ui/home/home_view.dart';
 import 'package:mipromo/ui/inbox/inbox_view.dart';
 import 'package:mipromo/ui/main/create_username/create_username_view.dart';
@@ -32,11 +33,9 @@ class MainView extends StatelessWidget {
     } else {
       if (model.currentUser.username.isEmpty) {
         return const CreateUsernameView();
-      }
-      else if (model.currentUser.imageUrl.isEmpty && model.currentUser.skip == false) {
+      } else if (model.currentUser.imageUrl.isEmpty && model.currentUser.skip == 0) {
         return ProfileUpdate(user: model.currentUser);
-      }
-      else {
+      } else {
         return _MainView();
       }
     }
@@ -54,15 +53,16 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
     model.pageController = pageController;
 
     changePage(int index) {
+      
       model.onNavigationIconTap(index);
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
       });
-          
-      }
+    }
 
-    if (model.currentIndex == 3) {
+    if (model.firstIndex == 3) {
       changePage(3);
+      model.changeFirstIndex();
     }
 
     return Scaffold(
@@ -70,6 +70,7 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
         onPageChanged: (index) {
+         
           model.onNavigationIconTap(index);
         },
         children: [

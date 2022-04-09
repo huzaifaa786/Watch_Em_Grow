@@ -7,6 +7,8 @@ import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/app/app.router.dart';
 import 'package:mipromo/exceptions/auth_api_exception.dart';
 import 'package:mipromo/models/app_user.dart';
+import 'package:mipromo/api/database_api.dart';
+
 import 'package:mipromo/services/user_service.dart';
 import 'package:mipromo/ui/shared/helpers/data_models.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
@@ -20,8 +22,11 @@ class LoginViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _dialogService = locator<DialogService>();
   final _authApi = locator<AuthApi>();
+  final _databaseApi = locator<DatabaseApi>();
+   late AppUser _currentUser;
+  AppUser get currentUser => _currentUser;
   final _userService = locator<UserService>();
- 
+
   bool isPasswordVisible = false;
 
   bool validateForm = false;
@@ -49,11 +54,10 @@ class LoginViewModel extends BaseViewModel {
 
   /// Login
   Future<void> login() async {
-    final bool isFormNotEmpty =
-        loginEmail.isNotEmpty && loginPassword.isNotEmpty;
+    final bool isFormNotEmpty = loginEmail.isNotEmpty && loginPassword.isNotEmpty;
 
-    final bool isFormValid = Validators.emailValidator(loginEmail) == null &&
-        Validators.passwordValidator(loginPassword) == null;
+    final bool isFormValid =
+        Validators.emailValidator(loginEmail) == null && Validators.passwordValidator(loginPassword) == null;
 
     if (isFormNotEmpty && isFormValid) {
       await _login();
@@ -83,14 +87,24 @@ class LoginViewModel extends BaseViewModel {
         'This channel is used for important notifications.', // description
         importance: Importance.max,
       );
-      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-          FlutterLocalNotificationsPlugin();
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
       await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(channel);
     }
+  }
+
+  Future<void> setCurrentUser(id) async {
+    _databaseApi.listenUser(id.toString()).listen(
+      (user) {
+        _currentUser = user;
+        notifyListeners();
+        setBusy(false);
+      },
+    );
+    print("current user");
+    print(_currentUser);
   }
 
   Future<void> _login() async {
@@ -112,14 +126,15 @@ class LoginViewModel extends BaseViewModel {
             email: user.email,
             referCode: _referCode,
           ),
-        ).whenComplete(
+        )
+            .whenComplete(
           () async {
+            await setCurrentUser(user.uid);
             await _navigateToMainView();
           },
         );
       } else {
-        final DialogResponse? dialogResponse =
-            await _dialogService.showCustomDialog(
+        final DialogResponse? dialogResponse = await _dialogService.showCustomDialog(
           variant: AlertType.warning,
           title: 'Email Not Verified',
           description: 'Please verify your Email to Login.',
@@ -169,10 +184,12 @@ class LoginViewModel extends BaseViewModel {
 
   Future<void> _navigateToMainView() async {
     await _navigateToLandingView();
-
-    await _navigationService.replaceWith(Routes.discoverPage);
+    if (_currentUser.username.isEmpty) {
+      await _navigationService.replaceWith(Routes.mainView);
+    } else {
+      await _navigationService.replaceWith(Routes.discoverPage);
+    }
   }
-
 
   Future<void> _navigateToLandingView() async {
     _navigationService.popUntil(
@@ -182,8 +199,7 @@ class LoginViewModel extends BaseViewModel {
 
   /// Forgot Password
   Future forgotPassword() async {
-    if (forgotPasswordEmail.isNotEmpty &&
-        Validators.emailValidator(forgotPasswordEmail) == null) {
+    if (forgotPasswordEmail.isNotEmpty && Validators.emailValidator(forgotPasswordEmail) == null) {
       _forgotPassword();
     } else {
       showErrors();
@@ -199,8 +215,7 @@ class LoginViewModel extends BaseViewModel {
       );
 
       if (result) {
-        final DialogResponse? dialogResponse =
-            await _dialogService.showCustomDialog(
+        final DialogResponse? dialogResponse = await _dialogService.showCustomDialog(
           variant: AlertType.info,
           title: 'Password reset',
           customData: CustomDialogData(

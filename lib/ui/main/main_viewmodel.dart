@@ -29,6 +29,8 @@ class MainViewModel extends BaseViewModel {
   int badgeCnt = 0;
   int chatCount = 0;
   int currentIndex = 0;
+  int firstIndex = 0;
+  bool showOnce = true;
 
   Future navigateToOrderDetailView(Order order) async {
     final shopId = order.service.shopId;
@@ -64,7 +66,6 @@ class MainViewModel extends BaseViewModel {
       ),
     );
   }
-  
 
   Future navigateToShopView(
     AppUser owner,
@@ -202,6 +203,16 @@ class MainViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void changeFirstIndex() {
+    firstIndex = 0;
+    notifyListeners();
+  }
+
+  Future<void> changeShowOnce() async {
+    showOnce = false;
+    notifyListeners();
+  }
+
   Future<void> init(int index) async {
     setBusy(true);
     notificationInit();
@@ -219,7 +230,7 @@ class MainViewModel extends BaseViewModel {
         setBusy(false);
       },
     );
-    currentIndex = index;
+    firstIndex = index;
     notifyListeners();
 
     // _databaseApi
