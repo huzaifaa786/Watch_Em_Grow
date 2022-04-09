@@ -27,7 +27,7 @@ class MainView extends StatelessWidget {
   }
 
   /// Selects a View according to User Data
-  Widget viewSelector(MainViewModel model, int index) {
+  Widget viewSelector(MainViewModel model, int index) {   
     if (model.isBusy) {
       return const BasicLoader();
     } else {
@@ -60,10 +60,7 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
       });
     }
 
-    if (model.firstIndex == 3) {
-      changePage(3);
-      model.changeFirstIndex();
-    }
+   
 
     return Scaffold(
       body: PageView(
