@@ -230,8 +230,12 @@ class MainViewModel extends BaseViewModel {
         setBusy(false);
       },
     );
-    firstIndex = index;
-    notifyListeners();
+    if (index == 3) {
+      onNavigationIconTap(3);
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        pageController.jumpToPage(3);
+      });
+    }
 
     // _databaseApi
     //     .listenNewNotifications(_userService.currentUser.id)
