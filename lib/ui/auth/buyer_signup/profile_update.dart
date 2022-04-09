@@ -174,7 +174,7 @@ class ProfileUpdate extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: (){
-                                 user.skip = 0;
+                                 user.following = 0;
                                           model.notifyListeners();
                               },
                               child: Text('Skip',
