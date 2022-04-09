@@ -52,7 +52,7 @@ class OrderSuccessView extends StatelessWidget {
                     // .color(Colors.black)
                     .make(),
                 3.heightBox,
-                "Congratulations, Your order has been placed successfully"
+                "Congratulations, your order has been placed successfully"
                     .text
                     .center
                     .color(Colors.grey)

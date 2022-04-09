@@ -16,39 +16,85 @@ class SearchViewModel extends BaseViewModel {
   final _databaseApi = locator<DatabaseApi>();
 
   List<Shop> searchedShops = [];
+  List<Shop> followingShops = [];
+  List<Shop> otherShops = [];
 
   List<Shop>? allShops;
   List<Follow> _follows = [];
-
+  List<String> ids = [];
+  List<AppUser> users = [];
   List<AppUser>? shopOwners;
   List<ShopService>? allServices;
 
-  void init() {
+  void init() async {
     setBusy(true);
 
     _listenAllShops();
     _listenShopOwners();
     _listenAllServices();
+    _getFollowers();
+    
     setBusy(false);
+  
   }
 
   void _listenAllShops() {
     _databaseApi.listenShops().listen(
       (shopsData) {
         allShops = shopsData;
-        searchedShops = shopsData;
-    _getFollowers();
-
+       
+        for (var user in users) {
+          for (var shop in allShops! ) {
+            if (user.shopId == shop.id) {
+               followingShops.add(shop);
+            }
+          }
+          
+        }
+        print('other shops');
+        print(otherShops);
+    //      otherShops = allShops!;
+    //         for (var elem in followingShops) {
+    // otherShops.remove(elem);
+  // }
+        
+         searchedShops =followingShops;
+        //  followingShops.addAll(otherShops);
         notifyListeners();
       },
     );
-  }
 
-  _getFollowers() async {
-    print('asdffffffffffffffffffffff');
+  }
+Future navigateToShopView1({
+    required Shop shop,
+    required AppUser owner,
+  }) async {
+    await _navigationService.navigateTo(
+      Routes.sellerProfileView,
+      arguments: SellerProfileViewArguments(
+        seller: owner,
+      ),
+    );
+  }
+   void _getFollowers() async {
     var user = AuthApi().currentUser;
-    print(user);
-    // _follows = await _databaseApi.getFollowing(sellerId);
+    _follows = await _databaseApi.getFollowing(user!.uid);
+     if (_follows.isNotEmpty) {
+      ids = _follows.map((e) => e.id).toList();
+      
+      _databaseApi.listenChatUsers(ids).listen(
+        (usersData) {
+          users = usersData;
+          notifyListeners();
+          setBusy(false);
+        },
+
+      );
+     
+
+    } else {
+      setBusy(false);
+    }
   }
 
   void _listenShopOwners() {
@@ -72,6 +118,7 @@ class SearchViewModel extends BaseViewModel {
   void onSearchTextChanged(String text) {
     searchedShops = [];
     notifyListeners();
+    print('********************************');
     print(allShops);
     if (text.isEmpty) {
       searchedShops = allShops!;

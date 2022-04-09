@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/ui/search/search_viewmodel.dart';
 import 'package:mipromo/ui/search/widgets/search_bar.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
+import 'package:mipromo/ui/shared/widgets/featured_shop_card.dart';
 import 'package:mipromo/ui/shared/widgets/shop_card.dart';
 import 'package:mipromo/ui/shared/widgets/small_shop_card.dart';
 import 'package:stacked/stacked.dart';
@@ -20,7 +22,8 @@ class SearchView extends StatelessWidget {
       onModelReady: (model) => Future.delayed(Duration.zero, () async {
         model.init();
       }),
-      builder: (context, model, child) => model.isBusy ? const BasicLoader() : SearchWidget(),
+      builder: (context, model, child) =>
+          model.isBusy ? const BasicLoader() : SearchWidget(),
       viewModelBuilder: () => SearchViewModel(),
     );
   }
@@ -43,11 +46,14 @@ class SearchWidget extends HookViewModelWidget<SearchViewModel> {
                 model.onSearchTextChanged('');
               },
             ),
+         
             Expanded(
-              child: model.searchedShops.isNotEmpty || controller.text.isNotEmpty
+              child: model.searchedShops.isNotEmpty ||
+                      controller.text.isNotEmpty
                   ? GridView.builder(
                       physics: const BouncingScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         //crossAxisCount: 2,
                         crossAxisCount: 1,
                         //crossAxisSpacing: 8,
@@ -60,12 +66,15 @@ class SearchWidget extends HookViewModelWidget<SearchViewModel> {
                       itemBuilder: (context, i) {
                         final Shop shop = model.searchedShops[i];
 
-                        final owner = model.shopOwners!.singleWhere((owner) => owner.shopId == shop.id);
+                        final owner = model.shopOwners!
+                            .singleWhere((owner) => owner.shopId == shop.id);
 
                         return ShopCard(
                           owner: owner,
                           shop: shop,
-                          services: model.allServices!.where((service) => service.shopId == shop.id).toList(),
+                          services: model.allServices!
+                              .where((service) => service.shopId == shop.id)
+                              .toList(),
                         );
                         /*return SmallShopCard(
                           shop: shop,
