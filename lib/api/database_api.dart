@@ -348,6 +348,21 @@ class DatabaseApi {
       );
     }
   }
+  Future<void> updateSkip({
+    required String userId,
+    required int skip,
+  }) async {
+    try {
+      await _usersCollection.doc(userId).update({
+        "skip": skip,
+      });
+    } on PlatformException catch (e) {
+      throw DatabaseApiException(
+        title: 'Failed to create username',
+        message: e.message,
+      );
+    }
+  }
 
   Future<void> createUserInfo({
     required String userId,

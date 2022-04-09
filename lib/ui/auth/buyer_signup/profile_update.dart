@@ -21,18 +21,17 @@ import 'package:mipromo/api/storage_api.dart';
 import 'package:mipromo/api/database_api.dart';
 
 class ProfileUpdate extends StatelessWidget {
- const ProfileUpdate({
+  const ProfileUpdate({
     Key? key,
     required this.user,
   }) : super(key: key);
 
   final AppUser user;
 
-
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<BuyerEditProfileViewModel>.reactive(
-       onModelReady: (model) => model.init(user),
+      onModelReady: (model) => model.init(user),
       builder: (context, model, child) => Stack(
         children: [
           Scaffold(
@@ -61,8 +60,7 @@ class ProfileUpdate extends StatelessWidget {
                             ),
                             Text(
                               "Add profile photo",
-                              style:
-                                  TextStyle(fontSize: 26, color: Colors.white),
+                              style: TextStyle(fontSize: 26, color: Colors.white),
                             ),
 
                             SizedBox(
@@ -73,8 +71,7 @@ class ProfileUpdate extends StatelessWidget {
                               child: Text(
                                 "Add a profile photo so that your freinds Know it's you",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 12, color: Colors.white),
+                                style: TextStyle(fontSize: 12, color: Colors.white),
                               ),
                             ),
                             SizedBox(
@@ -88,8 +85,7 @@ class ProfileUpdate extends StatelessWidget {
                                 children: [
                                   CircleAvatar(
                                     backgroundColor: Colors.white,
-                                    radius:
-                                        MediaQuery.of(context).size.width / 8,
+                                    radius: MediaQuery.of(context).size.width / 8,
                                     child: ClipOval(
                                       child: SizedBox(
                                         width: double.infinity,
@@ -119,16 +115,12 @@ class ProfileUpdate extends StatelessWidget {
                                       child: TextButton(
                                         style: TextButton.styleFrom(
                                           shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                            side: BorderSide(
-                                                color: Colors.lightBlue),
+                                            borderRadius: BorderRadius.circular(50),
+                                            side: BorderSide(color: Colors.lightBlue),
                                           ),
                                           primary: Colors.lightBlue,
                                         ),
-                                        onPressed: () {
-                                         
-                                        },
+                                        onPressed: () {},
                                         child: Icon(
                                           Icons.add,
                                           size: 10,
@@ -154,12 +146,9 @@ class ProfileUpdate extends StatelessWidget {
                                   model.updateProfile(user);
                                 },
                                 style: ButtonStyle(
-                                  fixedSize: MaterialStateProperty.all(Size(
-                                      MediaQuery.of(context).size.width * 0.9,
-                                      MediaQuery.of(context).size.height *
-                                          0.05)),
-                                  shape:
-                                      MaterialStateProperty.all<OutlinedBorder>(
+                                  fixedSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width * 0.9,
+                                      MediaQuery.of(context).size.height * 0.05)),
+                                  shape: MaterialStateProperty.all<OutlinedBorder>(
                                     RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
@@ -173,14 +162,11 @@ class ProfileUpdate extends StatelessWidget {
                               height: 21,
                             ),
                             GestureDetector(
-                              onTap: (){
-                                 user.following = 0;
-                                          model.notifyListeners();
+                              onTap: () {
+                                model.updateSkip(user);
+                                model.notifyListeners();
                               },
-                              child: Text('Skip',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue)),
+                              child: Text('Skip', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)),
                             )
                           ],
                         ),
@@ -193,7 +179,6 @@ class ProfileUpdate extends StatelessWidget {
           ),
           BusyLoader(busy: model.isBusy),
         ],
-
       ),
       viewModelBuilder: () => BuyerEditProfileViewModel(),
     );

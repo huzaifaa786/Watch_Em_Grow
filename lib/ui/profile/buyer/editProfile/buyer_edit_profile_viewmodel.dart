@@ -84,10 +84,7 @@ class BuyerEditProfileViewModel extends BaseViewModel {
         notifyListeners();
 
         if (users.isNotEmpty) {
-          usernames = users
-              .map((user) => user.username)
-              .where((u) => u != cUser.username)
-              .toList();
+          usernames = users.map((user) => user.username).where((u) => u != cUser.username).toList();
           notifyListeners();
         }
       },
@@ -100,8 +97,7 @@ class BuyerEditProfileViewModel extends BaseViewModel {
 
     if (_selectedImage != null) {
       if (url.isEmpty) {
-        final CloudStorageResult storageResult =
-            await _storageApi.uploadProfileImage(
+        final CloudStorageResult storageResult = await _storageApi.uploadProfileImage(
           userId: currentUser.id,
           imageToUpload: _selectedImage!,
         );
@@ -119,8 +115,7 @@ class BuyerEditProfileViewModel extends BaseViewModel {
 
         if (result is bool) {
           if (result) {
-            final CloudStorageResult storageResult =
-                await _storageApi.uploadProfileImage(
+            final CloudStorageResult storageResult = await _storageApi.uploadProfileImage(
               userId: currentUser.id,
               imageToUpload: _selectedImage!,
             );
@@ -168,14 +163,14 @@ class BuyerEditProfileViewModel extends BaseViewModel {
     }
   }
 
+  Future updateSkip(AppUser user) async {
+    await _databaseApi.updateSkip(userId: user.id, skip: 1);
+  }
+
   Future updateProfile(AppUser user) {
     setBusy(true);
 
-    return Future.wait([
-      _updateProfileImage(user),
-      _updateName(user),
-      _updateAddress(user)
-    ]).whenComplete(
+    return Future.wait([_updateProfileImage(user), _updateName(user), _updateAddress(user)]).whenComplete(
       () {
         setBusy(false);
         _navigationService.back();
@@ -183,7 +178,7 @@ class BuyerEditProfileViewModel extends BaseViewModel {
     );
   }
 
-  void setLoading(bool loading){
+  void setLoading(bool loading) {
     isLoading = loading;
     notifyListeners();
   }
@@ -192,16 +187,15 @@ class BuyerEditProfileViewModel extends BaseViewModel {
     setLoading(true);
     final response = await _authApi.verifyOldPassword(oldPasswordController.text, newPasswordController.text);
     print("proceeded!!!!!!!");
-    if(response == 0){
+    if (response == 0) {
       setLoading(false);
       Fluttertoast.showToast(
           msg: 'Old password does not match',
           toastLength: Toast.LENGTH_SHORT,
           backgroundColor: Colors.black87,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
-    }else /*if(response == 3)*/{
+          fontSize: 16.0);
+    } else /*if(response == 3)*/ {
       oldPasswordController.clear();
       newPasswordController.clear();
       setLoading(false);
@@ -210,8 +204,7 @@ class BuyerEditProfileViewModel extends BaseViewModel {
           toastLength: Toast.LENGTH_SHORT,
           backgroundColor: Colors.black87,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
       _navigationService.back();
     }
   }
@@ -239,7 +232,7 @@ class BuyerEditProfileViewModel extends BaseViewModel {
       setBusy(true);
       await _updateName(user).whenComplete(
         () async {
-          await _updateAddress(user).whenComplete((){
+          await _updateAddress(user).whenComplete(() {
             setBusy(false);
             _navigationService.back();
           });
