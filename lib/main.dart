@@ -13,9 +13,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-
   await ThemeManager.initialise();
-
   // App Orientation fixed as Portrait
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

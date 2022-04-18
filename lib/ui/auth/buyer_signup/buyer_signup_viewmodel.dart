@@ -1,8 +1,15 @@
+import 'dart:convert';
+import 'dart:math';
+
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mipromo/api/auth_api.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/app/app.router.dart';
 import 'package:mipromo/exceptions/auth_api_exception.dart';
+import 'package:mipromo/ui/auth/buyer_signup/email_verify.dart';
 import 'package:mipromo/ui/shared/helpers/alerts.dart';
 import 'package:mipromo/ui/shared/helpers/data_models.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
@@ -15,14 +22,14 @@ class BuyerSignupViewModel extends BaseViewModel {
   final _snackbarService = locator<SnackbarService>();
   final _dialogService = locator<DialogService>();
   final _authApi = locator<AuthApi>();
-
+  final currentuser = User;
   bool termsCheckBoxValue = false;
 
   bool isPasswordVisible = false;
   bool validateForm = false;
-
   String email = "";
   String password = "";
+  String code1 = "";
 
   void toggleTermsCheckBoxValue({
     required bool value,
@@ -62,6 +69,17 @@ class BuyerSignupViewModel extends BaseViewModel {
       showErrors();
     }
   }
+  
+  Future verify(code) async {
+
+    if (code.toString() == code1) {
+      _navigateToLoginView();
+    } else {
+     await Alerts.showServerErrorDialog(
+            'Wrong Code',
+          );
+    }
+  }
 
   Future _signUpBuyer() async {
     setBusy(true);
@@ -71,41 +89,48 @@ class BuyerSignupViewModel extends BaseViewModel {
         email: email,
         password: password,
       );
-
+  
       if (user.uid.isNotEmpty) {
-        try {
-          final bool result = await _authApi.sendEmailVerification(user);
+        // final bool result = await _authApi.sendEmailVerification(user);
+        var rng = new Random();
+        var rand = rng.nextInt(900000) + 100000;
+        int number = rand.toInt();
+        String? email = user.email;
+        Dio dio = Dio();
 
-          if (result) {
+        var url = 'http://192.168.10.6/mipromo/public/api/account/verify';
+        var data = {'email': email,'code':number};
 
-
-            final DialogResponse? dialogResponse =
-                await _dialogService.showCustomDialog(
-
-              variant: AlertType.info,
-              title: 'Email Sent',
-              customData: CustomDialogData(
-                hasRichDescription: true,
-                richDescription: 'A verification email has been sent to ${user.email}. Please verify your email to get access.',
-                richData: "",
-                richDescriptionExtra: '',
-              ),
-            );
-
-            if (dialogResponse != null && dialogResponse.confirmed) {
-              _navigateToLoginView();
-            }
-          } else {
-            await Alerts.showServerErrorDialog(
-              'Failed to send Verification Email, please try again later.',
-            );
+        var result = await dio.post(url, data: data);
+        var response = jsonDecode(result.toString());
+        print(result);
+        if (response['error'] == false) {
+            _navigateToEmailverifyView(number);
           }
-        } on AuthApiException catch (e) {
-          await Alerts.showBasicFailureDialog(
-            e.title,
-            e.message,
-          );
-        }
+
+        // if (result) {
+        //   final DialogResponse? dialogResponse =
+        //       await _dialogService.showCustomDialog(
+        //     variant: AlertType.info,
+        //     title: 'Email Sent',
+        //     customData: CustomDialogData(
+        //       hasRichDescription: true,
+        //       richDescription:
+        //           'A verification email has been sent to ${user.email}. Please verify your email to get access.',
+        //       richData: "",
+        //       richDescriptionExtra: '',
+        //     ),
+        //   );
+
+        //   if (dialogResponse != null && dialogResponse.confirmed) {
+        //     _navigateToLoginView();
+        //   }
+        // } else {
+        //   await Alerts.showServerErrorDialog(
+        //     'Failed to send Verification Email, please try again later.',
+        //   );
+        // }
+
       }
     } on AuthApiException catch (e) {
       await Alerts.showBasicFailureDialog(
@@ -125,5 +150,11 @@ class BuyerSignupViewModel extends BaseViewModel {
     await _navigationService.navigateTo(
       Routes.loginView,
     );
+  }
+
+  Future _navigateToEmailverifyView(code) async {
+   await _navigationService.navigateTo(Routes.emailVerify,arguments: EmailVerifyArguments(code: code));
+
+    
   }
 }

@@ -14,6 +14,7 @@ import '../models/order.dart';
 import '../models/shop.dart';
 import '../models/shop_service.dart';
 import '../ui/auth/buyer_signup/buyer_signup_view.dart';
+import '../ui/auth/buyer_signup/email_verify.dart';
 import '../ui/auth/buyer_signup/profile_update.dart';
 import '../ui/auth/login/discover_page.dart';
 import '../ui/auth/login/forgot_password_view.dart';
@@ -57,6 +58,7 @@ class Routes {
   static const String buyerSignupView = '/buyer-signup-view';
   static const String loginView = '/login-view';
   static const String forgotPasswordView = '/forgot-password-view';
+  static const String emailVerify = '/email-verify';
   static const String mainView = '/main-view';
   static const String discoverPage = '/discover-page';
   static const String buyerEditProfileView = '/buyer-edit-profile-view';
@@ -96,6 +98,7 @@ class Routes {
     buyerSignupView,
     loginView,
     forgotPasswordView,
+    emailVerify,
     mainView,
     discoverPage,
     buyerEditProfileView,
@@ -141,6 +144,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.buyerSignupView, page: BuyerSignupView),
     RouteDef(Routes.loginView, page: LoginView),
     RouteDef(Routes.forgotPasswordView, page: ForgotPasswordView),
+    RouteDef(Routes.emailVerify, page: EmailVerify),
     RouteDef(Routes.mainView, page: MainView),
     RouteDef(Routes.discoverPage, page: DiscoverPage),
     RouteDef(Routes.buyerEditProfileView, page: BuyerEditProfileView),
@@ -208,12 +212,18 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
-    // MainView: (data) {
-    //   return MaterialPageRoute<dynamic>(
-    //     builder: (context) => const MainView(),
-    //     settings: data,
-    //   );
-    // },
+    EmailVerify: (data) {
+      var args = data.getArgs<EmailVerifyArguments>(
+        orElse: () => EmailVerifyArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => EmailVerify(
+          key: args.key,
+          code: args.code,
+        ),
+        settings: data,
+      );
+    },
     MainView: (data) {
       var args = data.getArgs<MainViewArguments>(
         orElse: () => MainViewArguments(),
@@ -333,7 +343,10 @@ class StackedRouter extends RouterBase {
     ProfileUpdate: (data) {
       var args = data.getArgs<ProfileUpdateArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => ProfileUpdate(key: args.key,user: args.user,),
+        builder: (context) => ProfileUpdate(
+          key: args.key,
+          user: args.user,
+        ),
         settings: data,
       );
     },
@@ -515,24 +528,24 @@ class StackedRouter extends RouterBase {
 /// Arguments holder classes
 /// *************************************************************************
 
+/// EmailVerify arguments holder class
+class EmailVerifyArguments {
+  final Key? key;
+  final dynamic code;
+  EmailVerifyArguments({this.key, this.code});
+}
+
 /// MainView arguments holder class
-// class MainViewArguments {
-//   final Key? key;
-//   final int selectedIndex;
-//   MainViewArguments({this.key, this.selectedIndex});
-// }
+class MainViewArguments {
+  final Key? key;
+  final int selectedIndex;
+  MainViewArguments({this.key, this.selectedIndex = 0});
+}
 
 /// DiscoverPage arguments holder class
 class DiscoverPageArguments {
   final Key? key;
   DiscoverPageArguments({this.key});
-}
-
-class MainViewArguments {
-  final Key? key;
-  final int selectedIndex;
-
-  MainViewArguments({this.key, this.selectedIndex = 0});
 }
 
 /// BuyerEditProfileView arguments holder class
@@ -618,7 +631,7 @@ class ServiceViewArguments {
 class ProfileUpdateArguments {
   final Key? key;
   final AppUser user;
-  ProfileUpdateArguments({this.key,required this.user});
+  ProfileUpdateArguments({this.key, required this.user});
 }
 
 /// BuyServiceView arguments holder class

@@ -35,8 +35,8 @@ class _$AppUserTearOff {
       int followers = 0,
       int following = 0,
       String imageId = '',
-      int skip = 0,
       String imageUrl = '',
+      int skip = 0,
       int purchases = 0,
       int referrals = 0,
       double earnByRef = 0.0,
@@ -59,8 +59,8 @@ class _$AppUserTearOff {
       followers: followers,
       following: following,
       imageId: imageId,
-      skip: skip,
       imageUrl: imageUrl,
+      skip: skip,
       purchases: purchases,
       referrals: referrals,
       earnByRef: earnByRef,
@@ -532,7 +532,7 @@ class _$_AppUser implements _AppUser {
 
   @override
   String toString() {
-    return 'AppUser(id: $id, email: $email, token: $token, userType: $userType, shopId: $shopId, referCode: $referCode, username: $username, fullName: $fullName, phoneNumber: $phoneNumber, gender: $gender, dateOfBirth: $dateOfBirth, followers: $followers, following: $following, imageId: $imageId, imageUrl: $imageUrl, skip: $skip,  purchases: $purchases, referrals: $referrals, earnByRef: $earnByRef, earnBySell: $earnBySell, address: $address, postCode: $postCode, chatIds: $chatIds)';
+    return 'AppUser(id: $id, email: $email, token: $token, userType: $userType, shopId: $shopId, referCode: $referCode, username: $username, fullName: $fullName, phoneNumber: $phoneNumber, gender: $gender, dateOfBirth: $dateOfBirth, followers: $followers, following: $following, imageId: $imageId, imageUrl: $imageUrl, skip: $skip, purchases: $purchases, referrals: $referrals, earnByRef: $earnByRef, earnBySell: $earnBySell, address: $address, postCode: $postCode, chatIds: $chatIds)';
   }
 
   @override
@@ -580,8 +580,7 @@ class _$_AppUser implements _AppUser {
                 const DeepCollectionEquality()
                     .equals(other.imageUrl, imageUrl)) &&
             (identical(other.skip, skip) ||
-                const DeepCollectionEquality()
-                    .equals(other.skip, skip)) &&
+                const DeepCollectionEquality().equals(other.skip, skip)) &&
             (identical(other.purchases, purchases) ||
                 const DeepCollectionEquality()
                     .equals(other.purchases, purchases)) &&

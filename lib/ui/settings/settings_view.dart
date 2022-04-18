@@ -122,6 +122,13 @@ class SettingsView extends StatelessWidget {
                       model.signOut();
                     },
                   ),
+                  ListTile(
+                    dense: true,
+                    title: Row(children: [Text("Request account deactivation",style: TextStyle(color:Vx.red500,fontWeight: FontWeight.bold),),SizedBox(width: 5,), Icon(Icons.info_rounded)],),
+                    onTap: () {
+                      model.deactivate();
+                    },
+                  ),
                 ],
               ),
             ),
