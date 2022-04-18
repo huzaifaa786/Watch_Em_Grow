@@ -27,8 +27,7 @@ class NotificationsViewModel extends BaseViewModel {
   late StreamSubscription<List<Follow>> _followSubscription;
 
   late final StreamSubscription<List<Notification>> _notificationsSubscription;
-  late final StreamSubscription<List<NotificationModel>>
-      _newNotificationsSubscription;
+  late final StreamSubscription<List<NotificationModel>> _newNotificationsSubscription;
 
   List<AppUser> users = [];
   List<Order> orders = [];
@@ -44,10 +43,10 @@ class NotificationsViewModel extends BaseViewModel {
     currentUser = _userService.currentUser;
     notifyListeners();
     followings = await _databaseApi.getFollowing(currentUser.id);
-    _newNotificationsSubscription =
-        _databaseApi.listenNewNotifications(userId).listen((notifications) {
+    _newNotificationsSubscription = _databaseApi.listenNewNotifications(userId).listen((notifications) {
       newNotifications = notifications;
       print("newNotifications: " + newNotifications.length.toString());
+      print(newNotifications[0].image);
       isFollowing = List.filled(newNotifications.length, false);
 
       for (int i = 0; i < newNotifications.length; i++) {
@@ -64,8 +63,7 @@ class NotificationsViewModel extends BaseViewModel {
     });
 
     if (currentUser.id.isNotEmpty) {
-      _followSubscription =
-          _databaseApi.listenFollowings(currentUser.id).listen(
+      _followSubscription = _databaseApi.listenFollowings(currentUser.id).listen(
         (f) {
           currentfollowingIds = f.map((e) => e.id).toList();
           notifyListeners();
@@ -193,10 +191,7 @@ class NotificationsViewModel extends BaseViewModel {
         notifyListeners();
         _navigationService.navigateTo(Routes.orderDetailView,
             arguments: OrderDetailViewArguments(
-                order: order,
-                color: shopData.color,
-                currentUser: currentUser,
-                fontStyle: shopData.fontStyle));
+                order: order, color: shopData.color, currentUser: currentUser, fontStyle: shopData.fontStyle));
       });
     }
   }

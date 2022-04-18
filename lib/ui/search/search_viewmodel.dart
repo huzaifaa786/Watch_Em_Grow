@@ -28,44 +28,38 @@ class SearchViewModel extends BaseViewModel {
 
   void init() async {
     setBusy(true);
-
-    _listenAllShops();
+    await _getFollowers();
     _listenShopOwners();
     _listenAllServices();
-    _getFollowers();
-    
+    _listenAllShops();
+
     setBusy(false);
-  
   }
 
   void _listenAllShops() {
     _databaseApi.listenShops().listen(
       (shopsData) {
         allShops = shopsData;
-       
+
         for (var user in users) {
-          for (var shop in allShops! ) {
+          for (var shop in allShops!) {
             if (user.shopId == shop.id) {
-               followingShops.add(shop);
+              followingShops.add(shop);
+            } else {
+              otherShops.add(shop);
             }
           }
-          
         }
-        print('other shops');
-        print(otherShops);
-    //      otherShops = allShops!;
-    //         for (var elem in followingShops) {
-    // otherShops.remove(elem);
-  // }
-        
-         searchedShops =followingShops;
-        //  followingShops.addAll(otherShops);
+        searchedShops = followingShops + otherShops;
+        var seen = Set<Shop>();
+        List<Shop> uniquelist = searchedShops.where((shop) => seen.add(shop)).toList();
+        searchedShops = uniquelist;
         notifyListeners();
       },
     );
-
   }
-Future navigateToShopView1({
+
+  Future navigateToShopView1({
     required Shop shop,
     required AppUser owner,
   }) async {
@@ -76,22 +70,20 @@ Future navigateToShopView1({
       ),
     );
   }
-   void _getFollowers() async {
+
+  Future<void> _getFollowers() async {
     var user = AuthApi().currentUser;
     _follows = await _databaseApi.getFollowing(user!.uid);
-     if (_follows.isNotEmpty) {
+    if (_follows.isNotEmpty) {
       ids = _follows.map((e) => e.id).toList();
-      
+
       _databaseApi.listenChatUsers(ids).listen(
         (usersData) {
           users = usersData;
           notifyListeners();
           setBusy(false);
         },
-
       );
-     
-
     } else {
       setBusy(false);
     }

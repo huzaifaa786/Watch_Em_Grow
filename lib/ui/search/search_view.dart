@@ -46,7 +46,14 @@ class SearchWidget extends HookViewModelWidget<SearchViewModel> {
                 model.onSearchTextChanged('');
               },
             ),
-         
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start, 
+              children: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text("Following",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+              )
+            ],),
             Expanded(
               child: model.searchedShops.isNotEmpty ||
                       controller.text.isNotEmpty

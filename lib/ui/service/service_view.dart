@@ -48,6 +48,7 @@ class _ServiceViewState extends State<ServiceView> {
       autoInitialize: true,
       allowMuting: true,
       looping: true,
+      fullScreenByDefault: true ,
       materialProgressColors: ChewieProgressColors(
         playedColor: Colors.purple,
         bufferedColor: Colors.purple.withOpacity(0.4),
