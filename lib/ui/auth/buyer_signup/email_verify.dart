@@ -9,8 +9,9 @@ import 'package:mipromo/ui/shared/widgets/scrollable_body.dart';
 import 'package:stacked/stacked.dart';
 
 class EmailVerify extends HookWidget {
-  const EmailVerify({Key? key,this.code}) : super(key: key);
+  const EmailVerify({Key? key,this.code,this.email}) : super(key: key);
 final code;
+final email;
   @override
   Widget build(BuildContext context) {
     final veifyemail = useFocusNode();
@@ -40,7 +41,7 @@ final code;
                 AuthButton(
                   label: 'Verify',
                   onPressed: () {
-                    model.verify(code);
+                    model.verify(code,email);
                   },
                 ),
 

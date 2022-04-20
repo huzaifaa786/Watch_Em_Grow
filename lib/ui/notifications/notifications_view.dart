@@ -69,7 +69,7 @@ class NotificationsView extends StatelessWidget {
                                           ? model.newNotifications[index].image == ''
                                               ? Container(
                                                   padding: EdgeInsets.all(3), // Border width
-                                                  decoration: BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
+                                                  decoration: BoxDecoration( shape: BoxShape.circle),
                                                   child: ClipOval(
                                                     child: SizedBox.fromSize(
                                                       size: Size.fromRadius(20), // Image radius

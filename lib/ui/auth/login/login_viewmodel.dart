@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'dart:io' show Platform;
+import 'dart:math';
+import 'package:dio/dio.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -23,7 +26,7 @@ class LoginViewModel extends BaseViewModel {
   final _dialogService = locator<DialogService>();
   final _authApi = locator<AuthApi>();
   final _databaseApi = locator<DatabaseApi>();
-   late AppUser _currentUser;
+  late AppUser _currentUser;
   AppUser get currentUser => _currentUser;
   final _userService = locator<UserService>();
 
@@ -54,10 +57,11 @@ class LoginViewModel extends BaseViewModel {
 
   /// Login
   Future<void> login() async {
-    final bool isFormNotEmpty = loginEmail.isNotEmpty && loginPassword.isNotEmpty;
+    final bool isFormNotEmpty =
+        loginEmail.isNotEmpty && loginPassword.isNotEmpty;
 
-    final bool isFormValid =
-        Validators.emailValidator(loginEmail) == null && Validators.passwordValidator(loginPassword) == null;
+    final bool isFormValid = Validators.emailValidator(loginEmail) == null &&
+        Validators.passwordValidator(loginPassword) == null;
 
     if (isFormNotEmpty && isFormValid) {
       await _login();
@@ -87,10 +91,12 @@ class LoginViewModel extends BaseViewModel {
         'This channel is used for important notifications.', // description
         importance: Importance.max,
       );
-      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+          FlutterLocalNotificationsPlugin();
 
       await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(channel);
     }
   }
@@ -107,15 +113,36 @@ class LoginViewModel extends BaseViewModel {
     print(_currentUser);
   }
 
+  Future verifiedemail(email) async {
+    setBusy(true);
+
+    Dio dio = Dio();
+
+    var url = 'http://192.168.10.6/mipromo/public/api/check/email';
+    var data = {
+      'email': email,
+    };
+
+    var result = await dio.post(url, data: data);
+    var response = jsonDecode(result.toString());
+    print(response);
+    if (response['error'] == false) {
+      return true;
+    }
+
+    setBusy(false);
+  }
+
   Future<void> _login() async {
     setBusy(true);
 
     try {
-      final User user = await _authApi.loginWithEmail(
-        email: loginEmail,
-        password: loginPassword,
-      );
-      if (user.emailVerified) {
+      if (await verifiedemail(loginEmail) == true) {
+        final User user = await _authApi.loginWithEmail(
+          email: loginEmail,
+          password: loginPassword,
+        );
+
         notificationInit();
         final token = await FirebaseMessaging.instance.getToken();
         await _userService
@@ -134,7 +161,8 @@ class LoginViewModel extends BaseViewModel {
           },
         );
       } else {
-        final DialogResponse? dialogResponse = await _dialogService.showCustomDialog(
+        final DialogResponse? dialogResponse =
+            await _dialogService.showCustomDialog(
           variant: AlertType.warning,
           title: 'Email Not Verified',
           description: 'Please verify your Email to Login.',
@@ -146,23 +174,7 @@ class LoginViewModel extends BaseViewModel {
 
         if (dialogResponse != null && dialogResponse.confirmed) {
           try {
-            final bool result = await _authApi.sendEmailVerification(user);
-
-            if (result) {
-              await _dialogService.showCustomDialog(
-                variant: AlertType.info,
-                title: 'Email Sent',
-                customData: CustomDialogData(
-                  hasRichDescription: true,
-                  richDescription: 'A verification email has been sent to ',
-                  richData: user.email,
-                ),
-              );
-            } else {
-              await Alerts.showServerErrorDialog(
-                'Failed to send Verification Email, please try again later.',
-              );
-            }
+            await Sendverification();
           } on AuthApiException catch (e) {
             await Alerts.showBasicFailureDialog(
               e.title,
@@ -182,6 +194,33 @@ class LoginViewModel extends BaseViewModel {
     setBusy(false);
   }
 
+  Future Sendverification() async {
+    setBusy(true);
+
+    var rng = new Random();
+    var rand = rng.nextInt(900000) + 100000;
+    int number = rand.toInt();
+    String? email = loginEmail;
+    Dio dio = Dio();
+
+    var url = 'http://192.168.10.6/mipromo/public/api/account/verify';
+    var data = {'email': email, 'code': number};
+
+    var result = await dio.post(url, data: data);
+    var response = jsonDecode(result.toString());
+    print(result);
+    if (response['error'] == false) {
+      _navigateToEmailverifyView(number, loginEmail);
+    }
+
+    setBusy(false);
+  }
+
+  Future _navigateToEmailverifyView(code, email) async {
+    await _navigationService.navigateTo(Routes.emailVerify,
+        arguments: EmailVerifyArguments(code: code, email: email));
+  }
+
   Future<void> _navigateToMainView() async {
     await _navigateToLandingView();
     if (_currentUser.username.isEmpty) {
@@ -199,7 +238,8 @@ class LoginViewModel extends BaseViewModel {
 
   /// Forgot Password
   Future forgotPassword() async {
-    if (forgotPasswordEmail.isNotEmpty && Validators.emailValidator(forgotPasswordEmail) == null) {
+    if (forgotPasswordEmail.isNotEmpty &&
+        Validators.emailValidator(forgotPasswordEmail) == null) {
       _forgotPassword();
     } else {
       showErrors();
@@ -215,12 +255,14 @@ class LoginViewModel extends BaseViewModel {
       );
 
       if (result) {
-        final DialogResponse? dialogResponse = await _dialogService.showCustomDialog(
+        final DialogResponse? dialogResponse =
+            await _dialogService.showCustomDialog(
           variant: AlertType.info,
           title: 'Password reset',
           customData: CustomDialogData(
             hasRichDescription: true,
-            richDescription: 'A password reset link has been sent to ${forgotPasswordEmail}',
+            richDescription:
+                'A password reset link has been sent to ${forgotPasswordEmail}',
             richData: '',
           ),
         );

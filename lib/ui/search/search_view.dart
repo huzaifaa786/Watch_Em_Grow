@@ -49,10 +49,11 @@ class SearchWidget extends HookViewModelWidget<SearchViewModel> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start, 
               children: [
+                model.following == false ?
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Text("Following",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-              )
+              ):Text('')
             ],),
             Expanded(
               child: model.searchedShops.isNotEmpty ||
