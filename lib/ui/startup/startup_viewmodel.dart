@@ -12,7 +12,7 @@ class StartUpViewModel extends BaseViewModel {
   Future<void> runStartupLogic() async {
     final user = _authApi.currentUser;
     print("redirectin to next page");
-    if (user != null && user.emailVerified) {
+    if (user != null) {
       await _navigationService.replaceWith(
         Routes.mainView,
         arguments: MainViewArguments(

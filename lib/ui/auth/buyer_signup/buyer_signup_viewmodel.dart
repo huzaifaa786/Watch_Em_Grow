@@ -69,15 +69,16 @@ class BuyerSignupViewModel extends BaseViewModel {
       showErrors();
     }
   }
-  
-  Future verify(code) async {
 
+  Future verify(code,email) async {
+  
     if (code.toString() == code1) {
+      await verifiedemail(email);
       _navigateToLoginView();
     } else {
-     await Alerts.showServerErrorDialog(
-            'Wrong Code',
-          );
+      await Alerts.showServerErrorDialog(
+        'Wrong Code',
+      );
     }
   }
 
@@ -89,7 +90,7 @@ class BuyerSignupViewModel extends BaseViewModel {
         email: email,
         password: password,
       );
-  
+
       if (user.uid.isNotEmpty) {
         // final bool result = await _authApi.sendEmailVerification(user);
         var rng = new Random();
@@ -105,8 +106,8 @@ class BuyerSignupViewModel extends BaseViewModel {
         var response = jsonDecode(result.toString());
         print(result);
         if (response['error'] == false) {
-            _navigateToEmailverifyView(number);
-          }
+          _navigateToEmailverifyView(number,user.email);
+        }
 
         // if (result) {
         //   final DialogResponse? dialogResponse =
@@ -142,6 +143,30 @@ class BuyerSignupViewModel extends BaseViewModel {
     setBusy(false);
   }
 
+  Future verifiedemail(email) async {
+    setBusy(true);
+
+   
+
+    
+   
+        Dio dio = Dio();
+
+        var url = 'http://192.168.10.6/mipromo/public/api/add/verify/email';
+        var data = {'email': email,};
+
+        var result = await dio.post(url, data: data);
+        var response = jsonDecode(result.toString());
+        print(result);
+  
+      
+
+
+ 
+
+    setBusy(false);
+  }
+
   Future _navigateToLoginView() async {
     _navigationService.popUntil(
       (route) => route.settings.name == Routes.landingView,
@@ -152,9 +177,8 @@ class BuyerSignupViewModel extends BaseViewModel {
     );
   }
 
-  Future _navigateToEmailverifyView(code) async {
-   await _navigationService.navigateTo(Routes.emailVerify,arguments: EmailVerifyArguments(code: code));
-
-    
+  Future _navigateToEmailverifyView(code,email) async {
+    await _navigationService.navigateTo(Routes.emailVerify,
+        arguments: EmailVerifyArguments(code: code,email: email));
   }
 }

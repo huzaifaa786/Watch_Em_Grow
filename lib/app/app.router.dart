@@ -220,6 +220,7 @@ class StackedRouter extends RouterBase {
         builder: (context) => EmailVerify(
           key: args.key,
           code: args.code,
+          email: args.email,
         ),
         settings: data,
       );
@@ -532,7 +533,8 @@ class StackedRouter extends RouterBase {
 class EmailVerifyArguments {
   final Key? key;
   final dynamic code;
-  EmailVerifyArguments({this.key, this.code});
+  final dynamic email;
+  EmailVerifyArguments({this.key, this.code,this.email});
 }
 
 /// MainView arguments holder class

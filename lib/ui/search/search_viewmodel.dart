@@ -25,6 +25,7 @@ class SearchViewModel extends BaseViewModel {
   List<AppUser> users = [];
   List<AppUser>? shopOwners;
   List<ShopService>? allServices;
+  bool following = false;
 
   void init() async {
     setBusy(true);
@@ -109,10 +110,12 @@ class SearchViewModel extends BaseViewModel {
 
   void onSearchTextChanged(String text) {
     searchedShops = [];
+    following = true;
     notifyListeners();
     print('********************************');
     print(allShops);
     if (text.isEmpty) {
+      following= false;
       searchedShops = allShops!;
       notifyListeners();
       return;
