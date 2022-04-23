@@ -339,8 +339,9 @@ class _ServiceViewState extends State<ServiceView> {
                         ).px(2),
                       )
                     else
-                      SizedBox(
+                      Container(
                         width: context.screenWidth * 0.95,
+                        padding: EdgeInsets.only(bottom:5),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

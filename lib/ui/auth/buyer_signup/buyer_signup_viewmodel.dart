@@ -152,7 +152,7 @@ class BuyerSignupViewModel extends BaseViewModel {
    
         Dio dio = Dio();
 
-        var url = 'http://192.168.10.6/mipromo/public/api/add/verify/email';
+        var url = 'http://tritec.store/mipromo/public/api/add/verify/email';
         var data = {'email': email,};
 
         var result = await dio.post(url, data: data);

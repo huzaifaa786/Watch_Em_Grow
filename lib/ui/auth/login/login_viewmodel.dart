@@ -118,7 +118,7 @@ class LoginViewModel extends BaseViewModel {
 
     Dio dio = Dio();
 
-    var url = 'http://192.168.10.6/mipromo/public/api/check/email';
+    var url = 'http://tritec.store/mipromo/public/api/check/email';
     var data = {
       'email': email,
     };
@@ -203,7 +203,7 @@ class LoginViewModel extends BaseViewModel {
     String? email = loginEmail;
     Dio dio = Dio();
 
-    var url = 'http://192.168.10.6/mipromo/public/api/account/verify';
+    var url = 'http://tritec.store/mipromo/public/api/account/verify';
     var data = {'email': email, 'code': number};
 
     var result = await dio.post(url, data: data);
