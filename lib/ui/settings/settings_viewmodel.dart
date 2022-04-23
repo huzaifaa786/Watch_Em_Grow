@@ -57,7 +57,7 @@ class SettingsViewModel extends BaseViewModel {
     print(rand.toInt());
     Dio dio = Dio();
     String? email = currentUser!.email;
-    var url = 'http://192.168.10.3/mipromo/public/api/deactivate/account';
+    var url = 'http://tritec.store/mipromo/public/api/deactivate/account';
     var data = {'email': email};
 
     var result = await dio.post(url, data: data);
