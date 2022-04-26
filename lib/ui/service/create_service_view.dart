@@ -167,7 +167,7 @@ class CreateServiceView extends StatelessWidget {
                     )
                         .p12()
                         .centered()
-                        .box
+                        .box    
                         .border(color: Colors.grey)
                         .height(55)
                         .withRounded(value: 12)

@@ -230,6 +230,9 @@ class CreateServiceViewModel extends BaseViewModel {
     final file = await ImageCropper.cropImage(
       sourcePath: _selectedImage1!.path,
       androidUiSettings: androidUiSettings,
+       iosUiSettings: IOSUiSettings(
+            title: 'Crop Image',
+      ),
     );
 
     _finalImage1 = file;
@@ -273,6 +276,9 @@ class CreateServiceViewModel extends BaseViewModel {
     final file = await ImageCropper.cropImage(
       sourcePath: _selectedImage2!.path,
       androidUiSettings: androidUiSettings,
+       iosUiSettings: IOSUiSettings(
+            title: 'Crop Image',
+      ),
     );
 
     _finalImage2 = file;
@@ -289,6 +295,9 @@ class CreateServiceViewModel extends BaseViewModel {
     final file = await ImageCropper.cropImage(
       sourcePath: _selectedImage3!.path,
       androidUiSettings: androidUiSettings,
+       iosUiSettings: IOSUiSettings(
+            title: 'Crop Image',
+      ),
     );
 
     _finalImage3 = file;

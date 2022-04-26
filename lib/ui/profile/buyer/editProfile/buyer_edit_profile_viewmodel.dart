@@ -45,11 +45,14 @@ class BuyerEditProfileViewModel extends BaseViewModel {
       final croppedImage = await ImageCropper.cropImage(
         sourcePath: tempImage.path,
         androidUiSettings: const AndroidUiSettings(
+          toolbarTitle: 'Crop Image',
           hideBottomControls: true,
           lockAspectRatio: true,
-          toolbarWidgetColor: Color(0xFFFFFFFF),
           initAspectRatio: CropAspectRatioPreset.square,
         ),
+          iosUiSettings: IOSUiSettings(
+            title: 'Crop Image',
+      ),
         cropStyle: CropStyle.circle,
       );
 

@@ -321,7 +321,7 @@ class SellerProfileView extends StatelessWidget {
                                       ).box.border(color: Colors.amber).roundedSM.p12.make().p12()
                                     ],
                                   )
-                                else
+                                else    
                                   GridView.builder(
                                       padding: EdgeInsets.all(0),
                                       shrinkWrap: true,

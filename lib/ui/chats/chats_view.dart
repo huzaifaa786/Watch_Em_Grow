@@ -31,60 +31,62 @@ class ChatsView extends StatelessWidget {
                     ),
                   ),
                 )
-              : Scaffold(
-                  appBar: onMainView
-                      ? null
-                      : AppBar(
-                          title: const Text('Chats'),
-                        ),
-                  body: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: model.users.length,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    itemBuilder: (context, index) {
-                      final badgeCount = model.chats
-                          .where(
-                            (chat) =>
-                                chat.senderId == model.users[index].id &&
-                                chat.read == false,
-                          )
-                          .length;
+              : SafeArea(
+                child: Scaffold(
+                    appBar: onMainView
+                        ? null
+                        : AppBar(
+                            title: const Text('Chats'),
+                          ),
+                    body: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: model.users.length,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      itemBuilder: (context, index) {
+                        final badgeCount = model.chats
+                            .where(
+                              (chat) =>
+                                  chat.senderId == model.users[index].id &&
+                                  chat.read == false,
+                            )
+                            .length;
 
-                      return Column(
-                        children: [
-                          ListTile(
-                            horizontalTitleGap: 40,
-                            leading: badgeCount <= 0
-                                ? Avatar(
-                                    radius: 25,
-                                    imageUrl: model.users[index].imageUrl,
-                                  )
-                                : Badge(
-                                    badgeContent: badgeCount.text.make(),
-                                    child: Avatar(
+                        return Column(
+                          children: [
+                            ListTile(
+                              horizontalTitleGap: 40,
+                              leading: badgeCount <= 0
+                                  ? Avatar(
                                       radius: 25,
                                       imageUrl: model.users[index].imageUrl,
+                                    )
+                                  : Badge(
+                                      badgeContent: badgeCount.text.make(),
+                                      child: Avatar(
+                                        radius: 25,
+                                        imageUrl: model.users[index].imageUrl,
+                                      ),
                                     ),
-                                  ),
-                            title: Text(
-                              model.users[index].username,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
+                              title: Text(
+                                model.users[index].username,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
+                              onTap: () {
+                                model.navigateToMessagesView(
+                                  currentUser,
+                                  model.users[index],
+                                );
+                              },
                             ),
-                            onTap: () {
-                              model.navigateToMessagesView(
-                                currentUser,
-                                model.users[index],
-                              );
-                            },
-                          ),
-                          const Divider(),
-                        ],
-                      );
-                    },
+                            const Divider(),
+                          ],
+                        );
+                      },
+                    ),
                   ),
-                ),
+              ),
       viewModelBuilder: () => ChatsViewModel(),
     );
   }

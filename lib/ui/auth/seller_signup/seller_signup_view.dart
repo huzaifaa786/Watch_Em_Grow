@@ -35,8 +35,25 @@ class SellerSignupView extends StatelessWidget {
             body: ScrollableBody(
               children: [
                 // Heading
-                const AuthHeader(
-                  label: Constants.createSellerLabel,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.arrow_back_rounded,
+                          size: 33,
+                        )),
+                    AuthHeader(
+                      label: Constants.createSellerLabel,
+                    ),
+                    Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ),
+                  ],
                 ),
 
                 const Spacer(),
@@ -128,16 +145,13 @@ class _SignUpForm extends HookViewModelWidget<SellerSignupViewModel> {
               await model.selectDate(pickedDate);
 
               if (model.selectedDate != null) {
-                dobController.text =
-                    DateFormat.yMMMd().format(model.selectedDate!).toString();
+                dobController.text = DateFormat.yMMMd().format(model.selectedDate!).toString();
               }
             },
           ),
           validator: (dob) => Validators.dobValidator(
             dob: dob,
-            age: model.selectedDate == null
-                ? 17
-                : DateTime.now().year - model.selectedDate!.year,
+            age: model.selectedDate == null ? 17 : DateTime.now().year - model.selectedDate!.year,
           ),
         ),
         InputField(
@@ -157,9 +171,8 @@ class _SignUpForm extends HookViewModelWidget<SellerSignupViewModel> {
           focusNode: mailFocusNode,
           validate: model.validateForm,
           hintText: 'Mail Id (PayPal)',
-          helperText: mailFocusNode.hasFocus
-              ? 'Please provide your PayPal registered Mail Id to recieve payments.'
-              : null,
+          helperText:
+              mailFocusNode.hasFocus ? 'Please provide your PayPal registered Mail Id to recieve payments.' : null,
           textInputType: TextInputType.emailAddress,
           onChanged: (mail) {
             model.paypalMail = mail;

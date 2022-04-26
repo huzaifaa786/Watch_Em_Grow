@@ -49,7 +49,18 @@ class FollowersView extends StatelessWidget {
                               }
 
                             },
-                            leading: Avatar(
+                            leading:   model.users[index].imageUrl == ''
+                                              ? Container(
+                                                  decoration: BoxDecoration( shape: BoxShape.circle),
+                                                  child: ClipOval(
+                                                    child: SizedBox.fromSize(
+                                                      size: Size.fromRadius(25), // Image radius
+                                                      child:
+                                                          Image.asset('assets/images/default.jpeg', fit: BoxFit.cover),
+                                                    ),
+                                                  ),
+                                                )
+                                              :  Avatar(
                               radius: 25,
                               imageUrl: model.users[index].imageUrl,
                             ),

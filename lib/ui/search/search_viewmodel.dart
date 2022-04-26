@@ -51,6 +51,8 @@ class SearchViewModel extends BaseViewModel {
             }
           }
         }
+        print('followingShops******************************');
+        print(followingShops);
         searchedShops = followingShops + otherShops;
         var seen = Set<Shop>();
         List<Shop> uniquelist = searchedShops.where((shop) => seen.add(shop)).toList();
@@ -115,7 +117,7 @@ class SearchViewModel extends BaseViewModel {
     print('********************************');
     print(allShops);
     if (text.isEmpty) {
-      following= false;
+      following = false;
       searchedShops = allShops!;
       notifyListeners();
       return;

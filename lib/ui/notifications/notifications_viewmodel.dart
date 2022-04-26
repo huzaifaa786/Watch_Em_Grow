@@ -45,8 +45,7 @@ class NotificationsViewModel extends BaseViewModel {
     followings = await _databaseApi.getFollowing(currentUser.id);
     _newNotificationsSubscription = _databaseApi.listenNewNotifications(userId).listen((notifications) {
       newNotifications = notifications;
-      print("newNotifications: " + newNotifications.length.toString());
-      print(newNotifications[0].image);
+      
       isFollowing = List.filled(newNotifications.length, false);
 
       for (int i = 0; i < newNotifications.length; i++) {

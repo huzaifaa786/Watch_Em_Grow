@@ -27,29 +27,31 @@ class MessagesView extends StatelessWidget {
       ),
       builder: (context, model, child) => model.isBusy
           ? const BasicLoader()
-          : Scaffold(
-              appBar: AppBar(
-                title: InkWell(
-                  onTap: (){
-                    print("Asads");
-                    if(receiver.shopId.isNotEmpty){
-                      model.toSellerProfile(receiver);
-                    }else{
-                      model.toBuyerProfile(receiver);
-                    }
-                  },
-                    child: Container(
-                        child: Row(
-                          children: [
-                            Text(receiver.username),
-                          ],
-                        ))),
+          : SafeArea(
+            child: Scaffold(
+                appBar: AppBar(
+                  title: InkWell(
+                    onTap: (){
+                      print("Asads");
+                      if(receiver.shopId.isNotEmpty){
+                        model.toSellerProfile(receiver);
+                      }else{
+                        model.toBuyerProfile(receiver);
+                      }
+                    },
+                      child: Container(
+                          child: Row(
+                            children: [
+                              Text(receiver.username),
+                            ],
+                          ))),
+                ),
+                body: _MessagesBody(
+                  currentUser: currentUser,
+                  receiver: receiver,
+                ),
               ),
-              body: _MessagesBody(
-                currentUser: currentUser,
-                receiver: receiver,
-              ),
-            ),
+          ),
       viewModelBuilder: () => MessagesViewModel(),
     );
   }
@@ -101,36 +103,39 @@ class _MessagesBody extends HookViewModelWidget<MessagesViewModel> {
                 thickness: 1,
                 height: 0,
               ),
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: TextField(
-                      controller: messageController,
-                      focusNode: messageFocusNode,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Type a message',
+              Container(
+                margin: EdgeInsets.only(bottom: 14),
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: messageController,
+                        focusNode: messageFocusNode,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Type a message',
+                        ),
                       ),
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.send,
-                      color: Styles.kcPrimaryColor,
-                    ),
-                    onPressed: () {
-                      model.sendMessage(
-                        messageController.text,
-                        receiver,
-                        currentUser,
-                      );
-                      messageController.clear();
-                    },
-                  )
-                ],
+                    IconButton(
+                      icon: const Icon(
+                        Icons.send,
+                        color: Styles.kcPrimaryColor,
+                      ),
+                      onPressed: () {
+                        model.sendMessage(
+                          messageController.text,
+                          receiver,
+                          currentUser,
+                        );
+                        messageController.clear();
+                      },
+                    )
+                  ],
+                ),
               ),
             ],
           ),

@@ -15,7 +15,7 @@ class ChatsViewModel extends BaseViewModel {
   final _userService = locator<UserService>();
   final _databaseApi = locator<DatabaseApi>();
 
-  late StreamSubscription<List<AppUser>> _chatUsersSubscription;
+   StreamSubscription<List<AppUser>>? _chatUsersSubscription;
 
   List<AppUser> users = [];
   List<Chat> chats = [];
@@ -68,7 +68,7 @@ class ChatsViewModel extends BaseViewModel {
 
   @override
   void dispose() {
-    _chatUsersSubscription.cancel();
+    _chatUsersSubscription!.cancel();
     super.dispose();
   }
 }
