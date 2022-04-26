@@ -111,7 +111,10 @@ class CreateServiceViewModel extends BaseViewModel {
             sizes: selectedType == "Product" ? sizes : null,
             bookingNote: selectedType != "Product" ? noteController.text.toString() : null),
       );
+     if(selectedVideo != null){
       await _saveServiceVideo();
+
+     }
       await _saveServiceImage();
 
       await _databaseApi.updateShopService(

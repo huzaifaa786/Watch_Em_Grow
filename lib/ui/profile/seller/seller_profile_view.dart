@@ -340,9 +340,16 @@ class SellerProfileView extends StatelessWidget {
                                           String? image2,
                                           String? image3,
                                         ) {
+                                          print(image3);
+
                                           if (image1 == null) {
                                             if (image2 == null) {
-                                              return image3!;
+                                              if (image3 == null) {
+                                                return 'https://via.placeholder.com/600x600.jpg?text=No+image';
+                                              }else{
+                                              return image3;
+
+                                              }
                                             } else {
                                               return image2;
                                             }
