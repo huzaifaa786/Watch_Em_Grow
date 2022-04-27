@@ -39,10 +39,7 @@ class FollowersViewModel extends BaseViewModel {
   }) async {
     await _navigationService.navigateTo(
       Routes.sellerProfileView,
-      arguments: SellerProfileViewArguments(
-        seller: owner,
-        viewingAsProfile: false
-      ),
+      arguments: SellerProfileViewArguments(seller: owner, viewingAsProfile: false),
     );
   }
 

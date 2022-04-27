@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/ui/profile/buyer/buyer_profile_viewmodel.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
+import 'package:mipromo/ui/shared/widgets/avatar.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
 import 'package:mipromo/ui/shared/widgets/profile_header.dart';
@@ -24,202 +25,213 @@ class BuyerProfileView extends StatelessWidget {
       onModelReady: (model) => model.init(user),
       builder: (context, model, child) => model.isBusy
           ? const BasicLoader()
-          : Scaffold(
-              appBar: AppBar(
-                title: '@${user.username}'.text.bold.make(),
-                leading: viewingAsProfile != true
-                    ? BackButton(
-                        onPressed: () {
-                          model.backToNotifications();
-                        },
-                      )
-                    : null,
-                actions: [
-                  if (user.id == model.currentUser.id)
+          : SafeArea(
+              child: Scaffold(
+                appBar: AppBar(
+                  title: '@${user.username}'.text.bold.make(),
+                  leading: viewingAsProfile != true
+                      ? BackButton(
+                          onPressed: () {
+                            model.backToNotifications();
+                          },
+                        )
+                      : null,
+                  actions: [
+                    if ( viewingAsProfile != true)
                     Builder(
-                      builder: (context) => IconButton(
-                        icon: const Icon(Icons.menu),
-                        onPressed: () {
-                          Scaffold.of(context).openEndDrawer();
-                        },
-                      ),
-                    )
-                  else
-                    const SizedBox.shrink(),
-                ],
-              ),
-              endDrawer: SafeArea(
-                child: Drawer(
+                        builder: (context) => InkWell(
+                              onTap: () async {
+                                await model.handleReport(context);
+                                if (model.selectReport) {
+                                  Future.delayed(Duration(milliseconds: 800)).then((value) {
+                                    model.reportedDone(context);
+                                  });
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.error_outline)
+                                    /*Text('Report'),*/
+                                  ],
+                                ),
+                              ),
+                            ))
+                   else if (user.id == model.currentUser.id)
+                      Builder(
+                        builder: (context) => IconButton(
+                          icon: const Icon(Icons.menu),
+                          onPressed: () {
+                            Scaffold.of(context).openEndDrawer();
+                          },
+                        ),
+                      )
+                    else
+                      const SizedBox.shrink(),
+                  ],
+                ),
+                endDrawer: SafeArea(
+                  child: Drawer(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ListView(
+                            physics: const BouncingScrollPhysics(),
+                            children: [
+                              /*ListTile(
+                                leading: Icon(
+                                  Icons.info_outline,
+                                  color: Colors.grey.shade700,
+                                ),
+                                title: "About".text.make(),
+                              ),*/
+                              ListTile(
+                                leading: Icon(
+                                  Icons.list_alt,
+                                  color: Colors.grey.shade700,
+                                ),
+                                title: 'Orders'.text.make(),
+                                onTap: () {
+                                  model.navigateToOrders();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        ListTile(
+                          dense: true,
+                          leading: const Icon(Icons.mail_outline),
+                          title: "Contact us".text.make(),
+                          onTap: () {
+                            model.navigateToContactUsView();
+                          },
+                        ),
+                        const Divider(
+                          height: 0,
+                          thickness: 0.5,
+                        ),
+                        ListTile(
+                          dense: true,
+                          leading: const Icon(Icons.settings_outlined),
+                          title: "Settings".text.make(),
+                          onTap: () {
+                            model.navigateToBuyerSettingsView();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                body: Container(
+                  width: MediaQuery.of(context).size.width,
                   child: Column(
                     children: [
-                      Expanded(
-                        child: ListView(
-                          physics: const BouncingScrollPhysics(),
-                          children: [
-                            /*ListTile(
-                              leading: Icon(
-                                Icons.info_outline,
-                                color: Colors.grey.shade700,
+                      SizedBox(
+                        height: 50,
+                      ),
+                      // ignore: prefer_if_elements_to_conditional_expressions
+                      user.imageUrl == ''
+                          ? Container(
+                              decoration: BoxDecoration(shape: BoxShape.circle),
+                              child: ClipOval(
+                                child: SizedBox.fromSize(
+                                  size: Size.fromRadius(70), // Image radius
+                                  child: Image.asset('assets/images/default.jpeg', fit: BoxFit.cover),
+                                ),
                               ),
-                              title: "About".text.make(),
-                            ),*/
-                            ListTile(
-                              leading: Icon(
-                                Icons.list_alt,
-                                color: Colors.grey.shade700,
-                              ),
-                              title: 'Orders'.text.make(),
-                              onTap: () {
-                                model.navigateToOrders();
-                              },
+                            )
+                          : Avatar(
+                              radius: context.screenWidth / 7,
+                              imageUrl: user.imageUrl,
                             ),
-                          ],
+                      SizedBox(
+                        height: 50,
+                      ),
+
+                      Text(
+                        'Buyer Pofile',
+                        style: TextStyle(fontSize: 22),
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+
+                      Column(
+                        children: [
+                          (user.following > 999
+                                  ? "${(user.following / 1000).toDoubleStringAsFixed(digit: 1)}k"
+                                  : "${user.following}")
+                              .text
+                              .lg
+                              .bold
+                              .make(),
+                          'Following'.text.lg.make(),
+                        ],
+                      ).onTap(() {
+                        model.navigateToFollowingView(user.id /*model.currentUser.id*/);
+                      }),
+                      SizedBox(
+                        height: 40,
+                      ),
+
+                      Text(
+                        'Transactions Completed : ${user.purchases}',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      SizedBox(
+                        height: 60,
+                      ),
+                      Image(
+                        image: AssetImage('assets/icon/bag.png'),
+                        height: 160,
+                        width: 160,
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.56,
+                          // color: Colors.green,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              /*_Data(
+                              title: Constants.broughtLabel,
+                              value: user.purchases.toString(),
+                          ),
+                          _Data(
+                              title: Constants.referralsLabel,
+                              value: user.referrals.toString(),
+                          ),
+                          _Data(
+                              title: Constants.earnedLabel,
+                              value: "£${user.earnByRef == 0 ? 0 : user.earnByRef}",
+                          ),*/
+                              // ignore: prefer_const_constructors
+
+                              if (viewingAsProfile == true)
+                                ElevatedButton(
+                                  onPressed: () {
+                                    model.showCreateSellerProfileDialog(user);
+                                  },
+                                  style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  ),
+                                  child: Constants.openShopLabel.text.white.bold.make(),
+                                ),
+                            ],
+                          ),
                         ),
                       ),
-                      ListTile(
-                        dense: true,
-                        leading: const Icon(Icons.mail_outline),
-                        title: "Contact us".text.make(),
-                        onTap: () {
-                          model.navigateToContactUsView();
-                        },
-                      ),
-                      const Divider(
-                        height: 0,
-                        thickness: 0.5,
-                      ),
-                      ListTile(
-                        dense: true,
-                        leading: const Icon(Icons.settings_outlined),
-                        title: "Settings".text.make(),
-                        onTap: () {
-                          model.navigateToBuyerSettingsView();
-                        },
-                      ),
+
+                      BusyLoader(busy: model.isApiLoading),
                     ],
                   ),
                 ),
-              ),
-              body: Stack(
-                children: [
-                  Column(
-                    children: [
-                      ProfileHeader(
-                        user: user,
-                        onFollowersTap: () {
-                          model.navigateToFollowersView(
-                              user.id /*model.currentUser.id*/);
-                        },
-                        onFollowingTap: () {
-                          model.navigateToFollowingView(
-                              user.id /*model.currentUser.id*/);
-                        },
-                        headerButton: user.id == model.currentUser.id
-                            ? OutlinedButton(
-                                onPressed: () {
-                                  model.navigateToEditProfile(user);
-                                },
-                                child: 'Edit Profile'.text.make(),
-                              )
-                            : model.currentfollowingIds.contains(user.id)
-                                ? OutlinedButton(
-                                    onPressed: model.unfollowed
-                                        ? null
-                                        : () {
-                                            model.unfollow(user.id);
-                                          },
-                                    child: const Text('Following'),
-                                  )
-                                : ElevatedButton(
-                                    onPressed: () {
-                                      model.follow(user.id);
-                                    },
-                                    style: ButtonStyle(
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                        ),
-                                      ),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                        Color(4284402649),
-                                      ),
-                                    ),
-                                    child: const Text('Follow'),
-                                  ),
-                      ),
-                      // Expanded(
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.56,
-                        // color: Colors.green,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            /*_Data(
-                          title: Constants.broughtLabel,
-                          value: user.purchases.toString(),
-                      ),
-                      _Data(
-                          title: Constants.referralsLabel,
-                          value: user.referrals.toString(),
-                      ),
-                      _Data(
-                          title: Constants.earnedLabel,
-                          value: "£${user.earnByRef == 0 ? 0 : user.earnByRef}",
-                      ),*/
-                            // ignore: prefer_const_constructors
-                            Container(
-                              width: 70,
-                              height: 70,
-                              decoration: BoxDecoration(
-                               border: Border.all(
-                                 width: 3,
-                                 color: Colors.black,
-                               ),
-                               borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: Icon(Icons.person_pin_outlined,
-                              size:35,
-                              ),
-                            ),
-                            SizedBox(height:8 ),
-                            Text(
-                              "No photos and videos",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                              ),
-                            ),
-                            Text(
-                              "When you open a shop your post will appear here.",
-                            ),
-                            SizedBox(height: 10),
-                            if (viewingAsProfile == true)
-                              ElevatedButton(
-                                onPressed: () {
-                                  model.showCreateSellerProfileDialog(user);
-                                },
-                                style: ButtonStyle(
-                                  shape:
-                                      MaterialStateProperty.all<OutlinedBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                ),
-                                child: Constants.openShopLabel.text.white.bold
-                                    .make(),
-                              ),
-                          ],
-                        ),
-                      ),
-                      // ),
-                    ],
-                  ),
-                  BusyLoader(busy: model.isApiLoading),
-                ],
               ),
             ),
       viewModelBuilder: () => BuyerProfileViewModel(),

@@ -63,6 +63,7 @@ class SettingsViewModel extends BaseViewModel {
       title: 'Deactivate Account Request',
       description: 'Are you sure to send account deactivation request',
       mainButtonTitle: 'Send',
+      
       customData: CustomDialogData(
         isConfirmationDialog: true,
       ),

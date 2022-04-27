@@ -281,15 +281,15 @@ class NotificationsViewModel extends BaseViewModel {
             "sound": "default"
           };
 
-          _databaseApi.postNotificationCollection(sellerId, postMap);
+          // _databaseApi.postNotificationCollection(sellerId, postMap);
 
-          await _databaseApi.postNotification(
-              orderID: '',
-              title: 'Followers',
-              body: '${currentUser.username} unfollowed you',
-              forRole: 'follow',
-              userID: currentUser.id,
-              receiverToken: user.token!);
+          // await _databaseApi.postNotification(
+          //     orderID: '',
+          //     title: 'Followers',
+          //     body: '${currentUser.username} unfollowed you',
+          //     forRole: 'follow',
+          //     userID: currentUser.id,
+          //     receiverToken: user.token!);
         }
 
         final follows = await _databaseApi.getFollowing(currentUser.id);

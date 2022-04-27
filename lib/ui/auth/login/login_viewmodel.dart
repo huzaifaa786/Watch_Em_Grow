@@ -101,7 +101,7 @@ class LoginViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> setCurrentUser(id) async {
+   setCurrentUser(id) async {
     _databaseApi.listenUser(id.toString()).listen(
       (user) {
         _currentUser = user;
@@ -110,7 +110,6 @@ class LoginViewModel extends BaseViewModel {
       },
     );
     print("current user");
-    print(_currentUser);
   }
 
   Future verifiedemail(email) async {
@@ -157,7 +156,11 @@ class LoginViewModel extends BaseViewModel {
             .whenComplete(
           () async {
             await setCurrentUser(user.uid);
+            Future.delayed(Duration(milliseconds: 400), () async{
             await _navigateToMainView();
+
+});
+
           },
         );
       } else {

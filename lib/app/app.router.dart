@@ -288,6 +288,17 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    BuyerProfileView: (data) {
+      var args = data.getArgs<BuyerProfileViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => BuyerProfileView(
+          key: args.key,
+          user: args.user,
+          viewingAsProfile: args.viewingAsProfile,
+        ),
+        settings: data,
+      );
+    },
     SellerSignupView: (data) {
       var args = data.getArgs<SellerSignupViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(

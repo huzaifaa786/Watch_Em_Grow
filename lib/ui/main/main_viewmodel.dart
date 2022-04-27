@@ -237,12 +237,13 @@ class MainViewModel extends BaseViewModel {
       });
     }
 
-    // _databaseApi
-    //     .listenNewNotifications(_userService.currentUser.id)
-    //     .listen((notifications) {
-    //   badgeCnt = notifications.where((element) => element.read == true).length;
-    //   notifyListeners();
-    // });
+    _databaseApi.listenNewNotifications(_userService.currentUser.id).listen((notifications) {
+      badgeCnt = notifications.where((element) => element.read == 'false').length;
+      print('notifications************************');
+      print(notifications[16].body);
+      print(notifications[0].body);
+      notifyListeners();
+    });
   }
 
   @override

@@ -217,6 +217,19 @@ class DatabaseApi {
     });
   }
 
+    Future<void> sendReportBuyer(AppUser currentUser, AppUser? otherUser, String type) async {
+    await _reportCollection.doc(otherUser!.id).set({
+      "reportBy": currentUser.id,
+      "reported": otherUser.id,
+      "shopID": '',
+      "type": type,
+      "time": DateTime.now().millisecondsSinceEpoch
+    }).then((value) {
+      return true;
+    });
+  }
+  
+
   ///get seller paypal account
   Future<String?> getSellerPaypal(String userId) async {
     try {
@@ -707,8 +720,6 @@ class DatabaseApi {
     required String imageFileName,
     required String imageUrl,
   }) async {
-    print("printing video url before updaing the record");
-    print(imageUrl);
     try {
       await _servicesCollection.doc(serviceId).update({
         "videoUrl": imageUrl,
@@ -1505,10 +1516,10 @@ class DatabaseApi {
   }
 
   void readNotification(String uid, String id) {
-    _usersCollection.doc(uid).collection('notifications').doc(id).update({'read': true});
+    _usersCollection.doc(uid).collection('notifications').doc(id).update({'read': 'true'});
   }
 
-  void postNotificationCollection(String userId, Map<String, dynamic> postCollection) {
+  void  postNotificationCollection(String userId, Map<String, dynamic> postCollection) {
     _usersCollection.doc(userId).collection('notifications').doc(postCollection['id'].toString()).set(postCollection);
   }
 }

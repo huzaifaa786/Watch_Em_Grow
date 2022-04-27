@@ -135,7 +135,7 @@ class _ServiceViewState extends State<ServiceView> {
                                     ),
                                   ],
                                   if (widget.service.videoUrl != null) ...[
-                                    AspectRatio(
+                                    AspectRatio(  
                                       aspectRatio: 14 / 9,
                                       child: Chewie(
                                         controller: chewieController!,
@@ -148,10 +148,7 @@ class _ServiceViewState extends State<ServiceView> {
                             4.heightBox,
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: List.generate(
-                                  widget.service.videoUrl == null
-                                      ? model.imagesCount.length
-                                      : model.imagesCount.length + 1, (index) {
+                              children: List.generate(  model.imagesCount.length, (index) {
                                 return Container(
                                   height: 8,
                                   width: 8,

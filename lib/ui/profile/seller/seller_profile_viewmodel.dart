@@ -185,7 +185,7 @@ class SellerProfileViewModel extends BaseViewModel {
 
   Future handleReport(BuildContext context) {
     return showModalBottomSheet(
-        isScrollControlled: true,
+        isScrollControlled: true, 
         backgroundColor: Colors.transparent,
         context: context,
         builder: (context) {

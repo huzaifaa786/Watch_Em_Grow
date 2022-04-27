@@ -340,7 +340,6 @@ class SellerProfileView extends StatelessWidget {
                                           String? image2,
                                           String? image3,
                                         ) {
-                                          print(image3);
 
                                           if (image1 == null) {
                                             if (image2 == null) {

@@ -78,7 +78,7 @@ class _SignUpForm extends ViewModelWidget<BuyerSignupViewModel> {
         // Email Field
         InputField(
           focusNode: verifyemailFocusNode,
-          hintText: 'Enter 6-digit code from mail',
+          hintText: 'Enter 6-digit code from email',
           textInputType: TextInputType.number,
           onChanged: (code) {
             model.code1 = code;

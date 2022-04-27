@@ -57,10 +57,13 @@ class ServiceViewModel extends BaseViewModel {
     }
     if (service.imageUrl3 != null){
       imagesCount.add(true);
+    } 
+      if (service.videoUrl != null){
+      imagesCount.add(true);
     }
-    if(imagesCount.length < 2){
-      imagesCount.clear();
-    }
+    // if(imagesCount.length < 2){
+    //   imagesCount.clear();
+    // }
     notifyListeners();
     setBusy(false);
   }

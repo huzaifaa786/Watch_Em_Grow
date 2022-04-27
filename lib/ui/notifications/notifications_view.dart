@@ -51,10 +51,15 @@ class NotificationsView extends StatelessWidget {
 
                           return InkWell(
                             onTap: () {
-                              if (model.newNotifications[index].orderID == "null")
+                              if (model.newNotifications[index].orderID == "null") {
+                                model.readNotification(
+                                    model.currentUser.id, model.newNotifications[index].id.toString());
                                 model.navigateTo(model.newNotifications[index].userId.toString(), index);
-                              else
+                              } else {
+                                 model.readNotification(
+                                    model.currentUser.id, model.newNotifications[index].id.toString());
                                 model.navigateToOrder(model.newNotifications[index].orderID.toString());
+                              }
                             },
                             child: Column(
                               children: [
@@ -68,7 +73,7 @@ class NotificationsView extends StatelessWidget {
                                       model.newNotifications[index].orderID == "null"
                                           ? model.newNotifications[index].image == ''
                                               ? Container(
-                                                  decoration: BoxDecoration( shape: BoxShape.circle),
+                                                  decoration: BoxDecoration(shape: BoxShape.circle),
                                                   child: ClipOval(
                                                     child: SizedBox.fromSize(
                                                       size: Size.fromRadius(23), // Image radius
