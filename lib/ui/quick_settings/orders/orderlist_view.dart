@@ -164,7 +164,7 @@ class SoldOrderListView extends StatelessWidget {
                             model.orders[index].service.name.text.make(),
                             4.heightBox,
                             '$date-$time'.text.xs.gray400.make(),
-                          ],
+                          ], 
                         ),
                       ).pSymmetric(v: 10),
                     );

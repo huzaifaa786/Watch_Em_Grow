@@ -170,7 +170,7 @@ class HomeView extends StatelessWidget {
                                 .make()
                                 .pLTRB(22, 12, 0, 0),
                             ListView.builder(
-                              padding:
+                              padding:    
                                   const EdgeInsets.symmetric(horizontal: 12),
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,

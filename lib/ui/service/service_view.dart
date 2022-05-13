@@ -200,7 +200,7 @@ class _ServiceViewState extends State<ServiceView> {
                                       },
                                       child: Container(
                                         height: 30,
-                                        width: 35,
+                                        width: 62,
                                         margin: const EdgeInsets.only(right: 8),
                                         decoration: BoxDecoration(
                                             color: model.selectedSizeIndex == index ? Color(widget.color) : null,

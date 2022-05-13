@@ -77,59 +77,54 @@ class ProfileUpdate extends StatelessWidget {
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.2,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                model.selectImage();
-                              },
-                              child: Stack(
-                                children: [
-                                  CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    radius: MediaQuery.of(context).size.width / 8,
-                                    child: ClipOval(
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        child: model.selectedImage == null
-                                            ? user.imageUrl.isEmpty
-                                                ? SvgPicture.asset(
-                                                    "assets/images/avatar.svg",
-                                                  )
-                                                : Image.network(
-                                                    user.imageUrl,
-                                                    fit: BoxFit.cover,
-                                                  )
-                                            : Image.file(
-                                                model.selectedImage!,
-                                                fit: BoxFit.cover,
-                                              ),
+                            Stack(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: MediaQuery.of(context).size.width / 8,
+                                  child: ClipOval(
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      child: model.selectedImage == null
+                                          ? user.imageUrl.isEmpty
+                                              ? SvgPicture.asset(
+                                                  "assets/images/avatar.svg",
+                                                )
+                                              : Image.network(
+                                                  user.imageUrl,
+                                                  fit: BoxFit.cover,
+                                                )
+                                          : Image.file(
+                                              model.selectedImage!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  bottom: 0,
+                                  child: SizedBox(
+                                    height: 25,
+                                    width: 25,
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(50),
+                                          side: BorderSide(color: Colors.lightBlue),
+                                        ),
+                                        primary: Colors.lightBlue,
+                                      ),
+                                      onPressed: () {},
+                                      child: Icon(
+                                        Icons.add,
+                                        size: 10,
                                       ),
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 0,
-                                    bottom: 0,
-                                    child: SizedBox(
-                                      height: 25,
-                                      width: 25,
-                                      child: TextButton(
-                                        style: TextButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(50),
-                                            side: BorderSide(color: Colors.lightBlue),
-                                          ),
-                                          primary: Colors.lightBlue,
-                                        ),
-                                        onPressed: () {},
-                                        child: Icon(
-                                          Icons.add,
-                                          size: 10,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                )
+                              ],
                             ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.25,
@@ -143,7 +138,7 @@ class ProfileUpdate extends StatelessWidget {
                             ),
                             ElevatedButton(
                                 onPressed: () {
-                                  model.updateProfile(user);
+                                model.selectImage();
                                 },
                                 style: ButtonStyle(
                                   fixedSize: MaterialStateProperty.all(Size(MediaQuery.of(context).size.width * 0.9,

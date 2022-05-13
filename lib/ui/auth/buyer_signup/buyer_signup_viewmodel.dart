@@ -157,7 +157,6 @@ class BuyerSignupViewModel extends BaseViewModel {
 
         var result = await dio.post(url, data: data);
         var response = jsonDecode(result.toString());
-        print(result);
   
       
 

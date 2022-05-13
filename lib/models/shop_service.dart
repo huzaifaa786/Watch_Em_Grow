@@ -12,6 +12,7 @@ class ShopService with _$ShopService {
     required String name,
     required double price,
     required String type,
+    int? time,
     String? imageId1,
     String? imageUrl1,
     String? imageId2,

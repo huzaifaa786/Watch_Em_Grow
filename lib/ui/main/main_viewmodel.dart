@@ -86,14 +86,9 @@ class MainViewModel extends BaseViewModel {
   Future selectNotification(String? payload) async {
     if (payload != null && payload.isNotEmpty) {
       String temp = payload.substring(1, payload.length - 1);
-      print(temp);
       var dataSp = temp.split(',');
       Map<String, String> mapData = Map();
-      dataSp.forEach((element) => mapData.addAll({
-            element.split(':')[0].trim(): element.split(':')[1].trim()
-          })); //mapData[element.split(':')[0]] = element.split(':')[1]);
-      print(mapData['forRole']);
-      print(mapData['userID'].toString());
+      dataSp.forEach((element) => mapData.addAll({element.split(':')[0].trim(): element.split(':')[1].trim()}));
       if (mapData['forRole'] == 'order') {
         _databaseApi.getOrder(mapData['orderId']!).then((order) => navigateToOrderDetailView(order));
       } else if (mapData['forRole'] == 'message') {
@@ -138,12 +133,12 @@ class MainViewModel extends BaseViewModel {
       //selectNotification(orderId);
     }
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      //final orderId = message.data['orderId'] as String?;
       selectNotification(message.data.toString());
     });
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('ic_notification');
+
     final IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings(
       requestSoundPermission: false,
       requestBadgePermission: false,
@@ -166,10 +161,14 @@ class MainViewModel extends BaseViewModel {
     const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'your channel id', 'your channel name', 'your channel description',
         importance: Importance.max, priority: Priority.high, showWhen: false);
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    const IOSNotificationDetails iOSPlatformChannelSpecifics =
+        IOSNotificationDetails(presentAlert: true, presentBadge: true, presentSound: true);
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       final RemoteNotification? notification = message.notification;
       final AndroidNotification? android = message.notification?.android;
+        final AppleNotification? iosnotification = message.notification?.apple;
 
       // If `onMessage` is triggered with a notification, construct our own
       // local notification to show to users using the created channel.
@@ -180,17 +179,28 @@ class MainViewModel extends BaseViewModel {
               payload: message.data.toString());
         }
       }
+      if (notification != null && iosnotification!=null) {
+        if (Platform.isIOS) {
+          await flutterLocalNotificationsPlugin.show(0, notification.title, notification.body, platformChannelSpecifics,
+              payload: message.data.toString());
+        }
+      }
+
       FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
         final RemoteNotification? notification = message.notification;
         final AndroidNotification? android = message.notification?.android;
-
-        // If `onMessage` is triggered with a notification, construct our own
-        // local notification to show to users using the created channel.
+        final AppleNotification? iosnotification = message.notification?.apple;
         if (notification != null && android != null) {
           if (Platform.isAndroid) {
             await flutterLocalNotificationsPlugin.show(
                 0, notification.title, notification.body, platformChannelSpecifics,
-                //payload: message.data['orderId'].toString()
+                payload: message.data.toString());
+          }
+        }
+        if (notification != null&& iosnotification != null) {
+          if (Platform.isIOS) {
+            await flutterLocalNotificationsPlugin.show(
+                0, notification.title, notification.body, platformChannelSpecifics,
                 payload: message.data.toString());
           }
         }
@@ -239,9 +249,7 @@ class MainViewModel extends BaseViewModel {
 
     _databaseApi.listenNewNotifications(_userService.currentUser.id).listen((notifications) {
       badgeCnt = notifications.where((element) => element.read == 'false').length;
-      print('notifications************************');
-      print(notifications[16].body);
-      print(notifications[0].body);
+
       notifyListeners();
     });
   }

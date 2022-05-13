@@ -50,7 +50,6 @@ class BuyerProfileViewModel extends BaseViewModel {
     await _userService.syncUser();
     _currentUser = _userService.currentUser;
     otherUser = user;
-    print(otherUser.id);
     notifyListeners();
 
     if (_currentUser.id.isNotEmpty) {
@@ -83,7 +82,6 @@ class BuyerProfileViewModel extends BaseViewModel {
   }
 
   backToNotifications() {
-    print("Unfollowed2 -> " + unfollowed2.toString());
 
     _navigationService.back(result: unfollowed2);
   }
@@ -202,7 +200,6 @@ class BuyerProfileViewModel extends BaseViewModel {
     ).catchError((error) {
       isApiLoading = false;
       notifyListeners();
-      print(error.toString());
     });
   }
 

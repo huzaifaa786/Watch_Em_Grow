@@ -7,19 +7,18 @@ import 'package:mipromo/models/order.dart';
 import 'package:sprintf/sprintf.dart';
 
 class PaypalApi {
-  static const String domain =
-      "https://api.sandbox.paypal.com"; // for sandbox mode
-  // static const String domain = "https://api.paypal.com"; // for production mode
+ // static const String domain = "https://api.sandbox.paypal.com"; // for sandbox mode
+   static const String domain = "https://api.paypal.com"; // for production mode
   static const String clientId =
-      'AQuxADjwnsx8P8i2x1AeFl6pRnwJGfA12J0MS4Phlwdw_mBhxFswOP9UlXIHBYu6wC11erROy5saA8K3';
+      'Aa6veR5J_GbKz7IrpxHcdbMMlqBLrTUuAJuHx5e5uQqTsBk3h1R5TJBFCtQajBqhY9HIChSS_W_olNNm';
   static const String secret =
-      'ELKaeyLnPcze40ztbGJpG7JaFsFVuEXLpdfbPC9l7S3Q1bXnYV_MMPwJjqVLAlsSbcKQVPDN-CNaeHGx';
+      'EIAaVkUD064Mj3EjLlzUiyAzNPBtRq5B9XZorr4x6GUSWAefJTwOAcXUvsgS4-ArlvMr_rMjxkpdVvs-';
   static const String captureUrl = '$domain/v2/checkout/orders/%s/capture';
   static const String refundUrl = '$domain/v2/payments/captures/%s/refund';
-  static const String transferUrl = 'https://api-m.sandbox.paypal.com/v1/payments/payouts';
+  static const String transferUrl = 'https://api-m.paypal.com/v1/payments/payouts';
   static const String userInfoUrl = '$domain/v1/identity/oauth2/userinfo?schema=paypalv1.1';
   static const String authCodeUrl = '$domain/v1/oauth2/token?grant_type=authorization_code&code=';
-  static const returnURL = 'https://mipromo.com/return';
+  static const returnURL = 'https://mipromo.com/';
   static const cancelURL = 'https://mipromo.com/cancel';
 
   // for getting the access token from Paypal
@@ -45,7 +44,6 @@ class PaypalApi {
           Uri.parse(userInfoUrl),
         headers: {'Authorization': 'Bearer $customerAccessToken'},
       );
-      print(response.statusCode.toString());
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
         return body["emails"][0]['value'] as String;
@@ -154,20 +152,15 @@ class PaypalApi {
 
   Future<dynamic> paySellerPayment(String email, Order order,double processingFee, String accessToken) async {
     try {
-      print("Calling paypal");
       var rng = new Random();
       List batch_idList=[];
       for(int i=0; i< 9; i++){
         batch_idList.add(rng.nextInt(9));
       }
       String batchID = batch_idList.join('');
-      print(batchID);
-      print(email);
-      print(order.shopId);
-      print(order.orderId);
+
       double finalPayment = order.service.price * (1 - (processingFee / 100));
       //double finalPayment = order.service.price * 0.80;
-      print('final payment: ' + finalPayment.toString());
       final response = await http.post(
         Uri.parse(transferUrl),
         headers: {
@@ -197,8 +190,6 @@ class PaypalApi {
 
       final body = jsonDecode(response.body);
       body['statusCode'] = response.statusCode;
-      print('Status Code: '+response.statusCode.toString());
-      print(response.body.toString());
       return body;
     } catch (e, stack) {
       print(stack.toString());

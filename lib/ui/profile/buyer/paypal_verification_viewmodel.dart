@@ -18,7 +18,7 @@ class paypalVerificationViewModel extends BaseViewModel {
   final _dialogService = locator<DialogService>();
 
   String? accessToken;
-  String? verifyUrl = 'https://www.sandbox.paypal.com/connect/?flowEntry=static&response_type=code&scope=openid%20profile%20email&client_id=AQuxADjwnsx8P8i2x1AeFl6pRnwJGfA12J0MS4Phlwdw_mBhxFswOP9UlXIHBYu6wC11erROy5saA8K3&redirect_uri=https://example.com';
+  String? verifyUrl = 'https://www.paypal.com/connect/?flowEntry=static&response_type=code&scope=openid%20profile%20email&client_id=Aa6veR5J_GbKz7IrpxHcdbMMlqBLrTUuAJuHx5e5uQqTsBk3h1R5TJBFCtQajBqhY9HIChSS_W_olNNm&redirect_uri=https://mipromo.com/';
   String? executeUrl;
   String? paymentId;
   bool isWebviewLoading = true;
@@ -46,19 +46,15 @@ class paypalVerificationViewModel extends BaseViewModel {
   }
 
   Future<NavigationDecision> handleWebViewVerification(NavigationRequest request) async {
-    if (request.url.contains('https://example.com')) {
+    if (request.url.contains('https://mipromo.com/')) {
       final uri = Uri.parse(request.url);
       final authCode = uri.queryParameters['code'];
-      print("Auth Code: " +authCode.toString());
       isWebviewLoading = true;
       notifyListeners();
       await _paypalApi.getCustomerAccessToken(authCode!).then((accessToken) async {
-        print('Customer Access token: '+ accessToken.toString());
         await _paypalApi.getUserInfo(accessToken!).then((value){
-          print("Customer Email: "+value.toString());
           isWebviewLoading = false;
           notifyListeners();
-          print('Entered email: ' + email.toString());
           if(value! == email){
             _navigationService.back(result: true);
           }else{

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:mipromo/api/database_api.dart';
@@ -58,7 +59,6 @@ class SellerProfileViewModel extends BaseViewModel {
     _currentUser = _userService.currentUser;
     notifyListeners();
 
-    print("user " + _currentUser.id);
 
     if (_currentUser.id.isNotEmpty) {
       _followSubscription =
@@ -87,10 +87,14 @@ class SellerProfileViewModel extends BaseViewModel {
                 _databaseApi.listenShopServices(shopId).listen(
               (servicesData) {
                 services = servicesData;
+            for (var ser in services) {
+              log(ser.toString());
+            }
                 notifyListeners();
                 setBusy(false);
               },
             );
+             
           } else {
             setBusy(false);
           }
@@ -499,7 +503,6 @@ class SellerProfileViewModel extends BaseViewModel {
       arguments: FollowingViewArguments(sellerId: sellerId),
     )!
         .then((value) async {
-      print('############### ' + sellerId);
       setBusy(true);
       await _userService.syncUser();
       _currentUser = _userService.currentUser;

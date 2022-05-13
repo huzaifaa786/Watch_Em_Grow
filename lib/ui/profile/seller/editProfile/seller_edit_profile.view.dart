@@ -37,7 +37,6 @@ class SellerEditProfileView extends StatelessWidget {
                         //color: Theme.of(context).primaryColor,
                         icon: const Icon(Icons.done),
                         onPressed: () {
-                          print('Updating profile');
                           model.updateProfile();
                         },
                       ),

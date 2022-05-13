@@ -6,9 +6,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:mipromo/api/auth_api.dart';
 import 'package:mipromo/api/database_api.dart';
+import 'package:mipromo/app/app.locator.dart';
+import 'package:mipromo/app/app.router.dart';
 import 'package:mipromo/api/image_selector_api.dart';
 import 'package:mipromo/api/storage_api.dart';
-import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/exceptions/image_selector_api_exception.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/ui/shared/helpers/alerts.dart';
@@ -50,13 +51,18 @@ class BuyerEditProfileViewModel extends BaseViewModel {
           lockAspectRatio: true,
           initAspectRatio: CropAspectRatioPreset.square,
         ),
-          iosUiSettings: IOSUiSettings(
-            title: 'Crop Image',
-      ),
+        iosUiSettings: IOSUiSettings(
+          title: 'Crop Image',
+          rectHeight: 100,
+          rectWidth: 100,
+          minimumAspectRatio: 1.0,
+        ),
         cropStyle: CropStyle.circle,
       );
 
       _selectedImage = croppedImage;
+      updateProfile(currentUser, true);
+
       notifyListeners();
     } on ImageSelectorApiException catch (e) {
       Alerts.showBasicFailureDialog(
@@ -170,13 +176,17 @@ class BuyerEditProfileViewModel extends BaseViewModel {
     await _databaseApi.updateSkip(userId: user.id, skip: 1);
   }
 
-  Future updateProfile(AppUser user) {
+  Future updateProfile(AppUser user, bool discoverpge) {
     setBusy(true);
 
     return Future.wait([_updateProfileImage(user), _updateName(user), _updateAddress(user)]).whenComplete(
       () {
         setBusy(false);
-        _navigationService.back();
+        if (discoverpge) {
+          _navigationService.replaceWith(Routes.discoverPage);
+        } else {
+          _navigationService.back();
+        }
       },
     );
   }
@@ -189,7 +199,6 @@ class BuyerEditProfileViewModel extends BaseViewModel {
   Future<void> changePassword() async {
     setLoading(true);
     final response = await _authApi.verifyOldPassword(oldPasswordController.text, newPasswordController.text);
-    print("proceeded!!!!!!!");
     if (response == 0) {
       setLoading(false);
       Fluttertoast.showToast(

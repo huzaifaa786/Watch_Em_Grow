@@ -91,7 +91,6 @@ class NotificationsViewModel extends BaseViewModel {
         isFollowing = true;
       }
     }
-    print("check: ${index} " + isFollowing.toString());
     return isFollowing;
   }
 

@@ -41,18 +41,19 @@ class SearchViewModel extends BaseViewModel {
     _databaseApi.listenShops().listen(
       (shopsData) {
         allShops = shopsData;
-
-        for (var user in users) {
-          for (var shop in allShops!) {
-            if (user.shopId == shop.id) {
-              followingShops.add(shop);
-            } else {
-              otherShops.add(shop);
+        if (users.isEmpty) {
+          otherShops = shopsData;
+        } else {
+          for (var user in users) {
+            for (var shop in allShops!) {
+              if (user.shopId == shop.id) {
+                followingShops.add(shop);
+              } else {
+                otherShops.add(shop);
+              }
             }
           }
         }
-        print('followingShops******************************');
-        print(followingShops);
         searchedShops = followingShops + otherShops;
         var seen = Set<Shop>();
         List<Shop> uniquelist = searchedShops.where((shop) => seen.add(shop)).toList();
@@ -114,8 +115,6 @@ class SearchViewModel extends BaseViewModel {
     searchedShops = [];
     following = true;
     notifyListeners();
-    print('********************************');
-    print(allShops);
     if (text.isEmpty) {
       following = false;
       searchedShops = allShops!;

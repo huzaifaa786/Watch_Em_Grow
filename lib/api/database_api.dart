@@ -68,7 +68,6 @@ class DatabaseApi {
   /// Creates a User document inside the users collection with User Id as Document Id
   Future<void> createUser(AppUser user) async {
     try {
-      print('createUser: ' + user.id.toString());
       await _usersCollection.doc(user.id).set(user.toJson());
     } on PlatformException catch (e) {
       throw DatabaseApiException(
@@ -80,7 +79,6 @@ class DatabaseApi {
 
   Future<void> updateUserToken(String uid, String token) async {
     try {
-      print('updateUserToken: ' + uid);
       await _usersCollection.doc(uid).update({'token': token});
     } on PlatformException catch (e) {
       throw DatabaseApiException(
@@ -146,7 +144,6 @@ class DatabaseApi {
 
       if (!userDoc.exists) {}
       final userData = userDoc.data()! as Map<String, dynamic>;
-      print('getUser: ' + userData.toString());
       return AppUser.fromJson(userData);
     } on PlatformException catch (e) {
       throw DatabaseApiException(
@@ -189,13 +186,12 @@ class DatabaseApi {
           if (item.status == OrderStatus.completed) {
             DateTime a = DateTime.fromMicrosecondsSinceEpoch(item.time);
             if (a.isAfter(DateTime.now().subtract(Duration(days: 60)))) {
-              //print(a.toString());
+         
               totalSale = totalSale + item.service.price;
             }
           }
         }
       }
-      print('Total sale: ' + totalSale.toStringAsFixed(1));
       return totalSale;
     } on PlatformException catch (e) {
       throw DatabaseApiException(
@@ -839,7 +835,6 @@ class DatabaseApi {
     required String receiverId,
   }) async {
     try {
-      print('adding!!!!!!!!!!!!!!!!!');
       await _chatRoomCollection
           .doc(userId)
           .collection('chats')
@@ -850,7 +845,6 @@ class DatabaseApi {
           .collection('chats')
           .doc(userId)
           .set({"id": userId, "time": DateTime.now().millisecondsSinceEpoch});
-      print('added!!!!!!!!!!!!!!!!!');
       /*await _usersCollection.doc(userId).update({
         "chatIds": FieldValue.arrayUnion([receiverId]),
       });
@@ -951,10 +945,8 @@ class DatabaseApi {
       sortedMessageID.clear();
       chatSnapshot.docs.forEach((element) {
         sortedMessageID.add(jsonDecode(jsonEncode(element.data()))['id'].toString());
-        //print(jsonDecode(jsonEncode(element.data())));
       });
 
-      print('final list: ' + sortedMessageID.toSet().toString());
       for (var item in sortedMessageID.toSet()) {
         QuerySnapshot userRaw = await _usersCollection.where('id', isEqualTo: item).get();
         usersList.add(AppUser.fromJson(userRaw.docs.first.data() as Map<String, dynamic>));
@@ -1150,7 +1142,7 @@ class DatabaseApi {
   }
 
   Stream<List<ShopService>> listenShopServices(String shopId) {
-    _servicesCollection.snapshots().listen(
+    _servicesCollection.orderBy('time',descending: true).snapshots().listen(
       (servicesSnapshots) {
         if (servicesSnapshots.docs.isNotEmpty) {
           final services = servicesSnapshots.docs
@@ -1171,7 +1163,7 @@ class DatabaseApi {
   }
 
   Stream<List<ShopService>> listenAllServices() {
-    _servicesCollection.snapshots().listen(
+    _servicesCollection.orderBy('time',descending: true).snapshots().listen(
       (servicesSnapshots) {
         if (servicesSnapshots.docs.isNotEmpty) {
           final services = servicesSnapshots.docs
@@ -1189,7 +1181,7 @@ class DatabaseApi {
   }
 
   Future<List<ShopService>> getAllServices() async {
-    final result = await _servicesCollection.get();
+    final result = await _servicesCollection.orderBy('time',descending: true).get();
 
     final services = result.docs
         .map(
@@ -1280,7 +1272,6 @@ class DatabaseApi {
   Stream<List<Chat>> listenCurrentUserChats(
     String currentUserId,
   ) {
-    print('Reading chat room');
     final messagesQuerySnapshot = _chatsCollection.orderBy(
       'createdAt',
       descending: true,
@@ -1311,7 +1302,6 @@ class DatabaseApi {
   Future<void> readChats({
     required String currentUserId,
   }) async {
-    print('Reading chatsss!!!!!!!!!!!');
     await _chatsCollection
         .orderBy(
           'createdAt',
@@ -1391,7 +1381,6 @@ class DatabaseApi {
       "to": receiverToken,
     });
     var response = await http.post(Uri.parse(url), headers: headers, body: json);
-    print("Notification sent: " + response.statusCode.toString() + ", to: " + receiverToken);
     return true;
   }
 

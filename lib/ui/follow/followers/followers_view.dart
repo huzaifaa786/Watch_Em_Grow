@@ -37,12 +37,10 @@ class FollowersView extends StatelessWidget {
                           ListTile(
                             onTap: () {
                               if(model.users[index].shopId.isNotEmpty){
-                                print("is SELLER");
                                 model.navigateToShopView(
                                   owner: model.users[index],
                                 );
                               }else{
-                                print("is BUYER");
                                 model.navigateToBuyerView(
                                   owner: model.users[index],
                                 );
@@ -56,7 +54,7 @@ class FollowersView extends StatelessWidget {
                                                     child: SizedBox.fromSize(
                                                       size: Size.fromRadius(25), // Image radius
                                                       child:
-                                                          Image.asset('assets/images/default.jpeg', fit: BoxFit.cover),
+                                                          Image.asset('assets/images/default.png', fit: BoxFit.cover),
                                                     ),
                                                   ),
                                                 )

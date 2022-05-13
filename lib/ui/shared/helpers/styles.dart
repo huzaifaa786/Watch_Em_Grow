@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Styles {
   Styles._();
@@ -21,6 +22,7 @@ class Styles {
   );
 
   static final ThemeData lightTheme = ThemeData(
+    
     colorScheme: _colorSchemelight,
     primaryColor: _colorSchemelight.primary,
     accentColor: _colorSchemelight.primary,
@@ -30,6 +32,9 @@ class Styles {
       selectionHandleColor: _colorSchemelight.primary,
     ),
     indicatorColor: _colorSchemelight.primary,
+    secondaryHeaderColor: Colors.grey,
+    radioTheme: RadioThemeData(),
+    dialogTheme: DialogTheme(backgroundColor: Color(0xFF424242),contentTextStyle: TextStyle(color: Colors.white),titleTextStyle: TextStyle(color: Colors.white)),
     toggleableActiveColor: _colorSchemelight.primary,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
@@ -48,6 +53,7 @@ class Styles {
 
   static final ThemeData darkTheme = ThemeData(
     colorScheme: _colorSchemedark,
+
     primaryColor: _colorSchemedark.primary,
     accentColor: _colorSchemedark.primary,
     fontFamily: "Default",
@@ -56,7 +62,10 @@ class Styles {
       selectionHandleColor: _colorSchemedark.primary,
     ),
     appBarTheme: const AppBarTheme(
-      color: kcAppBarColor,
+      color: Color(4281348144),
+      brightness: Brightness.dark,
+      systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Color(4281348144),systemNavigationBarColor:Color(4281348144))
+
     ),
     indicatorColor: _colorSchemedark.primary,
     toggleableActiveColor: _colorSchemedark.primary,

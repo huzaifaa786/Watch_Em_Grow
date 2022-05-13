@@ -17,7 +17,6 @@ class UserService {
     final userAccount = await _databaseApi.getUserLogin(userId);
 
     if (userAccount.token != '123') {
-      //print(userAccount.id);
       _currentUser = userAccount;
       return true;
     }

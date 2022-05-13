@@ -116,17 +116,14 @@ class AuthApi {
   Future verifyOldPassword(String oldPass, String newPass) async {
     final user = _firebaseAuth.currentUser;
     if(user != null){
-      print(user.email);
       final credentials = EmailAuthProvider.credential(email: user.email!, password: oldPass);
       try {
         /*UserCredential userCredentials = */
         await user.reauthenticateWithCredential(credentials).then((value) async {
           if(value.user != null){
             await user.updatePassword(newPass).then((value){
-              print("SUCCESS!!!!!!!");
               return 3;
             }).catchError((error){
-              print("updatePassword: " + error.toString());
               return 2;
             });
           }

@@ -35,8 +35,7 @@ class BookServiceViewModel extends BaseViewModel {
         accessToken = await _paypalApi.getAccessToken();
         if (accessToken != null) {
           final transactions = getOrderParams();
-          final res =
-              await _paypalApi.createPaypalPayment(transactions, accessToken!);
+          final res = await _paypalApi.createPaypalPayment(transactions, accessToken!);
           if (res != null) {
             checkoutUrl = res["approvalUrl"];
             executeUrl = res["executeUrl"];
@@ -46,10 +45,7 @@ class BookServiceViewModel extends BaseViewModel {
           setBusy(false);
         }
       } catch (e) {
-        _dialogService.showCustomDialog(
-            variant: AlertType.error,
-            title: 'Error',
-            description: e.toString());
+        _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: e.toString());
       }
     });
   }
@@ -76,9 +72,7 @@ class BookServiceViewModel extends BaseViewModel {
       final uri = Uri.parse(request.url);
       final payerID = uri.queryParameters['PayerID'];
       if (payerID != null) {
-        _paypalApi
-            .capturePayment(paymentId!, accessToken!)
-            .then((response) async {
+        _paypalApi.capturePayment(paymentId!, accessToken!).then((response) async {
           if (response['statusCode'] != 201) {
             _dialogService.showCustomDialog(
               variant: AlertType.error,
@@ -86,13 +80,11 @@ class BookServiceViewModel extends BaseViewModel {
             );
             return;
           }
-          final capture =
-              response['purchase_units'][0]['payments']['captures'][0];
+          final capture = response['purchase_units'][0]['payments']['captures'][0];
 
           final String captureId = capture['id'] as String;
           final String timeString = capture['update_time'] as String;
-          final String orderId =
-              DateTime.now().microsecondsSinceEpoch.toString();
+          final String orderId = DateTime.now().microsecondsSinceEpoch.toString();
           final order = Order(
             type: OrderType.service,
             orderId: orderId,
@@ -108,13 +100,10 @@ class BookServiceViewModel extends BaseViewModel {
             postCode: user.postCode,
             time: DateTime.parse(timeString).microsecondsSinceEpoch,
           );
-          print(order.toJson().toString());
           _databaseApi.createOrder(order).then((value) async {
             var token = await _databaseApi.getToken(order.service.ownerId);
             if (token != null) {
-              Shop shopDetails =
-                  await _databaseApi.getShop(order.service.shopId);
-              print("Sending notification: " + order.service.name);
+              Shop shopDetails = await _databaseApi.getShop(order.service.shopId);
               var test = _databaseApi.postNotification(
                   orderID: order.orderId,
                   title: 'New Booking',
@@ -128,8 +117,7 @@ class BookServiceViewModel extends BaseViewModel {
                 "userId": user.id,
                 "orderID": order.orderId,
                 "title": 'New Booking',
-                "body":
-                    '${order.name} has booked ${order.service.name}(£${order.service.price})',
+                "body": '${order.name} has booked ${order.service.name}(£${order.service.price})',
                 "id": DateTime.now().millisecondsSinceEpoch.toString(),
                 "read": false,
                 "image": user.imageUrl,
@@ -137,12 +125,10 @@ class BookServiceViewModel extends BaseViewModel {
                 "sound": "default"
               };
 
-              _databaseApi.postNotificationCollection(
-                  shopDetails.ownerId, postMap);
+              _databaseApi.postNotificationCollection(shopDetails.ownerId, postMap);
             }
 
-            if (await _navigationService.navigateTo(Routes.orderSuccessView) ==
-                true) {
+            if (await _navigationService.navigateTo(Routes.orderSuccessView) == true) {
               _navigationService.back();
               _navigationService.back();
               navigateToOrderDetailView(order);

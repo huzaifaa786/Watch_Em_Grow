@@ -57,11 +57,10 @@ class LoginViewModel extends BaseViewModel {
 
   /// Login
   Future<void> login() async {
-    final bool isFormNotEmpty =
-        loginEmail.isNotEmpty && loginPassword.isNotEmpty;
+    final bool isFormNotEmpty = loginEmail.isNotEmpty && loginPassword.isNotEmpty;
 
-    final bool isFormValid = Validators.emailValidator(loginEmail) == null &&
-        Validators.passwordValidator(loginPassword) == null;
+    final bool isFormValid =
+        Validators.emailValidator(loginEmail) == null && Validators.passwordValidator(loginPassword) == null;
 
     if (isFormNotEmpty && isFormValid) {
       await _login();
@@ -91,17 +90,15 @@ class LoginViewModel extends BaseViewModel {
         'This channel is used for important notifications.', // description
         importance: Importance.max,
       );
-      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-          FlutterLocalNotificationsPlugin();
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
       await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(channel);
     }
   }
 
-   setCurrentUser(id) async {
+  setCurrentUser(id) async {
     _databaseApi.listenUser(id.toString()).listen(
       (user) {
         _currentUser = user;
@@ -109,7 +106,6 @@ class LoginViewModel extends BaseViewModel {
         setBusy(false);
       },
     );
-    print("current user");
   }
 
   Future verifiedemail(email) async {
@@ -124,7 +120,6 @@ class LoginViewModel extends BaseViewModel {
 
     var result = await dio.post(url, data: data);
     var response = jsonDecode(result.toString());
-    print(response);
     if (response['error'] == false) {
       return true;
     }
@@ -136,56 +131,53 @@ class LoginViewModel extends BaseViewModel {
     setBusy(true);
 
     try {
-      if (await verifiedemail(loginEmail) == true) {
-        final User user = await _authApi.loginWithEmail(
-          email: loginEmail,
-          password: loginPassword,
-        );
+      final User user = await _authApi.loginWithEmail(
+        email: loginEmail,
+        password: loginPassword,
+      );
 
-        notificationInit();
-        final token = await FirebaseMessaging.instance.getToken();
-        await _userService
-            .syncOrCreateUser(
-          user: AppUser(
-            id: user.uid,
-            token: token,
-            email: user.email,
-            referCode: _referCode,
-          ),
-        )
-            .whenComplete(
-          () async {
-            await setCurrentUser(user.uid);
-            Future.delayed(Duration(milliseconds: 400), () async{
-            await _navigateToMainView();
+      notificationInit();
+      final token = await FirebaseMessaging.instance.getToken();
+      await _userService
+          .syncOrCreateUser(
+        user: AppUser(
+          id: user.uid,
+          token: token,
+          email: user.email,
+          referCode: _referCode,
+        ),
+      )
+          .whenComplete(
+        () async {
+          await setCurrentUser(user.uid);
+          Future.delayed(Duration(milliseconds: 400), () async {
+            if (await verifiedemail(loginEmail) == true) {
+              await _navigateToMainView();
+            } else {
+              final DialogResponse? dialogResponse = await _dialogService.showCustomDialog(
+                variant: AlertType.error,
+                title: 'Email Not Verified',
+                description: 'Please verify your Email to Login.',
+                mainButtonTitle: 'Resend',
+                customData: CustomDialogData(
+                  isConfirmationDialog: true,
+                ),
+              );
 
-});
-
-          },
-        );
-      } else {
-        final DialogResponse? dialogResponse =
-            await _dialogService.showCustomDialog(
-          variant: AlertType.warning,
-          title: 'Email Not Verified',
-          description: 'Please verify your Email to Login.',
-          mainButtonTitle: 'Resend',
-          customData: CustomDialogData(
-            isConfirmationDialog: true,
-          ),
-        );
-
-        if (dialogResponse != null && dialogResponse.confirmed) {
-          try {
-            await Sendverification();
-          } on AuthApiException catch (e) {
-            await Alerts.showBasicFailureDialog(
-              e.title,
-              e.message,
-            );
-          }
-        }
-      }
+              if (dialogResponse != null && dialogResponse.confirmed) {
+                try {
+                  await Sendverification();
+                } on AuthApiException catch (e) {
+                  await Alerts.showBasicFailureDialog(
+                    e.title,
+                    e.message,
+                  );
+                }
+              }
+            }
+          });
+        },
+      );
     } on AuthApiException catch (e) {
       print(e.message.toString());
       await Alerts.showBasicFailureDialog(
@@ -211,7 +203,6 @@ class LoginViewModel extends BaseViewModel {
 
     var result = await dio.post(url, data: data);
     var response = jsonDecode(result.toString());
-    print(result);
     if (response['error'] == false) {
       _navigateToEmailverifyView(number, loginEmail);
     }
@@ -220,8 +211,7 @@ class LoginViewModel extends BaseViewModel {
   }
 
   Future _navigateToEmailverifyView(code, email) async {
-    await _navigationService.navigateTo(Routes.emailVerify,
-        arguments: EmailVerifyArguments(code: code, email: email));
+    await _navigationService.navigateTo(Routes.emailVerify, arguments: EmailVerifyArguments(code: code, email: email));
   }
 
   Future<void> _navigateToMainView() async {
@@ -241,8 +231,7 @@ class LoginViewModel extends BaseViewModel {
 
   /// Forgot Password
   Future forgotPassword() async {
-    if (forgotPasswordEmail.isNotEmpty &&
-        Validators.emailValidator(forgotPasswordEmail) == null) {
+    if (forgotPasswordEmail.isNotEmpty && Validators.emailValidator(forgotPasswordEmail) == null) {
       _forgotPassword();
     } else {
       showErrors();
@@ -258,14 +247,12 @@ class LoginViewModel extends BaseViewModel {
       );
 
       if (result) {
-        final DialogResponse? dialogResponse =
-            await _dialogService.showCustomDialog(
+        final DialogResponse? dialogResponse = await _dialogService.showCustomDialog(
           variant: AlertType.info,
           title: 'Password reset',
           customData: CustomDialogData(
             hasRichDescription: true,
-            richDescription:
-                'A password reset link has been sent to ${forgotPasswordEmail}',
+            richDescription: 'A password reset link has been sent to ${forgotPasswordEmail}',
             richData: '',
           ),
         );

@@ -62,10 +62,8 @@ class SellerSignupViewModel extends BaseViewModel {
   Future _verifyPaypalAccount() async{
     if(await _navigationService.navigateTo(Routes.paypalVerificationView,
         arguments: PaypalVerificationViewArguments(email: paypalMail)) == true){
-      print('Customer Verified');
       _createSellerAccount();
     }else{
-      print('Email not match');
       _snackbarService.showCustomSnackBar(
         variant: AlertType.error,
         title: "Try again",

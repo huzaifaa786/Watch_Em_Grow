@@ -25,7 +25,6 @@ class ChatsViewModel extends BaseViewModel {
 
     //if (user.chatIds != null) {
       _databaseApi.sortChatUsersID(user).listen((usersData) {
-        print('Reading chats');
         users = usersData;
         notifyListeners();
         setBusy(false);

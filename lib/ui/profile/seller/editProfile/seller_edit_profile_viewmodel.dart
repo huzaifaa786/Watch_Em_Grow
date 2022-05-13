@@ -149,6 +149,9 @@ class SellerEditProfileViewModel extends BaseViewModel {
       ),
        iosUiSettings: IOSUiSettings(
             title: 'Crop Image',
+             rectHeight: 100,
+            rectWidth: 100,
+            minimumAspectRatio: 1.0,
       ),
       cropStyle: CropStyle.circle,
     );

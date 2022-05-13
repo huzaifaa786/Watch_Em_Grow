@@ -22,8 +22,7 @@ class SearchView extends StatelessWidget {
       onModelReady: (model) => Future.delayed(Duration.zero, () async {
         model.init();
       }),
-      builder: (context, model, child) =>
-          model.isBusy ? const BasicLoader() : SearchWidget(),
+      builder: (context, model, child) => model.isBusy ? const BasicLoader() : SearchWidget(),
       viewModelBuilder: () => SearchViewModel(),
     );
   }
@@ -47,43 +46,35 @@ class SearchWidget extends HookViewModelWidget<SearchViewModel> {
               },
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start, 
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                model.following == false ?
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Text("Following",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-              ):Text('')
-            ],),
+                model.following == false
+                    ? Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          "Suggested",
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    : Text('')
+              ],
+            ),
             Expanded(
-              child: model.searchedShops.isNotEmpty ||
-                      controller.text.isNotEmpty
-                  ? GridView.builder(
+              child: model.searchedShops.isNotEmpty || controller.text.isNotEmpty
+                  ? ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        //crossAxisCount: 2,
-                        crossAxisCount: 1,
-                        //crossAxisSpacing: 8,
-                        crossAxisSpacing: 2,
-                        //mainAxisSpacing: 8,
-                        mainAxisSpacing: 0,
-                        childAspectRatio: 1.8,
-                      ),
+                      shrinkWrap: true,
                       itemCount: model.searchedShops.length,
                       itemBuilder: (context, i) {
                         final Shop shop = model.searchedShops[i];
 
-                        final owner = model.shopOwners!
-                            .singleWhere((owner) => owner.shopId == shop.id);
+                        final owner = model.shopOwners!.singleWhere((owner) => owner.shopId == shop.id);
 
                         return ShopCard(
                           owner: owner,
                           shop: shop,
-                          services: model.allServices!
-                              .where((service) => service.shopId == shop.id)
-                              .toList(),
-                        );
+                          services: model.allServices!.where((service) => service.shopId == shop.id).toList(),
+                        ).p8();
                         /*return SmallShopCard(
                           shop: shop,
                           shopOwner: model.shopOwners.singleWhere(

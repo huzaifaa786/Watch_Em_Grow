@@ -78,7 +78,7 @@ class NotificationsView extends StatelessWidget {
                                                     child: SizedBox.fromSize(
                                                       size: Size.fromRadius(23), // Image radius
                                                       child:
-                                                          Image.asset('assets/images/default.jpeg', fit: BoxFit.cover),
+                                                          Image.asset('assets/images/default.png', fit: BoxFit.cover),
                                                     ),
                                                   ),
                                                 )

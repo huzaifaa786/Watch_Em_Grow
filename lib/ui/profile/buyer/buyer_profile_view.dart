@@ -37,29 +37,29 @@ class BuyerProfileView extends StatelessWidget {
                         )
                       : null,
                   actions: [
-                    if ( viewingAsProfile != true)
-                    Builder(
-                        builder: (context) => InkWell(
-                              onTap: () async {
-                                await model.handleReport(context);
-                                if (model.selectReport) {
-                                  Future.delayed(Duration(milliseconds: 800)).then((value) {
-                                    model.reportedDone(context);
-                                  });
-                                }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.error_outline)
-                                    /*Text('Report'),*/
-                                  ],
+                    if (viewingAsProfile != true)
+                      Builder(
+                          builder: (context) => InkWell(
+                                onTap: () async {
+                                  await model.handleReport(context);
+                                  if (model.selectReport) {
+                                    Future.delayed(Duration(milliseconds: 800)).then((value) {
+                                      model.reportedDone(context);
+                                    });
+                                  }
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.error_outline)
+                                      /*Text('Report'),*/
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ))
-                   else if (user.id == model.currentUser.id)
+                              ))
+                    else if (user.id == model.currentUser.id)
                       Builder(
                         builder: (context) => IconButton(
                           icon: const Icon(Icons.menu),
@@ -124,73 +124,67 @@ class BuyerProfileView extends StatelessWidget {
                     ),
                   ),
                 ),
-                body: Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 50,
-                      ),
-                      // ignore: prefer_if_elements_to_conditional_expressions
-                      user.imageUrl == ''
-                          ? Container(
-                              decoration: BoxDecoration(shape: BoxShape.circle),
-                              child: ClipOval(
-                                child: SizedBox.fromSize(
-                                  size: Size.fromRadius(70), // Image radius
-                                  child: Image.asset('assets/images/default.jpeg', fit: BoxFit.cover),
-                                ),
+                body: SingleChildScrollView(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 50,
+                        ),
+                        // ignore: prefer_if_elements_to_conditional_expressions
+                        user.imageUrl == ''
+                            ? CircleAvatar(
+                                backgroundImage: AssetImage('assets/images/default.png'),
+                                radius: 55,
+                              )
+                            : Avatar(
+                                radius: context.screenWidth / 7,
+                                imageUrl: user.imageUrl,
                               ),
-                            )
-                          : Avatar(
-                              radius: context.screenWidth / 7,
-                              imageUrl: user.imageUrl,
-                            ),
-                      SizedBox(
-                        height: 50,
-                      ),
+                        SizedBox(
+                          height: 50,
+                        ),
 
-                      Text(
-                        'Buyer Pofile',
-                        style: TextStyle(fontSize: 22),
-                      ),
-                      SizedBox(
-                        height: 50,
-                      ),
+                        Text(
+                          'Buyer Profile',
+                          style: TextStyle(fontSize: 22),
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
 
-                      Column(
-                        children: [
-                          (user.following > 999
-                                  ? "${(user.following / 1000).toDoubleStringAsFixed(digit: 1)}k"
-                                  : "${user.following}")
-                              .text
-                              .lg
-                              .bold
-                              .make(),
-                          'Following'.text.lg.make(),
-                        ],
-                      ).onTap(() {
-                        model.navigateToFollowingView(user.id /*model.currentUser.id*/);
-                      }),
-                      SizedBox(
-                        height: 40,
-                      ),
+                        Column(
+                          children: [
+                            (user.following > 999
+                                    ? "${(user.following / 1000).toDoubleStringAsFixed(digit: 1)}k"
+                                    : "${user.following}")
+                                .text
+                                .lg
+                                .bold
+                                .make(),
+                            'Following'.text.lg.make(),
+                          ],
+                        ).onTap(() {
+                          model.navigateToFollowingView(user.id /*model.currentUser.id*/);
+                        }),
+                        SizedBox(
+                          height: 40,
+                        ),
 
-                      Text(
-                        'Transactions Completed : ${user.purchases}',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                      SizedBox(
-                        height: 60,
-                      ),
-                      Image(
-                        image: AssetImage('assets/icon/bag.png'),
-                        height: 160,
-                        width: 160,
-                      ),
-                      Expanded(
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.56,
+                        Text(
+                          'Transactions Completed : ${user.purchases}',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        SizedBox(
+                          height: 60,
+                        ),
+                        Image(
+                          image: AssetImage('assets/icon/bag.png'),
+                          height: 160,
+                          width: 160,
+                        ),
+                        Container(
                           // color: Colors.green,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -226,10 +220,10 @@ class BuyerProfileView extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ),
 
-                      BusyLoader(busy: model.isApiLoading),
-                    ],
+                        BusyLoader(busy: model.isApiLoading),
+                      ],
+                    ),
                   ),
                 ),
               ),

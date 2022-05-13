@@ -32,7 +32,6 @@ class MessagesView extends StatelessWidget {
                 appBar: AppBar(
                   title: InkWell(
                     onTap: (){
-                      print("Asads");
                       if(receiver.shopId.isNotEmpty){
                         model.toSellerProfile(receiver);
                       }else{

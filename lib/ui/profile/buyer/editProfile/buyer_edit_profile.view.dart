@@ -36,7 +36,7 @@ class BuyerEditProfileView extends StatelessWidget {
                   color: Colors.white,
                   icon: const Icon(Icons.done),
                   onPressed: () {
-                    model.updateProfile(user);
+                    model.updateProfile(user,false);
                   },
                 ),
               ],

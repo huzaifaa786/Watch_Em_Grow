@@ -36,12 +36,10 @@ class FollowingView extends StatelessWidget {
                           ListTile(
                             onTap: () {
                               if(model.users[index].shopId.isNotEmpty){
-                                print("is SELLER");
                                 model.navigateToShopView(
                                   owner: model.users[index],
                                 );
                               }else{
-                                print("is BUYER");
                                 model.navigateToBuyerView(
                                   owner: model.users[index],
                                 );

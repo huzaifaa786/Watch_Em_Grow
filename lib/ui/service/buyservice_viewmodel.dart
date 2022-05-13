@@ -115,7 +115,6 @@ class BuyServiceViewModel extends BaseViewModel {
             if (token != null) {
               Shop shopDetails =
                   await _databaseApi.getShop(order.service.shopId);
-              print("Sending notification: " + order.service.name);
               var test = _databaseApi.postNotification(
                   orderID: order.orderId,
                   title: 'New Order',

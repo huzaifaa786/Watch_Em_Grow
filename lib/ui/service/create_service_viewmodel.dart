@@ -96,13 +96,13 @@ class CreateServiceViewModel extends BaseViewModel {
   }
 
   Future createService() async {
-    print(noteController.text.toString());
     setBusy(true);
     if (_validateServiceForm()) {
       await _databaseApi.createService(
         ShopService(
             id: _serviceId,
             shopId: shop.id,
+            time: DateTime.now().microsecondsSinceEpoch,
             ownerId: shop.ownerId,
             name: serviceName,
             description: description.trimRight(),
@@ -232,6 +232,9 @@ class CreateServiceViewModel extends BaseViewModel {
       androidUiSettings: androidUiSettings,
        iosUiSettings: IOSUiSettings(
             title: 'Crop Image',
+             rectHeight: 100,
+            rectWidth: 100,
+            minimumAspectRatio: 1.0,
       ),
     );
 
@@ -278,6 +281,9 @@ class CreateServiceViewModel extends BaseViewModel {
       androidUiSettings: androidUiSettings,
        iosUiSettings: IOSUiSettings(
             title: 'Crop Image',
+             rectHeight: 100,
+            rectWidth: 100,
+            minimumAspectRatio: 1.0,
       ),
     );
 
@@ -297,6 +303,9 @@ class CreateServiceViewModel extends BaseViewModel {
       androidUiSettings: androidUiSettings,
        iosUiSettings: IOSUiSettings(
             title: 'Crop Image',
+             rectHeight: 100,
+            rectWidth: 100,
+            minimumAspectRatio: 1.0,
       ),
     );
 
