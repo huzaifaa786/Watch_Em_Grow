@@ -142,16 +142,13 @@ class SellerEditProfileViewModel extends BaseViewModel {
 
     final croppedImage = await ImageCropper.cropImage(
       sourcePath: tempImage.path,
+      aspectRatio: const CropAspectRatio(ratioX: 1.0,ratioY: 1.0),
+
       androidUiSettings: const AndroidUiSettings(
         hideBottomControls: true,
-        lockAspectRatio: true,
-        initAspectRatio: CropAspectRatioPreset.square,
       ),
        iosUiSettings: IOSUiSettings(
             title: 'Crop Image',
-             rectHeight: 100,
-            rectWidth: 100,
-            minimumAspectRatio: 1.0,
       ),
       cropStyle: CropStyle.circle,
     );

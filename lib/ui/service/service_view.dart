@@ -99,11 +99,8 @@ class _ServiceViewState extends State<ServiceView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              margin: EdgeInsets.zero,
-                              padding: EdgeInsets.zero,
-                              width: context.screenWidth,
-                              height: context.screenHeight / 2,
+                            AspectRatio(
+                              aspectRatio: 1/1,
                               child: PageView(
                                 controller: model.viewController,
                                 children: [

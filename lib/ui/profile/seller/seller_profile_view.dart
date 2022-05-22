@@ -328,7 +328,7 @@ class SellerProfileView extends StatelessWidget {
                                       physics: const BouncingScrollPhysics(),
                                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 3,
-                                        //crossAxisSpacing: 0,
+                                        //crossAxisSpacing: 0,   
                                         childAspectRatio: 1,
                                       ),
                                       itemCount: model.shop!.ownerId == model.currentUser.id && viewingAsProfile == true

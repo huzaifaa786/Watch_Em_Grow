@@ -58,7 +58,7 @@ class ShopCard extends StatelessWidget {
           ),
           if (services.isNotEmpty)
             SizedBox(
-              height: context.screenHeight / 7,
+              height: context.screenHeight / 7.2,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: services.length < 3 ? services.length : 3,
@@ -79,7 +79,7 @@ class ShopCard extends StatelessWidget {
                             errorWidget: (context, url, error) => const Icon(Icons.error),
                           ),
                         ),
-                ).box.width(context.screenWidth / 3.2).make().px2().mdClick(
+                ).box.width(context.screenWidth / 3.4).make().px2().mdClick(
                   () {
                     model.navigateToServiceView(
                       services[index],

@@ -59,10 +59,8 @@ class SellerProfileViewModel extends BaseViewModel {
     _currentUser = _userService.currentUser;
     notifyListeners();
 
-
     if (_currentUser.id.isNotEmpty) {
-      _followSubscription =
-          _databaseApi.listenFollowings(_currentUser.id).listen(
+      _followSubscription = _databaseApi.listenFollowings(_currentUser.id).listen(
         (f) {
           currentfollowingIds = f.map((e) => e.id).toList();
           notifyListeners();
@@ -83,18 +81,18 @@ class SellerProfileViewModel extends BaseViewModel {
           notifyListeners();
 
           if (_shop!.hasService) {
-            _servicesSubscription =
-                _databaseApi.listenShopServices(shopId).listen(
+            _servicesSubscription = _databaseApi.listenShopServices(shopId).listen(
               (servicesData) {
                 services = servicesData;
-            for (var ser in services) {
-              log(ser.toString());
-            }
+                print('services**********');
+                print(services);
+                for (var ser in services) {
+                  log(ser.toString());
+                }
                 notifyListeners();
                 setBusy(false);
               },
             );
-             
           } else {
             setBusy(false);
           }
@@ -189,7 +187,7 @@ class SellerProfileViewModel extends BaseViewModel {
 
   Future handleReport(BuildContext context) {
     return showModalBottomSheet(
-        isScrollControlled: true, 
+        isScrollControlled: true,
         backgroundColor: Colors.transparent,
         context: context,
         builder: (context) {
@@ -197,8 +195,7 @@ class SellerProfileViewModel extends BaseViewModel {
             height: MediaQuery.of(context).size.height * 0.9,
             decoration: BoxDecoration(
               color: Color(0xFF313131),
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -212,9 +209,7 @@ class SellerProfileViewModel extends BaseViewModel {
                     Container(
                       height: 5,
                       width: 35,
-                      decoration: BoxDecoration(
-                          color: Color(0xFF6B6969),
-                          borderRadius: BorderRadius.circular(55)),
+                      decoration: BoxDecoration(color: Color(0xFF6B6969), borderRadius: BorderRadius.circular(55)),
                     )
                   ],
                 ),
@@ -245,10 +240,7 @@ class SellerProfileViewModel extends BaseViewModel {
                     children: [
                       Text(
                         "Why are you reporting this post?",
-                        style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
+                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: Colors.white),
                       ),
                     ],
                   ),
@@ -262,10 +254,7 @@ class SellerProfileViewModel extends BaseViewModel {
                         child: Text(
                           "Your report is anonymous, except if you're reporting an intellectual property infringement. If someone is in immediate danger, call the local emergency services - don't wait.",
                           maxLines: 6,
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey[400]),
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.grey[400]),
                         ),
                       ),
                     ],
@@ -287,18 +276,13 @@ class SellerProfileViewModel extends BaseViewModel {
                               await sendReportRequest(reportTypes[index]);
                             },
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     reportTypes[index],
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white),
+                                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: Colors.white),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_outlined,
@@ -331,8 +315,7 @@ class SellerProfileViewModel extends BaseViewModel {
           return Container(
             decoration: BoxDecoration(
               color: Color(0xFF313131),
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
             ),
             child: SingleChildScrollView(
               child: Column(
@@ -346,9 +329,7 @@ class SellerProfileViewModel extends BaseViewModel {
                       Container(
                         height: 5,
                         width: 35,
-                        decoration: BoxDecoration(
-                            color: Color(0xFF6B6969),
-                            borderRadius: BorderRadius.circular(55)),
+                        decoration: BoxDecoration(color: Color(0xFF6B6969), borderRadius: BorderRadius.circular(55)),
                       )
                     ],
                   ),
@@ -365,8 +346,7 @@ class SellerProfileViewModel extends BaseViewModel {
                           width: h * 0.07,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(55),
-                              border:
-                                  Border.all(color: Colors.white, width: 2)),
+                              border: Border.all(color: Colors.white, width: 2)),
                           child: Icon(
                             Icons.done,
                             size: h * 0.05,
@@ -385,10 +365,7 @@ class SellerProfileViewModel extends BaseViewModel {
                       children: [
                         Text(
                           "Thanks for letting us know",
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white),
+                          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400, color: Colors.white),
                         ),
                       ],
                     ),
@@ -403,10 +380,7 @@ class SellerProfileViewModel extends BaseViewModel {
                             "Your feedback is important in helping us keep this community safe",
                             maxLines: 6,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey[400]),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.grey[400]),
                           ),
                         ),
                       ],
@@ -423,16 +397,11 @@ class SellerProfileViewModel extends BaseViewModel {
                       child: Container(
                           height: h * 0.05,
                           width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: Colors.blueAccent,
-                              borderRadius: BorderRadius.circular(8)),
+                          decoration: BoxDecoration(color: Colors.blueAccent, borderRadius: BorderRadius.circular(8)),
                           child: Center(
                             child: Text(
                               "Next",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white),
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white),
                             ),
                           )),
                     ),
@@ -475,8 +444,7 @@ class SellerProfileViewModel extends BaseViewModel {
             notifyListeners();
 
             if (_shop!.hasService) {
-              _servicesSubscription =
-                  _databaseApi.listenShopServices(_currentUser.shopId).listen(
+              _servicesSubscription = _databaseApi.listenShopServices(_currentUser.shopId).listen(
                 (servicesData) {
                   services = servicesData;
                   notifyListeners();
@@ -513,8 +481,7 @@ class SellerProfileViewModel extends BaseViewModel {
             notifyListeners();
 
             if (_shop!.hasService) {
-              _servicesSubscription =
-                  _databaseApi.listenShopServices(_currentUser.shopId).listen(
+              _servicesSubscription = _databaseApi.listenShopServices(_currentUser.shopId).listen(
                 (servicesData) {
                   services = servicesData;
                   notifyListeners();

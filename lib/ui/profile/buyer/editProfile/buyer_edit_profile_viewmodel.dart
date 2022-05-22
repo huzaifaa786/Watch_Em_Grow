@@ -45,17 +45,14 @@ class BuyerEditProfileViewModel extends BaseViewModel {
 
       final croppedImage = await ImageCropper.cropImage(
         sourcePath: tempImage.path,
+      aspectRatio: CropAspectRatio(ratioX: 1.0,ratioY: 1.0),
         androidUiSettings: const AndroidUiSettings(
           toolbarTitle: 'Crop Image',
           hideBottomControls: true,
-          lockAspectRatio: true,
-          initAspectRatio: CropAspectRatioPreset.square,
         ),
-        iosUiSettings: IOSUiSettings(
+        iosUiSettings: const IOSUiSettings(
           title: 'Crop Image',
-          rectHeight: 100,
-          rectWidth: 100,
-          minimumAspectRatio: 1.0,
+
         ),
         cropStyle: CropStyle.circle,
       );
@@ -82,7 +79,7 @@ class BuyerEditProfileViewModel extends BaseViewModel {
   void init(AppUser cUser) {
     currentUser = cUser;
     username = cUser.username;
-    fullName = cUser.fullName;
+    fullName = cUser.fullName;       
     address = cUser.address;
     postCode = cUser.postCode;
     notifyListeners();
