@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mipromo/app/app.locator.dart';
@@ -13,9 +14,11 @@ import 'package:stacked_themes/stacked_themes.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 Future<void> main() async {
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(systemNavigationBarColor:Color(4281348144) ));
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(systemNavigationBarColor: Color(4281348144)));
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  if (Platform.isIOS) FirebaseMessaging.instance.requestPermission();
   await ThemeManager.initialise();
   // App Orientation fixed as Portrait
   SystemChrome.setPreferredOrientations([
@@ -26,13 +29,12 @@ Future<void> main() async {
   setupLocator();
   setupDialogUi();
   setupSnackbarUI();
-  if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     return ThemeBuilder(
       lightTheme: Styles.lightTheme,
       darkTheme: Styles.darkTheme,
