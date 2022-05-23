@@ -39,14 +39,14 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) need Photo Library access to upload the images or video in app.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) need Camera Access to upload images for the Profile</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>$(PRODUCT_NAME) need Photo Library access to upload the images or video in app.</string>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>$(PRODUCT_NAME) need Photo Library access to upload the images or video in app.</string>
+	<string>MiyPromo requires access to your photo library in order to allow you to select items or services you want to upload</string>
+	<key>NSCameraUsageDescription</key>
+	<string>MiyPromo requires access to your photo library in order to allow you to select items or services you want to upload</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>MiyPromo requires access to your photo library in order to allow you to select items or services you want to upload</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>MiyPromo requires access to your photo library in order to allow you to select items or services you want to upload</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
