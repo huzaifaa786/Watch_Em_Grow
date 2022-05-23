@@ -36,7 +36,7 @@ class MessagesViewModel extends BaseViewModel {
       var test = _databaseApi.postNotification(
           orderID: '',
           title: 'New Message',
-          body: 'You received new message from ${sender.username}',
+          body: 'You have received a new message from ${sender.username}',
           forRole: 'message',
           userID: sender.id,
           receiverToken: token.toString());

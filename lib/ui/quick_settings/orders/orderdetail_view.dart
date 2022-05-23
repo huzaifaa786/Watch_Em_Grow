@@ -1012,23 +1012,23 @@ class OrderDetailView extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                // if (order.status == OrderStatus.progress &&
-                                //     order.userId == currentUser.id)
-                                //   OutlinedButton(
-                                //     onPressed: () {
-                                //       if (model.isApiLoading) {
-                                //         return;
-                                //       }
-                                //       model.handleCancelRefund(order);
-                                //       //model.handleRequestRefund(order);
-                                //     },
-                                //     child: Text(
-                                //       'Something wrong?',
-                                //       style: TextStyle(
-                                //         color: Color(color),
-                                //       ),
-                                //     ),
-                                //   ),
+                                if (order.status == OrderStatus.progress &&
+                                    order.userId == currentUser.id)
+                                  OutlinedButton(
+                                    onPressed: () {
+                                      if (model.isApiLoading) {
+                                        return;
+                                      }
+                                      model.handleCancelRefund(order);
+                                      //model.handleRequestRefund(order);
+                                    },
+                                    child: Text(
+                                      'Something wrong?',
+                                      style: TextStyle(
+                                        color: Color(color),
+                                      ),
+                                    ),
+                                  ),
                                 if (order.status == OrderStatus.bookRequested &&
                                     order.service.ownerId == currentUser.id)
                                   MaterialButton(
