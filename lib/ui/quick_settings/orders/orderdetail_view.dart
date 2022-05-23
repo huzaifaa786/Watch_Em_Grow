@@ -888,44 +888,44 @@ class OrderDetailView extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                // if (order.status == OrderStatus.completed &&
-                                //     order.userId == currentUser.id)
-                                //   MaterialButton(
-                                //     onPressed: () {
-                                //       if (model.isApiLoading) {
-                                //         return;
-                                //       } else {
-                                //         model.handleRefundCase(order, context);
-                                //       }
-                                //     },
-                                //     color: Color(color),
-                                //     child: Stack(
-                                //       alignment: Alignment.center,
-                                //       children: [
-                                //         Align(
-                                //           alignment: Alignment.bottomLeft,
-                                //           child: Padding(
-                                //             padding: const EdgeInsets.only(
-                                //                 left: 100),
-                                //             child: SizedBox(
-                                //               width: 20,
-                                //               height: 20,
-                                //               child: model.isApiLoading
-                                //                   ? const CircularProgressIndicator()
-                                //                   : null,
-                                //             ),
-                                //           ),
-                                //         ),
-                                //         const Text(
-                                //           'Something wrong?',
-                                //           style: TextStyle(
-                                //             color: Colors.white,
-                                //             fontWeight: FontWeight.bold,
-                                //           ),
-                                //         ),
-                                //       ],
-                                //     ),
-                                //   ),
+                                if (order.status == OrderStatus.completed &&
+                                    order.userId == currentUser.id)
+                                  MaterialButton(
+                                    onPressed: () {
+                                      if (model.isApiLoading) {
+                                        return;
+                                      } else {
+                                        model.handleRefundCase(order, context);
+                                      }
+                                    },
+                                    color: Color(color),
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 100),
+                                            child: SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: model.isApiLoading
+                                                  ? const CircularProgressIndicator()
+                                                  : null,
+                                            ),
+                                          ),
+                                        ),
+                                        const Text(
+                                          'Something wrong?',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 if (order.status ==
                                         OrderStatus.refundRequested &&
                                     order.userId == currentUser.id)
