@@ -10,6 +10,7 @@ import 'package:mipromo/models/follow.dart';
 import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/services/user_service.dart';
+import 'package:mipromo/ui/booking/booking_view.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -606,6 +607,11 @@ class SellerProfileViewModel extends BaseViewModel {
       arguments: EditShopViewArguments(
         shop: _shop!,
       ),
+    );
+  }
+  Future<void> navigateToBookingView() async {
+    await _navigationService.navigateTo(
+      Routes.bookingView,
     );
   }
 

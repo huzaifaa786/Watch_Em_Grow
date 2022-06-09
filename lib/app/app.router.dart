@@ -20,6 +20,7 @@ import '../ui/auth/login/discover_page.dart';
 import '../ui/auth/login/forgot_password_view.dart';
 import '../ui/auth/login/login_view.dart';
 import '../ui/auth/seller_signup/seller_signup_view.dart';
+import '../ui/booking/booking_view.dart';
 import '../ui/category/category_view.dart';
 import '../ui/category/filter/category_filter_view.dart';
 import '../ui/chats/chats_view.dart';
@@ -92,6 +93,7 @@ class Routes {
   static const String inputAddressView = '/input-address-view';
   static const String orderSuccessView = '/order-success-view';
   static const String bookServiceView = '/book-service-view';
+  static const String bookingView = '/booking-view';
   static const all = <String>{
     startUpView,
     landingView,
@@ -132,6 +134,7 @@ class Routes {
     inputAddressView,
     orderSuccessView,
     bookServiceView,
+    bookingView,
   };
 }
 
@@ -178,6 +181,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.inputAddressView, page: InputAddressView),
     RouteDef(Routes.orderSuccessView, page: OrderSuccessView),
     RouteDef(Routes.bookServiceView, page: BookServiceView),
+    RouteDef(Routes.bookingView, page: BookingView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -533,6 +537,15 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    BookingView: (data) {
+      var args = data.getArgs<BookingViewArguments>(
+        orElse: () => BookingViewArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => BookingView(key: args.key),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -545,14 +558,14 @@ class EmailVerifyArguments {
   final Key? key;
   final dynamic code;
   final dynamic email;
-  EmailVerifyArguments({this.key, this.code,this.email});
+  EmailVerifyArguments({this.key, this.code, this.email});
 }
 
 /// MainView arguments holder class
 class MainViewArguments {
   final Key? key;
   final int selectedIndex;
-  MainViewArguments({this.key, this.selectedIndex = 0});
+  MainViewArguments({this.key,this.selectedIndex = 0});
 }
 
 /// DiscoverPage arguments holder class
@@ -749,4 +762,8 @@ class BookServiceViewArguments {
   final ShopService service;
   BookServiceViewArguments(
       {this.key, required this.user, required this.service});
+}
+class BookingViewArguments {
+  final Key? key;
+  BookingViewArguments({this.key});
 }

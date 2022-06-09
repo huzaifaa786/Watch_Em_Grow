@@ -92,12 +92,15 @@ mixin _$ShopService {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ShopServiceCopyWith<ShopService> get copyWith => throw _privateConstructorUsedError;
+  $ShopServiceCopyWith<ShopService> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $ShopServiceCopyWith<$Res> {
-  factory $ShopServiceCopyWith(ShopService value, $Res Function(ShopService) then) = _$ShopServiceCopyWithImpl<$Res>;
+  factory $ShopServiceCopyWith(
+          ShopService value, $Res Function(ShopService) then) =
+      _$ShopServiceCopyWithImpl<$Res>;
   $Res call(
       {String id,
       String shopId,
@@ -176,7 +179,7 @@ class _$ShopServiceCopyWithImpl<$Res> implements $ShopServiceCopyWith<$Res> {
       time: time == freezed
           ? _value.time
           : time // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       imageId1: imageId1 == freezed
           ? _value.imageId1
           : imageId1 // ignore: cast_nullable_to_non_nullable
@@ -226,8 +229,10 @@ class _$ShopServiceCopyWithImpl<$Res> implements $ShopServiceCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$ShopServiceCopyWith<$Res> implements $ShopServiceCopyWith<$Res> {
-  factory _$ShopServiceCopyWith(_ShopService value, $Res Function(_ShopService) then) =
+abstract class _$ShopServiceCopyWith<$Res>
+    implements $ShopServiceCopyWith<$Res> {
+  factory _$ShopServiceCopyWith(
+          _ShopService value, $Res Function(_ShopService) then) =
       __$ShopServiceCopyWithImpl<$Res>;
   @override
   $Res call(
@@ -252,8 +257,10 @@ abstract class _$ShopServiceCopyWith<$Res> implements $ShopServiceCopyWith<$Res>
 }
 
 /// @nodoc
-class __$ShopServiceCopyWithImpl<$Res> extends _$ShopServiceCopyWithImpl<$Res> implements _$ShopServiceCopyWith<$Res> {
-  __$ShopServiceCopyWithImpl(_ShopService _value, $Res Function(_ShopService) _then)
+class __$ShopServiceCopyWithImpl<$Res> extends _$ShopServiceCopyWithImpl<$Res>
+    implements _$ShopServiceCopyWith<$Res> {
+  __$ShopServiceCopyWithImpl(
+      _ShopService _value, $Res Function(_ShopService) _then)
       : super(_value, (v) => _then(v as _ShopService));
 
   @override
@@ -308,7 +315,7 @@ class __$ShopServiceCopyWithImpl<$Res> extends _$ShopServiceCopyWithImpl<$Res> i
       time: time == freezed
           ? _value.time
           : time // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       imageId1: imageId1 == freezed
           ? _value.imageId1
           : imageId1 // ignore: cast_nullable_to_non_nullable
@@ -380,7 +387,8 @@ class _$_ShopService implements _ShopService {
       this.sizes,
       this.bookingNote});
 
-  factory _$_ShopService.fromJson(Map<String, dynamic> json) => _$_$_ShopServiceFromJson(json);
+  factory _$_ShopService.fromJson(Map<String, dynamic> json) =>
+      _$_$_ShopServiceFromJson(json);
 
   @override
   final String id;
@@ -428,29 +436,52 @@ class _$_ShopService implements _ShopService {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _ShopService &&
-            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.shopId, shopId) || const DeepCollectionEquality().equals(other.shopId, shopId)) &&
-            (identical(other.ownerId, ownerId) || const DeepCollectionEquality().equals(other.ownerId, ownerId)) &&
-            (identical(other.name, name) || const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.price, price) || const DeepCollectionEquality().equals(other.price, price)) &&
-            (identical(other.type, type) || const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.time, time) || const DeepCollectionEquality().equals(other.time, time)) &&
-            (identical(other.imageId1, imageId1) || const DeepCollectionEquality().equals(other.imageId1, imageId1)) &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.shopId, shopId) ||
+                const DeepCollectionEquality().equals(other.shopId, shopId)) &&
+            (identical(other.ownerId, ownerId) ||
+                const DeepCollectionEquality()
+                    .equals(other.ownerId, ownerId)) &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.price, price) ||
+                const DeepCollectionEquality().equals(other.price, price)) &&
+            (identical(other.type, type) ||
+                const DeepCollectionEquality().equals(other.type, type)) &&
+            (identical(other.time, time) ||
+                const DeepCollectionEquality().equals(other.time, time)) &&
+            (identical(other.imageId1, imageId1) ||
+                const DeepCollectionEquality()
+                    .equals(other.imageId1, imageId1)) &&
             (identical(other.imageUrl1, imageUrl1) ||
-                const DeepCollectionEquality().equals(other.imageUrl1, imageUrl1)) &&
-            (identical(other.imageId2, imageId2) || const DeepCollectionEquality().equals(other.imageId2, imageId2)) &&
+                const DeepCollectionEquality()
+                    .equals(other.imageUrl1, imageUrl1)) &&
+            (identical(other.imageId2, imageId2) ||
+                const DeepCollectionEquality()
+                    .equals(other.imageId2, imageId2)) &&
             (identical(other.imageUrl2, imageUrl2) ||
-                const DeepCollectionEquality().equals(other.imageUrl2, imageUrl2)) &&
-            (identical(other.imageId3, imageId3) || const DeepCollectionEquality().equals(other.imageId3, imageId3)) &&
+                const DeepCollectionEquality()
+                    .equals(other.imageUrl2, imageUrl2)) &&
+            (identical(other.imageId3, imageId3) ||
+                const DeepCollectionEquality()
+                    .equals(other.imageId3, imageId3)) &&
             (identical(other.imageUrl3, imageUrl3) ||
-                const DeepCollectionEquality().equals(other.imageUrl3, imageUrl3)) &&
-            (identical(other.videoUrl, videoUrl) || const DeepCollectionEquality().equals(other.videoUrl, videoUrl)) &&
+                const DeepCollectionEquality()
+                    .equals(other.imageUrl3, imageUrl3)) &&
+            (identical(other.videoUrl, videoUrl) ||
+                const DeepCollectionEquality()
+                    .equals(other.videoUrl, videoUrl)) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality().equals(other.description, description)) &&
-            (identical(other.rating, rating) || const DeepCollectionEquality().equals(other.rating, rating)) &&
-            (identical(other.sizes, sizes) || const DeepCollectionEquality().equals(other.sizes, sizes)) &&
+                const DeepCollectionEquality()
+                    .equals(other.description, description)) &&
+            (identical(other.rating, rating) ||
+                const DeepCollectionEquality().equals(other.rating, rating)) &&
+            (identical(other.sizes, sizes) ||
+                const DeepCollectionEquality().equals(other.sizes, sizes)) &&
             (identical(other.bookingNote, bookingNote) ||
-                const DeepCollectionEquality().equals(other.bookingNote, bookingNote)));
+                const DeepCollectionEquality()
+                    .equals(other.bookingNote, bookingNote)));
   }
 
   @override
@@ -477,7 +508,8 @@ class _$_ShopService implements _ShopService {
 
   @JsonKey(ignore: true)
   @override
-  _$ShopServiceCopyWith<_ShopService> get copyWith => __$ShopServiceCopyWithImpl<_ShopService>(this, _$identity);
+  _$ShopServiceCopyWith<_ShopService> get copyWith =>
+      __$ShopServiceCopyWithImpl<_ShopService>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -506,7 +538,8 @@ abstract class _ShopService implements ShopService {
       List<String>? sizes,
       String? bookingNote}) = _$_ShopService;
 
-  factory _ShopService.fromJson(Map<String, dynamic> json) = _$_ShopService.fromJson;
+  factory _ShopService.fromJson(Map<String, dynamic> json) =
+      _$_ShopService.fromJson;
 
   @override
   String get id => throw _privateConstructorUsedError;
@@ -546,5 +579,6 @@ abstract class _ShopService implements ShopService {
   String? get bookingNote => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ShopServiceCopyWith<_ShopService> get copyWith => throw _privateConstructorUsedError;
+  _$ShopServiceCopyWith<_ShopService> get copyWith =>
+      throw _privateConstructorUsedError;
 }

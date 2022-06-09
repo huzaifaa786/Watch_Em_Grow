@@ -133,6 +133,13 @@ class SellerProfileView extends StatelessWidget {
                                 model.navigateToEditShopView();
                               },
                             ),
+                            ListTile(
+                              leading: const Icon(Icons.calendar_today),
+                              title: const Text('Set Availability'),
+                              onTap: () {
+                                model.navigateToBookingView();
+                              },
+                            ),
                           ],
                         ),
                       ),
