@@ -502,6 +502,44 @@ class CreateServiceView extends StatelessWidget {
                     ),
                     if (model.selectedType == Constants.serviceLabel)
                       InputField(
+                        hintText: "Duration/min",
+                        maxLength: 60,
+                        counter: "",
+                        controller: model.durationController,
+                        textInputType: TextInputType.number,
+                        validate: model.autoValidate,
+                        validator: (duration) => Validators.emptyStringValidator(
+                        duration,
+                        'Duration',
+                      ),
+                      ),
+                    if (model.selectedType == Constants.serviceLabel)
+                      InputField(
+                        hintText: "Start hour/24 Hr",
+                        maxLength: 24,
+                        counter: "",
+                        controller: model.startController,
+                        textInputType: TextInputType.number,
+                        validate: model.autoValidate,
+                        validator: (startHour) => Validators.emptyStringValidator(
+                        startHour,
+                        'Start Hour',
+                      ),
+                      ),
+                    if (model.selectedType == Constants.serviceLabel)
+                      InputField(
+                        hintText: "End hour/24 Hr",
+                        maxLength: 24,
+                        counter: "",
+                        controller: model.endController,
+                        textInputType: TextInputType.number,
+                        validate: model.autoValidate,
+                        validator: (endHour) => Validators.emptyStringValidator(
+                        endHour,
+                        'End Hour',
+                      ),
+                      ),
+                      InputField(
                         hintText: "Appointment note",
                         //maxLength: 5,
                         counter: "",

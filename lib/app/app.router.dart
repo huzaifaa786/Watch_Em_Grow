@@ -538,11 +538,14 @@ class StackedRouter extends RouterBase {
       );
     },
     BookingView: (data) {
-      var args = data.getArgs<BookingViewArguments>(
-        orElse: () => BookingViewArguments(),
-      );
+      var args = data.getArgs<BookingViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => BookingView(key: args.key),
+        builder: (context) => BookingView(
+          key: args.key,
+          user: args.user,
+          //order: args.order,
+          service: args.service,
+        ),
         settings: data,
       );
     },
@@ -763,7 +766,11 @@ class BookServiceViewArguments {
   BookServiceViewArguments(
       {this.key, required this.user, required this.service});
 }
+
+/// BookingView arguments holder class
 class BookingViewArguments {
   final Key? key;
-  BookingViewArguments({this.key});
+  final AppUser user;
+  final ShopService service;
+  BookingViewArguments({this.key,required this.user, required this.service});
 }

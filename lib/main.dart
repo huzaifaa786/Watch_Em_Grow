@@ -22,7 +22,7 @@ Future<void> main() async {
   await ThemeManager.initialise();
   // App Orientation fixed as Portrait
   SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitUp, 
     DeviceOrientation.portraitDown,
   ]);
 

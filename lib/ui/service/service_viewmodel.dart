@@ -183,16 +183,16 @@ class ServiceViewModel extends BaseViewModel {
     );
 
     if (dialogResponse?.confirmed ?? false) {
-
-      if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
+      
+      // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
         await _navigationService.navigateTo(
-          Routes.bookServiceView,
-          arguments: BookServiceViewArguments(
+          Routes.bookingView,
+          arguments: BookingViewArguments(
             user: user,
             service: service,
           ),
         );
-      }
+      // }
 
       /*final timeNow = DateTime.now();
       final String orderId = timeNow.microsecondsSinceEpoch.toString();
