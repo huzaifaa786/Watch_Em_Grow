@@ -177,8 +177,8 @@ class ServiceViewModel extends BaseViewModel {
   Future bookService() async {
     final dialogResponse = await _dialogService.showConfirmationDialog(
       title: 'Have you arranged a date?',
-      description: 'If not, you should message the seller before booking',
-      confirmationTitle: 'Book',
+      description: 'By booking a visit you agree to the processing of your personal data',
+      confirmationTitle: 'Arrange Date',
       cancelTitle: 'Close',
     );
 

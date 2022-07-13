@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:booking_calendar/booking_calendar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/models/app_user.dart';
+import 'package:mipromo/models/book_service.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/services/user_service.dart';
 import 'package:mipromo/api/auth_api.dart';
@@ -11,7 +14,6 @@ import 'package:mipromo/api/database_api.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:mipromo/app/app.router.dart';
-
 
 class BookingViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
@@ -45,7 +47,13 @@ class BookingViewModel extends BaseViewModel {
         serviceDuration: service.duration!,
         servicePrice: service.price.toInt(),
         bookingEnd: DateTime(now.year, now.month, now.day, service.endHour!, 0),
-        bookingStart: DateTime(now.year, now.month, now.day, service.startHour!, 0));
+        serviceId: service.id,
+        userEmail: user.email,
+        userName: user.fullName,
+        userId: user.id,
+        bookingStart:
+            DateTime(now.year, now.month, now.day, service.startHour!, 0));
+
     notifyListeners();
 
     setBusy(false);
@@ -58,15 +66,24 @@ class BookingViewModel extends BaseViewModel {
 
   Future<dynamic> uploadBookingMock(
       {required BookingService newBooking}) async {
-        if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
-      await _navigationService.navigateTo(
-        Routes.bookServiceView,
-        arguments: BookServiceViewArguments(
-          user: user,
-          service: service,
-        ),
-      );
-    }
+    log(newBooking.toJson().toString());
+    // BookkingService(
+    //     email: newBooking.userEmail,
+    //     bookingStart: newBooking.bookingStart,
+    //     bookingEnd: newBooking.bookingEnd,
+    //     userId: newBooking.userId,
+    //     userName: newBooking.userName);
+    await _databaseApi.uploadBookingFirebase(newBooking: newBooking);
+    // await Future.delayed(const Duration(seconds: 1));
+    // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
+    //   await _navigationService.navigateTo(
+    //     Routes.bookServiceView,
+    //     arguments: BookServiceViewArguments(
+    //       user: user,
+    //       service: service,
+    //     ),
+    //   );
+    // }
     // await Future.delayed(const Duration(seconds: 1));
     // converted.add(DateTimeRange(
     //     start: newBooking.bookingStart, end: newBooking.bookingEnd));

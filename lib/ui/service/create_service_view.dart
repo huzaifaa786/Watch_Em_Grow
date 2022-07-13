@@ -515,7 +515,7 @@ class CreateServiceView extends StatelessWidget {
                       ),
                     if (model.selectedType == Constants.serviceLabel)
                       InputField(
-                        hintText: "Start hour/24 Hr",
+                        hintText: "Bookings Available from the hours",
                         maxLength: 24,
                         counter: "",
                         controller: model.startController,
@@ -523,12 +523,12 @@ class CreateServiceView extends StatelessWidget {
                         validate: model.autoValidate,
                         validator: (startHour) => Validators.emptyStringValidator(
                         startHour,
-                        'Start Hour',
+                        'Bookings Available from',
                       ),
                       ),
                     if (model.selectedType == Constants.serviceLabel)
                       InputField(
-                        hintText: "End hour/24 Hr",
+                        hintText: "Booking available’s till",
                         maxLength: 24,
                         counter: "",
                         controller: model.endController,
@@ -536,7 +536,7 @@ class CreateServiceView extends StatelessWidget {
                         validate: model.autoValidate,
                         validator: (endHour) => Validators.emptyStringValidator(
                         endHour,
-                        'End Hour',
+                        'Booking available’s till',
                       ),
                       ),
                       InputField(
