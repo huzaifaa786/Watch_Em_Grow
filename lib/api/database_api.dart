@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:booking_calendar/booking_calendar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 // import 'package:intl/intl.dart';
 import 'package:mipromo/exceptions/database_api_exception.dart';
 import 'package:mipromo/models/app_user.dart';
+import 'package:mipromo/models/book_service.dart';
 import 'package:mipromo/models/chat.dart';
 import 'package:mipromo/models/follow.dart';
 import 'package:mipromo/models/notification.dart';
@@ -33,6 +36,7 @@ class DatabaseApi {
   final CollectionReference _chatsCollection = _firestore.collection("chats");
   final CollectionReference _chatRoomCollection = _firestore.collection("chatRoom");
   final CollectionReference _followCollection = _firestore.collection("follow");
+  final CollectionReference _bookingsCollection = _firestore.collection("bookings");
 
   // * Controllers
 
@@ -1299,6 +1303,21 @@ class DatabaseApi {
     return _currentUserChatsController.stream;
   }
 
+  CollectionReference<BookkingService> getBookingStream({required String placeId}) {
+    return _bookingsCollection.doc(placeId).collection('bookings').withConverter<BookkingService>(
+          fromFirestore: (snapshots, _) => BookkingService.fromJson(snapshots.data()!),
+          toFirestore: (snapshots, _) => snapshots.toJson(),
+        );
+  }
+
+  Stream<dynamic>? getBookingStreamFirebase(
+    {required DateTime end, required DateTime start}) {
+       return getBookingStream(placeId: '54a61c34-22d5-47de-be22-7094697e7741')
+                        .where('bookingStart', isGreaterThanOrEqualTo: start)
+                        .where('bookingStart', isLessThanOrEqualTo: end)
+                        .snapshots();
+  }
+
   Future<void> readChats({
     required String currentUserId,
   }) async {
@@ -1350,6 +1369,16 @@ class DatabaseApi {
     return _ordersCollection.doc(order.orderId).set(order.toJson());
   }
 
+  Future<dynamic> uploadBookingFirebase(
+    {required BookingService newBooking}) async {
+    await _bookingsCollection
+        .doc(newBooking.userId)
+        .set(newBooking.toJson())
+        .then((value) => log("Booking Added"))
+        .catchError((error) => log("Failed to add booking: $error"));
+    }
+  
+  
   Future postNotification(
       {required String orderID,
       required String title,

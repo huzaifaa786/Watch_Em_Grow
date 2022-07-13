@@ -28,6 +28,9 @@ class _$ShopServiceTearOff {
       required double price,
       required String type,
       int? time,
+      int? duration,
+      int? startHour,
+      int? endHour,
       String? imageId1,
       String? imageUrl1,
       String? imageId2,
@@ -47,6 +50,9 @@ class _$ShopServiceTearOff {
       price: price,
       type: type,
       time: time,
+      duration: duration,
+      startHour: startHour,
+      endHour: endHour,
       imageId1: imageId1,
       imageUrl1: imageUrl1,
       imageId2: imageId2,
@@ -78,6 +84,9 @@ mixin _$ShopService {
   double get price => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
   int? get time => throw _privateConstructorUsedError;
+  int? get duration => throw _privateConstructorUsedError;
+  int? get startHour => throw _privateConstructorUsedError;
+  int? get endHour => throw _privateConstructorUsedError;
   String? get imageId1 => throw _privateConstructorUsedError;
   String? get imageUrl1 => throw _privateConstructorUsedError;
   String? get imageId2 => throw _privateConstructorUsedError;
@@ -109,6 +118,9 @@ abstract class $ShopServiceCopyWith<$Res> {
       double price,
       String type,
       int? time,
+      int? duration,
+      int? startHour,
+      int? endHour,
       String? imageId1,
       String? imageUrl1,
       String? imageId2,
@@ -139,6 +151,9 @@ class _$ShopServiceCopyWithImpl<$Res> implements $ShopServiceCopyWith<$Res> {
     Object? price = freezed,
     Object? type = freezed,
     Object? time = freezed,
+    Object? duration = freezed,
+    Object? startHour = freezed,
+    Object? endHour = freezed,
     Object? imageId1 = freezed,
     Object? imageUrl1 = freezed,
     Object? imageId2 = freezed,
@@ -179,6 +194,18 @@ class _$ShopServiceCopyWithImpl<$Res> implements $ShopServiceCopyWith<$Res> {
       time: time == freezed
           ? _value.time
           : time // ignore: cast_nullable_to_non_nullable
+              as int?,
+      duration: duration == freezed
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as int?,
+      startHour: startHour == freezed
+          ? _value.startHour
+          : startHour // ignore: cast_nullable_to_non_nullable
+              as int?,
+      endHour: endHour == freezed
+          ? _value.endHour
+          : endHour // ignore: cast_nullable_to_non_nullable
               as int?,
       imageId1: imageId1 == freezed
           ? _value.imageId1
@@ -243,6 +270,9 @@ abstract class _$ShopServiceCopyWith<$Res>
       double price,
       String type,
       int? time,
+      int? duration,
+      int? startHour,
+      int? endHour,
       String? imageId1,
       String? imageUrl1,
       String? imageId2,
@@ -275,6 +305,9 @@ class __$ShopServiceCopyWithImpl<$Res> extends _$ShopServiceCopyWithImpl<$Res>
     Object? price = freezed,
     Object? type = freezed,
     Object? time = freezed,
+    Object? duration = freezed,
+    Object? startHour = freezed,
+    Object? endHour = freezed,
     Object? imageId1 = freezed,
     Object? imageUrl1 = freezed,
     Object? imageId2 = freezed,
@@ -315,6 +348,18 @@ class __$ShopServiceCopyWithImpl<$Res> extends _$ShopServiceCopyWithImpl<$Res>
       time: time == freezed
           ? _value.time
           : time // ignore: cast_nullable_to_non_nullable
+              as int?,
+      duration: duration == freezed
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as int?,
+      startHour: startHour == freezed
+          ? _value.startHour
+          : startHour // ignore: cast_nullable_to_non_nullable
+              as int?,
+      endHour: endHour == freezed
+          ? _value.endHour
+          : endHour // ignore: cast_nullable_to_non_nullable
               as int?,
       imageId1: imageId1 == freezed
           ? _value.imageId1
@@ -375,6 +420,9 @@ class _$_ShopService implements _ShopService {
       required this.price,
       required this.type,
       this.time,
+      this.duration,
+      this.startHour,
+      this.endHour,
       this.imageId1,
       this.imageUrl1,
       this.imageId2,
@@ -405,6 +453,12 @@ class _$_ShopService implements _ShopService {
   @override
   final int? time;
   @override
+  final int? duration;
+  @override
+  final int? startHour;
+  @override
+  final int? endHour;
+  @override
   final String? imageId1;
   @override
   final String? imageUrl1;
@@ -429,7 +483,7 @@ class _$_ShopService implements _ShopService {
 
   @override
   String toString() {
-    return 'ShopService(id: $id, shopId: $shopId, ownerId: $ownerId, name: $name, price: $price, type: $type, time: $time, imageId1: $imageId1, imageUrl1: $imageUrl1, imageId2: $imageId2, imageUrl2: $imageUrl2, imageId3: $imageId3, imageUrl3: $imageUrl3, videoUrl: $videoUrl, description: $description, rating: $rating, sizes: $sizes, bookingNote: $bookingNote)';
+    return 'ShopService(id: $id, shopId: $shopId, ownerId: $ownerId, name: $name, price: $price, type: $type, time: $time, duration: $duration, startHour: $startHour, endHour: $endHour, imageId1: $imageId1, imageUrl1: $imageUrl1, imageId2: $imageId2, imageUrl2: $imageUrl2, imageId3: $imageId3, imageUrl3: $imageUrl3, videoUrl: $videoUrl, description: $description, rating: $rating, sizes: $sizes, bookingNote: $bookingNote)';
   }
 
   @override
@@ -451,6 +505,15 @@ class _$_ShopService implements _ShopService {
                 const DeepCollectionEquality().equals(other.type, type)) &&
             (identical(other.time, time) ||
                 const DeepCollectionEquality().equals(other.time, time)) &&
+            (identical(other.duration, duration) ||
+                const DeepCollectionEquality()
+                    .equals(other.duration, duration)) &&
+            (identical(other.startHour, startHour) ||
+                const DeepCollectionEquality()
+                    .equals(other.startHour, startHour)) &&
+            (identical(other.endHour, endHour) ||
+                const DeepCollectionEquality()
+                    .equals(other.endHour, endHour)) &&
             (identical(other.imageId1, imageId1) ||
                 const DeepCollectionEquality()
                     .equals(other.imageId1, imageId1)) &&
@@ -494,6 +557,9 @@ class _$_ShopService implements _ShopService {
       const DeepCollectionEquality().hash(price) ^
       const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(time) ^
+      const DeepCollectionEquality().hash(duration) ^
+      const DeepCollectionEquality().hash(startHour) ^
+      const DeepCollectionEquality().hash(endHour) ^
       const DeepCollectionEquality().hash(imageId1) ^
       const DeepCollectionEquality().hash(imageUrl1) ^
       const DeepCollectionEquality().hash(imageId2) ^
@@ -526,6 +592,9 @@ abstract class _ShopService implements ShopService {
       required double price,
       required String type,
       int? time,
+      int? duration,
+      int? startHour,
+      int? endHour,
       String? imageId1,
       String? imageUrl1,
       String? imageId2,
@@ -555,6 +624,12 @@ abstract class _ShopService implements ShopService {
   String get type => throw _privateConstructorUsedError;
   @override
   int? get time => throw _privateConstructorUsedError;
+  @override
+  int? get duration => throw _privateConstructorUsedError;
+  @override
+  int? get startHour => throw _privateConstructorUsedError;
+  @override
+  int? get endHour => throw _privateConstructorUsedError;
   @override
   String? get imageId1 => throw _privateConstructorUsedError;
   @override
