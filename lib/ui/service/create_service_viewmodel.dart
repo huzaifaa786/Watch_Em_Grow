@@ -44,6 +44,9 @@ class CreateServiceViewModel extends BaseViewModel {
   String price = "";
   String bookingNote = "";
   TextEditingController noteController = new TextEditingController();
+  TextEditingController durationController = new TextEditingController();
+  TextEditingController startController = new TextEditingController();
+  TextEditingController endController = new TextEditingController();
 
   String? selectedType;
 
@@ -108,8 +111,12 @@ class CreateServiceViewModel extends BaseViewModel {
             description: description.trimRight(),
             price: double.parse(price),
             type: selectedType!,
+            duration: selectedType != "Product" ? int.parse(durationController.text) : null,
+            startHour: selectedType != "Product" ? int.parse(startController.text) : null,
+            endHour: selectedType != "Product" ? int.parse(endController.text) : null,
             sizes: selectedType == "Product" ? sizes : null,
             bookingNote: selectedType != "Product" ? noteController.text.toString() : null),
+
       );
      if(selectedVideo != null){
       await _saveServiceVideo();
@@ -160,7 +167,7 @@ class CreateServiceViewModel extends BaseViewModel {
               'Service Type',
             ) ==
             null ||
-        Validators.emptyStringValidator(price, 'Price') == null) {
+        Validators.emptyStringValidator(price, 'Price') == null || Validators.emptyStringValidator(durationController.text, 'Duration') == null || Validators.emptyStringValidator(startController.text, 'Start Hour') == null || Validators.emptyStringValidator(endController.text, 'End Hour') == null) {
       if (_selectedImage1 != null) {
         return true;
       } else {

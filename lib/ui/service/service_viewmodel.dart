@@ -177,22 +177,22 @@ class ServiceViewModel extends BaseViewModel {
   Future bookService() async {
     final dialogResponse = await _dialogService.showConfirmationDialog(
       title: 'Have you arranged a date?',
-      description: 'If not, you should message the seller before booking',
-      confirmationTitle: 'Book',
+      description: 'By booking a visit you agree to the processing of your personal data',
+      confirmationTitle: 'Arrange Date',
       cancelTitle: 'Close',
     );
 
     if (dialogResponse?.confirmed ?? false) {
-
-      if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
+      
+      // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
         await _navigationService.navigateTo(
-          Routes.bookServiceView,
-          arguments: BookServiceViewArguments(
+          Routes.bookingView,
+          arguments: BookingViewArguments(
             user: user,
             service: service,
           ),
         );
-      }
+      // }
 
       /*final timeNow = DateTime.now();
       final String orderId = timeNow.microsecondsSinceEpoch.toString();
