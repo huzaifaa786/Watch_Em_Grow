@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:booking_calendar/booking_calendar.dart';
@@ -29,6 +30,8 @@ class BookingViewModel extends BaseViewModel {
   final now = DateTime.now();
   late BookingService mockBookingService;
   List<DateTimeRange> converted = [];
+  List<BookkingService> bookings = [];
+  late StreamSubscription<List<BookkingService>> _bookings;
   AppUser user;
   final ShopService service;
   BookingViewModel(
@@ -39,6 +42,7 @@ class BookingViewModel extends BaseViewModel {
     required bool isDark,
   }) async {
     setBusy(true);
+    await convertStreamResultMock();
     await _userService.syncUser();
     _currentUser = _userService.currentUser;
     isDarkMode = isDark;
@@ -66,14 +70,21 @@ class BookingViewModel extends BaseViewModel {
 
   Future<dynamic> uploadBookingMock(
       {required BookingService newBooking}) async {
-    log(newBooking.toJson().toString());
-    // BookkingService(
-    //     email: newBooking.userEmail,
-    //     bookingStart: newBooking.bookingStart,
-    //     bookingEnd: newBooking.bookingEnd,
-    //     userId: newBooking.userId,
-    //     userName: newBooking.userName);
-    await _databaseApi.uploadBookingFirebase(newBooking: newBooking);
+    await _databaseApi.uploadBookingFirebase(
+        newBooking: BookkingService(
+            email: newBooking.userEmail,
+            bookingStart: newBooking.bookingStart,
+            bookingEnd: newBooking.bookingEnd,
+            userId: newBooking.userId,
+            userName: newBooking.userName,
+            serviceId: newBooking.serviceId,
+            serviceName: newBooking.serviceName,
+            servicePrice: newBooking.servicePrice,
+            serviceDuration: newBooking.serviceDuration));
+       
+
+    
+
     // await Future.delayed(const Duration(seconds: 1));
     // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
     //   await _navigationService.navigateTo(
@@ -91,21 +102,16 @@ class BookingViewModel extends BaseViewModel {
     print('${newBooking.toJson()} has been uploaded');
   }
 
-  List<DateTimeRange> convertStreamResultMock({required dynamic streamResult}) {
-    ///here you can parse the streamresult and convert to [List<DateTimeRange>]
-    // DateTime first = now;
-    // DateTime second = now.add(const Duration(minutes: 55));
-    // DateTime third = now.subtract(const Duration(minutes: 240));
-    // DateTime fourth = now.subtract(const Duration(minutes: 500));
-    // converted.add(
-    //     DateTimeRange(start: first, end: now.add(const Duration(minutes: 60))));
-    // converted.add(DateTimeRange(
-    //     start: second, end: second.add(const Duration(minutes: 60))));
-    // converted.add(DateTimeRange(
-    //     start: third, end: third.add(const Duration(minutes: 60))));
-    // converted.add(DateTimeRange(
-    //     start: fourth, end: fourth.add(const Duration(minutes: 60))));
-    // return converted;
+  List<DateTimeRange> convertStreamResultMock({dynamic streamResult}) {
+    _bookings =  _databaseApi.getBookingStreamFirebase(ServiceId: service.id).listen((event) {
+            bookings = event;
+        });
+
+    List<DateTimeRange> converted = [];
+    for (var i = 0; i < bookings.length; i++) {
+      final item = bookings[i];
+      converted.add(DateTimeRange(start: (item.bookingStart!), end: (item.bookingEnd!)));
+    }
     return converted;
   }
 
