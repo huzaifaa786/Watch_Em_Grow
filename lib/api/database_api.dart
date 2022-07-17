@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:mipromo/exceptions/database_api_exception.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/models/book_service.dart';
@@ -19,7 +20,7 @@ import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/ui/notifications/notification_model.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 
 import '../exceptions/database_api_exception.dart';
 
