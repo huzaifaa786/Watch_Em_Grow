@@ -19,6 +19,12 @@ enum OrderType {
   @JsonValue(1)
   service
 }
+enum MPaymentMethod {
+  @JsonValue(0)
+  stripe,
+  @JsonValue(1)
+  paypal
+}
 
 enum OrderStatus {
   @JsonValue(0)

@@ -25,6 +25,7 @@ class _$OrderTearOff {
       String? paymentId,
       String? captureId,
       required OrderType type,
+      required PaymentMethod paymentMethod,
       required String userId,
       required String shopId,
       required ShopService service,
@@ -40,6 +41,7 @@ class _$OrderTearOff {
       paymentId: paymentId,
       captureId: captureId,
       type: type,
+      paymentMethod: paymentMethod,
       userId: userId,
       shopId: shopId,
       service: service,
@@ -67,6 +69,7 @@ mixin _$Order {
   String? get paymentId => throw _privateConstructorUsedError;
   String? get captureId => throw _privateConstructorUsedError;
   OrderType get type => throw _privateConstructorUsedError;
+  PaymentMethod get paymentMethod => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get shopId => throw _privateConstructorUsedError;
   ShopService get service => throw _privateConstructorUsedError;
@@ -92,6 +95,7 @@ abstract class $OrderCopyWith<$Res> {
       String? paymentId,
       String? captureId,
       OrderType type,
+      PaymentMethod paymentMethod,
       String userId,
       String shopId,
       ShopService service,
@@ -120,6 +124,7 @@ class _$OrderCopyWithImpl<$Res> implements $OrderCopyWith<$Res> {
     Object? paymentId = freezed,
     Object? captureId = freezed,
     Object? type = freezed,
+    Object? paymentMethod = freezed,
     Object? userId = freezed,
     Object? shopId = freezed,
     Object? service = freezed,
@@ -148,6 +153,10 @@ class _$OrderCopyWithImpl<$Res> implements $OrderCopyWith<$Res> {
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as OrderType,
+      paymentMethod: paymentMethod == freezed
+          ? _value.paymentMethod
+          : paymentMethod // ignore: cast_nullable_to_non_nullable
+              as PaymentMethod,
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -209,6 +218,7 @@ abstract class _$OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
       String? paymentId,
       String? captureId,
       OrderType type,
+      PaymentMethod paymentMethod,
       String userId,
       String shopId,
       ShopService service,
@@ -239,6 +249,7 @@ class __$OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res>
     Object? paymentId = freezed,
     Object? captureId = freezed,
     Object? type = freezed,
+    Object? paymentMethod = freezed,
     Object? userId = freezed,
     Object? shopId = freezed,
     Object? service = freezed,
@@ -267,6 +278,10 @@ class __$OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as OrderType,
+      paymentMethod: paymentMethod == freezed
+          ? _value.paymentMethod
+          : paymentMethod // ignore: cast_nullable_to_non_nullable
+              as PaymentMethod,
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -319,6 +334,7 @@ class _$_Order implements _Order {
       this.paymentId,
       this.captureId,
       required this.type,
+      required this.paymentMethod,
       required this.userId,
       required this.shopId,
       required this.service,
@@ -342,6 +358,8 @@ class _$_Order implements _Order {
   @override
   final OrderType type;
   @override
+  final PaymentMethod paymentMethod;
+  @override
   final String userId;
   @override
   final String shopId;
@@ -364,7 +382,7 @@ class _$_Order implements _Order {
 
   @override
   String toString() {
-    return 'Order(orderId: $orderId, paymentId: $paymentId, captureId: $captureId, type: $type, userId: $userId, shopId: $shopId, service: $service, time: $time, status: $status, name: $name, address: $address, postCode: $postCode, rate: $rate, selectedSize: $selectedSize)';
+    return 'Order(orderId: $orderId, paymentId: $paymentId, captureId: $captureId, type: $type, paymentMethod: $paymentMethod, userId: $userId, shopId: $shopId, service: $service, time: $time, status: $status, name: $name, address: $address, postCode: $postCode, rate: $rate, selectedSize: $selectedSize)';
   }
 
   @override
@@ -382,6 +400,9 @@ class _$_Order implements _Order {
                     .equals(other.captureId, captureId)) &&
             (identical(other.type, type) ||
                 const DeepCollectionEquality().equals(other.type, type)) &&
+            (identical(other.paymentMethod, paymentMethod) ||
+                const DeepCollectionEquality()
+                    .equals(other.paymentMethod, paymentMethod)) &&
             (identical(other.userId, userId) ||
                 const DeepCollectionEquality().equals(other.userId, userId)) &&
             (identical(other.shopId, shopId) ||
@@ -415,6 +436,7 @@ class _$_Order implements _Order {
       const DeepCollectionEquality().hash(paymentId) ^
       const DeepCollectionEquality().hash(captureId) ^
       const DeepCollectionEquality().hash(type) ^
+      const DeepCollectionEquality().hash(paymentMethod) ^
       const DeepCollectionEquality().hash(userId) ^
       const DeepCollectionEquality().hash(shopId) ^
       const DeepCollectionEquality().hash(service) ^
@@ -443,6 +465,7 @@ abstract class _Order implements Order {
       String? paymentId,
       String? captureId,
       required OrderType type,
+      required PaymentMethod paymentMethod,
       required String userId,
       required String shopId,
       required ShopService service,
@@ -464,6 +487,8 @@ abstract class _Order implements Order {
   String? get captureId => throw _privateConstructorUsedError;
   @override
   OrderType get type => throw _privateConstructorUsedError;
+  @override
+  PaymentMethod get paymentMethod => throw _privateConstructorUsedError;
   @override
   String get userId => throw _privateConstructorUsedError;
   @override
