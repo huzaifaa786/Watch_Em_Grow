@@ -568,7 +568,7 @@ class EmailVerifyArguments {
 class MainViewArguments {
   final Key? key;
   final int selectedIndex;
-  MainViewArguments({this.key,this.selectedIndex = 0});
+  MainViewArguments({this.key, this.selectedIndex});
 }
 
 /// DiscoverPage arguments holder class
@@ -772,5 +772,5 @@ class BookingViewArguments {
   final Key? key;
   final AppUser user;
   final ShopService service;
-  BookingViewArguments({this.key,required this.user, required this.service});
+  BookingViewArguments({this.key, required this.user, required this.service});
 }

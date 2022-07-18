@@ -12,6 +12,7 @@ class Order with _$Order {
     String? paymentId,
     String? captureId,
     required OrderType type,
+    required MPaymentMethod paymentMethod,
     required String userId,
     required String shopId,
     required ShopService service,

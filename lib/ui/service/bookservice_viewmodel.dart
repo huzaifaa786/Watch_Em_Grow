@@ -92,6 +92,7 @@ class BookServiceViewModel extends BaseViewModel {
           final String orderId = DateTime.now().microsecondsSinceEpoch.toString();
           final order = Order(
             type: OrderType.service,
+            paymentMethod: MPaymentMethod.paypal,
             orderId: orderId,
             paymentId: paymentId,
             shopId: service.shopId,
@@ -260,107 +261,7 @@ class BookServiceViewModel extends BaseViewModel {
 
   //////////////////Stripe Payment///////////////////////////
   
-// Future<Map<String, dynamic>> _createTestPaymentSheet() async {
-//     final url = Uri.parse('http://attn.tritec.store/api/create/intent');
-//     final response = await http.post(
-//       url,
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: json.encode({
-//         'a': 'a',
-//         'price' :'100'
-//       }),
-//     );
-//     final body = json.decode(response.body);
 
-//     // if (body['error'] != null) {
-//     //   throw Exception(body['error']);
-//     // }
-//     print(body);
-//     // return body['intent'];
-//   }
-
-  // Future<void> initPaymentSheet() async {
-  //   try {
-  //     // 1. create payment intent on the server
-  //     final data = await _createTestPaymentSheet();
-
-  //     // create some billingdetails
-  //     final billingDetails = BillingDetails(
-  //       name: 'Flutter Stripe',
-  //       email: 'email@stripe.com',
-  //       phone: '+48888000888',
-  //       address: Address(
-  //         city: 'Houston',
-  //         country: 'US',
-  //         line1: '1459  Circle Drive',
-  //         line2: '',
-  //         state: 'Texas',
-  //         postalCode: '77063',
-  //       ),
-  //     ); // mocked data for tests
-
-  //     // 2. initialize the payment sheet
-  //     await Stripe.instance.initPaymentSheet(
-  //       paymentSheetParameters: SetupPaymentSheetParameters(
-  //         // Main params
-  //         // paymentIntentClientSecret: data['client_secret'],
-  //         merchantDisplayName: 'Flutter Stripe Store Demo',
-  //         // Customer params
-  //         // customerId: data['customer'],
-  //         // customerEphemeralKeySecret: data['ephemeralKey'],
-  //         // Extra params
-  //         applePay: true,
-  //         googlePay: true,
-  //         style: ThemeMode.dark,
-  //         // billingDetails: billingDetails,
-  //         testEnv: true,
-  //         merchantCountryCode: 'DE',
-  //       ),
-  //     );
-  //     // setState(() {
-  //     //   step = 1;
-  //     // });
-  //   } catch (e) {
-  //     // ScaffoldMessenger.of(context).showSnackBar(
-  //     //   SnackBar(content: Text('Error: $e')),
-  //     // );
-  //     rethrow;
-  //   }
-  // }
-
-  Future<void> confirmPayment() async {
-    print("Asdfasdfsdfasfd");
-    try {
-      // 3. display the payment sheet.
-      await Stripe.instance.presentPaymentSheet();
-
-      // setState(() {
-      //   step = 0;
-      // });
-
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     content: Text('Payment succesfully completed'),
-      //   ),
-      // );
-    } on Exception catch (e) {
-      if (e is StripeException) {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text('Error from Stripe: ${e.error.localizedMessage}'),
-        //   ),
-        // );
-      } else {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text('Unforeseen error: ${e}'),
-        //   ),
-        // );
-      }
-    }
-  }
 
  
 

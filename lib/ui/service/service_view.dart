@@ -59,7 +59,6 @@ class _ServiceViewState extends State<ServiceView> {
         playedColor: Colors.purple,
         bufferedColor: Colors.purple.withOpacity(0.4),
       ),
-      showOptions: true,
     );
   }
 

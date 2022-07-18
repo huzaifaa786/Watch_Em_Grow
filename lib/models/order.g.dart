@@ -12,6 +12,7 @@ _$_Order _$_$_OrderFromJson(Map<String, dynamic> json) {
     paymentId: json['paymentId'] as String?,
     captureId: json['captureId'] as String?,
     type: _$enumDecode(_$OrderTypeEnumMap, json['type']),
+    paymentMethod: _$enumDecode(_$PaymentMethodEnumMap, json['paymentMethod']),
     userId: json['userId'] as String,
     shopId: json['shopId'] as String,
     service: ShopService.fromJson(json['service'] as Map<String, dynamic>),
@@ -30,6 +31,7 @@ Map<String, dynamic> _$_$_OrderToJson(_$_Order instance) => <String, dynamic>{
       'paymentId': instance.paymentId,
       'captureId': instance.captureId,
       'type': _$OrderTypeEnumMap[instance.type],
+      'paymentMethod': _$PaymentMethodEnumMap[instance.paymentMethod],
       'userId': instance.userId,
       'shopId': instance.shopId,
       'service': instance.service.toJson(),
@@ -71,6 +73,11 @@ K _$enumDecode<K, V>(
 const _$OrderTypeEnumMap = {
   OrderType.product: 0,
   OrderType.service: 1,
+};
+
+const _$PaymentMethodEnumMap = {
+  PaymentMethod.stripe: 'stripe',
+  PaymentMethod.paypal: 'paypal',
 };
 
 const _$OrderStatusEnumMap = {

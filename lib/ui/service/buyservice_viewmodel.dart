@@ -97,6 +97,7 @@ class BuyServiceViewModel extends BaseViewModel {
               DateTime.now().microsecondsSinceEpoch.toString();
           final order = Order(
               type: OrderType.product,
+              paymentMethod: MPaymentMethod.paypal,
               orderId: orderId,
               paymentId: paymentId,
               shopId: service.shopId,
