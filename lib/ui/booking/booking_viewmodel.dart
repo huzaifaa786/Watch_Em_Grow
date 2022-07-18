@@ -12,15 +12,22 @@ import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/services/user_service.dart';
 import 'package:mipromo/api/auth_api.dart';
 import 'package:mipromo/api/database_api.dart';
+import 'package:mipromo/ui/shared/helpers/data_models.dart';
+import 'package:mipromo/ui/shared/helpers/enums.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:mipromo/app/app.router.dart';
+// final _dialogService = locator<DialogService>();
+enum DialogType { basic, form }
 
 class BookingViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _authApi = locator<AuthApi>();
   final _userService = locator<UserService>();
+  final _dialogService = locator<DialogService>();
+  static final SnackbarService _snackbarService = locator<SnackbarService>();
   final _databaseApi = locator<DatabaseApi>();
+  
 
   late AppUser _currentUser;
   AppUser get currentUser => _currentUser;
@@ -57,7 +64,6 @@ class BookingViewModel extends BaseViewModel {
         userId: user.id,
         bookingStart:
             DateTime(now.year, now.month, now.day, service.startHour!, 0));
-
     notifyListeners();
 
     setBusy(false);
@@ -82,8 +88,17 @@ class BookingViewModel extends BaseViewModel {
             servicePrice: newBooking.servicePrice,
             serviceDuration: newBooking.serviceDuration));
        
-
-    
+    // if (dialogResponse?.confirmed ?? false) {
+      
+    //   // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
+    //     await _navigationService.navigateTo(
+    //       Routes.bookingView,
+    //       arguments: BookingViewArguments(
+    //         user: user,
+    //         service: service,
+    //       ),
+    //     );
+    // }
 
     // await Future.delayed(const Duration(seconds: 1));
     // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {

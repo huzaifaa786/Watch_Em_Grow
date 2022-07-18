@@ -5,6 +5,7 @@ enum AlertType {
   info,
   warning,
   error,
+  custom,
 }
 
 enum NetworkState {
