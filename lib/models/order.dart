@@ -18,6 +18,8 @@ class Order with _$Order {
     required ShopService service,
     required int time,
     required OrderStatus status,
+    int? bookingStart,
+    int? bookingEnd,
     String? name,
     String? address,
     String? postCode,
