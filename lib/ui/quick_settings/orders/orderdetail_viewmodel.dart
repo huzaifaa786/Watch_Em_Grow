@@ -103,10 +103,10 @@ class OrderDetailViewModel extends BaseViewModel {
     );
   }
 
-  Future navigateToBookServiceView(Order order) async {
-    await _navigationService.navigateTo(Routes.bookServiceView,
-        arguments: BookServiceViewArguments(user: user, service: service));
-  }
+  // Future navigateToBookServiceView(Order order) async {
+  //   await _navigationService.navigateTo(Routes.bookServiceView,
+  //       arguments: BookServiceViewArguments(user: user, service: service));
+  // }
 
   Future<void> updateChat(String recieverId) async {
     await _databaseApi

@@ -37,6 +37,11 @@ void setupDialogUi() {
           request,
           completer,
         ),
+    AlertType.custom: (context, request, completer) => _customDialoog(
+          AlertType.custom,
+          request,
+          completer,
+        ),
   };
 
   dialogService.registerCustomDialogBuilders(builders);
@@ -192,6 +197,141 @@ class _CustomDialog extends StatelessWidget {
       return Colors.blue;
     } else if (dialogType == AlertType.warning) {
       return Colors.amber;
+    } else {
+      return Colors.red;
+    }
+  }
+}
+
+_CustomDialoog _customDialoog(
+  AlertType dialogType,
+  DialogRequest request,
+  void Function(DialogResponse) completer,
+) =>
+    _CustomDialoog(
+      dialogType: dialogType,
+      request: request,
+      completer: completer,
+      customDialogData:
+          (request.customData ?? CustomDialogData()) as CustomDialogData,
+    );
+
+class _CustomDialoog extends StatelessWidget {
+  const _CustomDialoog({
+    Key? key,
+    required this.dialogType,
+    required this.request,
+    required this.completer,
+    required this.customDialogData,
+  }) : super(key: key);
+
+  final AlertType dialogType;
+  final DialogRequest request;
+  final Function(DialogResponse) completer;
+  final CustomDialogData customDialogData;
+
+  @override
+  Widget build(BuildContext context) {
+    if (customDialogData.hasTimer) {
+      Timer(const Duration(seconds: 3), () {
+        completer(
+          DialogResponse(confirmed: true),
+        );
+      });
+    }
+
+    return Dialog(
+      child: Container(
+        // height: MediaQuery.of(context).size.height * 0.3,
+        decoration: BoxDecoration(
+            // color: Colors.deepOrange
+            ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    request.title ?? 'Dialog Title',
+                    style: TextStyle(
+                      color: titleColorSelector(dialogType),
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      decoration: BoxDecoration(),
+                      child: RaisedButton(
+                        onPressed: () {
+                          completer(
+                          DialogResponse(confirmed: true),
+                        );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset('assets/images/paypal_logo.png')
+                           
+                          ],
+                        ),
+                        color: Colors.white,
+                      )),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      decoration: BoxDecoration(),
+                      child: RaisedButton(
+                        onPressed: () {
+                          completer(
+                          DialogResponse(),
+                        );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset('assets/images/stripe_logo.png')
+                           
+                          ],
+                        ),
+                        color: Colors.white,
+                      )),
+                  const SizedBox(
+                    height: 10,
+                  ),
+               
+                ],
+              ),
+            ),
+           
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Returns a Color according to the DialogType
+  Color titleColorSelector(AlertType dialogType) {
+    if (dialogType == AlertType.success) {
+      return Colors.green;
+    } else if (dialogType == AlertType.info) {
+      return Colors.blue;
+    } else if (dialogType == AlertType.warning) {
+      return Colors.amber;
+    } else if (dialogType == AlertType.custom) {
+      return Colors.blue;
     } else {
       return Colors.red;
     }

@@ -1,3 +1,4 @@
+import 'package:mipromo/models/book_service.dart';
 import 'package:mipromo/models/order.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:stacked/stacked.dart';
@@ -10,11 +11,13 @@ import 'package:webview_flutter/webview_flutter.dart';
 class BookServiceView extends StatelessWidget { ///service
   final AppUser user;
   //final Order order;
+  final BookkingService bookingservice;
   final ShopService service;
 
   const BookServiceView({
     Key? key,
     required this.user,
+    required this.bookingservice,
     //required this.order,
     required this.service,
   }) : super(key: key);
@@ -47,7 +50,7 @@ class BookServiceView extends StatelessWidget { ///service
                 ],
               ),
       ),
-      viewModelBuilder: () => BookServiceViewModel(user, service),
+      viewModelBuilder: () => BookServiceViewModel(user, service,bookingservice),
     );
   }
 }

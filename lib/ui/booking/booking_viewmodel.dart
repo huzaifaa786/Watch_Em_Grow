@@ -23,10 +23,15 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:mipromo/app/app.router.dart';
 
+// final _dialogService = locator<DialogService>();
+enum DialogType { basic, form }
+
 class BookingViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _authApi = locator<AuthApi>();
   final _userService = locator<UserService>();
+  final _dialogService = locator<DialogService>();
+  static final SnackbarService _snackbarService = locator<SnackbarService>();
   final _databaseApi = locator<DatabaseApi>();
 
   late AppUser _currentUser;
@@ -64,19 +69,49 @@ class BookingViewModel extends BaseViewModel {
         userEmail: user.email,
         userName: user.fullName,
         userId: user.id,
-        bookingStart: DateTime(now.year, now.month, now.day, service.startHour!, 0));
+        bookingStart:
+            DateTime(now.year, now.month, now.day, service.startHour!, 0));
 
     notifyListeners();
 
     setBusy(false);
   }
 
-  Stream<dynamic>? getBookingStreamMock({required DateTime end, required DateTime start}) {
+  Stream<dynamic>? getBookingStreamMock(
+      {required DateTime end, required DateTime start}) {
     return Stream.value([]);
   }
 
-  Future<dynamic> uploadBookingMock({required BookingService newBooking}) async {
-    await _databaseApi.uploadBookingFirebase(
+  Future<dynamic> uploadBookingMock(
+      {required BookingService newBooking}) async {
+    final response = await _dialogService.showCustomDialog(
+      variant: AlertType.custom,
+      title: 'Choose Payment Method',
+    );
+
+    if (response != null && response.confirmed) {
+      if (await _navigationService.navigateTo(Routes.inputAddressView) ==
+          true) {
+        await _navigationService.navigateTo(
+          Routes.bookServiceView,
+          arguments: BookServiceViewArguments(
+              user: user, service: service, bookingservice: BookkingService(
+            email: newBooking.userEmail,
+            bookingStart: newBooking.bookingStart,
+            bookingEnd: newBooking.bookingEnd,
+            userId: newBooking.userId,
+            userName: newBooking.userName,
+            serviceId: newBooking.serviceId,
+            serviceName: newBooking.serviceName,
+            servicePrice: newBooking.servicePrice,
+            serviceDuration: newBooking.serviceDuration)),
+        );
+      }
+    } else if (response != null && !response.confirmed) {
+      await initPaymentSheet();
+      if (await confirmPayment()) {
+        await addOrder(newBooking.bookingStart,newBooking.bookingEnd);
+        await _databaseApi.uploadBookingFirebase(
         newBooking: BookkingService(
             email: newBooking.userEmail,
             bookingStart: newBooking.bookingStart,
@@ -87,9 +122,10 @@ class BookingViewModel extends BaseViewModel {
             serviceName: newBooking.serviceName,
             servicePrice: newBooking.servicePrice,
             serviceDuration: newBooking.serviceDuration));
+      }
+      
+    }
 
-    await initPaymentSheet();
-    if (await confirmPayment()) await addOrder();
     // await Future.delayed(const Duration(seconds: 1));
     // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
     //   await _navigationService.navigateTo(
@@ -108,14 +144,17 @@ class BookingViewModel extends BaseViewModel {
   }
 
   List<DateTimeRange> convertStreamResultMock({dynamic streamResult}) {
-    _bookings = _databaseApi.getBookingStreamFirebase(ServiceId: service.id).listen((event) {
+    _bookings = _databaseApi
+        .getBookingStreamFirebase(ServiceId: service.id)
+        .listen((event) {
       bookings = event;
     });
 
     List<DateTimeRange> converted = [];
     for (var i = 0; i < bookings.length; i++) {
       final item = bookings[i];
-      converted.add(DateTimeRange(start: (item.bookingStart!), end: (item.bookingEnd!)));
+      converted.add(
+          DateTimeRange(start: (item.bookingStart!), end: (item.bookingEnd!)));
     }
     return converted;
   }
@@ -128,7 +167,8 @@ class BookingViewModel extends BaseViewModel {
 
   sendMessage() async {
     setIsSending(loading: true);
-    await _databaseApi.sendContactMessage(messageController.text, _currentUser.id);
+    await _databaseApi.sendContactMessage(
+        messageController.text, _currentUser.id);
     messageController.clear();
     Fluttertoast.showToast(
         msg: "Thank you for contacting us",
@@ -147,7 +187,7 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  addOrder() {
+  addOrder(DateTime start ,DateTime end) {
     final String timeString = DateTime.now().toString();
     final String orderId = DateTime.now().microsecondsSinceEpoch.toString();
     final order = Order(
@@ -158,6 +198,8 @@ class BookingViewModel extends BaseViewModel {
       shopId: service.shopId,
       captureId: 'captureId',
       service: service,
+      bookingStart: start.microsecondsSinceEpoch,
+      bookingEnd: end.microsecondsSinceEpoch,
       userId: user.id,
       status: OrderStatus.bookRequested,
       rate: 0,
@@ -173,7 +215,8 @@ class BookingViewModel extends BaseViewModel {
         var test = _databaseApi.postNotification(
             orderID: order.orderId,
             title: 'New Booking',
-            body: '${order.name} has booked ${order.service.name}(£${order.service.price}) from ${shopDetails.name}',
+            body:
+                '${order.name} has booked ${order.service.name}(£${order.service.price}) from ${shopDetails.name}',
             forRole: 'order',
             userID: '',
             receiverToken: token.toString());
@@ -182,7 +225,8 @@ class BookingViewModel extends BaseViewModel {
           "userId": user.id,
           "orderID": order.orderId,
           "title": 'New Booking',
-          "body": '${order.name} has booked ${order.service.name}(£${order.service.price})',
+          "body":
+              '${order.name} has booked ${order.service.name}(£${order.service.price})',
           "id": DateTime.now().millisecondsSinceEpoch.toString(),
           "read": false,
           "image": user.imageUrl,
@@ -193,7 +237,8 @@ class BookingViewModel extends BaseViewModel {
         _databaseApi.postNotificationCollection(shopDetails.ownerId, postMap);
       }
 
-      if (await _navigationService.navigateTo(Routes.orderSuccessView) == true) {
+      if (await _navigationService.navigateTo(Routes.orderSuccessView) ==
+          true) {
         _navigationService.back();
         _navigationService.back();
         navigateToOrderDetailView(order);
@@ -296,12 +341,12 @@ class BookingViewModel extends BaseViewModel {
       return true;
     } on Exception catch (e) {
       if (e is StripeException) {
-        Fluttertoast.showToast(msg: 'Error from Stripe: ${e.error.localizedMessage}');
+        Fluttertoast.showToast(
+            msg: 'Error from Stripe: ${e.error.localizedMessage}');
         return false;
       } else {
         Fluttertoast.showToast(msg: 'Unforeseen error: ${e}');
         return false;
-
       }
     }
   }

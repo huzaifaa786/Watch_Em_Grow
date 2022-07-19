@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../models/app_user.dart';
+import '../models/book_service.dart';
 import '../models/order.dart';
 import '../models/shop.dart';
 import '../models/shop_service.dart';
@@ -531,6 +532,7 @@ class StackedRouter extends RouterBase {
         builder: (context) => BookServiceView(
           key: args.key,
           user: args.user,
+          bookingservice: args.bookingservice,
           //order: args.order,
           service: args.service,
         ),
@@ -762,9 +764,13 @@ class AboutViewArguments {
 class BookServiceViewArguments {
   final Key? key;
   final AppUser user;
+  final BookkingService bookingservice;
   final ShopService service;
   BookServiceViewArguments(
-      {this.key, required this.user, required this.service});
+      {this.key,
+      required this.user,
+      required this.bookingservice,
+      required this.service});
 }
 
 /// BookingView arguments holder class
