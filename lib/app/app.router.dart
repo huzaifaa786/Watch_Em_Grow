@@ -568,7 +568,7 @@ class EmailVerifyArguments {
 class MainViewArguments {
   final Key? key;
   final int selectedIndex;
-  MainViewArguments({this.key, this.selectedIndex});
+  MainViewArguments({this.key, this.selectedIndex = 0});
 }
 
 /// DiscoverPage arguments holder class

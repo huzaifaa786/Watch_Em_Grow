@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,13 +47,12 @@ class _ServiceViewState extends State<ServiceView> {
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController!,
       autoInitialize: true,
+      aspectRatio: 1,
       allowMuting: true,
+      showControls: false,
       looping: true,
-      fullScreenByDefault: true ,
-        deviceOrientationsOnEnterFullScreen: [
-              DeviceOrientation.portraitUp,
-              DeviceOrientation.portraitDown
-            ],
+      fullScreenByDefault: true,
+      deviceOrientationsOnEnterFullScreen: [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
       materialProgressColors: ChewieProgressColors(
         playedColor: Colors.purple,
         bufferedColor: Colors.purple.withOpacity(0.4),
@@ -70,7 +68,6 @@ class _ServiceViewState extends State<ServiceView> {
       DeviceOrientation.portraitUp,
     ]);
     super.dispose(); //change here
-
   }
 
   @override
@@ -81,7 +78,8 @@ class _ServiceViewState extends State<ServiceView> {
       onModelReady: (model) => model.init(widget.service),
       builder: (context, model, child) => model.isBusy
           ? const BasicLoader()
-          : SafeArea(child: Scaffold(
+          : SafeArea(
+              child: Scaffold(
                 //backgroundColor: Colors.white,
                 appBar: AppBar(
                   backgroundColor: Color(widget.color),
@@ -99,7 +97,7 @@ class _ServiceViewState extends State<ServiceView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             AspectRatio(
-                              aspectRatio: 1/1,
+                              aspectRatio: 1 / 1,
                               child: PageView(
                                 controller: model.viewController,
                                 children: [
@@ -122,7 +120,7 @@ class _ServiceViewState extends State<ServiceView> {
                                     ),
                                   ],
                                   if (widget.service.imageUrl3 != null) ...[
-                                     CachedNetworkImage(
+                                    CachedNetworkImage(
                                       imageUrl: widget.service.imageUrl3!,
                                       fit: BoxFit.fill,
                                       placeholder: (context, url) =>
@@ -131,11 +129,25 @@ class _ServiceViewState extends State<ServiceView> {
                                     ),
                                   ],
                                   if (widget.service.videoUrl != null) ...[
-                                    AspectRatio(  
-                                      aspectRatio: 14 / 9,
-                                      child: Chewie(
+                                    Stack(
+                                      children: [
+                                     
+                                        GestureDetector(
+                                            onTap: () {
+                                        chewieController!.play();
+                                            },
+                                            child: Chewie(
                                         controller: chewieController!,
-                                      ),
+                                            ),
+                                          ),
+                                             Align(
+                                          alignment: Alignment.topRight,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Icon(Icons.videocam_sharp,color: Colors.white,size: 30,),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ]
                                 ],
@@ -144,7 +156,7 @@ class _ServiceViewState extends State<ServiceView> {
                             4.heightBox,
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: List.generate(  model.imagesCount.length, (index) {
+                              children: List.generate(model.imagesCount.length, (index) {
                                 return Container(
                                   height: 8,
                                   width: 8,
@@ -344,7 +356,7 @@ class _ServiceViewState extends State<ServiceView> {
                       else
                         Container(
                           width: context.screenWidth * 0.95,
-                          padding: EdgeInsets.only(bottom:12),
+                          padding: EdgeInsets.only(bottom: 12),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -462,7 +474,7 @@ class _ServiceViewState extends State<ServiceView> {
                   ),
                 ),
               ),
-          ),
+            ),
       viewModelBuilder: () => ServiceViewModel(),
     );
   }

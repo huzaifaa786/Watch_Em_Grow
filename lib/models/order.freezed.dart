@@ -25,7 +25,7 @@ class _$OrderTearOff {
       String? paymentId,
       String? captureId,
       required OrderType type,
-      required PaymentMethod paymentMethod,
+      required MPaymentMethod paymentMethod,
       required String userId,
       required String shopId,
       required ShopService service,
@@ -69,7 +69,7 @@ mixin _$Order {
   String? get paymentId => throw _privateConstructorUsedError;
   String? get captureId => throw _privateConstructorUsedError;
   OrderType get type => throw _privateConstructorUsedError;
-  PaymentMethod get paymentMethod => throw _privateConstructorUsedError;
+  MPaymentMethod get paymentMethod => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get shopId => throw _privateConstructorUsedError;
   ShopService get service => throw _privateConstructorUsedError;
@@ -95,7 +95,7 @@ abstract class $OrderCopyWith<$Res> {
       String? paymentId,
       String? captureId,
       OrderType type,
-      PaymentMethod paymentMethod,
+      MPaymentMethod paymentMethod,
       String userId,
       String shopId,
       ShopService service,
@@ -156,7 +156,7 @@ class _$OrderCopyWithImpl<$Res> implements $OrderCopyWith<$Res> {
       paymentMethod: paymentMethod == freezed
           ? _value.paymentMethod
           : paymentMethod // ignore: cast_nullable_to_non_nullable
-              as PaymentMethod,
+              as MPaymentMethod,
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -218,7 +218,7 @@ abstract class _$OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
       String? paymentId,
       String? captureId,
       OrderType type,
-      PaymentMethod paymentMethod,
+      MPaymentMethod paymentMethod,
       String userId,
       String shopId,
       ShopService service,
@@ -281,7 +281,7 @@ class __$OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res>
       paymentMethod: paymentMethod == freezed
           ? _value.paymentMethod
           : paymentMethod // ignore: cast_nullable_to_non_nullable
-              as PaymentMethod,
+              as MPaymentMethod,
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -358,7 +358,7 @@ class _$_Order implements _Order {
   @override
   final OrderType type;
   @override
-  final PaymentMethod paymentMethod;
+  final MPaymentMethod paymentMethod;
   @override
   final String userId;
   @override
@@ -465,7 +465,7 @@ abstract class _Order implements Order {
       String? paymentId,
       String? captureId,
       required OrderType type,
-      required PaymentMethod paymentMethod,
+      required MPaymentMethod paymentMethod,
       required String userId,
       required String shopId,
       required ShopService service,
@@ -488,7 +488,7 @@ abstract class _Order implements Order {
   @override
   OrderType get type => throw _privateConstructorUsedError;
   @override
-  PaymentMethod get paymentMethod => throw _privateConstructorUsedError;
+  MPaymentMethod get paymentMethod => throw _privateConstructorUsedError;
   @override
   String get userId => throw _privateConstructorUsedError;
   @override
