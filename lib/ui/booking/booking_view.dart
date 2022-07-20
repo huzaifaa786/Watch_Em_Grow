@@ -33,7 +33,7 @@ class BookingView extends StatelessWidget {
                 children: [
                   SingleChildScrollView(
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.9,
+                      height: MediaQuery.of(context).size.height * 0.78,
                       width: MediaQuery.of(context).size.width,
                       child: BookingCalendar(
                         bookingService: model.mockBookingService,
@@ -44,6 +44,7 @@ class BookingView extends StatelessWidget {
                         pauseSlots: model.pauseSlots,
                         pauseSlotText: 'LUNCH',
                         availableSlotColor: Colors.white,
+                        bookedSlotColor: Color(4286745852),
                         bookingButtonText: service.name +
                             '(' +
                             '£' +

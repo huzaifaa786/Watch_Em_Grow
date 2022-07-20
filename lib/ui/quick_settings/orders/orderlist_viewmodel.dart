@@ -67,6 +67,7 @@ class SoldOrderListViewModel extends BaseViewModel {
           .listenOrdersByShopId(_currentUser.shopId)
           .listen((cOrders) {
         orders = cOrders;
+
         notifyListeners();
         setBusy(false);
       });

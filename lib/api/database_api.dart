@@ -1652,7 +1652,7 @@ class DatabaseApi {
   Stream<List<Order>> listenOrdersByShopId(String shopId) {
     _ordersCollection
         .where('shopId', isEqualTo: shopId)
-        .orderBy('time', descending: true)
+        .orderBy('bookingEnd', descending: false)
         .snapshots()
         .listen((event) {
       if (event.docs.isNotEmpty) {
