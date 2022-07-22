@@ -113,8 +113,10 @@ class SoldOrderListView extends StatelessWidget {
                   itemCount: model.orders.length,
                   itemBuilder: (context, index) {
                     final t = model.orders[index].time;
-
-                    final date = DateFormat.yMMMd().format(
+                    String? date;
+                    String? bookstart;
+                    String? bookend;
+                    final date1 = DateFormat.yMMMd().format(
                       DateTime.fromMicrosecondsSinceEpoch(
                         t,
                       ),
@@ -125,48 +127,82 @@ class SoldOrderListView extends StatelessWidget {
                         t,
                       ),
                     );
+                    if (model.orders[index].type == OrderType.service)
+                     date = DateFormat.yMMMd().format(
+                      DateTime.fromMicrosecondsSinceEpoch(
+                        model.orders[index].bookingStart!,
+                      ),
+                    );
+                    if (model.orders[index].type == OrderType.service)
+                     bookstart = DateFormat('h:mm a').format(
+                      DateTime.fromMicrosecondsSinceEpoch(
+                       model.orders[index].bookingStart!,
+                      ),
+                    );
+                    if (model.orders[index].type == OrderType.service)
+                     bookend = DateFormat('h:mm a').format(
+                      DateTime.fromMicrosecondsSinceEpoch(
+                        model.orders[index].bookingEnd!,
+                      ),
+                    );
+                    
 
                     return Card(
-                      child: ListTile(
-                        onTap: () {
-                          model.navigateToOrderDetailView(model.orders[index]);
-                        },
-                        leading: model.orders[index].service.imageUrl1 ==
-                                    null ||
-                                model.orders[index].service.imageUrl1!.isEmpty
-                            ? const Center(
-                                child: Icon(Icons.broken_image_outlined),
-                              )
-                            : ClipRRect(
-                                borderRadius: BorderRadius.circular(6),
-                                child: Image.network(
-                                  model.orders[index].service.imageUrl1!,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            '£${model.orders[index].service.price}'.text.make(),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8),
-                              child: model
-                                  .orders[index].status.name.text.sm.bold
-                                  .make(),
-                            )
-                          ],
-                        ),
-                        title: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            model.orders[index].service.name.text.make(),
-                            4.heightBox,
-                            '$date-$time'.text.xs.gray400.make(),
-                          ], 
-                        ),
-                      ).pSymmetric(v: 10),
+                      child: Column(
+                        children: [
+                          ListTile(
+                            onTap: () {
+                              model.navigateToOrderDetailView(model.orders[index]);
+                            },
+                            leading: model.orders[index].service.imageUrl1 ==
+                                        null ||
+                                    model.orders[index].service.imageUrl1!.isEmpty
+                                ? const Center(
+                                    child: Icon(Icons.broken_image_outlined),
+                                  )
+                                : ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child: Image.network(
+                                      model.orders[index].service.imageUrl1!,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                '£${model.orders[index].service.price}'.text.make(),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: model
+                                      .orders[index].status.name.text.sm.bold
+                                      .make(),
+                                )
+                              ],
+                            ),
+                            title: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                model.orders[index].service.name.text.gray400.make(),
+                                4.heightBox,
+                               
+                                 
+                              ], 
+                            ),
+                          ).pSymmetric(v: 10),
+                           if (model.orders[index].type == OrderType.service)
+                           Container(
+                            padding: EdgeInsets.only(left:18,right: 18,bottom: 8),
+                             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                              '$date'.text.black.make(),
+                              '$bookstart-$bookend'.text.black.make(),
+                             ],),
+                           ),
+                            
+                        ],
+                      ),
                     );
                   },
                 ),

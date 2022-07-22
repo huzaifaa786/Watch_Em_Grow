@@ -278,23 +278,23 @@ class SellerProfileView extends StatelessWidget {
                           else
                             Column(
                               children: [
-                                model.shop!.name.text.xl2
-                                    .fontFamily(model.shop!.fontStyle)
-                                    .color(Color(model.shop!.color))
-                                    .make(),
-                                10.heightBox,
-                                RatingStars(
-                                  value: model.shop!.rating,
-                                  starSize: 16,
-                                  valueLabelVisibility: false,
-                                ),
-                                10.heightBox,
-                                '(${model.shop!.ratingCount})'.text.make(),
-                                10.heightBox,
-                                model.shop!.description.text.center.make(),
-                                const Divider(
-                                  thickness: 1,
-                                ),
+                                // model.shop!.name.text.xl2
+                                //     .fontFamily(model.shop!.fontStyle)
+                                //     .color(Color(model.shop!.color))
+                                //     .make(),
+                                // 10.heightBox,
+                                // RatingStars(
+                                //   value: model.shop!.rating,
+                                //   starSize: 16,
+                                //   valueLabelVisibility: false,
+                                // ),
+                                // 10.heightBox,
+                                // '(${model.shop!.ratingCount})'.text.make(),
+                                // 10.heightBox,
+                                // model.shop!.description.text.center.make(),
+                                // const Divider(
+                                //   thickness: 1,
+                                // ),
                                 if (model.services.isEmpty && model.shop!.ownerId == model.currentUser.id)
                                   Column(
                                     children: [
@@ -335,7 +335,8 @@ class SellerProfileView extends StatelessWidget {
                                       physics: const BouncingScrollPhysics(),
                                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 3,
-                                        //crossAxisSpacing: 0,   
+                                        crossAxisSpacing: 1.5,
+                                        mainAxisSpacing: 1.5,   
                                         childAspectRatio: 1,
                                       ),
                                       itemCount: model.shop!.ownerId == model.currentUser.id && viewingAsProfile == true

@@ -382,22 +382,23 @@ class OrderDetailView extends StatelessWidget {
                           ///Order details
 
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 5),
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Row(
                                     children: [
-                                      order.service.type == 'Product' ?
-                                      'Order Details'
-                                          .text
-                                          .minFontSize(18)
-                                          .make() :
-                                      'Booking Details'
-                                          .text
-                                          .minFontSize(18)
-                                          .make(),
+                                      order.service.type == 'Product'
+                                          ? 'Order Details'
+                                              .text
+                                              .minFontSize(18)
+                                              .make()
+                                          : 'Booking Details'
+                                              .text
+                                              .minFontSize(18)
+                                              .make(),
                                     ],
                                   ),
                                   10.heightBox,
@@ -409,28 +410,62 @@ class OrderDetailView extends StatelessWidget {
                                     ],
                                   ),
                                   5.heightBox,
-                                  if(order.service.sizes != null)
-                                  Row(
-                                    children: [
-                                      'Size:'.text.make(),
-                                      10.widthBox,
-                                      order.service.sizes![order.selectedSize!].text.make(),
-                                    ],
-                                  ),
-                                  if(order.service.sizes != null)
-                                  5.heightBox,
-
-                                  if(order.shopId == currentUser.shopId)
-                                  Row(
-                                    children: [
-                                      'Processing fee:'.text.make(),
-                                      10.widthBox,
-                                      model.processingFee.toStringAsFixed(0).text.make(),
-                                      '%'.text.make(),
-                                    ],
-                                  ),
-                                  if(order.shopId == currentUser.shopId)
-                                  5.heightBox,
+                                  if (order.service.sizes != null)
+                                    Row(
+                                      children: [
+                                        'Size:'.text.make(),
+                                        10.widthBox,
+                                        order.service
+                                            .sizes![order.selectedSize!].text
+                                            .make(),
+                                      ],
+                                    ),
+                                  if (order.service.sizes != null) 5.heightBox,
+                                  if (order.shopId == currentUser.shopId)
+                                    Row(
+                                      children: [
+                                        'Processing fee:'.text.make(),
+                                        10.widthBox,
+                                        model.processingFee
+                                            .toStringAsFixed(0)
+                                            .text
+                                            .make(),
+                                        '%'.text.make(),
+                                      ],
+                                    ),
+                                  if (order.type == OrderType.service)5.heightBox,
+                                    Row(
+                                      children: [
+                                        'Appointment time:'.text.make(),
+                                        10.widthBox,
+                                        Text(
+                                          DateFormat('h:mm a').format(DateTime
+                                                  .fromMicrosecondsSinceEpoch(
+                                                order.bookingStart!,
+                                              )) +
+                                              '-',
+                                          style: TextStyle(fontSize: 13),
+                                        ),
+                                        Text(
+                                          DateFormat('h:mm a').format(DateTime
+                                              .fromMicrosecondsSinceEpoch(
+                                            order.bookingEnd!,
+                                          )),
+                                          style: TextStyle(fontSize: 13),
+                                        ),
+                                        5.widthBox,
+                                        Text(
+                                          DateFormat.yMMMd().format(
+                                            DateTime.fromMicrosecondsSinceEpoch(
+                                              order.bookingEnd!,
+                                            ),
+                                          ),
+                                          style: TextStyle(fontSize: 13),
+                                        )
+                                      ],
+                                    ),
+                                  if (order.shopId == currentUser.shopId)
+                                    5.heightBox,
                                 ]),
                           ),
 
@@ -438,7 +473,8 @@ class OrderDetailView extends StatelessWidget {
 
                           ///Buyer details
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 5),
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -591,7 +627,9 @@ class OrderDetailView extends StatelessWidget {
                                               if (model.isApiLoading) {
                                                 return;
                                               }
-                                              model.handleRequestReceivedProduct(order);
+                                              model
+                                                  .handleRequestReceivedProduct(
+                                                      order);
                                             },
                                             child: Container(
                                               height: size.height * 0.035,
@@ -1047,22 +1085,22 @@ class OrderDetailView extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                if (order.status == OrderStatus.bookRequested ||
-                                    order.status == OrderStatus.bookApproved)
-                                  OutlinedButton(
-                                    onPressed: () {
-                                      if (model.isApiLoading) {
-                                        return;
-                                      }
-                                      model.handleMakeCancel(order);
-                                    },
-                                    child: const Text(
-                                      'Cancel appointments',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
+                                // if (order.status == OrderStatus.bookRequested ||
+                                //     order.status == OrderStatus.bookApproved)
+                                //   OutlinedButton(
+                                //     onPressed: () {
+                                //       if (model.isApiLoading) {
+                                //         return;
+                                //       }
+                                //       model.handleMakeCancel(order);
+                                //     },
+                                //     child: const Text(
+                                //       'Cancel appointments',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //       ),
+                                //     ),
+                                //   ),
                                 /*if (order.status == OrderStatus.bookApproved &&
                                     order.userId == currentUser.id)
                                   MaterialButton(
@@ -1210,8 +1248,8 @@ class OrderDetailView extends StatelessWidget {
           children: [
             ///order Requested or received
             if (order.shopId == currentUser.shopId)
-              renderCheckIcon(height, true, "Service Received",
-                  "You have received service request")
+              renderCheckIcon(height, true, "Appointment Booked",
+                  "You have received a booking")
             else
               renderCheckIcon(height, true, "Service Requested",
                   "You have requested service"),
@@ -1229,14 +1267,14 @@ class OrderDetailView extends StatelessWidget {
             ///order received
             if (order.shopId == currentUser.shopId)
               renderCheckIcon(height, false, "Service Delivered",
-                  "You have Delivered service")
+                  "You have completed your appointment")
             else
               renderCheckIcon(height, false, "Received Service",
                   "You have received your service"),
             renderCheckDivider(height, false),
 
             ///order accepted
-            renderCheckIcon(height, false, "Completed", "Service Completed"),
+            renderCheckIcon(height, false, "Completed", "Your payment has now been processed"),
           ],
         );
       case 'CANCELLED':
@@ -1245,8 +1283,8 @@ class OrderDetailView extends StatelessWidget {
           children: [
             ///order Requested or received
             if (order.shopId == currentUser.shopId)
-              renderCheckIcon(height, true, "Service Received",
-                  "You have received service request")
+              renderCheckIcon(height, true, "Appointment Booked",
+                  "You have received a booking")
             else
               renderCheckIcon(height, true, "Service Requested",
                   "You have requested service"),
@@ -1264,14 +1302,14 @@ class OrderDetailView extends StatelessWidget {
             ///order received
             if (order.shopId == currentUser.shopId)
               renderCheckIcon(height, false, "Service Delivered",
-                  "You have Delivered service")
+                  "You have completed your appointment")
             else
               renderCheckIcon(height, false, "Received Service",
                   "You have received your service"),
             renderCheckDivider(height, false),
 
             ///order accepted
-            renderCheckIcon(height, false, "Completed", "Service Completed"),
+            renderCheckIcon(height, false, "Completed", "Your payment has now been processed"),
           ],
         );
       case 'BOOK APPROVED':
@@ -1280,8 +1318,8 @@ class OrderDetailView extends StatelessWidget {
           children: [
             ///order Requested or received
             if (order.shopId == currentUser.shopId)
-              renderCheckIcon(height, true, "Service Received",
-                  "You have received service request")
+              renderCheckIcon(height, true, "Appointment Booked",
+                  "You have received a booking")
             else
               renderCheckIcon(height, true, "Service Requested",
                   "You have requested service"),
@@ -1299,14 +1337,14 @@ class OrderDetailView extends StatelessWidget {
             ///order received
             if (order.shopId == currentUser.shopId)
               renderCheckIcon(height, false, "Service Delivered",
-                  "You have Delivered service")
+                  "You have completed your appointment")
             else
               renderCheckIcon(height, false, "Received Service",
                   "You have received your service"),
             renderCheckDivider(height, false),
 
             ///order accepted
-            renderCheckIcon(height, false, "Completed", "Service Completed"),
+            renderCheckIcon(height, false, "Completed", "Your payment has now been processed"),
           ],
         );
       case 'REFUND REQUESTED':

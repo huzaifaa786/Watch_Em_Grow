@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/ui/shared/widgets/avatar.dart';
@@ -65,26 +66,52 @@ class ProfileHeader extends StatelessWidget {
           ],
         ),
         12.heightBox,
-        if(user.shopId.isEmpty)
-        user.fullName.text.bold.make().pOnly(left: 6),
+        if (user.shopId.isEmpty) user.fullName.text.bold.make().pOnly(left: 6),
         if (shop != null) 10.heightBox else const SizedBox.shrink(),
         if (shop != null)
-          Row(
+          Column(
+
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(
-                Icons.location_on_outlined,
-                size: 15,
+              
+              Row(
+                children: [
+                  
+                  shop!.name.text.xl2
+                      .fontFamily(shop!.fontStyle)
+                      .color(Color(shop!.color))
+                      .make(),
+                  25.widthBox,
+                  RatingStars(
+                    value: shop!.rating,
+                    starSize: 16,
+                    valueLabelVisibility: false,
+                  ),
+                  
+                  // '(${shop!.ratingCount})'.text.make(),
+                  
+                ],
               ),
-              shop!.location.text.make(),
-              if (shop!.borough.isNotEmpty)
-                ', ${shop!.borough}'.text.make()
-              else
-                const SizedBox.shrink(),
+              20.heightBox,
+              Row(
+                children: [
+                  const Icon(
+                    Icons.location_on_outlined,
+                    size: 15,
+                  ),
+                  shop!.location.text.make(),
+                  if (shop!.borough.isNotEmpty)
+                    ', ${shop!.borough}'.text.make()
+                  else
+                    const SizedBox.shrink(),
+                ],
+              ),
+              Container(width: MediaQuery.of(context).size.width*0.4, child: shop!.description.text.make().pOnly(left: 6),)
             ],
           )
         else
           const SizedBox.shrink(),
-        12.heightBox,
+        20.heightBox,
         headerButton,
         // const Divider(
         //   thickness: 1,

@@ -101,7 +101,7 @@ class _EditProfileForm extends ViewModelWidget<SellerEditProfileViewModel> {
           maxLength: 70,
           counter: "",
           onChanged: (username) {
-            username = username;
+            model.username = username;
           },
           validator: (value) => Validators.userNameValidator(
             username: value,
