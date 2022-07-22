@@ -45,6 +45,7 @@ class _ServiceViewState extends State<ServiceView> {
     videoPlayerController = VideoPlayerController.network(widget.service.videoUrl.toString());
 
     chewieController = ChewieController(
+      
       videoPlayerController: videoPlayerController!,
       autoInitialize: true,
       aspectRatio: 1,
@@ -137,6 +138,7 @@ class _ServiceViewState extends State<ServiceView> {
                                         chewieController!.play();
                                             },
                                             child: Chewie(
+
                                         controller: chewieController!,
                                             ),
                                           ),
