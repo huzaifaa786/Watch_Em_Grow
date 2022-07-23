@@ -53,17 +53,19 @@ class SellerSignupViewModel extends BaseViewModel {
 
     if (isFormValid) {
       //_createSellerAccount();
-      _verifyPaypalAccount();
+      createStripeConnectedAccount();
+      // _verifyPaypalAccount();
     } else {
       showErrors();
     }
   }
 
-  Future _verifyPaypalAccount() async{
-    if(await _navigationService.navigateTo(Routes.paypalVerificationView,
-        arguments: PaypalVerificationViewArguments(email: paypalMail)) == true){
+  Future _verifyPaypalAccount() async {
+    if (await _navigationService.navigateTo(Routes.paypalVerificationView,
+            arguments: PaypalVerificationViewArguments(email: paypalMail)) ==
+        true) {
       _createSellerAccount();
-    }else{
+    } else {
       _snackbarService.showCustomSnackBar(
         variant: AlertType.error,
         title: "Try again",
@@ -73,15 +75,25 @@ class SellerSignupViewModel extends BaseViewModel {
 
     /*_navigationService.navigateTo(Routes.paypalVerificationView,
     arguments: PaypalVerificationViewArguments(email: paypalMail));*/
+  }
 
+   createStripeConnectedAccount() async { 
+        if (await _navigationService.navigateTo(Routes.connectStripeView) ==
+        true) {
+      _createSellerAccount();
+    } else {
+      _snackbarService.showCustomSnackBar(
+        variant: AlertType.error,
+        title: "Try again",
+        message: "Stripe connect account registration failed",
+      );
+    }
   }
 
   bool _isFormValid() {
-    final bool isFormEmpty =
-        name.isEmpty && phoneNumber.isEmpty && paypalMail.isEmpty;
+    final bool isFormEmpty = name.isEmpty && phoneNumber.isEmpty && paypalMail.isEmpty;
 
-    final bool isFieldsValid = Validators.emptyStringValidator(name, 'Name') ==
-            null &&
+    final bool isFieldsValid = Validators.emptyStringValidator(name, 'Name') == null &&
         Validators.emptyStringValidator(phoneNumber, 'Phone Number') == null &&
         Validators.emptyStringValidator(paypalMail, 'Mail Id') == null &&
         Validators.dobValidator(

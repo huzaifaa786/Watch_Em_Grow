@@ -24,6 +24,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   if (Platform.isIOS) FirebaseMessaging.instance.requestPermission();
   await ThemeManager.initialise();
+  if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   // App Orientation fixed as Portrait
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp, 

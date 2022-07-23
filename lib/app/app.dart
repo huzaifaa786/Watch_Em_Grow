@@ -16,6 +16,7 @@ import 'package:mipromo/ui/category/category_view.dart';
 import 'package:mipromo/ui/category/filter/category_filter_view.dart';
 import 'package:mipromo/ui/chats/chats_view.dart';
 import 'package:mipromo/ui/chats/messages/messages_view.dart';
+import 'package:mipromo/ui/connect_stripe/stripe_view.dart';
 import 'package:mipromo/ui/follow/followers/followers_view.dart';
 import 'package:mipromo/ui/follow/following/following_view.dart';
 import 'package:mipromo/ui/landing/landing_view.dart';
@@ -82,6 +83,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: OrderSuccessView),
     MaterialRoute(page: BookServiceView),
     MaterialRoute(page: BookingView),
+    MaterialRoute(page: ConnectStripeView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

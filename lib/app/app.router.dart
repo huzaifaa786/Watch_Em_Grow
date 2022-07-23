@@ -26,6 +26,7 @@ import '../ui/category/category_view.dart';
 import '../ui/category/filter/category_filter_view.dart';
 import '../ui/chats/chats_view.dart';
 import '../ui/chats/messages/messages_view.dart';
+import '../ui/connect_stripe/stripe_view.dart';
 import '../ui/follow/followers/followers_view.dart';
 import '../ui/follow/following/following_view.dart';
 import '../ui/landing/landing_view.dart';
@@ -95,6 +96,7 @@ class Routes {
   static const String orderSuccessView = '/order-success-view';
   static const String bookServiceView = '/book-service-view';
   static const String bookingView = '/booking-view';
+  static const String connectStripeView = '/connect-stripe-view';
   static const all = <String>{
     startUpView,
     landingView,
@@ -136,6 +138,7 @@ class Routes {
     orderSuccessView,
     bookServiceView,
     bookingView,
+    connectStripeView,
   };
 }
 
@@ -183,6 +186,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.orderSuccessView, page: OrderSuccessView),
     RouteDef(Routes.bookServiceView, page: BookServiceView),
     RouteDef(Routes.bookingView, page: BookingView),
+    RouteDef(Routes.connectStripeView, page: ConnectStripeView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -548,6 +552,12 @@ class StackedRouter extends RouterBase {
           //order: args.order,
           service: args.service,
         ),
+        settings: data,
+      );
+    },
+    ConnectStripeView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const ConnectStripeView(),
         settings: data,
       );
     },
