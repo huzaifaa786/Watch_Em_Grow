@@ -47,11 +47,13 @@ class _ServiceViewState extends State<ServiceView> {
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController!,
       autoInitialize: true,
+      autoPlay: true,
       aspectRatio: 1,
       allowMuting: true,
       showControls: false,
       looping: true,
-      fullScreenByDefault: true,
+      allowFullScreen: true,
+      fullScreenByDefault: false,
       deviceOrientationsOnEnterFullScreen: [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
       materialProgressColors: ChewieProgressColors(
         playedColor: Colors.purple,
@@ -134,7 +136,7 @@ class _ServiceViewState extends State<ServiceView> {
                                      
                                         GestureDetector(
                                             onTap: () {
-                                        chewieController!.play();
+                                              // chewieController!.enterFullScreen();
                                             },
                                             child: Chewie(
                                         controller: chewieController!,

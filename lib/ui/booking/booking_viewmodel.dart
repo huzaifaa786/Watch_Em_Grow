@@ -84,13 +84,8 @@ class BookingViewModel extends BaseViewModel {
 
   Future<dynamic> uploadBookingMock(
       {required BookingService newBooking}) async {
-    final response = await _dialogService.showCustomDialog(
-      variant: AlertType.custom,
-      title: 'Choose Payment Method',
-    );
 
-    if (response != null && response.confirmed) {
-      if (await _navigationService.navigateTo(Routes.inputAddressView) ==
+ if (await _navigationService.navigateTo(Routes.inputAddressView) ==
           true) {
         await _navigationService.navigateTo(
           Routes.bookServiceView,
@@ -107,24 +102,47 @@ class BookingViewModel extends BaseViewModel {
             serviceDuration: newBooking.serviceDuration)),
         );
       }
-    } else if (response != null && !response.confirmed) {
-      await initPaymentSheet();
-      if (await confirmPayment()) {
-        await addOrder(newBooking.bookingStart,newBooking.bookingEnd);
-        await _databaseApi.uploadBookingFirebase(
-        newBooking: BookkingService(
-            email: newBooking.userEmail,
-            bookingStart: newBooking.bookingStart,
-            bookingEnd: newBooking.bookingEnd,
-            userId: newBooking.userId,
-            userName: newBooking.userName,
-            serviceId: newBooking.serviceId,
-            serviceName: newBooking.serviceName,
-            servicePrice: newBooking.servicePrice,
-            serviceDuration: newBooking.serviceDuration));
-      }
+    // final response = await _dialogService.showCustomDialog(
+    //   variant: AlertType.custom,
+    //   title: 'Choose Payment Method',
+    // );
+
+    // if (response != null && response.confirmed) {
+    //   if (await _navigationService.navigateTo(Routes.inputAddressView) ==
+    //       true) {
+    //     await _navigationService.navigateTo(
+    //       Routes.bookServiceView,
+    //       arguments: BookServiceViewArguments(
+    //           user: user, service: service, bookingservice: BookkingService(
+    //         email: newBooking.userEmail,
+    //         bookingStart: newBooking.bookingStart,
+    //         bookingEnd: newBooking.bookingEnd,
+    //         userId: newBooking.userId,
+    //         userName: newBooking.userName,
+    //         serviceId: newBooking.serviceId,
+    //         serviceName: newBooking.serviceName,
+    //         servicePrice: newBooking.servicePrice,
+    //         serviceDuration: newBooking.serviceDuration)),
+    //     );
+    //   }
+    // } else if (response != null && !response.confirmed) {
+    //   await initPaymentSheet();
+    //   if (await confirmPayment()) {
+    //     await addOrder(newBooking.bookingStart,newBooking.bookingEnd);
+    //     await _databaseApi.uploadBookingFirebase(
+    //     newBooking: BookkingService(
+    //         email: newBooking.userEmail,
+    //         bookingStart: newBooking.bookingStart,
+    //         bookingEnd: newBooking.bookingEnd,
+    //         userId: newBooking.userId,
+    //         userName: newBooking.userName,
+    //         serviceId: newBooking.serviceId,
+    //         serviceName: newBooking.serviceName,
+    //         servicePrice: newBooking.servicePrice,
+    //         serviceDuration: newBooking.serviceDuration));
+    //   }
       
-    }
+    // }
 
     // await Future.delayed(const Duration(seconds: 1));
     // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {

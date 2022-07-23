@@ -33,7 +33,8 @@ class BookingView extends StatelessWidget {
                 children: [
                   SingleChildScrollView(
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.78,
+                      height: MediaQuery.of(context).size.height * 0.87,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30))),
                       width: MediaQuery.of(context).size.width,
                       child: BookingCalendar(
                         bookingService: model.mockBookingService,
@@ -41,15 +42,13 @@ class BookingView extends StatelessWidget {
                         uploadBooking: model.uploadBookingMock,
                         convertStreamResultToDateTimeRanges:
                             model.convertStreamResultMock,
+                            
                         pauseSlots: model.pauseSlots,
                         pauseSlotText: 'LUNCH',
-                        availableSlotColor: Colors.white,
+                        
+                        availableSlotColor: model.isDarkMode ?Colors.black : Colors.white,
                         bookedSlotColor: Color(4286745852),
-                        bookingButtonText: service.name +
-                            '(' +
-                            '£' +
-                            service.price.toString() +
-                            ')',
+                        // bookingButtonText: ,
                         uploadingWidget: Container(
                             alignment: Alignment.center,
                             margin: EdgeInsets.only(top: 20),
