@@ -24,6 +24,7 @@ class ServiceViewModel extends BaseViewModel {
   int? selectedSize;
   int selectedSizeIndex = -1;
   bool isApiRunning = false;
+  String? username;
 
   PageController viewController = PageController();
   int selectedIndex = 0;
@@ -38,27 +39,28 @@ class ServiceViewModel extends BaseViewModel {
 
   Future<void> init(ShopService cService) async {
     setBusy(true);
+    
     viewController.addListener(() {
-      if(viewController.page!.round() != selectedIndex){
-          selectedIndex = viewController.page!.round();
-          notifyListeners();
-          return;
+      if (viewController.page!.round() != selectedIndex) {
+        selectedIndex = viewController.page!.round();
+        notifyListeners();
+        return;
       }
     });
 
     await _userService.syncUser();
     user = _userService.currentUser;
     service = cService;
-    if (service.imageUrl1 != null){
+    if (service.imageUrl1 != null) {
       imagesCount.add(true);
     }
-    if (service.imageUrl2 != null){
+    if (service.imageUrl2 != null) {
       imagesCount.add(true);
     }
-    if (service.imageUrl3 != null){
+    if (service.imageUrl3 != null) {
       imagesCount.add(true);
-    } 
-      if (service.videoUrl != null){
+    }
+    if (service.videoUrl != null) {
       imagesCount.add(true);
     }
     // if(imagesCount.length < 2){
@@ -81,7 +83,7 @@ class ServiceViewModel extends BaseViewModel {
     }
   }
 
-  onSizeSelected(int index){
+  onSizeSelected(int index) {
     selectedSizeIndex = index;
     selectedSize = index;
     notifyListeners();
@@ -91,9 +93,8 @@ class ServiceViewModel extends BaseViewModel {
     isApiRunning = true;
     notifyListeners();
     await init(service).whenComplete(
-          () async {
-        await _databaseApi
-            .getUser(receiverId).then((receiver){
+      () async {
+        await _databaseApi.getUser(receiverId).then((receiver) {
           isApiRunning = false;
           notifyListeners();
           _navigationService.navigateTo(
@@ -183,15 +184,14 @@ class ServiceViewModel extends BaseViewModel {
     );
 
     if (dialogResponse?.confirmed ?? false) {
-      
       // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
-        await _navigationService.navigateTo(
-          Routes.bookingView,
-          arguments: BookingViewArguments(
-            user: user,
-            service: service,
-          ),
-        );
+      await _navigationService.navigateTo(
+        Routes.bookingView,
+        arguments: BookingViewArguments(
+          user: user,
+          service: service,
+        ),
+      );
       // }
 
       /*final timeNow = DateTime.now();
@@ -277,17 +277,16 @@ class ServiceViewModel extends BaseViewModel {
   Future<void> navigateToDirectChatView(String receiverId) async {
     isApiRunning = true;
     notifyListeners();
-    await _databaseApi
-        .getUser(receiverId).then((receiver){
+    await _databaseApi.getUser(receiverId).then((receiver) {
       isApiRunning = false;
       notifyListeners();
-    _navigationService.navigateTo(
-    Routes.messagesView,
-    arguments: MessagesViewArguments(
-    currentUser: user,
-    receiver: receiver,
-    ),
-    );
+      _navigationService.navigateTo(
+        Routes.messagesView,
+        arguments: MessagesViewArguments(
+          currentUser: user,
+          receiver: receiver,
+        ),
+      );
     });
   }
 

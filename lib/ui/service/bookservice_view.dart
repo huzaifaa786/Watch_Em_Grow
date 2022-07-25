@@ -31,24 +31,26 @@ class BookServiceView extends StatelessWidget { ///service
         ),
         body: model.isBusy
             ? const BasicLoader()
-            : Stack(
-                children: [
-                  WebView(
-                    initialUrl: model.checkoutUrl,
-                    javascriptMode: JavascriptMode.unrestricted,
-                    navigationDelegate: (NavigationRequest request) {
-                      return model.handleWebViewUrlAService(request);
-                    },
-                    onProgress: (_) {
-                      model.setIsWebviewLoading(loading: true);
-                    },
-                    onPageFinished: (_) {
-                      model.setIsWebviewLoading(loading: false);
-                    },
-                  ),
-                  if (model.isWebviewLoading) const BasicLoader()
-                ],
-              ),
+            : SafeArea(
+              child: Stack(
+                  children: [
+                    WebView(
+                      initialUrl: model.checkoutUrl,
+                      javascriptMode: JavascriptMode.unrestricted,
+                      navigationDelegate: (NavigationRequest request) {
+                        return model.handleWebViewUrlAService(request);
+                      },
+                      onProgress: (_) {
+                        model.setIsWebviewLoading(loading: true);
+                      },
+                      onPageFinished: (_) {
+                        model.setIsWebviewLoading(loading: false);
+                      },
+                    ),
+                    if (model.isWebviewLoading) const BasicLoader()
+                  ],
+                ),
+            ),
       ),
       viewModelBuilder: () => BookServiceViewModel(user, service,bookingservice),
     );
