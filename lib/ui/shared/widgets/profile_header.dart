@@ -81,7 +81,7 @@ class ProfileHeader extends StatelessWidget {
                       .fontFamily(shop!.fontStyle)
                       .color(Color(shop!.color))
                       .make(),
-                  25.widthBox,
+                  30.widthBox,
                   RatingStars(
                     value: shop!.rating,
                     starSize: 16,
@@ -106,7 +106,7 @@ class ProfileHeader extends StatelessWidget {
                     const SizedBox.shrink(),
                 ],
               ),
-              Container(width: MediaQuery.of(context).size.width*0.4, child: shop!.description.text.make().pOnly(left: 6),)
+              Container(width: MediaQuery.of(context).size.width*0.4, child: shop!.description.text.make().pOnly(left: 2),)
             ],
           )
         else
