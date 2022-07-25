@@ -115,8 +115,9 @@ class _ServiceViewState extends State<ServiceView> {
                             ],
                           ),
                         ),
-                        AspectRatio(
-                          aspectRatio: 1 / 1,
+                        Container(
+                          // aspectRatio: 1/1,
+                          height: 540,
                           child: PageView(
                             controller: model.viewController,
                             children: [

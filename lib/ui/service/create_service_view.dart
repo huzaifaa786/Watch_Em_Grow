@@ -10,6 +10,7 @@ import 'package:mipromo/ui/shared/widgets/busy_button.dart';
 import 'package:mipromo/ui/shared/widgets/inputfield.dart';
 import 'package:stacked/stacked.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:video_editor/ui/crop/crop_grid.dart';
 
 class CreateServiceView extends StatelessWidget {
   const CreateServiceView({
@@ -40,7 +41,9 @@ class CreateServiceView extends StatelessWidget {
                       height: context.screenHeight / 2.5,
                       width: context.screenWidth,
                       child: PageView.builder(
-                        itemCount: model.images.length < 3 ? model.images.length + 1 : model.images.length,
+                        itemCount: model.images.length < 3
+                            ? model.images.length + 1
+                            : model.images.length,
                         itemBuilder: (context, index) {
                           if (index == model.images.length) {
                             return SizedBox(
@@ -52,7 +55,10 @@ class CreateServiceView extends StatelessWidget {
                                     Icons.add,
                                     color: Styles.kcPrimaryColor,
                                   ),
-                                  'Add Image'.text.color(Styles.kcPrimaryColor).make(),
+                                  'Add Image'
+                                      .text
+                                      .color(Styles.kcPrimaryColor)
+                                      .make(),
                                 ],
                               ).mdClick(
                                 () {
@@ -101,23 +107,39 @@ class CreateServiceView extends StatelessWidget {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(12.0),
-                            child: Icon(Icons.add,color: Styles.kcPrimaryColor,),
+                            child: Icon(
+                              Icons.add,
+                              color: Styles.kcPrimaryColor,
+                            ),
                           ),
-                          Text("Add Video",style: TextStyle(color: Styles.kcPrimaryColor,fontWeight: FontWeight.bold),),
+                          Text(
+                            "Add Video",
+                            style: TextStyle(
+                                color: Styles.kcPrimaryColor,
+                                fontWeight: FontWeight.bold),
+                          ),
                           Container(
                             width: MediaQuery.of(context).size.width * 0.6,
                             child: Padding(
-                              padding: const EdgeInsets.only(left:8.0),
-                              child: Text(model.videoName == null ? 'no video selected' : model.videoName.toString(),maxLines: 2,style: TextStyle(color: Colors.grey),),
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                model.videoName == null
+                                    ? 'no video selected'
+                                    : model.videoName.toString(),
+                                maxLines: 2,
+                                style: TextStyle(color: Colors.grey),
+                              ),
                             ),
                           )
                         ],
                       ),
                     ),
+                    
                     InputField(
                       hintText: Constants.serviceNameLabel,
                       validate: model.autoValidate,
-                      validator: (serviceName) => Validators.emptyStringValidator(
+                      validator: (serviceName) =>
+                          Validators.emptyStringValidator(
                         serviceName,
                         'Service Name',
                       ),
@@ -132,7 +154,8 @@ class CreateServiceView extends StatelessWidget {
                       maxLength: 150,
                       counter: '',
                       textInputType: TextInputType.multiline,
-                      validator: (description) => Validators.emptyStringValidator(
+                      validator: (description) =>
+                          Validators.emptyStringValidator(
                         description,
                         'Description',
                       ),
@@ -141,8 +164,9 @@ class CreateServiceView extends StatelessWidget {
                       },
                     ),
                     DropdownButtonFormField<String>(
-                      autovalidateMode:
-                          model.autoValidate ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
+                      autovalidateMode: model.autoValidate
+                          ? AutovalidateMode.always
+                          : AutovalidateMode.onUserInteraction,
                       decoration: const InputDecoration.collapsed(
                         hintText: 'Type',
                       ),
@@ -167,7 +191,7 @@ class CreateServiceView extends StatelessWidget {
                     )
                         .p12()
                         .centered()
-                        .box    
+                        .box
                         .border(color: Colors.grey)
                         .height(55)
                         .withRounded(value: 12)
@@ -177,11 +201,14 @@ class CreateServiceView extends StatelessWidget {
                           v: 12,
                         ),
                     if (model.selectedType == Constants.productLabel)
-                      if (shop.category == 'Trainers' || shop.category == 'Clothing')
+                      if (shop.category == 'Trainers' ||
+                          shop.category == 'Clothing')
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Constants.selectSizesLabel.text.gray600.make().py4(),
+                            Constants.selectSizesLabel.text.gray600
+                                .make()
+                                .py4(),
                             Wrap(
                               spacing: 10,
                               children: [
@@ -384,7 +411,9 @@ class CreateServiceView extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Constants.selectSizesLabel.text.gray600.make().py4(),
+                            Constants.selectSizesLabel.text.gray600
+                                .make()
+                                .py4(),
                             Wrap(
                               spacing: 10,
                               children: [
@@ -495,7 +524,8 @@ class CreateServiceView extends StatelessWidget {
                         child: '£'.text.lg.make(),
                       ),
                       validate: model.autoValidate,
-                      validator: (price) => Validators.emptyStringValidator(price, 'Price'),
+                      validator: (price) =>
+                          Validators.emptyStringValidator(price, 'Price'),
                       onChanged: (price) {
                         model.price = price;
                       },
@@ -508,10 +538,11 @@ class CreateServiceView extends StatelessWidget {
                         controller: model.durationController,
                         textInputType: TextInputType.number,
                         validate: model.autoValidate,
-                        validator: (duration) => Validators.emptyStringValidator(
-                        duration,
-                        'Duration',
-                      ),
+                        validator: (duration) =>
+                            Validators.emptyStringValidator(
+                          duration,
+                          'Duration',
+                        ),
                       ),
                     if (model.selectedType == Constants.serviceLabel)
                       InputField(
@@ -521,10 +552,11 @@ class CreateServiceView extends StatelessWidget {
                         controller: model.startController,
                         textInputType: TextInputType.number,
                         validate: model.autoValidate,
-                        validator: (startHour) => Validators.emptyStringValidator(
-                        startHour,
-                        'Bookings available from',
-                      ),
+                        validator: (startHour) =>
+                            Validators.emptyStringValidator(
+                          startHour,
+                          'Bookings available from',
+                        ),
                       ),
                     if (model.selectedType == Constants.serviceLabel)
                       InputField(
@@ -535,18 +567,18 @@ class CreateServiceView extends StatelessWidget {
                         textInputType: TextInputType.number,
                         validate: model.autoValidate,
                         validator: (endHour) => Validators.emptyStringValidator(
-                        endHour,
-                        'Booking available till',
+                          endHour,
+                          'Booking available till',
+                        ),
                       ),
-                      ),
-                      InputField(
-                        hintText: "Appointment note",
-                        //maxLength: 5,
-                        counter: "",
-                        controller: model.noteController,
-                        textInputType: TextInputType.text,
-                        validate: false,
-                      ),
+                    InputField(
+                      hintText: "Appointment note",
+                      //maxLength: 5,
+                      counter: "",
+                      controller: model.noteController,
+                      textInputType: TextInputType.text,
+                      validate: false,
+                    ),
                     BusyButton(
                       busy: model.isBusy,
                       icon: Icons.done,
