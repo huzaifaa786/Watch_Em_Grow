@@ -77,7 +77,7 @@ class HomeView extends StatelessWidget {
                               ],
                             )
                                 .box
-                                  .height(context.screenHeight * 0.29)/// 3.2)
+                                  .height(context.screenHeight * 0.3)/// 3.2)
                                 .width(context.screenWidth)
                                 .make(),
                             Column(
