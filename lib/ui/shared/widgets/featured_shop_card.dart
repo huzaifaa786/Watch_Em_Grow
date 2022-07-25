@@ -104,7 +104,8 @@ class FeaturedShopCard extends StatelessWidget {
                       ),
                     ],
                   ).pOnly(right: 12),
-                  const Spacer(),
+                  // const Spacer(flex: 1,),
+                  10.heightBox,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,

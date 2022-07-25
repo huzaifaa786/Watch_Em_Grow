@@ -27,13 +27,13 @@ class BookingView extends StatelessWidget {
           ? const BasicLoader()
           : Scaffold(
               appBar: AppBar(
-                title: "Edit Booking Calendar".text.make(),
+                title: "Your Appointment".text.make(),
               ),
               body: Stack(
                 children: [
                   SingleChildScrollView(
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.87,
+                      height: MediaQuery.of(context).size.height * 0.83,
                       decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30))),
                       width: MediaQuery.of(context).size.width,
                       child: BookingCalendar(
@@ -47,6 +47,7 @@ class BookingView extends StatelessWidget {
                         pauseSlotText: 'LUNCH',
                         
                         availableSlotColor: model.isDarkMode ?Colors.black : Colors.white,
+                        hideBreakTime: model.isDarkMode ? true: false,
                         bookedSlotColor: Color(4286745852),
                         // bookingButtonText: ,
                         uploadingWidget: Container(
