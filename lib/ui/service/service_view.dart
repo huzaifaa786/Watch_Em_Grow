@@ -36,23 +36,6 @@ class _ServiceViewState extends State<ServiceView> {
   VideoPlayerController? videoPlayerController;
   bool isMuted = false;
 
-     // an arbitrary value, this can be whatever you need it to be
-    double videoContainerRatio = 0.5;
-
-    double getScale() {
-      double videoRatio = videoPlayerController!.value.aspectRatio;
-     
-      if (videoRatio < videoContainerRatio) {
-      ///for tall videos, we just return the inverse of the controller aspect ratio
-        return videoContainerRatio / videoRatio;
-      } else {
-        ///for wide videos, divide the video AR by the fixed container AR
-        ///so that the video does not over scale
-
-        return videoRatio / videoContainerRatio;
-      }
-    }
-
   @override
   void initState() {
     super.initState();
