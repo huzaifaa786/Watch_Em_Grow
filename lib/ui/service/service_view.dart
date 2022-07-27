@@ -103,7 +103,7 @@ class _ServiceViewState extends State<ServiceView> {
                               children: [
                                 Avatar(
                                   radius: context.screenWidth / 22,
-                                  imageUrl: model.user.imageUrl,
+                                  imageUrl: model.shopowner.imageUrl,
                                 ),
                                 Text(
                                   ' ' + model.user.username,
@@ -120,7 +120,7 @@ class _ServiceViewState extends State<ServiceView> {
                                 if (widget.service.imageUrl1 != null) ...[
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl1!,
-                                    fit: BoxFit.fill,
+                                    fit: BoxFit.contain,
                                     placeholder: (context, url) =>
                                         Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
                                     errorWidget: (context, url, error) => const Icon(Icons.error),

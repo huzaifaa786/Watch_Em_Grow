@@ -12,6 +12,11 @@ buildscript {
     }
 }
 
+// android{
+  
+// //   rootProject.ext.ffmpegKitPackage = "video"
+// }
+
 allprojects {
     repositories {
         google()

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/api/storage_api.dart';
@@ -5,6 +7,7 @@ import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/app/app.router.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/models/order.dart';
+import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/services/user_service.dart';
 import 'package:mipromo/ui/shared/helpers/data_models.dart';
@@ -20,6 +23,7 @@ class ServiceViewModel extends BaseViewModel {
   final _userService = locator<UserService>();
 
   late ShopService service;
+  late AppUser shopowner;
 
   int? selectedSize;
   int selectedSizeIndex = -1;
@@ -39,7 +43,7 @@ class ServiceViewModel extends BaseViewModel {
 
   Future<void> init(ShopService cService) async {
     setBusy(true);
-    
+
     viewController.addListener(() {
       if (viewController.page!.round() != selectedIndex) {
         selectedIndex = viewController.page!.round();
@@ -47,10 +51,13 @@ class ServiceViewModel extends BaseViewModel {
         return;
       }
     });
-
+    
     await _userService.syncUser();
     user = _userService.currentUser;
     service = cService;
+    if (service.ownerId != null) {
+     await getshop(service);
+    }
     if (service.imageUrl1 != null) {
       imagesCount.add(true);
     }
@@ -86,6 +93,13 @@ class ServiceViewModel extends BaseViewModel {
   onSizeSelected(int index) {
     selectedSizeIndex = index;
     selectedSize = index;
+    notifyListeners();
+  }
+
+  getshop(ShopService index) async {
+    await _databaseApi
+        .getUser(service.ownerId)
+        .then((Shopdata) => shopowner = Shopdata);
     notifyListeners();
   }
 
@@ -178,7 +192,8 @@ class ServiceViewModel extends BaseViewModel {
   Future bookService() async {
     final dialogResponse = await _dialogService.showConfirmationDialog(
       title: 'Have you arranged a date?',
-      description: 'By booking a visit you agree to the processing of your personal data',
+      description:
+          'By booking a visit you agree to the processing of your personal data',
       confirmationTitle: 'Arrange Date',
       cancelTitle: 'Close',
     );
