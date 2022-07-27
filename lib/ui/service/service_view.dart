@@ -49,7 +49,6 @@ class _ServiceViewState extends State<ServiceView> {
       videoPlayerController: videoPlayerController!,
       autoInitialize: true,
       autoPlay: true,
-      aspectRatio: 1,
       allowMuting: true,
       showControls: false,
       looping: true,

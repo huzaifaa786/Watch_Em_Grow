@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -49,7 +50,7 @@ class CreateServiceViewModel extends BaseViewModel {
   TextEditingController durationController = new TextEditingController();
   TextEditingController startController = new TextEditingController();
   TextEditingController endController = new TextEditingController();
-  late VideoEditorController _controller;
+  // late VideoEditorController _controller;
   String? selectedType;
 
   bool onesizeValue = false;
@@ -113,21 +114,15 @@ class CreateServiceViewModel extends BaseViewModel {
             description: description.trimRight(),
             price: double.parse(price),
             type: selectedType!,
-            duration: selectedType != "Product"
-                ? int.parse(durationController.text)
-                : null,
-            startHour: selectedType != "Product"
-                ? int.parse(startController.text)
-                : null,
-            endHour: selectedType != "Product"
-                ? int.parse(endController.text)
-                : null,
+            duration: selectedType != "Product" ? int.parse(durationController.text) : null,
+            startHour: selectedType != "Product" ? int.parse(startController.text) : null,
+            endHour: selectedType != "Product" ? int.parse(endController.text) : null,
             sizes: selectedType == "Product" ? sizes : null,
-            bookingNote: selectedType != "Product"
-                ? noteController.text.toString()
-                : null),
+            bookingNote: selectedType != "Product" ? noteController.text.toString() : null),
       );
-      if (selectedVideo != null) {
+      log(selectedVideo1.toString());
+      if (selectedVideo1 != null) {
+        log('1111111111111111111111111111111');
         await _saveServiceVideo();
       }
       await _saveServiceImage();
@@ -142,8 +137,7 @@ class CreateServiceViewModel extends BaseViewModel {
           shopId: shop.id,
           highestPrice: double.parse(price),
         );
-      } else if (double.parse(price) < shop.highestPrice &&
-          shop.lowestPrice == 0) {
+      } else if (double.parse(price) < shop.highestPrice && shop.lowestPrice == 0) {
         await _databaseApi.updateShopLowestPrice(
           shopId: shop.id,
           lowestPrice: double.parse(price),
@@ -177,12 +171,9 @@ class CreateServiceViewModel extends BaseViewModel {
             ) ==
             null ||
         Validators.emptyStringValidator(price, 'Price') == null ||
-        Validators.emptyStringValidator(durationController.text, 'Duration') ==
-            null ||
-        Validators.emptyStringValidator(startController.text, 'Start Hour') ==
-            null ||
-        Validators.emptyStringValidator(endController.text, 'End Hour') ==
-            null) {
+        Validators.emptyStringValidator(durationController.text, 'Duration') == null ||
+        Validators.emptyStringValidator(startController.text, 'Start Hour') == null ||
+        Validators.emptyStringValidator(endController.text, 'End Hour') == null) {
       if (_selectedImage1 != null) {
         return true;
       } else {
@@ -214,8 +205,8 @@ class CreateServiceViewModel extends BaseViewModel {
   }
 
   var videoName;
-  File? _selectedVideo;
-  File? get selectedVideo => _selectedVideo;
+  File? selectedVideo1;
+  File? get selectedVideo => selectedVideo1;
 
   File? _selectedImage1;
   File? get selectedImage1 => _selectedImage1;
@@ -263,30 +254,21 @@ class CreateServiceViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future selectVideo() async {
-    final picker = ImagePicker();
-
-    final file = await picker.getVideo(
-      source: ImageSource.gallery,
-    );
-
-    
-    _controller = VideoEditorController.file(File(file!.path),
-        maxDuration: const Duration(seconds: 30))
-      ..initialize().then((_) => '');
-    _controller.preferredCropAspectRatio = 1/1;
-    _controller.updateCrop();
-    _selectedVideo = _controller.file;
-     videoName = _controller.file.path.split('/').last;
+  Future selectVideo(File file) async {
+    print(file);
+    selectedVideo1 =File(file.path);
+    log("selexrefKASJ222222222222@@@@@@@@@@@@@");
+    log(selectedVideo1.toString());
+    videoName = file.path.split('/').last;
+    log(videoName.toString());
     notifyListeners();
   }
 
   Future _saveServiceVideo() async {
     if (selectedImage1 != null) {
-      final CloudStorageResult storageResult =
-          await _storageApi.uploadServiceVideo(
+      final CloudStorageResult storageResult = await _storageApi.uploadServiceVideo(
         serviceId: _serviceId,
-        videoToUpload: _selectedVideo!,
+        videoToUpload: selectedVideo1!,
       );
 
       await _databaseApi.updateServiceVideo(
@@ -338,8 +320,7 @@ class CreateServiceViewModel extends BaseViewModel {
 
   Future _saveServiceImage() async {
     if (selectedImage1 != null) {
-      final CloudStorageResult storageResult =
-          await _storageApi.uploadServiceImages(
+      final CloudStorageResult storageResult = await _storageApi.uploadServiceImages(
         serviceId: _serviceId,
         imageNumber: '1',
         imageToUpload: _finalImage1!,
@@ -353,8 +334,7 @@ class CreateServiceViewModel extends BaseViewModel {
       );
     }
     if (selectedImage2 != null) {
-      final CloudStorageResult storageResult =
-          await _storageApi.uploadServiceImages(
+      final CloudStorageResult storageResult = await _storageApi.uploadServiceImages(
         serviceId: _serviceId,
         imageNumber: '2',
         imageToUpload: _finalImage2!,
@@ -368,8 +348,7 @@ class CreateServiceViewModel extends BaseViewModel {
       );
     }
     if (selectedImage3 != null) {
-      final CloudStorageResult storageResult =
-          await _storageApi.uploadServiceImages(
+      final CloudStorageResult storageResult = await _storageApi.uploadServiceImages(
         serviceId: _serviceId,
         imageNumber: '3',
         imageToUpload: _finalImage3!,
