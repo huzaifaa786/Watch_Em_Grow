@@ -274,7 +274,7 @@ class CreateServiceViewModel extends BaseViewModel {
     _controller = VideoEditorController.file(File(file!.path),
         maxDuration: const Duration(seconds: 30))
       ..initialize().then((_) => '');
-    _controller.preferredCropAspectRatio = 1/1;
+    _controller.preferredCropAspectRatio = 4/5;
     _controller.updateCrop();
     _selectedVideo = _controller.file;
      videoName = _controller.file.path.split('/').last;

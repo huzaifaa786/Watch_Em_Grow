@@ -70,29 +70,30 @@ class ProfileHeader extends StatelessWidget {
         if (shop != null) 10.heightBox else const SizedBox.shrink(),
         if (shop != null)
           Column(
-
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
               Row(
                 children: [
-                  
                   shop!.name.text.xl2
                       .fontFamily(shop!.fontStyle)
                       .color(Color(shop!.color))
                       .make(),
                   30.widthBox,
+
+                  // '(${shop!.ratingCount})'.text.make(),
+                ],
+              ),
+              10.heightBox,
+              Row(
+                children: [
                   RatingStars(
                     value: shop!.rating,
                     starSize: 16,
                     valueLabelVisibility: false,
                   ),
-                  
-                  // '(${shop!.ratingCount})'.text.make(),
-                  
                 ],
               ),
-              20.heightBox,
+              10.heightBox,
               Row(
                 children: [
                   const Icon(
@@ -106,7 +107,13 @@ class ProfileHeader extends StatelessWidget {
                     const SizedBox.shrink(),
                 ],
               ),
-              Container(width: MediaQuery.of(context).size.width*0.4, child: shop!.description.text.make().pOnly(left: 2),)
+              Row(children: [
+                Container(
+                  padding: EdgeInsets.only(left: 5),
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  child: shop!.description.text.make(),
+                ),
+              ])
             ],
           )
         else
