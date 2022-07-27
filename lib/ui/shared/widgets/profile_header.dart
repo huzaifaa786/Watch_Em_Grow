@@ -75,9 +75,7 @@ class ProfileHeader extends StatelessWidget {
               Row(
                 children: [
                   shop!.name.text.xl2
-                      .fontFamily(shop!.fontStyle)
-                      .color(Color(shop!.color))
-                      .make(),
+                      .fontFamily(shop!.fontStyle).make(),
                   30.widthBox,
 
                   // '(${shop!.ratingCount})'.text.make(),
