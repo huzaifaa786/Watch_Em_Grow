@@ -23,6 +23,7 @@ class ServiceViewModel extends BaseViewModel {
   final _userService = locator<UserService>();
 
   late ShopService service;
+  late Shop shop;
   late AppUser shopowner;
 
   int? selectedSize;
@@ -56,6 +57,9 @@ class ServiceViewModel extends BaseViewModel {
     user = _userService.currentUser;
     service = cService;
     if (service.ownerId != null) {
+     await getshopservice(service);
+    }
+    if (service.shopId != null) {
      await getshop(service);
     }
     if (service.imageUrl1 != null) {
@@ -96,10 +100,15 @@ class ServiceViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  getshop(ShopService index) async {
+  getshopservice(ShopService index) async {
     await _databaseApi
-        .getUser(service.ownerId)
+        .getUser(index.ownerId)
         .then((Shopdata) => shopowner = Shopdata);
+    notifyListeners();
+  }
+  getshop(ShopService index) async {
+   shop = await _databaseApi
+        .getShop(index.shopId);     
     notifyListeners();
   }
 

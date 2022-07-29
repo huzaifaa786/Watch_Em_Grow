@@ -141,6 +141,7 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           ).then((val) {
                             print(val);
                             model.selectedVideo1 = parseToFile(val);
+                            model.videoName =  parseToFile(val).path.split('/').last;
                           });
                         }
                       },
@@ -691,7 +692,6 @@ class _VideoEditorState extends State<VideoEditor> {
       },
     );
     _isExporting.value = false;
-    log('dccccccccccccccccccccccccccc');
 
     if (file != null) {
       print(file);
@@ -835,7 +835,7 @@ class _VideoEditorState extends State<VideoEditor> {
                                         //   ),
                                         // ),
                                         // Padding(padding: EdgeInsets.all(10),child: ,),
-
+                                        
                                         Expanded(
                                           child: GestureDetector(
                                             onTap: () async {
@@ -845,10 +845,13 @@ class _VideoEditorState extends State<VideoEditor> {
                                               // print(_controller.preferredCropAspectRatio);
                                               Navigator.pop(context, _controller.file);
                                             },
-                                            child: Icon(
-                                              Icons.download,
-                                              color: Colors.white,
-                                              size: 38,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10.0),
+                                              child: Icon(
+                                                Icons.done,
+                                                color: Colors.white,
+                                                size: 38,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -1000,20 +1003,10 @@ class _CropScreenState extends State<CropScreen> {
             SizedBox(height: 15),
             Row(children: [
               Expanded(
-                child: SplashTap(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Center(
-                    child: TextDesigned(
-                      "CANCEL",
-                      bold: true,
-                    ),
-                  ),
-                ),
+                child:Text('')
               ),
-              buildSplashTap("1:1", 1 / 1),
-              buildSplashTap("4:5", 4 / 5, padding: EdgeInsets.only(right: 10)),
+              buildSplashTap("1:1", 1 / 1, padding: EdgeInsets.all(10)),
+              buildSplashTap("4:5", 4 / 5, padding: EdgeInsets.all(10)),
               Expanded(
                 child: SplashTap(
                   onTap: () {
@@ -1027,10 +1020,14 @@ class _CropScreenState extends State<CropScreen> {
                     Navigator.pop(context);
                   },
                   child: Center(
-                    child: TextDesigned(
-                      "Crop",
-                      bold: true,
-                      color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: TextDesigned(
+                        "Crop",
+                        bold: true,
+                        color: Colors.white,
+                        size: 19,
+                      ),
                     ),
                   ),
                 ),

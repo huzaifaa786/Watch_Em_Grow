@@ -33,7 +33,7 @@ class FeaturedShopCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           margin: EdgeInsets.only(
-            bottom: context.screenHeight / 28,//14
+            bottom: 28,//14
           ),
           child: Stack(
             children: [
@@ -108,7 +108,7 @@ class FeaturedShopCard extends StatelessWidget {
                   10.heightBox,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    // crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       /*Text(
                           shop.name,
@@ -139,7 +139,7 @@ class FeaturedShopCard extends StatelessWidget {
                     ],
                   ).pSymmetric(
                     h: 12,
-                    v: 8,
+                    v: 6,
                   ),
                 ],
               ).py4(),

@@ -106,7 +106,7 @@ class _ServiceViewState extends State<ServiceView> {
                                   imageUrl: model.shopowner.imageUrl,
                                 ),
                                 Text(
-                                  ' ' + model.user.username,
+                                  ' ' + model.shop.name,
                                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                                 ),
                               ],

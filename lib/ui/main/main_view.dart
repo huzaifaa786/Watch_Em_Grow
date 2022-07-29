@@ -56,7 +56,7 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
       
       model.onNavigationIconTap(index);
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.linear);
+        pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
       });
     }
 

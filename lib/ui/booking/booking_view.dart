@@ -29,11 +29,11 @@ class BookingView extends StatelessWidget {
               appBar: AppBar(
                 title: "Your Appointment".text.make(),
               ),
-              body: Stack(
-                children: [
-                  SingleChildScrollView(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.83,
+              body: SingleChildScrollView(
+                child: Stack(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.85,
                       decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30))),
                       width: MediaQuery.of(context).size.width,
                       child: BookingCalendar(
@@ -62,9 +62,9 @@ class BookingView extends StatelessWidget {
                             )),
                       ),
                     ),
-                  ),
-                  if (model.isSending) const BusyLoader(busy: true)
-                ],
+                    if (model.isSending) const BusyLoader(busy: true)
+                  ],
+                ),
               )),
       viewModelBuilder: () => BookingViewModel(
         user,
