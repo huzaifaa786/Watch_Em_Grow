@@ -279,6 +279,7 @@ class CreateServiceViewModel extends BaseViewModel {
         serviceId: _serviceId,
         imageFileName: storageResult.imageFileName,
         imageUrl: storageResult.imageUrl,
+        
       );
     }
   }
