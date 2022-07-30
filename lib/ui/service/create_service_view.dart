@@ -125,9 +125,9 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                     ),
                     GestureDetector(
                       onTap: () async {
+
                         final PickedFile? file =
                             await _picker.getVideo(source: ImageSource.gallery);
-
                         if (file != null) {
                           await Navigator.push(
                             context,
@@ -139,9 +139,11 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                               ),
                             ),
                           ).then((val) {
-                            print(val);
                             model.selectedVideo1 = parseToFile(val);
                             model.videoName =  parseToFile(val).path.split('/').last;
+                            setState(() {
+                              
+                            });
                           });
                         }
                       },

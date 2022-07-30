@@ -231,8 +231,7 @@ class CreateServiceViewModel extends BaseViewModel {
 
   static const androidUiSettings = AndroidUiSettings(
     hideBottomControls: false,
-
-    // lockAspectRatio: true,
+    lockAspectRatio: false,
     initAspectRatio: CropAspectRatioPreset.square,
   );
 

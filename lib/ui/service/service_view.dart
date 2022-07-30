@@ -113,14 +113,17 @@ class _ServiceViewState extends State<ServiceView> {
                             ),
                           ),
                           AspectRatio(
-                            aspectRatio: 1 / 1,
+                            
+                              
+                            
+                            aspectRatio:widget.service.videoUrl != null && videoPlayerController!.value.size.width > 0? videoPlayerController!.value.size.width/videoPlayerController!.value.size.height : 1/1,
                             child: PageView(
                               controller: model.viewController,
                               children: [
                                 if (widget.service.imageUrl1 != null) ...[
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl1!,
-                                    fit: BoxFit.contain,
+                                    // fit: BoxFit.fitHeight,
                                     placeholder: (context, url) =>
                                         Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
                                     errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -129,7 +132,7 @@ class _ServiceViewState extends State<ServiceView> {
                                 if (widget.service.imageUrl2 != null) ...[
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl2!,
-                                    fit: BoxFit.fill,
+                                    // fit: BoxFit.fitHeight,
                                     placeholder: (context, url) =>
                                         Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
                                     errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -138,36 +141,35 @@ class _ServiceViewState extends State<ServiceView> {
                                 if (widget.service.imageUrl3 != null) ...[
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl3!,
-                                    fit: BoxFit.fill,
+                                    // fit: BoxFit.fitHeight,
                                     placeholder: (context, url) =>
                                         Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
                                     errorWidget: (context, url, error) => const Icon(Icons.error),
                                   ),
                                 ],
                                 if (widget.service.videoUrl != null) ...[
-                                  Stack(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          // chewieController!.enterFullScreen();
-                                        },
-                                        child: Chewie(
-                                          controller: chewieController!,
-                                        ),
+                                  FittedBox(
+                                    fit: BoxFit.cover,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        // chewieController!.enterFullScreen();
+                                      },
+                                      child: Chewie(
+                                        controller: chewieController!,
                                       ),
-                                      Align(
-                                        alignment: Alignment.topRight,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Icon(
-                                            Icons.videocam_sharp,
-                                            color: Colors.white,
-                                            size: 30,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
+                                  // Align(
+                                  //   alignment: Alignment.topRight,
+                                  //   child: Padding(
+                                  //     padding: const EdgeInsets.all(8.0),
+                                  //     child: Icon(
+                                  //       Icons.videocam_sharp,
+                                  //       color: Colors.white,
+                                  //       size: 30,
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ]
                               ],
                             ),
