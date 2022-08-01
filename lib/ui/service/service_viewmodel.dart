@@ -1,6 +1,9 @@
 import 'dart:developer';
 
+import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/api/storage_api.dart';
 import 'package:mipromo/app/app.locator.dart';
@@ -14,6 +17,7 @@ import 'package:mipromo/ui/shared/helpers/data_models.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:video_player/video_player.dart';
 
 class ServiceViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
@@ -30,6 +34,10 @@ class ServiceViewModel extends BaseViewModel {
   int selectedSizeIndex = -1;
   bool isApiRunning = false;
   String? username;
+  ChewieController? chewieController;
+  VideoPlayerController? videoPlayerController;
+  double aspectRatio = 1;
+  bool isMuted = false;
 
   PageController viewController = PageController();
   int selectedIndex = 0;
@@ -52,15 +60,15 @@ class ServiceViewModel extends BaseViewModel {
         return;
       }
     });
-    
+
     await _userService.syncUser();
     user = _userService.currentUser;
     service = cService;
     if (service.ownerId != null) {
-     await getshopservice(service);
+      await getshopservice(service);
     }
     if (service.shopId != null) {
-     await getshop(service);
+      await getshop(service);
     }
     if (service.imageUrl1 != null) {
       imagesCount.add(true);
@@ -78,7 +86,29 @@ class ServiceViewModel extends BaseViewModel {
     //   imagesCount.clear();
     // }
     notifyListeners();
+    if (service.videoUrl != null) await initializePlayer();
     setBusy(false);
+  }
+
+  initializePlayer() async {
+    videoPlayerController = VideoPlayerController.network(service.videoUrl.toString());
+    await videoPlayerController!.initialize();
+    aspectRatio = videoPlayerController!.value.size.aspectRatio;
+    chewieController = ChewieController(
+      videoPlayerController: videoPlayerController!,
+      autoInitialize: true,
+      autoPlay: true,
+      allowMuting: true,
+      showControls: false,
+      looping: true,
+      allowFullScreen: true,
+      fullScreenByDefault: false,
+      deviceOrientationsOnEnterFullScreen: [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+      materialProgressColors: ChewieProgressColors(
+        playedColor: Colors.purple,
+        bufferedColor: Colors.purple.withOpacity(0.4),
+      ),
+    );
   }
 
   Future navigateToBuyServiceView() async {
@@ -101,14 +131,12 @@ class ServiceViewModel extends BaseViewModel {
   }
 
   getshopservice(ShopService index) async {
-    await _databaseApi
-        .getUser(index.ownerId)
-        .then((Shopdata) => shopowner = Shopdata);
+    await _databaseApi.getUser(index.ownerId).then((Shopdata) => shopowner = Shopdata);
     notifyListeners();
   }
+
   getshop(ShopService index) async {
-   shop = await _databaseApi
-        .getShop(index.shopId);     
+    shop = await _databaseApi.getShop(index.shopId);
     notifyListeners();
   }
 
@@ -201,8 +229,7 @@ class ServiceViewModel extends BaseViewModel {
   Future bookService() async {
     final dialogResponse = await _dialogService.showConfirmationDialog(
       title: 'Have you arranged a date?',
-      description:
-          'By booking a visit you agree to the processing of your personal data',
+      description: 'By booking a visit you agree to the processing of your personal data',
       confirmationTitle: 'Arrange Date',
       cancelTitle: 'Close',
     );
@@ -323,5 +350,15 @@ class ServiceViewModel extends BaseViewModel {
         onMainView: false,
       ),
     );
+  }
+
+  @override
+  Future<void> dispose() async {
+    videoPlayerController!.dispose();
+    chewieController!.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    super.dispose(); //change here
   }
 }

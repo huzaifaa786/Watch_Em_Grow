@@ -108,7 +108,7 @@ class ProfileHeader extends StatelessWidget {
               Row(children: [
                 Container(
                   padding: EdgeInsets.only(left: 5),
-                  width: MediaQuery.of(context).size.width * 0.4,
+                  width: MediaQuery.of(context).size.width * 0.9,
                   child: shop!.description.text.make(),
                 ),
               ])

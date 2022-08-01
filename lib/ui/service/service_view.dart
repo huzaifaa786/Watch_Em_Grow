@@ -32,45 +32,13 @@ class ServiceView extends StatefulWidget {
 }
 
 class _ServiceViewState extends State<ServiceView> {
-  ChewieController? chewieController;
-  VideoPlayerController? videoPlayerController;
-  bool isMuted = false;
 
-  @override
-  void initState() {
-    super.initState();
-    if (widget.service.videoUrl != null) initializePlayer();
-  }
 
-  initializePlayer() async {
-    videoPlayerController = VideoPlayerController.network(widget.service.videoUrl.toString());
 
-    chewieController = ChewieController(
-      videoPlayerController: videoPlayerController!,
-      autoInitialize: true,
-      autoPlay: true,
-      allowMuting: true,
-      showControls: false,
-      looping: true,
-      allowFullScreen: true,
-      fullScreenByDefault: false,
-      deviceOrientationsOnEnterFullScreen: [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
-      materialProgressColors: ChewieProgressColors(
-        playedColor: Colors.purple,
-        bufferedColor: Colors.purple.withOpacity(0.4),
-      ),
-    );
-  }
 
-  @override
-  Future<void> dispose() async {
-    videoPlayerController!.dispose();
-    chewieController!.dispose();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
-    super.dispose(); //change here
-  }
+  
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -113,17 +81,14 @@ class _ServiceViewState extends State<ServiceView> {
                             ),
                           ),
                           AspectRatio(
-                            
-                              
-                            
-                            aspectRatio:widget.service.videoUrl != null && videoPlayerController!.value.size.width > 0? videoPlayerController!.value.size.width/videoPlayerController!.value.size.height : 1/1,
+                             aspectRatio:widget.service.videoUrl != null? model.aspectRatio : 1/1,
                             child: PageView(
                               controller: model.viewController,
                               children: [
                                 if (widget.service.imageUrl1 != null) ...[
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl1!,
-                                    // fit: BoxFit.fitHeight,
+                                    fit: BoxFit.fitHeight,
                                     placeholder: (context, url) =>
                                         Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
                                     errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -132,7 +97,7 @@ class _ServiceViewState extends State<ServiceView> {
                                 if (widget.service.imageUrl2 != null) ...[
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl2!,
-                                    // fit: BoxFit.fitHeight,
+                                    fit: BoxFit.fitHeight,
                                     placeholder: (context, url) =>
                                         Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
                                     errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -141,23 +106,15 @@ class _ServiceViewState extends State<ServiceView> {
                                 if (widget.service.imageUrl3 != null) ...[
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl3!,
-                                    // fit: BoxFit.fitHeight,
+                                    fit: BoxFit.fitHeight,
                                     placeholder: (context, url) =>
                                         Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
                                     errorWidget: (context, url, error) => const Icon(Icons.error),
                                   ),
                                 ],
                                 if (widget.service.videoUrl != null) ...[
-                                  FittedBox(
-                                    fit: BoxFit.cover,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        // chewieController!.enterFullScreen();
-                                      },
-                                      child: Chewie(
-                                        controller: chewieController!,
-                                      ),
-                                    ),
+                                  Chewie(
+                                    controller: model.chewieController!,
                                   ),
                                   // Align(
                                   //   alignment: Alignment.topRight,

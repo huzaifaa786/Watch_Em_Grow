@@ -45,13 +45,15 @@ class HomeView extends StatelessWidget {
                                       .bold
                                       .make()
                                       .pLTRB(22, 12, 0, 12),
-                                  Expanded(
+                                  Container(
+                                    height: 160,
                                     child: Swiper(
                                       physics: const BouncingScrollPhysics(),
                                       itemCount: model.featuredShops.length/* <= 3
                                           ? model.allShops.length
                                           : 3*/,
                                       autoplay: true,
+                                      
                                       loop: false,
                                       curve: Curves.easeInOutQuart,
                                       duration: 800,
@@ -77,10 +79,7 @@ class HomeView extends StatelessWidget {
                                   ),
                                 ],
                               )
-                                  .box
-                                    .height(context.screenHeight * 0.3)/// 3.2)
-                                  .width(context.screenWidth)
-                                  .make(),
+                                 ,
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

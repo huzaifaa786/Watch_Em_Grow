@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:mipromo/api/auth_api.dart';
 import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/app/app.locator.dart';
@@ -26,8 +28,11 @@ class SearchViewModel extends BaseViewModel {
   List<AppUser>? shopOwners;
   List<ShopService>? allServices;
   bool following = false;
+  List<DocumentSnapshot>? documentList;
+  ScrollController controller = ScrollController();
 
   void init() async {
+    controller.addListener(_scrollListener);
     setBusy(true);
     await _getFollowers();
     _listenShopOwners();
@@ -38,7 +43,7 @@ class SearchViewModel extends BaseViewModel {
   }
 
   void _listenAllShops() {
-    _databaseApi.listenShops().listen(
+    _databaseApi.listenPaginatedShops().listen(
       (shopsData) {
         allShops = shopsData;
         if (users.isEmpty) {
@@ -61,6 +66,17 @@ class SearchViewModel extends BaseViewModel {
         notifyListeners();
       },
     );
+  }
+
+  void _scrollListener() async{
+    print(controller.position.maxScrollExtent);
+    if (controller.offset >= controller.position.maxScrollExtent && !controller.position.outOfRange) {
+      print("at the end of list");
+      final shoppps = await _databaseApi.listenNextPaginatedShops(searchedShops ,searchedShops.last.id);
+       searchedShops = searchedShops + shoppps;
+        notifyListeners();
+      
+    }
   }
 
   Future navigateToShopView1({

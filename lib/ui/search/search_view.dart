@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mipromo/api/database_api.dart';
+
+import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/ui/search/search_viewmodel.dart';
 import 'package:mipromo/ui/search/widgets/search_bar.dart';
@@ -13,8 +16,17 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class SearchView extends StatelessWidget {
+class SearchView extends StatefulWidget {
   const SearchView({Key? key}) : super(key: key);
+
+  @override
+  _SearchViewState createState() => _SearchViewState();
+}
+
+class _SearchViewState extends State<SearchView> {
+  ScrollController scrollController = ScrollController();
+  final _databaseApi = locator<DatabaseApi>();
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +41,7 @@ class SearchView extends StatelessWidget {
 }
 
 class SearchWidget extends HookViewModelWidget<SearchViewModel> {
+  
   @override
   Widget buildViewModelWidget(BuildContext context, SearchViewModel model) {
     final TextEditingController controller = useTextEditingController();
@@ -64,6 +77,7 @@ class SearchWidget extends HookViewModelWidget<SearchViewModel> {
                   ? ListView.builder(
                       physics: const BouncingScrollPhysics(),
                       shrinkWrap: true,
+                      controller: model.controller,
                       itemCount: model.searchedShops.length,
                       itemBuilder: (context, i) {
                         final Shop shop = model.searchedShops[i];

@@ -12,8 +12,7 @@ import 'package:velocity_x/velocity_x.dart';
 class BookingView extends StatelessWidget {
   final AppUser user;
   final ShopService service;
-  const BookingView({Key? key, required this.user, required this.service})
-      : super(key: key);
+  const BookingView({Key? key, required this.user, required this.service}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,24 +32,25 @@ class BookingView extends StatelessWidget {
                 child: Stack(
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.85,
+                      height: MediaQuery.of(context).size.height,
                       decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30))),
                       width: MediaQuery.of(context).size.width,
                       child: BookingCalendar(
+                        bookingGridCrossAxisCount: 1,
+                        bookingGridChildAspectRatio:0.75,
                         bookingService: model.mockBookingService,
                         getBookingStream: model.getBookingStreamMock,
                         uploadBooking: model.uploadBookingMock,
-                        convertStreamResultToDateTimeRanges:
-                            model.convertStreamResultMock,
-                            
+                        convertStreamResultToDateTimeRanges: model.convertStreamResultMock,
+
                         pauseSlots: model.pauseSlots,
                         pauseSlotText: 'LUNCH',
-                        
-                        availableSlotColor: model.isDarkMode ?Colors.black : Colors.white,
-                        hideBreakTime: model.isDarkMode ? true: false,
+
+                        availableSlotColor: model.isDarkMode ? Colors.black : Colors.white,
+                        hideBreakTime: model.isDarkMode ? true : false,
                         bookedSlotColor: Color(4286745852).withOpacity(0.3),
-                        selectedSlotColor:Color(4286745852),
-                        bookingButtonColor: Color(4286745852) ,
+                        selectedSlotColor: Color(4286745852),
+                        bookingButtonColor: Color(4286745852),
                         // bookingButtonText: ,
                         uploadingWidget: Container(
                             alignment: Alignment.center,
