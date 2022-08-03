@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io' show Platform;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mipromo/models/order.dart';
@@ -80,7 +81,9 @@ class MainViewModel extends BaseViewModel {
 
   Future onDidReceiveLocalNotification(int id, String? title, String? body, String? payload) async {
     onNavigationIconTap(2);
-    pageController.jumpToPage(2);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (pageController.hasClients) pageController.jumpToPage(2);
+    });
   }
 
   Future selectNotification(String? payload) async {
@@ -168,7 +171,7 @@ class MainViewModel extends BaseViewModel {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       final RemoteNotification? notification = message.notification;
       final AndroidNotification? android = message.notification?.android;
-        final AppleNotification? iosnotification = message.notification?.apple;
+      final AppleNotification? iosnotification = message.notification?.apple;
 
       // If `onMessage` is triggered with a notification, construct our own
       // local notification to show to users using the created channel.
@@ -179,7 +182,7 @@ class MainViewModel extends BaseViewModel {
               payload: message.data.toString());
         }
       }
-      if (notification != null && iosnotification!=null) {
+      if (notification != null && iosnotification != null) {
         if (Platform.isIOS) {
           await flutterLocalNotificationsPlugin.show(0, notification.title, notification.body, platformChannelSpecifics,
               payload: message.data.toString());
@@ -197,7 +200,7 @@ class MainViewModel extends BaseViewModel {
                 payload: message.data.toString());
           }
         }
-        if (notification != null&& iosnotification != null) {
+        if (notification != null && iosnotification != null) {
           if (Platform.isIOS) {
             await flutterLocalNotificationsPlugin.show(
                 0, notification.title, notification.body, platformChannelSpecifics,
@@ -210,6 +213,8 @@ class MainViewModel extends BaseViewModel {
 
   void onNavigationIconTap(int index) {
     currentIndex = index;
+    pageController.jumpToPage(index);
+
     notifyListeners();
   }
 
@@ -227,6 +232,8 @@ class MainViewModel extends BaseViewModel {
     setBusy(true);
     notificationInit();
 
+   
+
     await _userService.updateToken();
     final result = await _userService.syncUser();
     if (!result) {
@@ -240,18 +247,18 @@ class MainViewModel extends BaseViewModel {
         setBusy(false);
       },
     );
-    if (index == 3) {
-      onNavigationIconTap(3);
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        pageController.jumpToPage(3);
-      });
-    }
 
     _databaseApi.listenNewNotifications(_userService.currentUser.id).listen((notifications) {
       badgeCnt = notifications.where((element) => element.read == 'false').length;
 
       notifyListeners();
     });
+     if (index == 3) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        onNavigationIconTap(3);
+      });
+    }
+    notifyListeners();
   }
 
   @override

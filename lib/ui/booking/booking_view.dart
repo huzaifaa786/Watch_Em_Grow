@@ -25,7 +25,7 @@ class BookingView extends StatelessWidget {
       builder: (context, model, child) => model.isBusy
           ? const BasicLoader()
           : Scaffold(
-              appBar: AppBar(
+              appBar: AppBar(   
                 title: "Your Appointment".text.make(),
               ),
               body: SingleChildScrollView(

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:chewie/chewie.dart';
@@ -37,6 +38,7 @@ class ServiceViewModel extends BaseViewModel {
   ChewieController? chewieController;
   VideoPlayerController? videoPlayerController;
   double aspectRatio = 1;
+  double imageRatio = 1;
   bool isMuted = false;
 
   PageController viewController = PageController();
@@ -50,6 +52,20 @@ class ServiceViewModel extends BaseViewModel {
 
   late AppUser user;
 
+ Future<Size> _calculateImageDimension(String nimage) {
+  Completer<Size> completer = Completer();
+  Image image = Image.network(nimage);
+  image.image.resolve(ImageConfiguration()).addListener(
+    ImageStreamListener(
+      (ImageInfo image, bool synchronousCall) {
+        var myImage = image.image;
+        Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
+        completer.complete(size);
+      },
+    ),
+  );
+  return completer.future;
+}
   Future<void> init(ShopService cService) async {
     setBusy(true);
 
@@ -71,6 +87,7 @@ class ServiceViewModel extends BaseViewModel {
       await getshop(service);
     }
     if (service.imageUrl1 != null) {
+      await _calculateImageDimension(service.imageUrl1!).then((size)=> imageRatio = size.width / size.height);
       imagesCount.add(true);
     }
     if (service.imageUrl2 != null) {

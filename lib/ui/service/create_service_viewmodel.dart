@@ -242,7 +242,7 @@ class CreateServiceViewModel extends BaseViewModel {
     _selectedImage1 = tempImage;
     notifyListeners();
 
-    final file = await ImageCropper.cropImage(
+    final file = await ImageCropper.cropImage(    
       sourcePath: _selectedImage1!.path,
       aspectRatioPresets: ratios,
       // aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),

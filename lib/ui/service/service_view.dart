@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:mipromo/models/order.dart';
 import 'package:mipromo/models/shop_service.dart';
@@ -32,12 +35,6 @@ class ServiceView extends StatefulWidget {
 }
 
 class _ServiceViewState extends State<ServiceView> {
-
-
-
-
-  
-
  
 
   @override
@@ -81,7 +78,7 @@ class _ServiceViewState extends State<ServiceView> {
                             ),
                           ),
                           AspectRatio(
-                             aspectRatio:widget.service.videoUrl != null? model.aspectRatio : 1/1,
+                            aspectRatio: widget.service.videoUrl != null ? model.aspectRatio :model.imageRatio,
                             child: PageView(
                               controller: model.viewController,
                               children: [
@@ -97,7 +94,7 @@ class _ServiceViewState extends State<ServiceView> {
                                 if (widget.service.imageUrl2 != null) ...[
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl2!,
-                                    fit: BoxFit.fitHeight,
+                                    fit: BoxFit.fill,
                                     placeholder: (context, url) =>
                                         Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
                                     errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -106,7 +103,7 @@ class _ServiceViewState extends State<ServiceView> {
                                 if (widget.service.imageUrl3 != null) ...[
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl3!,
-                                    fit: BoxFit.fitHeight,
+                                    fit: BoxFit.fill,
                                     placeholder: (context, url) =>
                                         Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
                                     errorWidget: (context, url, error) => const Icon(Icons.error),

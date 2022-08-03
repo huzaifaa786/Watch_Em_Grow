@@ -196,8 +196,8 @@ class SoldOrderListView extends StatelessWidget {
                             padding: EdgeInsets.only(left:18,right: 18,bottom: 8),
                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                              '$date'.text.black.make(),
-                              '$bookstart-$bookend'.text.black.make(),
+                              '$date'.text.make(),
+                              '$bookstart-$bookend'.text.make(),
                              ],),
                            ),
                             

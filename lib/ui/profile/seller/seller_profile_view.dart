@@ -393,19 +393,22 @@ class SellerProfileView extends StatelessWidget {
                                                   ),
                                               //height: context.screenHeight / 7,
                                               //width: context.screenHeight / 2.5,
-                                              child: ClipRRect(
-                                                //borderRadius: BorderRadius.circular(2),
-                                                child: CachedNetworkImage(
-                                                  imageUrl: imageUrl(
-                                                    model.services[index].imageUrl1,
-                                                    model.services[index].imageUrl2,
-                                                    model.services[index].imageUrl3,
+                                              child: AspectRatio(
+                                                aspectRatio: 1,
+                                                child: ClipRRect(
+                                                  //borderRadius: BorderRadius.circular(2),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: imageUrl(
+                                                      model.services[index].imageUrl1,
+                                                      model.services[index].imageUrl2,
+                                                      model.services[index].imageUrl3,
+                                                    ),
+                                                    fit: BoxFit.fill,
+                                                    placeholder: (context, url) => Center(
+                                                        child: SizedBox(
+                                                            height: 35, child: const CircularProgressIndicator())),
+                                                    errorWidget: (context, url, error) => const Icon(Icons.error),
                                                   ),
-                                                  fit: BoxFit.contain,
-                                                  placeholder: (context, url) => Center(
-                                                      child: SizedBox(
-                                                          height: 35, child: const CircularProgressIndicator())),
-                                                  errorWidget: (context, url, error) => const Icon(Icons.error),
                                                 ),
                                               ),
                                             ),
