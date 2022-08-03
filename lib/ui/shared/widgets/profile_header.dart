@@ -74,8 +74,7 @@ class ProfileHeader extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  shop!.name.text.xl2
-                      .fontFamily(shop!.fontStyle).make(),
+                  shop!.name.text.xl2.fontFamily(shop!.fontStyle).make(),
                   30.widthBox,
 
                   // '(${shop!.ratingCount})'.text.make(),
@@ -89,25 +88,24 @@ class ProfileHeader extends StatelessWidget {
                     starSize: 16,
                     valueLabelVisibility: false,
                   ),
+                  5.widthBox,
+                  '(${shop!.ratingCount})'.text.make(),
                 ],
               ),
               10.heightBox,
-              '(${shop!.ratingCount})'.text.make(),
-              10.heightBox,
-
               Row(
                 children: [
                   const Icon(
                     Icons.location_on_outlined,
                     size: 15,
                   ),
+                  
                   shop!.location.text.make(),
-                  if (shop!.borough.isNotEmpty)
-                    ', ${shop!.borough}'.text.make()
-                  else
-                    const SizedBox.shrink(),
+                  if (shop!.borough.isNotEmpty) ', ${shop!.borough}'.text.make() else const SizedBox.shrink(),
                 ],
               ),
+              7.heightBox,
+
               Row(children: [
                 Container(
                   padding: EdgeInsets.only(left: 5),
