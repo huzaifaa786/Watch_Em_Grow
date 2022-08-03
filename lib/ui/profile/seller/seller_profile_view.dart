@@ -289,7 +289,6 @@ class SellerProfileView extends StatelessWidget {
                                 //   valueLabelVisibility: false,
                                 // ),
                                 // 10.heightBox,
-                                // '(${model.shop!.ratingCount})'.text.make(),
                                 // 10.heightBox,
                                 // model.shop!.description.text.center.make(),
                                 // const Divider(

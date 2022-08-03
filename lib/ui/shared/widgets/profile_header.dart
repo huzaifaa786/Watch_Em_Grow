@@ -92,6 +92,9 @@ class ProfileHeader extends StatelessWidget {
                 ],
               ),
               10.heightBox,
+              '(${shop!.ratingCount})'.text.make(),
+              10.heightBox,
+
               Row(
                 children: [
                   const Icon(
