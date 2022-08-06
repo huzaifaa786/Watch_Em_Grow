@@ -12,6 +12,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = 'pk_test_FmWdsrNWyZr5iXZLCyv3t09E00ywyC4cPI';
@@ -27,7 +28,7 @@ Future<void> main() async {
   if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   // App Orientation fixed as Portrait
   SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp, 
+    DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
 
