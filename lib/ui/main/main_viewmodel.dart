@@ -81,7 +81,7 @@ class MainViewModel extends BaseViewModel {
 
   Future onDidReceiveLocalNotification(int id, String? title, String? body, String? payload) async {
     onNavigationIconTap(2);
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (pageController.hasClients) pageController.jumpToPage(2);
     });
   }
