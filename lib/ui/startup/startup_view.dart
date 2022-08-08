@@ -12,7 +12,7 @@ class StartUpView extends StatelessWidget {
       ViewModelBuilder<StartUpViewModel>.reactive(
         builder: (context, model, child) => const SplashScreen(),
         onModelReady: (model) =>
-            SchedulerBinding.instance?.addPostFrameCallback((_) {
+            SchedulerBinding.instance!.addPostFrameCallback((_) {
           model.runStartupLogic();
         }),
         viewModelBuilder: () => StartUpViewModel(),
