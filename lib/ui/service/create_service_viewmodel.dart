@@ -241,7 +241,7 @@ class CreateServiceViewModel extends BaseViewModel {
   List<File> images = [];
   List<CropAspectRatioPreset> ratios = [
     CropAspectRatioPreset.square,
-    // CropAspectRatioPreset.ratio4x5
+    CropAspectRatioPreset.ratio4x5
   ];
 
   static const androidUiSettings = AndroidUiSettings(
@@ -253,15 +253,17 @@ class CreateServiceViewModel extends BaseViewModel {
     final tempImage = await _imageSelectorApi.selectImage();
 
     _selectedImage1 = tempImage;
-    notifyListeners();
+    notifyListeners(); 
 
     final file = await ImageCropper.cropImage(
       sourcePath: _selectedImage1!.path,
       aspectRatioPresets: ratios,
-      // aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+      // aspectRatio: const CropAspectRatio(ratioX: 4.0, ratioY: 5.0),
       androidUiSettings: androidUiSettings,
       iosUiSettings: IOSUiSettings(
         title: 'Crop Image',
+         
+        
       ),
     );
 

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:helpers/helpers/misc.dart';
 import 'package:helpers/helpers/widgets/text.dart';
 import 'package:helpers/helpers/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,9 +22,11 @@ import 'package:video_editor/domain/bloc/controller.dart';
 import 'package:video_editor/ui/cover/cover_selection.dart';
 import 'package:video_editor/ui/cover/cover_viewer.dart';
 import 'package:video_editor/ui/crop/crop_grid.dart';
-import 'package:helpers/helpers.dart' show OpacityTransition, SwipeTransition, AnimatedInteractiveViewer;
+import 'package:helpers/helpers.dart'
+    show OpacityTransition, SwipeTransition, AnimatedInteractiveViewer;
 import 'package:video_editor/ui/trim/trim_slider.dart';
 import 'package:video_editor/ui/trim/trim_timeline.dart';
+import 'package:video_player/video_player.dart';
 
 class CreateServiceView extends StatefulWidget {
   const CreateServiceView({
@@ -64,7 +67,9 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                       height: context.screenHeight / 2.5,
                       width: context.screenWidth,
                       child: PageView.builder(
-                        itemCount: model.images.length < 3 ? model.images.length + 1 : model.images.length,
+                        itemCount: model.images.length < 3
+                            ? model.images.length + 1
+                            : model.images.length,
                         itemBuilder: (context, index) {
                           if (index == model.images.length) {
                             return SizedBox(
@@ -76,7 +81,10 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                                     Icons.add,
                                     color: Styles.kcPrimaryColor,
                                   ),
-                                  'Add Image'.text.color(Styles.kcPrimaryColor).make(),
+                                  'Add Image'
+                                      .text
+                                      .color(Styles.kcPrimaryColor)
+                                      .make(),
                                 ],
                               ).mdClick(
                                 () {
@@ -119,7 +127,8 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        final PickedFile? file = await _picker.getVideo(source: ImageSource.gallery);
+                        final PickedFile? file =
+                            await _picker.getVideo(source: ImageSource.gallery);
                         if (file != null) {
                           await Navigator.push(
                             context,
@@ -132,7 +141,8 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                             ),
                           ).then((val) {
                             model.selectedVideo1 = parseToFile(val);
-                            model.videoName = parseToFile(val).path.split('/').last;
+                            model.videoName =
+                                parseToFile(val).path.split('/').last;
                             setState(() {});
                           });
                         }
@@ -150,14 +160,18 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           ),
                           Text(
                             "Add Video",
-                            style: TextStyle(color: Styles.kcPrimaryColor, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Styles.kcPrimaryColor,
+                                fontWeight: FontWeight.bold),
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width * 0.6,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: Text(
-                                model.videoName == null ? 'no video selected' : model.videoName.toString(),
+                                model.videoName == null
+                                    ? 'no video selected'
+                                    : model.videoName.toString(),
                                 maxLines: 2,
                                 style: TextStyle(color: Colors.grey),
                               ),
@@ -169,7 +183,8 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                     InputField(
                       hintText: Constants.serviceNameLabel,
                       validate: model.autoValidate,
-                      validator: (serviceName) => Validators.emptyStringValidator(
+                      validator: (serviceName) =>
+                          Validators.emptyStringValidator(
                         serviceName,
                         'Service Name',
                       ),
@@ -184,7 +199,8 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                       maxLength: 150,
                       counter: '',
                       textInputType: TextInputType.multiline,
-                      validator: (description) => Validators.emptyStringValidator(
+                      validator: (description) =>
+                          Validators.emptyStringValidator(
                         description,
                         'Description',
                       ),
@@ -193,8 +209,9 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                       },
                     ),
                     DropdownButtonFormField<String>(
-                      autovalidateMode:
-                          model.autoValidate ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
+                      autovalidateMode: model.autoValidate
+                          ? AutovalidateMode.always
+                          : AutovalidateMode.onUserInteraction,
                       decoration: const InputDecoration.collapsed(
                         hintText: 'Type',
                       ),
@@ -229,11 +246,14 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           v: 12,
                         ),
                     if (model.selectedType == Constants.productLabel)
-                      if (widget.shop.category == 'Trainers' || widget.shop.category == 'Clothing')
+                      if (widget.shop.category == 'Trainers' ||
+                          widget.shop.category == 'Clothing')
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Constants.selectSizesLabel.text.gray600.make().py4(),
+                            Constants.selectSizesLabel.text.gray600
+                                .make()
+                                .py4(),
                             Wrap(
                               spacing: 10,
                               children: [
@@ -436,7 +456,9 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Constants.selectSizesLabel.text.gray600.make().py4(),
+                            Constants.selectSizesLabel.text.gray600
+                                .make()
+                                .py4(),
                             Wrap(
                               spacing: 10,
                               children: [
@@ -547,7 +569,8 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                         child: '£'.text.lg.make(),
                       ),
                       validate: model.autoValidate,
-                      validator: (price) => Validators.emptyStringValidator(price, 'Price'),
+                      validator: (price) =>
+                          Validators.emptyStringValidator(price, 'Price'),
                       onChanged: (price) {
                         model.price = price;
                       },
@@ -560,7 +583,8 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                         controller: model.durationController,
                         textInputType: TextInputType.number,
                         validate: model.autoValidate,
-                        validator: (duration) => Validators.emptyStringValidator(
+                        validator: (duration) =>
+                            Validators.emptyStringValidator(
                           duration,
                           'Duration',
                         ),
@@ -573,7 +597,8 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                         controller: model.startController,
                         textInputType: TextInputType.number,
                         validate: model.autoValidate,
-                        validator: (startHour) => Validators.emptyStringValidator(
+                        validator: (startHour) =>
+                            Validators.emptyStringValidator(
                           startHour,
                           'Bookings available from',
                         ),
@@ -616,7 +641,9 @@ class _CreateServiceViewState extends State<CreateServiceView> {
 }
 
 class VideoEditor extends StatefulWidget {
-  VideoEditor({Key? key, required this.file, required this.user, required this.shop}) : super(key: key);
+  VideoEditor(
+      {Key? key, required this.file, required this.user, required this.shop})
+      : super(key: key);
 
   final File file;
   final AppUser user;
@@ -626,20 +653,20 @@ class VideoEditor extends StatefulWidget {
 }
 
 class _VideoEditorState extends State<VideoEditor> {
+  bool exportprocess = false;
   final _exportingProgress = ValueNotifier<double>(0.0);
   final _isExporting = ValueNotifier<bool>(false);
   final double height = 60;
 
   bool _exported = false;
-  bool exportprocess = false;
   String _exportText = "";
   late VideoEditorController _controller;
 
   @override
   void initState() {
-    _controller = VideoEditorController.file(widget.file, maxDuration: Duration(seconds: 30))
+    _controller = VideoEditorController.file(widget.file,
+        maxDuration: Duration(seconds: 30))
       ..initialize().then((_) => setState(() {}));
-
     super.initState();
   }
 
@@ -651,51 +678,47 @@ class _VideoEditorState extends State<VideoEditor> {
     super.dispose();
   }
 
-  void _openCropScreen() =>
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => CropScreen(controller: _controller)));
+  void _openCropScreen() => Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+          builder: (BuildContext context) =>
+              CropScreen(controller: _controller)));
 
-  _exportVideo() async {
+  Future<int> _exportVideo() async {
+    _isExporting.value = true;
     setState(() {
-    exportprocess = true;
-      
+      exportprocess = true;
     });
-    Future.delayed(Duration(milliseconds: 1000), () => _isExporting.value = true);
-    //NOTE: To use [-crf 17] and [VideoExportPreset] you need ["min-gpl-lts"] package
-    File? file = await _controller.exportVideo(
-      // preset: VideoExportPreset.ultrafast,
+    bool _firstStat = true;
+    // NOTE: To use `-crf 1` and [VideoExportPreset] you need `ffmpeg_kit_flutter_min_gpl` package (with `ffmpeg_kit` only it won't work)
+    await _controller.exportVideo(
+      // preset: VideoExportPreset.medium,
       // customInstruction: "-crf 17",
       onProgress: (statics) {
-        _exportingProgress.value = statics.time / _controller.video.value.duration.inMilliseconds;
+        // First statistics is always wrong so if first one skip it
+        if (_firstStat) {
+          _firstStat = false;
+        } else {
+          _exportingProgress.value = statics.getTime() /
+              _controller.video.value.duration.inMilliseconds;
+        }
+      },
+      onCompleted: (file) {
+        _isExporting.value = false;
+  
+         if (!mounted) return;
+
+        if (file != null) {
+                _controller = VideoEditorController.file(file,
+            maxDuration: Duration(seconds: 30));
+
+        Navigator.pop(context, _controller.file);
+          setState(() => _exported = true);
+          Misc.delayed(2000, () => setState(() => _exported = false));
+        }
       },
     );
-    _isExporting.value = false;
-
-    if (file != null) {
-      print(file);
-      _exportText = "Video success export!";
-      _controller = VideoEditorController.file(file, maxDuration: Duration(seconds: 30));
-    } else
-      _exportText = "Error on export video :(";
-
-    setState(() => _exported = true);
-    Future.delayed(Duration(milliseconds: 1000), () => setState(() => _exported = false));
-     setState(() {
-    exportprocess = false;
-      
-    });
-  }
-
-  void _exportCover() async {
-    setState(() => _exported = false);
-    final File? cover = await _controller.extractCover();
-
-    if (cover != null)
-      _exportText = "Cover exported! ${cover.path}";
-    else
-      _exportText = "Error on cover exportation :(";
-
-    setState(() => _exported = true);
-    Future.delayed(Duration(milliseconds: 2000), () => setState(() => _exported = false));
+    return 1;
   }
 
   @override
@@ -718,47 +741,69 @@ class _VideoEditorState extends State<VideoEditor> {
                                             child: Column(children: [
                                               Expanded(
                                                   child: TabBarView(
-                                                physics: NeverScrollableScrollPhysics(),
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
                                                 children: [
-                                                  Stack(alignment: Alignment.center, children: [
-                                                    CropGridViewer(
-                                                      controller: _controller,
-                                                      showGrid: false,
-                                                    ),
-                                                    AnimatedBuilder(
-                                                      animation: _controller.video,
-                                                      builder: (_, __) => OpacityTransition(
-                                                        visible: !_controller.isPlaying,
-                                                        child: GestureDetector(
-                                                          onTap: _controller.video.play,
-                                                          child: Container(
-                                                            width: 40,
-                                                            height: 40,
-                                                            decoration: BoxDecoration(
-                                                              color: Colors.white,
-                                                              shape: BoxShape.circle,
+                                                  Stack(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      children: [
+                                                        CropGridViewer(
+                                                          controller:
+                                                              _controller,
+                                                          showGrid: false,
+                                                        ),
+                                                        AnimatedBuilder(
+                                                          animation:
+                                                              _controller.video,
+                                                          builder: (_, __) =>
+                                                              OpacityTransition(
+                                                            visible:
+                                                                !_controller
+                                                                    .isPlaying,
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: _controller
+                                                                  .video.play,
+                                                              child: Container(
+                                                                width: 40,
+                                                                height: 40,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                ),
+                                                                child: Icon(
+                                                                    Icons
+                                                                        .play_arrow,
+                                                                    color: Colors
+                                                                        .black),
+                                                              ),
                                                             ),
-                                                            child: Icon(Icons.play_arrow, color: Colors.black),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  ]),
-                                                  CoverViewer(controller: _controller)
+                                                      ]),
+                                                  CoverViewer(
+                                                      controller: _controller)
                                                 ],
                                               )),
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
                                                   Expanded(
                                                     child: GestureDetector(
                                                       onTap: () async {
-                                                        await _exportVideo();
-
-                                                        Navigator.pop(context, _controller.file);
+                                                        int num =
+                                                            await _exportVideo();
                                                       },
                                                       child: Padding(
-                                                        padding: const EdgeInsets.all(10.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(10.0),
                                                         child: Icon(
                                                           Icons.done,
                                                           color: Colors.white,
@@ -789,144 +834,79 @@ class _VideoEditorState extends State<VideoEditor> {
               ),
         viewModelBuilder: () => CreateServiceViewModel());
   }
-
-  // Widget _topNavBar() {
-  //   return SafeArea(
-  //     child: SizedBox(
-  //       height: height,
-  //       child:
-  //     ),
-  //   );
-  // }
-
-  String formatter(Duration duration) => [
-        duration.inMinutes.remainder(60).toString().padLeft(2, '0'),
-        duration.inSeconds.remainder(60).toString().padLeft(2, '0')
-      ].join(":");
-
-  List<Widget> _trimSlider() {
-    return [
-      AnimatedBuilder(
-        animation: _controller.video,
-        builder: (_, __) {
-          final duration = _controller.video.value.duration.inSeconds;
-          final pos = _controller.trimPosition * duration;
-          final start = _controller.minTrim * duration;
-          final end = _controller.maxTrim * duration;
-
-          return Row(children: [
-            TextDesigned(formatter(Duration(seconds: pos.toInt()))),
-            Expanded(child: SizedBox()),
-            OpacityTransition(
-              visible: _controller.isTrimming,
-              child: Row(mainAxisSize: MainAxisSize.min, children: [
-                TextDesigned(formatter(Duration(seconds: start.toInt()))),
-                SizedBox(width: 10),
-                TextDesigned(formatter(Duration(seconds: end.toInt()))),
-              ]),
-            )
-          ]);
-        },
-      ),
-      Container(
-        width: MediaQuery.of(context).size.width,
-        child: TrimSlider(
-            child: TrimTimeline(controller: _controller, margin: EdgeInsets.only(top: 10)),
-            controller: _controller,
-            height: height,
-            horizontalMargin: height / 4),
-      )
-    ];
-  }
-
-  Widget _coverSelection() {
-    return Container(
-        child: CoverSelection(
-      controller: _controller,
-      height: height,
-      nbSelection: 8,
-    ));
-  }
-
-  Widget _customSnackBar() {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: SwipeTransition(
-        visible: _exported,
-        child: Container(
-          height: height,
-          width: double.infinity,
-          color: Colors.black.withOpacity(0.8),
-          child: Center(
-            child: TextDesigned(
-              _exportText,
-              bold: true,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 //-----------------//
 //CROP VIDEO SCREEN//
 //-----------------//
-class CropScreen extends StatefulWidget {
-  CropScreen({Key? key, required this.controller}) : super(key: key);
+class CropScreen extends StatelessWidget {
+  const CropScreen({Key? key, required this.controller}) : super(key: key);
 
   final VideoEditorController controller;
 
   @override
-  _CropScreenState createState() => _CropScreenState();
-}
-
-class _CropScreenState extends State<CropScreen> {
-  @override
-  void initState() {
-    widget.controller.preferredCropAspectRatio = 1 / 1;
-    super.initState();
-  }
-
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(30),
           child: Column(children: [
+            Row(children: [
+              Expanded(
+                child: IconButton(
+                  onPressed: () =>
+                      controller.rotate90Degrees(RotateDirection.left),
+                  icon: const Icon(Icons.rotate_left),
+                ),
+              ),
+              Expanded(
+                child: IconButton(
+                  onPressed: () =>
+                      controller.rotate90Degrees(RotateDirection.right),
+                  icon: const Icon(Icons.rotate_right),
+                ),
+              )
+            ]),
+            const SizedBox(height: 15),
             Expanded(
               child: AnimatedInteractiveViewer(
                 maxScale: 2.4,
-                child: CropGridViewer(controller: widget.controller),
+                child: CropGridViewer(controller: controller),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Row(children: [
-              Expanded(child: Text('')),
-              buildSplashTap("1:1", 1 / 1, padding: EdgeInsets.all(10)),
-              buildSplashTap("4:5", 4 / 5, padding: EdgeInsets.all(10)),
               Expanded(
-                child: SplashTap(
-                  onTap: () {
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Center(
+                    child: Text(
+                      "CANCEL",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+              buildSplashTap("1:1", 1 / 1),
+              buildSplashTap("4:5", 4 / 5,
+                  padding: const EdgeInsets.symmetric(horizontal: 10)),
+              Expanded(
+                child: IconButton(
+                  onPressed: () {
                     //2 WAYS TO UPDATE CROP
                     //WAY 1:
-                    widget.controller.updateCrop();
+                    controller.updateCrop();
                     /*WAY 2:
                     controller.minCrop = controller.cacheMinCrop;
                     controller.maxCrop = controller.cacheMaxCrop;
                     */
                     Navigator.pop(context);
                   },
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: TextDesigned(
-                        "Crop",
-                        bold: true,
-                        color: Colors.white,
-                        size: 19,
-                      ),
+                  icon: const Center(
+                    child: Text(
+                      "Done",
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -943,15 +923,20 @@ class _CropScreenState extends State<CropScreen> {
     double? aspectRatio, {
     EdgeInsetsGeometry? padding,
   }) {
-    return SplashTap(
-      onTap: () => widget.controller.preferredCropAspectRatio = aspectRatio,
+    return InkWell(
+      onTap: () {
+        controller.preferredCropAspectRatio = aspectRatio;
+      },
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: padding ?? EdgeInsets.zero,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.aspect_ratio, color: Colors.white),
-            TextDesigned(title, bold: true, color: Colors.white),
+            const Icon(Icons.aspect_ratio, color: Colors.white),
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ],
         ),
       ),

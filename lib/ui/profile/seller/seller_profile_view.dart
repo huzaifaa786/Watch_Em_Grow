@@ -333,6 +333,7 @@ class SellerProfileView extends StatelessWidget {
                                       shrinkWrap: true,
                                       physics: const BouncingScrollPhysics(),
                                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+
                                         crossAxisCount: 3,
                                         crossAxisSpacing: 1.5,
                                         mainAxisSpacing: 1.5,   
@@ -402,7 +403,7 @@ class SellerProfileView extends StatelessWidget {
                                                       model.services[index].imageUrl2,
                                                       model.services[index].imageUrl3,
                                                     ),
-                                                    fit: BoxFit.fill,
+                                                    fit: BoxFit.cover,
                                                     placeholder: (context, url) => Center(
                                                         child: SizedBox(
                                                             height: 35, child: const CircularProgressIndicator())),
