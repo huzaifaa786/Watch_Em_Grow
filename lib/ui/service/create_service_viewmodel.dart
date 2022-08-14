@@ -172,16 +172,16 @@ class CreateServiceViewModel extends BaseViewModel {
   }
 
   bool _validateServiceForm() {
-    if (Validators.emptyStringValidator(serviceName, 'Service Name') == null ||
-        Validators.emptyStringValidator(description, 'Description') == null ||
+    if (Validators.emptyStringValidator(serviceName, 'Service Name') == null &&
+        Validators.emptyStringValidator(description, 'Description') == null && 
         Validators.emptyStringValidator(
               selectedType,
               'Service Type',
             ) ==
-            null ||
+            null &&
         Validators.emptyStringValidator(price, 'Price') == null ||
         Validators.emptyStringValidator(durationController.text, 'Duration') ==
-            null ||
+            null||
         Validators.emptyStringValidator(startController.text, 'Start Hour') ==
             null ||
         Validators.emptyStringValidator(endController.text, 'End Hour') ==
@@ -262,6 +262,8 @@ class CreateServiceViewModel extends BaseViewModel {
       androidUiSettings: androidUiSettings,
       iosUiSettings: IOSUiSettings(
         title: 'Crop Image',
+        rectX: 4.0,
+        rectY: 5.0,
          
         
       ),

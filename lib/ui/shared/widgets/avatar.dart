@@ -30,8 +30,7 @@ class Avatar extends StatelessWidget {
               borderRadius: BorderRadius.circular(100),
               child:  CachedNetworkImage(
                 imageUrl: imageUrl,
-                placeholder: (context, url) =>
-                     Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
+                
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),

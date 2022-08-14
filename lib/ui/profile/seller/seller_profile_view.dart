@@ -404,9 +404,6 @@ class SellerProfileView extends StatelessWidget {
                                                       model.services[index].imageUrl3,
                                                     ),
                                                     fit: BoxFit.cover,
-                                                    placeholder: (context, url) => Center(
-                                                        child: SizedBox(
-                                                            height: 35, child: const CircularProgressIndicator())),
                                                     errorWidget: (context, url, error) => const Icon(Icons.error),
                                                   ),
                                                 ),

@@ -86,8 +86,7 @@ class _ServiceViewState extends State<ServiceView> {
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl1!,
                                     fit: BoxFit.fitHeight,
-                                    placeholder: (context, url) =>
-                                        Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
+                                    
                                     errorWidget: (context, url, error) => const Icon(Icons.error),
                                   ),
                                 ],
@@ -95,8 +94,7 @@ class _ServiceViewState extends State<ServiceView> {
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl2!,
                                     fit: BoxFit.fill,
-                                    placeholder: (context, url) =>
-                                        Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
+                                   
                                     errorWidget: (context, url, error) => const Icon(Icons.error),
                                   ),
                                 ],
@@ -104,8 +102,7 @@ class _ServiceViewState extends State<ServiceView> {
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl3!,
                                     fit: BoxFit.fill,
-                                    placeholder: (context, url) =>
-                                        Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
+                                   
                                     errorWidget: (context, url, error) => const Icon(Icons.error),
                                   ),
                                 ],

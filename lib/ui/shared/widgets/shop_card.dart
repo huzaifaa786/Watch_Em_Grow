@@ -75,7 +75,6 @@ class ShopCard extends StatelessWidget {
                           child: CachedNetworkImage(
                             imageUrl: services[index].imageUrl1!,
                             fit: BoxFit.cover,
-                            placeholder: (context, url) => Center(child: SizedBox(height: 35, child: const CircularProgressIndicator())),
                             errorWidget: (context, url, error) => const Icon(Icons.error),
                           ),
                         ),
