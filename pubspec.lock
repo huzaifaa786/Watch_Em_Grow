@@ -317,12 +317,12 @@ packages:
     source: hosted
     version: "1.0.0"
   ffmpeg_kit_flutter_min_gpl:
-    dependency: "direct overridden"
+    dependency: "direct main"
     description:
       name: ffmpeg_kit_flutter_min_gpl
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.5.1-LTS"
+    version: "4.5.1"
   ffmpeg_kit_flutter_platform_interface:
     dependency: transitive
     description:
