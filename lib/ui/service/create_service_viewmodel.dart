@@ -261,8 +261,8 @@ class CreateServiceViewModel extends BaseViewModel {
       imageWidth = size.width;
       imageHeight = size.height;
     });
-    log(imageWidth.toString());
-    log(imageHeight.toString());
+    log('${imageWidth}');
+    log('${imageHeight}');
     final file = await ImageCropper.cropImage(
       sourcePath: _selectedImage1!.path,
       aspectRatioPresets: ratios,
