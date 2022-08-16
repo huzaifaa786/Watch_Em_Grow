@@ -225,12 +225,12 @@ PODS:
   - connectivity (0.0.1):
     - Flutter
     - Reachability
-  - ffmpeg-kit-ios-min-gpl (4.5.1.LTS)
-  - ffmpeg_kit_flutter_min_gpl (4.5.1.LTS):
-    - ffmpeg_kit_flutter_min_gpl/min-gpl-lts (= 4.5.1.LTS)
+  - ffmpeg-kit-ios-min-gpl (4.5.1)
+  - ffmpeg_kit_flutter_min_gpl (4.5.1):
+    - ffmpeg_kit_flutter_min_gpl/min-gpl (= 4.5.1)
     - Flutter
-  - ffmpeg_kit_flutter_min_gpl/min-gpl-lts (4.5.1.LTS):
-    - ffmpeg-kit-ios-min-gpl (= 4.5.1.LTS)
+  - ffmpeg_kit_flutter_min_gpl/min-gpl (4.5.1):
+    - ffmpeg-kit-ios-min-gpl (= 4.5.1)
     - Flutter
   - Firebase/Auth (8.0.0):
     - Firebase/CoreOnly
@@ -303,12 +303,9 @@ PODS:
     - FirebaseCore (~> 8.0)
     - GTMSessionFetcher/Core (~> 1.5)
   - Flutter (1.0.0)
-  - flutter_ffmpeg (0.4.2):
+  - flutter_ffmpeg/audio-lts (0.4.2):
     - Flutter
-    - flutter_ffmpeg/https (= 0.4.2)
-  - flutter_ffmpeg/https (0.4.2):
-    - Flutter
-    - mobile-ffmpeg-https (= 4.4)
+    - mobile-ffmpeg-audio (= 4.4.LTS)
   - flutter_local_notifications (0.0.1):
     - Flutter
   - flutter_statusbarcolor_ns (0.0.1):
@@ -380,7 +377,7 @@ PODS:
   - libwebp/mux (1.2.3):
     - libwebp/demux
   - libwebp/webp (1.2.3)
-  - mobile-ffmpeg-https (4.4)
+  - mobile-ffmpeg-audio (4.4.LTS)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
@@ -427,7 +424,7 @@ DEPENDENCIES:
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
-  - flutter_ffmpeg (from `.symlinks/plugins/flutter_ffmpeg/ios`)
+  - flutter_ffmpeg/audio-lts (from `.symlinks/plugins/flutter_ffmpeg/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_statusbarcolor_ns (from `.symlinks/plugins/flutter_statusbarcolor_ns/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
@@ -464,7 +461,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - leveldb-library
     - libwebp
-    - mobile-ffmpeg-https
+    - mobile-ffmpeg-audio
     - nanopb
     - PromisesObjC
     - Reachability
@@ -526,8 +523,8 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   cloud_firestore: 8ead368e38b40bb2a4c97458b7b99272399f2214
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
-  ffmpeg-kit-ios-min-gpl: 074814f41eeb3d4980a3051c46f05b18b1d5b2e3
-  ffmpeg_kit_flutter_min_gpl: 1507ed8e57a2a9f09a8c96834a115c8301f0d468
+  ffmpeg-kit-ios-min-gpl: da951b00628916702be2a90918181ebdcdd569ff
+  ffmpeg_kit_flutter_min_gpl: 3c3266c6284c29340ac8bea41613efcdd7aea3e4
   Firebase: 73c3e3b216ec1ecbc54d2ffdd4670c65c749edb1
   firebase_auth: f960df4ddd8cb415859dbc01a02d7859925ddef0
   firebase_core: e4d3efb030a2b2021819f8faa538bb23deb46695
@@ -555,7 +552,7 @@ SPEC CHECKSUMS:
   image_picker: 50e7c7ff960e5f58faa4d1f4af84a771c671bc4a
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   libwebp: 60305b2e989864154bd9be3d772730f08fc6a59c
-  mobile-ffmpeg-https: 311fc4a8f671cf36d1d6b8f421e8246b790978d9
+  mobile-ffmpeg-audio: 1e0a053f8a6de57114e50ff48b3a85ff1c60f902
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
@@ -573,6 +570,6 @@ SPEC CHECKSUMS:
   wakelock: b0843b2479edbf6504d8d262c2959446f35373aa
   webview_flutter: 9f491a9b5a66f2573946a389b2677987b0ff8c0b
 
-PODFILE CHECKSUM: 2d739f95d53fb632e3bf4888baaacc33cad5698d
+PODFILE CHECKSUM: cb0b0629e8c86044e207cd9093551f4a022d5c3b
 
 COCOAPODS: 1.11.3

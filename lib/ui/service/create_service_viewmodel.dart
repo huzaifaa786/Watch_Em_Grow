@@ -261,8 +261,9 @@ class CreateServiceViewModel extends BaseViewModel {
       imageWidth = size.width;
       imageHeight = size.height;
     });
-    log('${imageWidth}');
-    log('${imageHeight}');
+
+    var ratio = 4/5;
+
     final file = await ImageCropper.cropImage(
       sourcePath: _selectedImage1!.path,
       aspectRatioPresets: ratios,
@@ -270,8 +271,10 @@ class CreateServiceViewModel extends BaseViewModel {
       androidUiSettings: androidUiSettings,
       iosUiSettings: IOSUiSettings(
         title: 'Crop Image',
-        rectX: 4.0,
-        rectY: 5.0,
+        rectX: 0.0,
+        rectY: 0.0,
+        rectWidth: imageWidth,
+        rectHeight: imageWidth/ratio,
       ),
     );
 
