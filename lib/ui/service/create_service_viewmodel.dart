@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -101,6 +102,21 @@ class CreateServiceViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<Size> _calculateImageDimension(File nimage) {
+    Completer<Size> completer = Completer();
+    Image image = Image.file(nimage);
+    image.image.resolve(ImageConfiguration()).addListener(
+      ImageStreamListener(
+        (ImageInfo image, bool synchronousCall) {
+          var myImage = image.image;
+          Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
+          completer.complete(size);
+        },
+      ),
+    );
+    return completer.future;
+  }
+
   Future createService() async {
     setBusy(true);
     if (_validateServiceForm()) {
@@ -114,19 +130,11 @@ class CreateServiceViewModel extends BaseViewModel {
             description: description.trimRight(),
             price: double.parse(price),
             type: selectedType!,
-            duration: selectedType != "Product"
-                ? int.parse(durationController.text)
-                : null,
-            startHour: selectedType != "Product"
-                ? int.parse(startController.text)
-                : null,
-            endHour: selectedType != "Product"
-                ? int.parse(endController.text)
-                : null,
+            duration: selectedType != "Product" ? int.parse(durationController.text) : null,
+            startHour: selectedType != "Product" ? int.parse(startController.text) : null,
+            endHour: selectedType != "Product" ? int.parse(endController.text) : null,
             sizes: selectedType == "Product" ? sizes : null,
-            bookingNote: selectedType != "Product"
-                ? noteController.text.toString()
-                : null),
+            bookingNote: selectedType != "Product" ? noteController.text.toString() : null),
       );
       log(selectedVideo1.toString());
       if (selectedVideo1 != null) {
@@ -145,8 +153,7 @@ class CreateServiceViewModel extends BaseViewModel {
           shopId: shop.id,
           highestPrice: double.parse(price),
         );
-      } else if (double.parse(price) < shop.highestPrice &&
-          shop.lowestPrice == 0) {
+      } else if (double.parse(price) < shop.highestPrice && shop.lowestPrice == 0) {
         await _databaseApi.updateShopLowestPrice(
           shopId: shop.id,
           lowestPrice: double.parse(price),
@@ -173,19 +180,16 @@ class CreateServiceViewModel extends BaseViewModel {
 
   bool _validateServiceForm() {
     if (Validators.emptyStringValidator(serviceName, 'Service Name') == null &&
-        Validators.emptyStringValidator(description, 'Description') == null && 
-        Validators.emptyStringValidator(
-              selectedType,
-              'Service Type',
-            ) ==
-            null &&
-        Validators.emptyStringValidator(price, 'Price') == null ||
-        Validators.emptyStringValidator(durationController.text, 'Duration') ==
-            null||
-        Validators.emptyStringValidator(startController.text, 'Start Hour') ==
-            null ||
-        Validators.emptyStringValidator(endController.text, 'End Hour') ==
-            null) {
+            Validators.emptyStringValidator(description, 'Description') == null &&
+            Validators.emptyStringValidator(
+                  selectedType,
+                  'Service Type',
+                ) ==
+                null &&
+            Validators.emptyStringValidator(price, 'Price') == null ||
+        Validators.emptyStringValidator(durationController.text, 'Duration') == null ||
+        Validators.emptyStringValidator(startController.text, 'Start Hour') == null ||
+        Validators.emptyStringValidator(endController.text, 'End Hour') == null) {
       if (_selectedImage1 != null) {
         return true;
       } else {
@@ -239,10 +243,7 @@ class CreateServiceViewModel extends BaseViewModel {
   File? get finalImage3 => _finalImage3;
 
   List<File> images = [];
-  List<CropAspectRatioPreset> ratios = [
-    CropAspectRatioPreset.square,
-    CropAspectRatioPreset.ratio4x5
-  ];
+  List<CropAspectRatioPreset> ratios = [CropAspectRatioPreset.square, CropAspectRatioPreset.ratio4x5];
 
   static const androidUiSettings = AndroidUiSettings(
     hideBottomControls: false,
@@ -253,8 +254,15 @@ class CreateServiceViewModel extends BaseViewModel {
     final tempImage = await _imageSelectorApi.selectImage();
 
     _selectedImage1 = tempImage;
-    notifyListeners(); 
-
+    notifyListeners();
+    double imageWidth = 1.0;
+    double imageHeight = 1.0;
+    await _calculateImageDimension(_selectedImage1!).then((size) {
+      imageWidth = size.width;
+      imageHeight = size.height;
+    });
+    log(imageWidth.toString());
+    log(imageHeight.toString());
     final file = await ImageCropper.cropImage(
       sourcePath: _selectedImage1!.path,
       aspectRatioPresets: ratios,
@@ -264,8 +272,6 @@ class CreateServiceViewModel extends BaseViewModel {
         title: 'Crop Image',
         rectX: 4.0,
         rectY: 5.0,
-         
-        
       ),
     );
 
@@ -286,8 +292,7 @@ class CreateServiceViewModel extends BaseViewModel {
 
   Future _saveServiceVideo() async {
     if (selectedImage1 != null) {
-      final CloudStorageResult storageResult =
-          await _storageApi.uploadServiceVideo(
+      final CloudStorageResult storageResult = await _storageApi.uploadServiceVideo(
         serviceId: _serviceId,
         videoToUpload: selectedVideo1!,
       );
@@ -341,8 +346,7 @@ class CreateServiceViewModel extends BaseViewModel {
 
   Future _saveServiceImage() async {
     if (selectedImage1 != null) {
-      final CloudStorageResult storageResult =
-          await _storageApi.uploadServiceImages(
+      final CloudStorageResult storageResult = await _storageApi.uploadServiceImages(
         serviceId: _serviceId,
         imageNumber: '1',
         imageToUpload: _finalImage1!,
@@ -356,8 +360,7 @@ class CreateServiceViewModel extends BaseViewModel {
       );
     }
     if (selectedImage2 != null) {
-      final CloudStorageResult storageResult =
-          await _storageApi.uploadServiceImages(
+      final CloudStorageResult storageResult = await _storageApi.uploadServiceImages(
         serviceId: _serviceId,
         imageNumber: '2',
         imageToUpload: _finalImage2!,
@@ -371,8 +374,7 @@ class CreateServiceViewModel extends BaseViewModel {
       );
     }
     if (selectedImage3 != null) {
-      final CloudStorageResult storageResult =
-          await _storageApi.uploadServiceImages(
+      final CloudStorageResult storageResult = await _storageApi.uploadServiceImages(
         serviceId: _serviceId,
         imageNumber: '3',
         imageToUpload: _finalImage3!,
