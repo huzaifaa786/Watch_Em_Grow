@@ -10,6 +10,9 @@ class Validators {
       return null;
     } else if (value.isEmpty) {
       return "$valueType can't be empty";
+    }
+    else if (value == '0') {
+      return "$valueType can't be zero";
     } else {
       return null;
     }
