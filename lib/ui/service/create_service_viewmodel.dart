@@ -243,7 +243,7 @@ class CreateServiceViewModel extends BaseViewModel {
   File? get finalImage3 => _finalImage3;
 
   List<File> images = [];
-  List<CropAspectRatioPreset> ratios = [CropAspectRatioPreset.square, CropAspectRatioPreset.ratio4x5];
+  List<CropAspectRatioPreset> ratios = [CropAspectRatioPreset.square, ];
 
   static const androidUiSettings = AndroidUiSettings(
     hideBottomControls: false,
@@ -336,7 +336,9 @@ class CreateServiceViewModel extends BaseViewModel {
         rectWidth: imageWidth,
         rectHeight: imageWidth/ratio,
         rotateButtonsHidden : true,
-        aspectRatioLockEnabled : true),
+        aspectRatioLockEnabled : true,
+        resetButtonHidden: true
+        ),
     );
 
     _finalImage2 = file;
@@ -365,12 +367,13 @@ class CreateServiceViewModel extends BaseViewModel {
       androidUiSettings: androidUiSettings,
       iosUiSettings: IOSUiSettings(
         title: 'Crop Image',
-            rectX: 0.0,
+        rectX: 0.0,
         rectY: 0.0,
         rectWidth: imageWidth,
         rectHeight: imageWidth/ratio,
         rotateButtonsHidden : true,
-        aspectRatioLockEnabled : true
+        aspectRatioLockEnabled : true,
+        resetButtonHidden: true
       ),
     );
 
