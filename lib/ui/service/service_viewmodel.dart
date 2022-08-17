@@ -87,7 +87,7 @@ class ServiceViewModel extends BaseViewModel {
       await getshop(service);
     }
     if (service.imageUrl1 != null) {
-      await _calculateImageDimension(service.imageUrl1!).then((size)=> imageRatio = size.width / size.height);
+     await  _calculateImageDimension(service.imageUrl1!).then((size)=> imageRatio = size.width / size.height);
       imagesCount.add(true);
     }
     if (service.imageUrl2 != null) {

@@ -7,9 +7,25 @@ import 'package:mipromo/ui/shared/widgets/shop_card.dart';
 import 'package:stacked/stacked.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
+  @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  void didChangeDependencies() {  
+      precacheImage(AssetImage("assets/images/category/hair.jpg"), context);   
+        precacheImage(AssetImage("assets/images/category/nails.jpeg"), context); 
+        precacheImage(AssetImage("assets/images/category/makeup.jpg"), context); 
+        precacheImage(AssetImage("assets/images/category/lashes.jpg"), context); 
+        precacheImage(AssetImage("assets/images/category/clothing.jpg"), context); 
+        precacheImage(AssetImage("assets/images/category/trainers.jpeg"), context); 
+        precacheImage(AssetImage("assets/images/category/accessories.jpg"), context); 
+        precacheImage(AssetImage("assets/images/category/other.png"), context); 
+             super.didChangeDependencies();  
+}
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -99,7 +115,7 @@ class HomeView extends StatelessWidget {
                                         final assetImage = AssetImage(
                                           model.categories[index].imageUrl,
                                         );
-                                        precacheImage(assetImage, context);
+                                         precacheImage(assetImage, context);
 
                                         return Column(
                                           children: [
@@ -113,30 +129,7 @@ class HomeView extends StatelessWidget {
                                                   child: Image(
                                                     image: assetImage,
                                                     fit: BoxFit.cover,
-                                                    loadingBuilder: (
-                                                      context,
-                                                      child,
-                                                      loadingProgress,
-                                                    ) {
-                                                      if (loadingProgress ==
-                                                          null) {
-                                                        return child;
-                                                      }
-                                                      return Center(
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          strokeWidth: 2,
-                                                          value: loadingProgress
-                                                                      .expectedTotalBytes !=
-                                                                  null
-                                                              ? loadingProgress
-                                                                      .cumulativeBytesLoaded /
-                                                                  loadingProgress
-                                                                      .expectedTotalBytes!
-                                                              : null,
-                                                        ),
-                                                      );
-                                                    },
+                                                   
                                                   ),
                                                 ),
                                               ),
