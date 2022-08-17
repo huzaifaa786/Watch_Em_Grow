@@ -258,8 +258,8 @@ class CreateServiceViewModel extends BaseViewModel {
     double imageWidth = 1.0;
     double imageHeight = 1.0;
     await _calculateImageDimension(_selectedImage1!).then((size) {
-      double imageWidth = size.width;
-     double imageHeight = size.height;
+       imageWidth = size.width;
+      imageHeight = size.height;
     });
 
     var ratio = 4/5;
