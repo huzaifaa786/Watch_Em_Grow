@@ -276,7 +276,8 @@ class CreateServiceViewModel extends BaseViewModel {
         rectWidth: imageWidth,
         rectHeight: imageWidth/ratio,
         rotateButtonsHidden : true,
-        aspectRatioLockEnabled : true
+        aspectRatioLockEnabled : true,
+        resetButtonHidden: true
       ),
     );
 
