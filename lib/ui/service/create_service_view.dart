@@ -639,7 +639,7 @@ class _VideoEditorState extends State<VideoEditor> {
 
   @override
   void initState() {
-    _controller = VideoEditorController.file(widget.file, maxDuration: Duration(seconds: 30))
+    _controller = VideoEditorController.file(widget.file, maxDuration: Duration(seconds: 30),)
       ..initialize().then((_) => setState(() {}));
     super.initState();
   }
@@ -833,7 +833,7 @@ class CropScreen extends StatelessWidget {
                   icon: const Center(
                     child: Text(
                       "CANCEL",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
                     ),
                   ),
                 ),
@@ -861,7 +861,7 @@ class CropScreen extends StatelessWidget {
                   icon: const Center(
                     child: Text(
                       "Done",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
                     ),
                   ),
                 ),
@@ -890,7 +890,7 @@ class CropScreen extends StatelessWidget {
             const Icon(Icons.aspect_ratio, color: Colors.white),
             Text(
               title,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
             ),
           ],
         ),

@@ -54,6 +54,7 @@ dependencies:
   flutter_stripe: ^1.3.0
   video_editor: ^1.2.0
   helpers: ^1.1.4
+  image_cropping: ^0.0.12
   
   
 dependency_overrides:
