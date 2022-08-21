@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/app/app.locator.dart';
@@ -45,7 +46,6 @@ class NotificationsViewModel extends BaseViewModel {
     followings = await _databaseApi.getFollowing(currentUser.id);
     _newNotificationsSubscription = _databaseApi.listenNewNotifications(userId).listen((notifications) {
       newNotifications = notifications;
-      
       isFollowing = List.filled(newNotifications.length, false);
 
       for (int i = 0; i < newNotifications.length; i++) {
@@ -228,15 +228,16 @@ class NotificationsViewModel extends BaseViewModel {
       }
       followings = await _databaseApi.getFollowing(currentUser.id);
 
-      for (int i = 0; i < newNotifications.length; i++) {
-        if (newNotifications[i].orderID == 'null') {
-          for (int j = 0; j < followings.length; j++) {
-            if (newNotifications[i].userId == followings[j].id) {
-              isFollowing[i] = true;
-            }
-          }
-        }
-      }
+      // for (int i = 0; i < newNotifications.length; i++) {
+      //   if (newNotifications[i].orderID == 'null') {
+      //     for (int j = 0; j < followings.length; j++) {
+      //       if (newNotifications[i].userId == followings[j].id) {
+      //         isFollowing[i] = true;
+      //       }
+      //     }
+      //   }
+      // }
+              isFollowing[index] = true;
 
       isLoading = false;
       notifyListeners();
@@ -257,16 +258,17 @@ class NotificationsViewModel extends BaseViewModel {
     )
         .whenComplete(
       () async {
-        for (int i = 0; i < newNotifications.length; i++) {
-          if (newNotifications[i].orderID == 'null') {
-            for (int j = 0; j < followings.length; j++) {
-              if (newNotifications[i].userId == followings[j].id) {
-                isFollowing[i] = false;
-              }
-            }
-          }
-        }
-        // isFollowing[index] = false;
+        // for (int i = 0; i < newNotifications.length; i++) {
+        //   if (newNotifications[i].orderID == 'null') {
+        //     for (int j = 0; j < followings.length; j++) {
+        //       if (newNotifications[i].userId == followings[j].id) {
+        //         isFollowing[i] = false;
+        //       }
+        //     }
+        //   }
+        // }
+                isFollowing[index] = false;
+
         var user = await _databaseApi.getUser(sellerId);
         if (user != null) {
           Map<String, dynamic> postMap = {
@@ -300,7 +302,9 @@ class NotificationsViewModel extends BaseViewModel {
         }
         // print("currentfollowingIds $currentfollowingIds");
         isLoading = false;
+
         notifyListeners();
+
       },
     ).catchError((error) {
       isLoading = false;

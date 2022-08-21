@@ -129,6 +129,10 @@ class ServiceViewModel extends BaseViewModel {
   }
 
   Future navigateToBuyServiceView() async {
+    chewieController!.pause();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
       await _navigationService.navigateTo(
         Routes.buyServiceView,
