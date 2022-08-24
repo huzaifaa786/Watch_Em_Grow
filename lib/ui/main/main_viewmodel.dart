@@ -243,7 +243,7 @@ class MainViewModel extends BaseViewModel {
     _databaseApi.listenUser(_userService.currentUser.id).listen(
       (user) {
         _currentUser = user;
-        notifyListeners();
+        notifyListeners();     
         setBusy(false);
       },
     );

@@ -14,8 +14,9 @@ class ChatsViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _userService = locator<UserService>();
   final _databaseApi = locator<DatabaseApi>();
+  var chatNotifications = 0 ;
 
-   StreamSubscription<List<AppUser>>? _chatUsersSubscription;
+  StreamSubscription<List<AppUser>>? _chatUsersSubscription;
 
   List<AppUser> users = [];
   List<Chat> chats = [];
@@ -24,13 +25,13 @@ class ChatsViewModel extends BaseViewModel {
     setBusy(true);
 
     //if (user.chatIds != null) {
-      _databaseApi.sortChatUsersID(user).listen((usersData) {
-        users = usersData;
-        notifyListeners();
-        setBusy(false);
-      });
+    _databaseApi.sortChatUsersID(user).listen((usersData) {
+      users = usersData;
+      notifyListeners();
+      setBusy(false);
+    });
 
-      /*_chatUsersSubscription =
+    /*_chatUsersSubscription =
           _databaseApi.listenChatUsers(user.chatIds!).listen(
         (usersData) {
           users = usersData;
@@ -39,14 +40,15 @@ class ChatsViewModel extends BaseViewModel {
         },
       );*/
 
-      _databaseApi.listenCurrentUserChats(_userService.currentUser.id).listen(
-        (chts) {
-          chats = chts;
-          notifyListeners();
-        },
-      );
-
+    _databaseApi.listenCurrentUserChats(_userService.currentUser.id).listen(
+      (chts) {
+        chats = chts;
+        chatNotifications = chats.where((chat) => chat.read == false).length;
+        notifyListeners();
+      },
       
+    );
+
     /*} else {
       setBusy(false);
     }*/

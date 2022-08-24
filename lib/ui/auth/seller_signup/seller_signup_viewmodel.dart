@@ -53,8 +53,8 @@ class SellerSignupViewModel extends BaseViewModel {
 
     if (isFormValid) {
       //_createSellerAccount();
-      createStripeConnectedAccount();
-      // _verifyPaypalAccount();
+      // createStripeConnectedAccount();
+      _verifyPaypalAccount();
     } else {
       showErrors();
     }

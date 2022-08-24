@@ -65,6 +65,7 @@ class NotificationsView extends StatelessWidget {
                               children: [
                                 if (index == 0) 8.heightBox,
                                 Container(
+                                  color:  model.newNotifications[index].read == 'true' ? Colors.white : Colors.grey.withOpacity(0.3),
                                   height: size.height * 0.08,
                                   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
                                   child: Row(

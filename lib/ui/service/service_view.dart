@@ -159,10 +159,7 @@ class _ServiceViewState extends State<ServiceView> {
                                       ),
                                     ),
                                   ] else ...[
-                                    Container(
-                                      height: 50,
-                                      width: 50,
-                                      child: Center(child: CircularProgressIndicator()))
+                                    Container(height: 50, width: 50, child: Center(child: CircularProgressIndicator()))
                                   ]
 
                                   // Align(
@@ -394,8 +391,10 @@ class _ServiceViewState extends State<ServiceView> {
                                   color: Color(widget.color),
                                   onPressed: () {
                                     if (widget.service.sizes!.isEmpty || widget.service.sizes == null) {
+                                      chewieController!.pause();
                                       model.navigateToBuyServiceView();
                                     } else {
+                                      chewieController!.pause();
                                       model.isBuyServiceFormValidate();
                                     }
                                   },
@@ -427,6 +426,7 @@ class _ServiceViewState extends State<ServiceView> {
                               Expanded(
                                 child: MaterialButton(
                                   onPressed: () {
+                                    chewieController!.pause();
                                     model.bookService();
                                   },
                                   color: Color(widget.color),
@@ -461,9 +461,11 @@ class _ServiceViewState extends State<ServiceView> {
                                 onPressed: () {
                                   if (model.user.chatIds != null &&
                                       model.user.chatIds!.contains(widget.service.ownerId)) {
+                                    chewieController!.pause();
                                     model.navigateToDirectChatView(widget.service.ownerId);
                                     //model.navigateToChatsView();
                                   } else {
+                                    chewieController!.pause();
                                     model.updateChat(widget.service.ownerId);
                                   }
                                 },

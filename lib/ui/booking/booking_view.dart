@@ -43,7 +43,7 @@ class BookingView extends StatelessWidget {
                         uploadBooking: model.uploadBookingMock,
                         convertStreamResultToDateTimeRanges: model.convertStreamResultMock,
 
-                        pauseSlots: model.pauseSlots,
+                        pauseSlots: model.generatePauseSlots(),
                         pauseSlotText: 'LUNCH',
 
                         availableSlotColor: model.isDarkMode ? Colors.black : Colors.white,

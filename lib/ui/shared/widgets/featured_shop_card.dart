@@ -51,7 +51,7 @@ class FeaturedShopCard extends StatelessWidget {
                             starSize: 15,
                             starColor: Color(shop.color),
                             valueLabelVisibility: false,
-                          ),
+                          ).pLTRB(2, 8, 2, 3),
                         ],
                       ),
                     ),
@@ -103,7 +103,7 @@ class FeaturedShopCard extends StatelessWidget {
                   ],
                 ).pOnly(right: 12),
                 // const Spacer(flex: 1,),
-                2.heightBox,
+                6.heightBox,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   // crossAxisAlignment: CrossAxisAlignment.end,
@@ -124,11 +124,12 @@ class FeaturedShopCard extends StatelessWidget {
                             ? "£${shop.highestPrice.toInt()}"
                             : "£${shop.lowestPrice.toInt()} - ${shop.highestPrice.toInt()}")
                         .richText
+                        .size(13)
                         .center
                         .withTextSpanChildren([
                       "\nItem Range"
                           .textSpan
-                          .size(12)
+                          .size(11)
                           .color(
                             Colors.grey,
                           )

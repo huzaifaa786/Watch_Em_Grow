@@ -904,7 +904,7 @@ class OrderDetailView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                'Appointment Note'
+                                'Appointment Address'
                                     .text
                                     .size(15)
                                     .fontWeight(FontWeight.w600)

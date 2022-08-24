@@ -1604,6 +1604,7 @@ class DatabaseApi {
 
   void readNotification(String uid, String id) {
     _usersCollection.doc(uid).collection('notifications').doc(id).update({'read': 'true'});
+    
   }
 
   void postNotificationCollection(String userId, Map<String, dynamic> postCollection) {

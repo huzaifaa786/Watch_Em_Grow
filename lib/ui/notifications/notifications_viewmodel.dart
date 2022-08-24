@@ -50,6 +50,7 @@ class NotificationsViewModel extends BaseViewModel {
 
       for (int i = 0; i < newNotifications.length; i++) {
         if (newNotifications[i].orderID == 'null') {
+         
           for (int j = 0; j < followings.length; j++) {
             if (newNotifications[i].userId == followings[j].id) {
               isFollowing[i] = true;
@@ -237,7 +238,7 @@ class NotificationsViewModel extends BaseViewModel {
       //     }
       //   }
       // }
-              isFollowing[index] = true;
+      isFollowing[index] = true;
 
       isLoading = false;
       notifyListeners();
@@ -267,7 +268,7 @@ class NotificationsViewModel extends BaseViewModel {
         //     }
         //   }
         // }
-                isFollowing[index] = false;
+        isFollowing[index] = false;
 
         var user = await _databaseApi.getUser(sellerId);
         if (user != null) {
@@ -304,7 +305,6 @@ class NotificationsViewModel extends BaseViewModel {
         isLoading = false;
 
         notifyListeners();
-
       },
     ).catchError((error) {
       isLoading = false;
@@ -322,5 +322,6 @@ class NotificationsViewModel extends BaseViewModel {
 
   void readNotification(String uid, String id) {
     _databaseApi.readNotification(uid, id);
+    notifyListeners();
   }
 }

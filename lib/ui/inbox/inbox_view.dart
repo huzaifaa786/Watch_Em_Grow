@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/ui/chats/chats_view.dart';
+import 'package:mipromo/ui/chats/chats_viewmodel.dart';
 import 'package:mipromo/ui/inbox/inbox_viewmodel.dart';
 import 'package:mipromo/ui/notifications/notifications_view.dart';
 import 'package:stacked/stacked.dart';
@@ -17,7 +18,8 @@ class InboxView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<InboxViewModel>.reactive(
+    return ViewModelBuilder<ChatsViewModel>.reactive(
+      onModelReady: (model) => model.init(currentUser),
       builder: (context, model, child) => DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -29,12 +31,24 @@ class InboxView extends StatelessWidget {
                   ? null
                   : Styles.kcPrimaryColor,
               unselectedLabelColor: Colors.grey.shade200,
-              tabs: const [
+              tabs:  [
                 Tab(
                   child: Text('Notifications'),
                 ),
                 Tab(
-                  child: Text('Chats'),
+                     child: model.chatNotifications > 0 ? 
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('Chats'),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom:8.0,left: 8),
+                            child: Text('•',style: TextStyle(color: Colors.red[700],fontSize: 36),),
+                          ),
+                        ],
+                      )
+                      : Text("Chats"),
                 )
               ],
             ),
@@ -51,7 +65,7 @@ class InboxView extends StatelessWidget {
           ),
         ),
       ),
-      viewModelBuilder: () => InboxViewModel(),
+      viewModelBuilder: () => ChatsViewModel(),
     );
   }
 }

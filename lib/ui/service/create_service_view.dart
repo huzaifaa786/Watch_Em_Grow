@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:helpers/helpers/misc.dart';
 import 'package:helpers/helpers/widgets/text.dart';
 import 'package:helpers/helpers/widgets/widgets.dart';
@@ -17,6 +18,7 @@ import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/busy_button.dart';
 import 'package:mipromo/ui/shared/widgets/inputfield.dart';
 import 'package:stacked/stacked.dart';
+import 'package:time_picker_widget/time_picker_widget.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:video_editor/domain/bloc/controller.dart';
 import 'package:video_editor/ui/cover/cover_selection.dart';
@@ -47,6 +49,7 @@ class _CreateServiceViewState extends State<CreateServiceView> {
     return File(file.path.toString());
   }
 
+  var selectedTime;
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<CreateServiceViewModel>.reactive(
@@ -137,7 +140,7 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                             model.selectedVideo1 = parseToFile(val.finalFile);
                             model.videoName = parseToFile(val.finalFile).path.split('/').last;
                             model.serviceAspectRatio = double.parse(val.ratio.toString());
-                       
+
                             setState(() {});
                           });
                         }
@@ -560,7 +563,7 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                     if (model.selectedType == Constants.serviceLabel)
                       InputField(
                         hintText: "Duration/min",
-                        maxLength: 60,
+                        maxLength: 2,
                         counter: "",
                         controller: model.durationController,
                         textInputType: TextInputType.number,
@@ -570,34 +573,64 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           'Duration',
                         ),
                       ),
-                    if (model.selectedType == Constants.serviceLabel)
-                      InputField(
-                        hintText: "Bookings available from the hours",
-                        maxLength: 24,
-                        counter: "",
-                        controller: model.startController,
-                        textInputType: TextInputType.number,
-                        validate: model.autoValidate,
-                        validator: (startHour) => Validators.emptyStringValidator(
-                          startHour,
-                          'Bookings available from',
+                    if (model.selectedType == Constants.serviceLabel) ... [
+                      GestureDetector(
+                        onTap: () {
+                          showCustomTimePicker(
+                                  context: context,
+                                  // It is a must if you provide selectableTimePredicate
+                                  onFailValidation: (context) => Fluttertoast.showToast(msg: "Cannot select minutes other than Zero"),
+                                  initialTime: TimeOfDay(hour: 6, minute: 0),
+                                  selectableTimePredicate: (time) =>
+                                    time!.hour < 14 &&   time.minute % 60 == 0)
+                              .then((time) => setState(() => model.startController.text = time!.hour.toString()));
+                        },
+                        child: InputField(
+                          hintText: "Bookings available from the hours",
+                          maxLength: 24,
+                          counter: "",
+                          readOnly: true,
+                          enable: false,
+                          controller: model.startController,
+                          textInputType: TextInputType.number,
+                          validate: model.autoValidate,
+                          validator: (startHour) => Validators.emptyStringValidator(
+                            startHour,
+                            'Bookings available from',
+                          ),
                         ),
                       ),
+                      Text("Note : The Booking Starting time cannot be grater than 14 and minutes must be Zero (00)",style: TextStyle(color: Colors.grey),)
+                    ],
                     if (model.selectedType == Constants.serviceLabel)
-                      InputField(
-                        hintText: "Booking available till",
-                        maxLength: 24,
-                        counter: "",
-                        controller: model.endController,
-                        textInputType: TextInputType.number,
-                        validate: model.autoValidate,
-                        validator: (endHour) => Validators.emptyStringValidator(
-                          endHour,
-                          'Booking available till',
+                      GestureDetector(
+                        onTap: (){
+                             showCustomTimePicker(
+                                  context: context,
+                                  // It is a must if you provide selectableTimePredicate
+                                  onFailValidation: (context) => Fluttertoast.showToast(msg: "Cannot select minutes other than Zero"),
+                                  initialTime: TimeOfDay(hour: 12, minute: 0),
+                                  selectableTimePredicate: (time) =>
+                                       time!.minute % 60 == 0)
+                              .then((time) => setState(() => model.endController.text = time!.hour.toString()));
+                        },
+                        child: InputField(
+                          hintText: "Booking available till",
+                          maxLength: 24,
+                          counter: "",
+                            readOnly: true,
+                          enable: false,
+                          controller: model.endController,
+                          textInputType: TextInputType.number,
+                          validate: model.autoValidate,
+                          validator: (endHour) => Validators.emptyStringValidator(
+                            endHour,
+                            'Booking available till',
+                          ),
                         ),
                       ),
                     InputField(
-                      hintText: "Appointment note",
+                      hintText: "Appointment Address",
                       //maxLength: 5,
                       counter: "",
                       controller: model.noteController,

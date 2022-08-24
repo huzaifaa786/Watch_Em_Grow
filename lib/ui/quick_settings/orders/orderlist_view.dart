@@ -23,7 +23,10 @@ class BoughtOrderListView extends StatelessWidget {
               ? Center(
                   child: 'No order yet!'.text.lg.make(),
                 )
-              : ListView.builder(
+              : 
+              
+              
+              ListView.builder(
                   padding: const EdgeInsets.all(12),
                   physics: const BouncingScrollPhysics(),
                   itemCount: model.orders.length,
@@ -107,7 +110,9 @@ class SoldOrderListView extends StatelessWidget {
               ? Center(
                   child: 'No order yet!'.text.lg.make(),
                 )
-              : ListView.builder(
+              : 
+              
+              ListView.builder(
                   padding: const EdgeInsets.all(12),
                   physics: const BouncingScrollPhysics(),
                   itemCount: model.orders.length,

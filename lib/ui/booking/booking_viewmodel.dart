@@ -177,11 +177,13 @@ class BookingViewModel extends BaseViewModel {
     return converted;
   }
 
-  List<DateTimeRange> pauseSlots = [
-    // DateTimeRange(
-    //     start: DateTime.now().add(const Duration(minutes: 5)),
-    //     end: DateTime.now().add(const Duration(minutes: 60)))
-  ];
+ List<DateTimeRange> generatePauseSlots() {
+    return [
+      DateTimeRange(
+          start: DateTime(now.year, now.month, now.day, 0, 0),
+          end: DateTime(now.year, now.month, now.day, now.hour + 1, 0))
+    ];
+  }
 
   sendMessage() async {
     setIsSending(loading: true);
