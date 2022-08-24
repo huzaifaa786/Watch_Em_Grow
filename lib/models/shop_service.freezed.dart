@@ -40,6 +40,7 @@ class _$ShopServiceTearOff {
       String? videoUrl,
       String? description,
       double? rating,
+      double? aspectRatio,
       List<String>? sizes,
       String? bookingNote}) {
     return _ShopService(
@@ -62,6 +63,7 @@ class _$ShopServiceTearOff {
       videoUrl: videoUrl,
       description: description,
       rating: rating,
+      aspectRatio: aspectRatio,
       sizes: sizes,
       bookingNote: bookingNote,
     );
@@ -96,20 +98,18 @@ mixin _$ShopService {
   String? get videoUrl => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   double? get rating => throw _privateConstructorUsedError;
+  double? get aspectRatio => throw _privateConstructorUsedError;
   List<String>? get sizes => throw _privateConstructorUsedError;
   String? get bookingNote => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ShopServiceCopyWith<ShopService> get copyWith =>
-      throw _privateConstructorUsedError;
+  $ShopServiceCopyWith<ShopService> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $ShopServiceCopyWith<$Res> {
-  factory $ShopServiceCopyWith(
-          ShopService value, $Res Function(ShopService) then) =
-      _$ShopServiceCopyWithImpl<$Res>;
+  factory $ShopServiceCopyWith(ShopService value, $Res Function(ShopService) then) = _$ShopServiceCopyWithImpl<$Res>;
   $Res call(
       {String id,
       String shopId,
@@ -130,6 +130,7 @@ abstract class $ShopServiceCopyWith<$Res> {
       String? videoUrl,
       String? description,
       double? rating,
+      double? aspectRatio,
       List<String>? sizes,
       String? bookingNote});
 }
@@ -163,6 +164,7 @@ class _$ShopServiceCopyWithImpl<$Res> implements $ShopServiceCopyWith<$Res> {
     Object? videoUrl = freezed,
     Object? description = freezed,
     Object? rating = freezed,
+    Object? aspectRatio = freezed,
     Object? sizes = freezed,
     Object? bookingNote = freezed,
   }) {
@@ -243,6 +245,10 @@ class _$ShopServiceCopyWithImpl<$Res> implements $ShopServiceCopyWith<$Res> {
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
               as double?,
+      aspectRatio: aspectRatio == freezed
+          ? _value.aspectRatio
+          : aspectRatio // ignore: cast_nullable_to_non_nullable
+              as double?,
       sizes: sizes == freezed
           ? _value.sizes
           : sizes // ignore: cast_nullable_to_non_nullable
@@ -256,10 +262,8 @@ class _$ShopServiceCopyWithImpl<$Res> implements $ShopServiceCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$ShopServiceCopyWith<$Res>
-    implements $ShopServiceCopyWith<$Res> {
-  factory _$ShopServiceCopyWith(
-          _ShopService value, $Res Function(_ShopService) then) =
+abstract class _$ShopServiceCopyWith<$Res> implements $ShopServiceCopyWith<$Res> {
+  factory _$ShopServiceCopyWith(_ShopService value, $Res Function(_ShopService) then) =
       __$ShopServiceCopyWithImpl<$Res>;
   @override
   $Res call(
@@ -282,15 +286,14 @@ abstract class _$ShopServiceCopyWith<$Res>
       String? videoUrl,
       String? description,
       double? rating,
+      double? aspectRatio,
       List<String>? sizes,
       String? bookingNote});
 }
 
 /// @nodoc
-class __$ShopServiceCopyWithImpl<$Res> extends _$ShopServiceCopyWithImpl<$Res>
-    implements _$ShopServiceCopyWith<$Res> {
-  __$ShopServiceCopyWithImpl(
-      _ShopService _value, $Res Function(_ShopService) _then)
+class __$ShopServiceCopyWithImpl<$Res> extends _$ShopServiceCopyWithImpl<$Res> implements _$ShopServiceCopyWith<$Res> {
+  __$ShopServiceCopyWithImpl(_ShopService _value, $Res Function(_ShopService) _then)
       : super(_value, (v) => _then(v as _ShopService));
 
   @override
@@ -317,6 +320,7 @@ class __$ShopServiceCopyWithImpl<$Res> extends _$ShopServiceCopyWithImpl<$Res>
     Object? videoUrl = freezed,
     Object? description = freezed,
     Object? rating = freezed,
+    Object? aspectRatio = freezed,
     Object? sizes = freezed,
     Object? bookingNote = freezed,
   }) {
@@ -397,6 +401,10 @@ class __$ShopServiceCopyWithImpl<$Res> extends _$ShopServiceCopyWithImpl<$Res>
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
               as double?,
+      aspectRatio: aspectRatio == freezed
+          ? _value.aspectRatio
+          : aspectRatio // ignore: cast_nullable_to_non_nullable
+              as double?,
       sizes: sizes == freezed
           ? _value.sizes
           : sizes // ignore: cast_nullable_to_non_nullable
@@ -432,11 +440,11 @@ class _$_ShopService implements _ShopService {
       this.videoUrl,
       this.description,
       this.rating,
+      this.aspectRatio,
       this.sizes,
       this.bookingNote});
 
-  factory _$_ShopService.fromJson(Map<String, dynamic> json) =>
-      _$_$_ShopServiceFromJson(json);
+  factory _$_ShopService.fromJson(Map<String, dynamic> json) => _$_$_ShopServiceFromJson(json);
 
   @override
   final String id;
@@ -477,74 +485,49 @@ class _$_ShopService implements _ShopService {
   @override
   final double? rating;
   @override
+  final double? aspectRatio;
+  @override
   final List<String>? sizes;
   @override
   final String? bookingNote;
 
   @override
   String toString() {
-    return 'ShopService(id: $id, shopId: $shopId, ownerId: $ownerId, name: $name, price: $price, type: $type, time: $time, duration: $duration, startHour: $startHour, endHour: $endHour, imageId1: $imageId1, imageUrl1: $imageUrl1, imageId2: $imageId2, imageUrl2: $imageUrl2, imageId3: $imageId3, imageUrl3: $imageUrl3, videoUrl: $videoUrl, description: $description, rating: $rating, sizes: $sizes, bookingNote: $bookingNote)';
+    return 'ShopService(id: $id, shopId: $shopId, ownerId: $ownerId, name: $name, price: $price, type: $type, time: $time, duration: $duration, startHour: $startHour, endHour: $endHour, imageId1: $imageId1, imageUrl1: $imageUrl1, imageId2: $imageId2, imageUrl2: $imageUrl2, imageId3: $imageId3, imageUrl3: $imageUrl3, videoUrl: $videoUrl, description: $description, rating: $rating, aspectRatio: $aspectRatio, sizes: $sizes, bookingNote: $bookingNote)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _ShopService &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.shopId, shopId) ||
-                const DeepCollectionEquality().equals(other.shopId, shopId)) &&
-            (identical(other.ownerId, ownerId) ||
-                const DeepCollectionEquality()
-                    .equals(other.ownerId, ownerId)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.price, price) ||
-                const DeepCollectionEquality().equals(other.price, price)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.time, time) ||
-                const DeepCollectionEquality().equals(other.time, time)) &&
-            (identical(other.duration, duration) ||
-                const DeepCollectionEquality()
-                    .equals(other.duration, duration)) &&
+            (identical(other.id, id) || const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.shopId, shopId) || const DeepCollectionEquality().equals(other.shopId, shopId)) &&
+            (identical(other.ownerId, ownerId) || const DeepCollectionEquality().equals(other.ownerId, ownerId)) &&
+            (identical(other.name, name) || const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.price, price) || const DeepCollectionEquality().equals(other.price, price)) &&
+            (identical(other.type, type) || const DeepCollectionEquality().equals(other.type, type)) &&
+            (identical(other.time, time) || const DeepCollectionEquality().equals(other.time, time)) &&
+            (identical(other.duration, duration) || const DeepCollectionEquality().equals(other.duration, duration)) &&
             (identical(other.startHour, startHour) ||
-                const DeepCollectionEquality()
-                    .equals(other.startHour, startHour)) &&
-            (identical(other.endHour, endHour) ||
-                const DeepCollectionEquality()
-                    .equals(other.endHour, endHour)) &&
-            (identical(other.imageId1, imageId1) ||
-                const DeepCollectionEquality()
-                    .equals(other.imageId1, imageId1)) &&
+                const DeepCollectionEquality().equals(other.startHour, startHour)) &&
+            (identical(other.endHour, endHour) || const DeepCollectionEquality().equals(other.endHour, endHour)) &&
+            (identical(other.imageId1, imageId1) || const DeepCollectionEquality().equals(other.imageId1, imageId1)) &&
             (identical(other.imageUrl1, imageUrl1) ||
-                const DeepCollectionEquality()
-                    .equals(other.imageUrl1, imageUrl1)) &&
-            (identical(other.imageId2, imageId2) ||
-                const DeepCollectionEquality()
-                    .equals(other.imageId2, imageId2)) &&
+                const DeepCollectionEquality().equals(other.imageUrl1, imageUrl1)) &&
+            (identical(other.imageId2, imageId2) || const DeepCollectionEquality().equals(other.imageId2, imageId2)) &&
             (identical(other.imageUrl2, imageUrl2) ||
-                const DeepCollectionEquality()
-                    .equals(other.imageUrl2, imageUrl2)) &&
-            (identical(other.imageId3, imageId3) ||
-                const DeepCollectionEquality()
-                    .equals(other.imageId3, imageId3)) &&
+                const DeepCollectionEquality().equals(other.imageUrl2, imageUrl2)) &&
+            (identical(other.imageId3, imageId3) || const DeepCollectionEquality().equals(other.imageId3, imageId3)) &&
             (identical(other.imageUrl3, imageUrl3) ||
-                const DeepCollectionEquality()
-                    .equals(other.imageUrl3, imageUrl3)) &&
-            (identical(other.videoUrl, videoUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.videoUrl, videoUrl)) &&
+                const DeepCollectionEquality().equals(other.imageUrl3, imageUrl3)) &&
+            (identical(other.videoUrl, videoUrl) || const DeepCollectionEquality().equals(other.videoUrl, videoUrl)) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.rating, rating) ||
-                const DeepCollectionEquality().equals(other.rating, rating)) &&
-            (identical(other.sizes, sizes) ||
-                const DeepCollectionEquality().equals(other.sizes, sizes)) &&
+                const DeepCollectionEquality().equals(other.description, description)) &&
+            (identical(other.rating, rating) || const DeepCollectionEquality().equals(other.rating, rating)) &&
+            (identical(other.aspectRatio, aspectRatio) || const DeepCollectionEquality().equals(other.aspectRatio, aspectRatio)) &&
+            (identical(other.sizes, sizes) || const DeepCollectionEquality().equals(other.sizes, sizes)) &&
             (identical(other.bookingNote, bookingNote) ||
-                const DeepCollectionEquality()
-                    .equals(other.bookingNote, bookingNote)));
+                const DeepCollectionEquality().equals(other.bookingNote, bookingNote)));
   }
 
   @override
@@ -569,13 +552,13 @@ class _$_ShopService implements _ShopService {
       const DeepCollectionEquality().hash(videoUrl) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(rating) ^
+      const DeepCollectionEquality().hash(aspectRatio) ^
       const DeepCollectionEquality().hash(sizes) ^
       const DeepCollectionEquality().hash(bookingNote);
 
   @JsonKey(ignore: true)
   @override
-  _$ShopServiceCopyWith<_ShopService> get copyWith =>
-      __$ShopServiceCopyWithImpl<_ShopService>(this, _$identity);
+  _$ShopServiceCopyWith<_ShopService> get copyWith => __$ShopServiceCopyWithImpl<_ShopService>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -604,11 +587,11 @@ abstract class _ShopService implements ShopService {
       String? videoUrl,
       String? description,
       double? rating,
+      double? aspectRatio,
       List<String>? sizes,
       String? bookingNote}) = _$_ShopService;
 
-  factory _ShopService.fromJson(Map<String, dynamic> json) =
-      _$_ShopService.fromJson;
+  factory _ShopService.fromJson(Map<String, dynamic> json) = _$_ShopService.fromJson;
 
   @override
   String get id => throw _privateConstructorUsedError;
@@ -649,11 +632,12 @@ abstract class _ShopService implements ShopService {
   @override
   double? get rating => throw _privateConstructorUsedError;
   @override
+  double? get aspectRatio => throw _privateConstructorUsedError;
+  @override
   List<String>? get sizes => throw _privateConstructorUsedError;
   @override
   String? get bookingNote => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ShopServiceCopyWith<_ShopService> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$ShopServiceCopyWith<_ShopService> get copyWith => throw _privateConstructorUsedError;
 }

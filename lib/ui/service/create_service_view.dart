@@ -132,8 +132,12 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                               ),
                             ),
                           ).then((val) {
-                            model.selectedVideo1 = parseToFile(val);
-                            model.videoName = parseToFile(val).path.split('/').last;
+                            log(val.toString());
+                            print(val);
+                            model.selectedVideo1 = parseToFile(val.finalFile);
+                            model.videoName = parseToFile(val.finalFile).path.split('/').last;
+                            model.serviceAspectRatio = double.parse(val.ratio.toString());
+                       
                             setState(() {});
                           });
                         }
@@ -616,6 +620,13 @@ class _CreateServiceViewState extends State<CreateServiceView> {
   }
 }
 
+class VideoDetails {
+  final File finalFile;
+  final double ratio;
+
+  VideoDetails(this.finalFile, this.ratio);
+}
+
 class VideoEditor extends StatefulWidget {
   VideoEditor({Key? key, required this.file, required this.user, required this.shop}) : super(key: key);
 
@@ -639,8 +650,10 @@ class _VideoEditorState extends State<VideoEditor> {
 
   @override
   void initState() {
-    _controller = VideoEditorController.file(widget.file, maxDuration: Duration(seconds: 30),)
-      ..initialize().then((_) => setState(() {}));
+    _controller = VideoEditorController.file(
+      widget.file,
+      maxDuration: Duration(seconds: 30),
+    )..initialize().then((_) => setState(() {}));
     super.initState();
   }
 
@@ -653,8 +666,7 @@ class _VideoEditorState extends State<VideoEditor> {
   }
 
   void _openCropScreen() {
-    Navigator.push(
-            context, MaterialPageRoute(builder: (BuildContext context) => CropScreen(controller: _controller)))
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => CropScreen(controller: _controller)))
         .then((val) {
       if (val == true) {
         setState(() {
@@ -688,11 +700,9 @@ class _VideoEditorState extends State<VideoEditor> {
         if (!mounted) return;
 
         if (file != null) {
-          _controller = VideoEditorController.file(file, maxDuration: Duration(seconds: 30));
-
-          Navigator.pop(context, _controller.file);
           setState(() => _exported = true);
           Misc.delayed(2000, () => setState(() => _exported = false));
+          Navigator.pop(context, VideoDetails(file, _controller.preferredCropAspectRatio!));
         }
       },
     );
@@ -713,10 +723,15 @@ class _VideoEditorState extends State<VideoEditor> {
                             ? Stack(
                                 children: [
                                   Column(children: [
-                                    !isCropped ?   Padding(
-                                      padding: const EdgeInsets.only(top :18.0),
-                                      child: Text("Crop the video to continue",style: TextStyle(color: Colors.white,)),
-                                    ) : Container(),
+                                    !isCropped
+                                        ? Padding(
+                                            padding: const EdgeInsets.only(top: 18.0),
+                                            child: Text("Crop the video to continue",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                )),
+                                          )
+                                        : Container(),
                                     Expanded(
                                         child: DefaultTabController(
                                             length: 2,
@@ -758,9 +773,7 @@ class _VideoEditorState extends State<VideoEditor> {
                                                   Expanded(
                                                     child: GestureDetector(
                                                       onTap: () async {
-                                                        isCropped
-                                                            ?
-                                                        await _exportVideo() : Navigator.pop(context );
+                                                        isCropped ? await _exportVideo() : Navigator.pop(context);
                                                       },
                                                       child: Padding(
                                                         padding: const EdgeInsets.all(10.0),
@@ -833,7 +846,7 @@ class CropScreen extends StatelessWidget {
                   icon: const Center(
                     child: Text(
                       "CANCEL",
-                      style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                 ),
@@ -861,7 +874,7 @@ class CropScreen extends StatelessWidget {
                   icon: const Center(
                     child: Text(
                       "Done",
-                      style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                 ),
@@ -890,7 +903,7 @@ class CropScreen extends StatelessWidget {
             const Icon(Icons.aspect_ratio, color: Colors.white),
             Text(
               title,
-              style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ],
         ),

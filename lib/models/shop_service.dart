@@ -25,6 +25,7 @@ class ShopService with _$ShopService {
     String? videoUrl,
     String? description,
     double? rating,
+    double? aspectRatio,
     List<String>? sizes,
     String? bookingNote
   }) = _ShopService;

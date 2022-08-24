@@ -35,8 +35,7 @@ class ServiceViewModel extends BaseViewModel {
   int selectedSizeIndex = -1;
   bool isApiRunning = false;
   String? username;
-  ChewieController? chewieController;
-  VideoPlayerController? videoPlayerController;
+ 
   double aspectRatio = 1;
   double imageRatio = 1;
   bool isMuted = false;
@@ -52,20 +51,8 @@ class ServiceViewModel extends BaseViewModel {
 
   late AppUser user;
 
- Future<Size> _calculateImageDimension(String nimage) {
-  Completer<Size> completer = Completer();
-  Image image = Image.network(nimage);
-  image.image.resolve(ImageConfiguration()).addListener(
-    ImageStreamListener(
-      (ImageInfo image, bool synchronousCall) {
-        var myImage = image.image;
-        Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
-        completer.complete(size);
-      },
-    ),
-  );
-  return completer.future;
-}
+
+
   Future<void> init(ShopService cService) async {
     setBusy(true);
 
@@ -87,7 +74,6 @@ class ServiceViewModel extends BaseViewModel {
       await getshop(service);
     }
     if (service.imageUrl1 != null) {
-     await  _calculateImageDimension(service.imageUrl1!).then((size)=> imageRatio = size.width / size.height);
       imagesCount.add(true);
     }
     if (service.imageUrl2 != null) {
@@ -103,33 +89,14 @@ class ServiceViewModel extends BaseViewModel {
     //   imagesCount.clear();
     // }
     notifyListeners();
-    if (service.videoUrl != null) await initializePlayer();
+    
     setBusy(false);
   }
 
-  initializePlayer() async {
-    videoPlayerController = VideoPlayerController.network(service.videoUrl.toString());
-    await videoPlayerController!.initialize();
-    aspectRatio = videoPlayerController!.value.size.aspectRatio;
-    chewieController = ChewieController(
-      videoPlayerController: videoPlayerController!,
-      autoInitialize: true,
-      autoPlay: true,
-      allowMuting: true,
-      showControls: false,
-      looping: true,
-      allowFullScreen: true,
-      fullScreenByDefault: false,
-      deviceOrientationsOnEnterFullScreen: [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
-      materialProgressColors: ChewieProgressColors(
-        playedColor: Colors.purple,
-        bufferedColor: Colors.purple.withOpacity(0.4),
-      ),
-    );
-  }
+  
 
   Future navigateToBuyServiceView() async {
-    chewieController!.pause();
+    // chewieController!.pause();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -373,13 +340,5 @@ class ServiceViewModel extends BaseViewModel {
     );
   }
 
-  @override
-  Future<void> dispose() async {
-    videoPlayerController!.dispose();
-    chewieController!.dispose();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
-    super.dispose(); //change here
-  }
+
 }

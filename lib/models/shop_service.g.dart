@@ -27,6 +27,7 @@ _$_ShopService _$_$_ShopServiceFromJson(Map<String, dynamic> json) {
     videoUrl: json['videoUrl'] as String?,
     description: json['description'] as String?,
     rating: (json['rating'] as num?)?.toDouble(),
+    aspectRatio: (json['aspectRatio'] as num?)?.toDouble(),
     sizes: (json['sizes'] as List<dynamic>?)?.map((e) => e as String).toList(),
     bookingNote: json['bookingNote'] as String?,
   );
@@ -53,6 +54,7 @@ Map<String, dynamic> _$_$_ShopServiceToJson(_$_ShopService instance) =>
       'videoUrl': instance.videoUrl,
       'description': instance.description,
       'rating': instance.rating,
+      'aspectRatio': instance.aspectRatio,
       'sizes': instance.sizes,
       'bookingNote': instance.bookingNote,
     };

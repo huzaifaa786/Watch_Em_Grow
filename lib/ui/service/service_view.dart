@@ -35,7 +35,54 @@ class ServiceView extends StatefulWidget {
 }
 
 class _ServiceViewState extends State<ServiceView> {
- 
+  ChewieController? chewieController;
+  VideoPlayerController? videoPlayerController;
+  bool videoLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.service.videoUrl != null) initializePlayer();
+  }
+
+  initializePlayer() async {
+    setState(() {
+      videoLoading = true;
+    });
+    videoPlayerController = VideoPlayerController.network(widget.service.videoUrl.toString());
+    videoPlayerController!.initialize().then((value) => {
+          setState(() {
+            videoLoading = false;
+          }),
+          videoPlayerController!.setLooping(true),
+          videoPlayerController!.play()
+        });
+    chewieController = ChewieController(
+      aspectRatio: widget.service.aspectRatio,
+      videoPlayerController: videoPlayerController!,
+      autoInitialize: true,
+      allowMuting: true,
+      showControls: false,
+      looping: true,
+      allowFullScreen: true,
+      fullScreenByDefault: false,
+      deviceOrientationsOnEnterFullScreen: [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+      materialProgressColors: ChewieProgressColors(
+        playedColor: Colors.purple,
+        bufferedColor: Colors.purple.withOpacity(0.4),
+      ),
+    );
+  }
+
+  void dispose() {
+    videoPlayerController!.dispose();
+    chewieController!.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +125,7 @@ class _ServiceViewState extends State<ServiceView> {
                             ),
                           ),
                           AspectRatio(
-                            aspectRatio: widget.service.videoUrl != null ? model.aspectRatio :model.imageRatio,
+                            aspectRatio: model.service.aspectRatio!,
                             child: PageView(
                               controller: model.viewController,
                               children: [
@@ -86,7 +133,6 @@ class _ServiceViewState extends State<ServiceView> {
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl1!,
                                     fit: BoxFit.fitHeight,
-                                    
                                     errorWidget: (context, url, error) => const Icon(Icons.error),
                                   ),
                                 ],
@@ -94,7 +140,6 @@ class _ServiceViewState extends State<ServiceView> {
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl2!,
                                     fit: BoxFit.fill,
-                                   
                                     errorWidget: (context, url, error) => const Icon(Icons.error),
                                   ),
                                 ],
@@ -102,14 +147,24 @@ class _ServiceViewState extends State<ServiceView> {
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl3!,
                                     fit: BoxFit.fill,
-                                   
                                     errorWidget: (context, url, error) => const Icon(Icons.error),
                                   ),
                                 ],
                                 if (widget.service.videoUrl != null) ...[
-                                  Chewie(
-                                    controller: model.chewieController!,
-                                  ),
+                                  if (!videoLoading) ...[
+                                    AspectRatio(
+                                      aspectRatio: widget.service.aspectRatio!,
+                                      child: Chewie(
+                                        controller: chewieController!,
+                                      ),
+                                    ),
+                                  ] else ...[
+                                    Container(
+                                      height: 50,
+                                      width: 50,
+                                      child: Center(child: CircularProgressIndicator()))
+                                  ]
+
                                   // Align(
                                   //   alignment: Alignment.topRight,
                                   //   child: Padding(

@@ -43,6 +43,7 @@ class CreateServiceViewModel extends BaseViewModel {
     setBusy(false);
   }
 
+  double? serviceAspectRatio;
   String serviceName = "";
   String description = "";
   String price = "";
@@ -129,6 +130,7 @@ class CreateServiceViewModel extends BaseViewModel {
             name: serviceName,
             description: description.trimRight(),
             price: double.parse(price),
+            aspectRatio: serviceAspectRatio,
             type: selectedType!,
             duration: selectedType != "Product" ? int.parse(durationController.text) : null,
             startHour: selectedType != "Product" ? int.parse(startController.text) : null,
@@ -243,7 +245,9 @@ class CreateServiceViewModel extends BaseViewModel {
   File? get finalImage3 => _finalImage3;
 
   List<File> images = [];
-  List<CropAspectRatioPreset> ratios = [CropAspectRatioPreset.square, ];
+  List<CropAspectRatioPreset> ratios = [
+    CropAspectRatioPreset.square,
+  ];
 
   static const androidUiSettings = AndroidUiSettings(
     hideBottomControls: false,
@@ -258,11 +262,11 @@ class CreateServiceViewModel extends BaseViewModel {
     double imageWidth = 1.0;
     double imageHeight = 1.0;
     await _calculateImageDimension(_selectedImage1!).then((size) {
-       imageWidth = size.width;
+      imageWidth = size.width;
       imageHeight = size.height;
     });
-
-    var ratio = 4/5;
+    serviceAspectRatio = imageWidth / imageHeight;
+    var ratio = 4 / 5;
 
     final file = await ImageCropper.cropImage(
       sourcePath: _selectedImage1!.path,
@@ -270,15 +274,14 @@ class CreateServiceViewModel extends BaseViewModel {
       // aspectRatio: const CropAspectRatio(ratioX: 4.0, ratioY: 5.0),
       androidUiSettings: androidUiSettings,
       iosUiSettings: IOSUiSettings(
-        title: 'Crop Image',
-        rectX: 0.0,
-        rectY: 0.0,
-        rectWidth: imageWidth,
-        rectHeight: imageWidth/ratio,
-        rotateButtonsHidden : true,
-        aspectRatioLockEnabled : true,
-        resetButtonHidden: true
-      ),
+          title: 'Crop Image',
+          rectX: 0.0,
+          rectY: 0.0,
+          rectWidth: imageWidth,
+          rectHeight: imageWidth / ratio,
+          rotateButtonsHidden: true,
+          aspectRatioLockEnabled: true,
+          resetButtonHidden: true),
     );
 
     _finalImage1 = file;
@@ -317,28 +320,28 @@ class CreateServiceViewModel extends BaseViewModel {
 
     _selectedImage2 = tempImage;
     notifyListeners();
-        double imageWidth = 1.0;
+    double imageWidth = 1.0;
     double imageHeight = 1.0;
     await _calculateImageDimension(_selectedImage1!).then((size) {
       double imageWidth = size.width;
-     double imageHeight = size.height;
+      double imageHeight = size.height;
     });
 
-    var ratio = 4/5;
+    var ratio = 4 / 5;
 
     final file = await ImageCropper.cropImage(
       sourcePath: _selectedImage2!.path,
       aspectRatioPresets: ratios,
       androidUiSettings: androidUiSettings,
-      iosUiSettings: IOSUiSettings(title: 'Crop Image',
+      iosUiSettings: IOSUiSettings(
+          title: 'Crop Image',
           rectX: 0.0,
-        rectY: 0.0,
-        rectWidth: imageWidth,
-        rectHeight: imageWidth/ratio,
-        rotateButtonsHidden : true,
-        aspectRatioLockEnabled : true,
-        resetButtonHidden: true
-        ),
+          rectY: 0.0,
+          rectWidth: imageWidth,
+          rectHeight: imageWidth / ratio,
+          rotateButtonsHidden: true,
+          aspectRatioLockEnabled: true,
+          resetButtonHidden: true),
     );
 
     _finalImage2 = file;
@@ -352,29 +355,28 @@ class CreateServiceViewModel extends BaseViewModel {
     _selectedImage3 = tempImage;
     notifyListeners();
 
-        double imageWidth = 1.0;
+    double imageWidth = 1.0;
     double imageHeight = 1.0;
     await _calculateImageDimension(_selectedImage1!).then((size) {
       double imageWidth = size.width;
-     double imageHeight = size.height;
+      double imageHeight = size.height;
     });
 
-    var ratio = 4/5;
+    var ratio = 4 / 5;
 
     final file = await ImageCropper.cropImage(
       sourcePath: _selectedImage3!.path,
       aspectRatioPresets: ratios,
       androidUiSettings: androidUiSettings,
       iosUiSettings: IOSUiSettings(
-        title: 'Crop Image',
-        rectX: 0.0,
-        rectY: 0.0,
-        rectWidth: imageWidth,
-        rectHeight: imageWidth/ratio,
-        rotateButtonsHidden : true,
-        aspectRatioLockEnabled : true,
-        resetButtonHidden: true
-      ),
+          title: 'Crop Image',
+          rectX: 0.0,
+          rectY: 0.0,
+          rectWidth: imageWidth,
+          rectHeight: imageWidth / ratio,
+          rotateButtonsHidden: true,
+          aspectRatioLockEnabled: true,
+          resetButtonHidden: true),
     );
 
     _finalImage3 = file;
