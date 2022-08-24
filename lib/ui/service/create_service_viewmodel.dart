@@ -323,8 +323,8 @@ class CreateServiceViewModel extends BaseViewModel {
     double imageWidth = 1.0;
     double imageHeight = 1.0;
     await _calculateImageDimension(_selectedImage1!).then((size) {
-      double imageWidth = size.width;
-      double imageHeight = size.height;
+       imageWidth = size.width;
+      imageHeight = size.height;
     });
 
     var ratio = 4 / 5;
@@ -333,15 +333,15 @@ class CreateServiceViewModel extends BaseViewModel {
       sourcePath: _selectedImage2!.path,
       aspectRatioPresets: ratios,
       androidUiSettings: androidUiSettings,
-      iosUiSettings: IOSUiSettings(
-          title: 'Crop Image',
-          rectX: 0.0,
-          rectY: 0.0,
-          rectWidth: imageWidth,
-          rectHeight: imageWidth / ratio,
-          rotateButtonsHidden: true,
-          aspectRatioLockEnabled: true,
-          resetButtonHidden: true),
+      iosUiSettings: IOSUiSettings(title: 'Crop Image',
+        rectX: 0.0,
+        rectY: 0.0,
+        rectWidth: imageWidth,
+        rectHeight: imageWidth/ratio,
+        rotateButtonsHidden : true,
+        aspectRatioLockEnabled : true,
+        resetButtonHidden: true
+        ),
     );
 
     _finalImage2 = file;
@@ -358,8 +358,8 @@ class CreateServiceViewModel extends BaseViewModel {
     double imageWidth = 1.0;
     double imageHeight = 1.0;
     await _calculateImageDimension(_selectedImage1!).then((size) {
-      double imageWidth = size.width;
-      double imageHeight = size.height;
+       imageWidth = size.width;
+      imageHeight = size.height;
     });
 
     var ratio = 4 / 5;
