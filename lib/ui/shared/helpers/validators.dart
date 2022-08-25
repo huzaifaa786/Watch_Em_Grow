@@ -10,9 +10,21 @@ class Validators {
       return null;
     } else if (value.isEmpty) {
       return "$valueType can't be empty";
-    }
-    else if (value == '0') {
+    }  else if (value == '') {
+      return "$valueType can't be empty";
+    } else if (value == '0') {
       return "$valueType can't be zero";
+    } else {
+      return null;
+    }
+  }
+
+  static String? bookingTimeValidator(
+    String start,
+    String end,
+  ) {
+    if (int.parse(start) > int.parse(end)) {
+      return 'Booking starting time must be earlier than the ending time';
     } else {
       return null;
     }

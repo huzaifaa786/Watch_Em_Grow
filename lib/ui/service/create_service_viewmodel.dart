@@ -182,16 +182,28 @@ class CreateServiceViewModel extends BaseViewModel {
 
   bool _validateServiceForm() {
     if (Validators.emptyStringValidator(serviceName, 'Service Name') == null &&
-            Validators.emptyStringValidator(description, 'Description') == null &&
-            Validators.emptyStringValidator(
-                  selectedType,
-                  'Service Type',
-                ) ==
-                null &&
-            Validators.emptyStringValidator(price, 'Price') == null ||
-        Validators.emptyStringValidator(durationController.text, 'Duration') == null ||
-        Validators.emptyStringValidator(startController.text, 'Start Hour') == null ||
-        Validators.emptyStringValidator(endController.text, 'End Hour') == null) {
+        Validators.emptyStringValidator(description, 'Description') == null &&
+        Validators.emptyStringValidator(price, 'Price') == null) {
+      if (selectedType == null) {
+        Alerts.showErrorSnackbar('Please Select Type');
+          return false;
+
+      }
+      if (selectedType == 'Service') {
+        if (Validators.emptyStringValidator(durationController.text, 'Duration') != null) {
+          Alerts.showErrorSnackbar('Please Enter Duration');
+          return false;
+        } else if (Validators.emptyStringValidator(startController.text, 'Start Hour') != null) {
+          Alerts.showErrorSnackbar('Please select Booking Starting time');
+          return false;
+        } else if (Validators.emptyStringValidator(endController.text, 'End Hour') != null) {
+          Alerts.showErrorSnackbar('Please select Booking Ending time');
+          return false;
+        } else if (Validators.bookingTimeValidator(startController.text, endController.text) != null) {
+          Alerts.showErrorSnackbar('Booking starting time must be earlier than the ending time');
+          return false;
+        }
+      }
       if (_selectedImage1 != null) {
         return true;
       } else {
@@ -265,7 +277,6 @@ class CreateServiceViewModel extends BaseViewModel {
       imageWidth = size.width;
       imageHeight = size.height;
     });
-    serviceAspectRatio = imageWidth / imageHeight;
     var ratio = 4 / 5;
 
     final file = await ImageCropper.cropImage(
@@ -284,6 +295,10 @@ class CreateServiceViewModel extends BaseViewModel {
           resetButtonHidden: true),
     );
 
+    await _calculateImageDimension(file!).then((size) {
+      serviceAspectRatio = size.width / size.height;
+    });
+
     _finalImage1 = file;
     images.add(_finalImage1!);
     notifyListeners();
@@ -292,7 +307,6 @@ class CreateServiceViewModel extends BaseViewModel {
   Future selectVideo(File file) async {
     print(file);
     selectedVideo1 = File(file.path);
-    log("selexrefKASJ222222222222@@@@@@@@@@@@@");
     log(selectedVideo1.toString());
     videoName = file.path.split('/').last;
     log(videoName.toString());
@@ -323,7 +337,7 @@ class CreateServiceViewModel extends BaseViewModel {
     double imageWidth = 1.0;
     double imageHeight = 1.0;
     await _calculateImageDimension(_selectedImage1!).then((size) {
-       imageWidth = size.width;
+      imageWidth = size.width;
       imageHeight = size.height;
     });
 
@@ -333,15 +347,15 @@ class CreateServiceViewModel extends BaseViewModel {
       sourcePath: _selectedImage2!.path,
       aspectRatioPresets: ratios,
       androidUiSettings: androidUiSettings,
-      iosUiSettings: IOSUiSettings(title: 'Crop Image',
-        rectX: 0.0,
-        rectY: 0.0,
-        rectWidth: imageWidth,
-        rectHeight: imageWidth/ratio,
-        rotateButtonsHidden : true,
-        aspectRatioLockEnabled : true,
-        resetButtonHidden: true
-        ),
+      iosUiSettings: IOSUiSettings(
+          title: 'Crop Image',
+          rectX: 0.0,
+          rectY: 0.0,
+          rectWidth: imageWidth,
+          rectHeight: imageWidth / ratio,
+          rotateButtonsHidden: true,
+          aspectRatioLockEnabled: true,
+          resetButtonHidden: true),
     );
 
     _finalImage2 = file;
@@ -358,7 +372,7 @@ class CreateServiceViewModel extends BaseViewModel {
     double imageWidth = 1.0;
     double imageHeight = 1.0;
     await _calculateImageDimension(_selectedImage1!).then((size) {
-       imageWidth = size.width;
+      imageWidth = size.width;
       imageHeight = size.height;
     });
 

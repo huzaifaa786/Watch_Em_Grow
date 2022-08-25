@@ -581,8 +581,7 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                                   // It is a must if you provide selectableTimePredicate
                                   onFailValidation: (context) => Fluttertoast.showToast(msg: "Cannot select minutes other than Zero"),
                                   initialTime: TimeOfDay(hour: 6, minute: 0),
-                                  selectableTimePredicate: (time) =>
-                                    time!.hour < 14 &&   time.minute % 60 == 0)
+                                  selectableTimePredicate: (time) =>  time!.minute % 60 == 0)
                               .then((time) => setState(() => model.startController.text = time!.hour.toString()));
                         },
                         child: InputField(
@@ -600,7 +599,7 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           ),
                         ),
                       ),
-                      Text("Note : The Booking Starting time cannot be grater than 14 and minutes must be Zero (00)",style: TextStyle(color: Colors.grey),)
+                      Text("Note : Minutes must be Zero (00)",style: TextStyle(color: Colors.grey),)
                     ],
                     if (model.selectedType == Constants.serviceLabel)
                       GestureDetector(
