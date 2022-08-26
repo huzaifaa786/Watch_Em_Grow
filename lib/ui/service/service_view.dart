@@ -57,7 +57,6 @@ class _ServiceViewState extends State<ServiceView> {
             videoLoading = false;
           }),
           videoPlayerController!.setLooping(true),
-          videoPlayerController!.play()
         });
     chewieController = ChewieController(
       aspectRatio: widget.service.aspectRatio,
