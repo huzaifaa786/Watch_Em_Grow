@@ -17,6 +17,7 @@ import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
 import 'package:stacked/stacked.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:video_player/video_player.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class ServiceView extends StatefulWidget {
   final ShopService service;
@@ -154,8 +155,20 @@ class _ServiceViewState extends State<ServiceView> {
                                   if (!videoLoading) ...[
                                     AspectRatio(
                                       aspectRatio: widget.service.aspectRatio!,
-                                      child: Chewie(
-                                        controller: chewieController!,
+                                      child: VisibilityDetector(
+                                        key: Key("uniquekey"),
+                                        onVisibilityChanged: (VisibilityInfo info) {
+                                          debugPrint("${info.visibleFraction} of my widget is visible");
+                                          if (info.visibleFraction == 0) {
+                                            chewieController!.pause();
+                                          } else {
+                                            chewieController!.play();
+
+                                          }
+                                        },
+                                        child: Chewie(
+                                          controller: chewieController!,
+                                        ),
                                       ),
                                     ),
                                   ] else ...[
@@ -391,15 +404,13 @@ class _ServiceViewState extends State<ServiceView> {
                                   color: Color(widget.color),
                                   onPressed: () {
                                     if (widget.service.sizes!.isEmpty || widget.service.sizes == null) {
-                                      if (widget.service.videoUrl != null){
-                                      chewieController!.pause();
-
+                                      if (widget.service.videoUrl != null) {
+                                        chewieController!.pause();
                                       }
                                       model.navigateToBuyServiceView();
                                     } else {
-                                      if (widget.service.videoUrl != null){
-                                      chewieController!.pause();
-
+                                      if (widget.service.videoUrl != null) {
+                                        chewieController!.pause();
                                       }
                                       model.isBuyServiceFormValidate();
                                     }
@@ -432,10 +443,9 @@ class _ServiceViewState extends State<ServiceView> {
                               Expanded(
                                 child: MaterialButton(
                                   onPressed: () {
-                                     if (widget.service.videoUrl != null){
+                                    if (widget.service.videoUrl != null) {
                                       chewieController!.pause();
-
-                                      }
+                                    }
                                     model.bookService();
                                   },
                                   color: Color(widget.color),
@@ -470,17 +480,15 @@ class _ServiceViewState extends State<ServiceView> {
                                 onPressed: () {
                                   if (model.user.chatIds != null &&
                                       model.user.chatIds!.contains(widget.service.ownerId)) {
-                                     if (widget.service.videoUrl != null){
+                                    if (widget.service.videoUrl != null) {
                                       chewieController!.pause();
-
-                                      }
+                                    }
                                     model.navigateToDirectChatView(widget.service.ownerId);
                                     //model.navigateToChatsView();
                                   } else {
-                                     if (widget.service.videoUrl != null){
+                                    if (widget.service.videoUrl != null) {
                                       chewieController!.pause();
-
-                                      }
+                                    }
                                     model.updateChat(widget.service.ownerId);
                                   }
                                 },
