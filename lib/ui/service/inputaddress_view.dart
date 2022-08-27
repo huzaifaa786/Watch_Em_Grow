@@ -64,7 +64,7 @@ class InputAddressView extends StatelessWidget {
                         },
                         validator: (postCode) => Validators.emptyStringValidator(
                           postCode,
-                          'PostCode',
+                          'Postcode',
                         ),
                       ),
                       MaterialButton(

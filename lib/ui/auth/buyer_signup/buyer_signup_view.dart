@@ -18,7 +18,8 @@ class BuyerSignupView extends HookWidget {
   Widget build(BuildContext context) {
     final emailFocusNode = useFocusNode();
     final passwordFocusNode = useFocusNode();
-
+    Brightness brightness = Theme.of(context).brightness;
+    bool darkModeOn = brightness == Brightness.dark;
     return ViewModelBuilder<BuyerSignupViewModel>.reactive(
       builder: (context, model, child) => Stack(
         children: [
@@ -26,6 +27,9 @@ class BuyerSignupView extends HookWidget {
             appBar: AppBar(
               elevation: 0,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              iconTheme: IconThemeData(
+                color: darkModeOn ? Colors.white : Colors.black,
+              ),
             ),
             body: ScrollableBody(
               children: [
@@ -102,7 +106,7 @@ class _SignUpForm extends ViewModelWidget<BuyerSignupViewModel> {
         ),
 
         // Password Field
-       
+
         InputField(
           focusNode: passwordFocusNode,
           validate: model.validateForm,

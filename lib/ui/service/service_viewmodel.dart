@@ -98,7 +98,7 @@ class ServiceViewModel extends BaseViewModel {
   Future navigateToBuyServiceView() async {
    
     if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
-      await _navigationService.navigateTo(
+      await _navigationService.replaceWith(
         Routes.buyServiceView,
         arguments: BuyServiceViewArguments(
           user: user,
@@ -133,7 +133,7 @@ class ServiceViewModel extends BaseViewModel {
         await _databaseApi.getUser(receiverId).then((receiver) {
           isApiRunning = false;
           notifyListeners();
-          _navigationService.navigateTo(
+          _navigationService.replaceWith(
             Routes.messagesView,
             arguments: MessagesViewArguments(
               currentUser: user,
@@ -221,7 +221,7 @@ class ServiceViewModel extends BaseViewModel {
 
     if (dialogResponse?.confirmed ?? false) {
       // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
-      await _navigationService.navigateTo(
+      await _navigationService.replaceWith(
         Routes.bookingView,
         arguments: BookingViewArguments(
           user: user,
@@ -316,7 +316,7 @@ class ServiceViewModel extends BaseViewModel {
     await _databaseApi.getUser(receiverId).then((receiver) {
       isApiRunning = false;
       notifyListeners();
-      _navigationService.navigateTo(
+      _navigationService.replaceWith(
         Routes.messagesView,
         arguments: MessagesViewArguments(
           currentUser: user,

@@ -23,6 +23,8 @@ class SellerSignupView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        Brightness brightness = Theme.of(context).brightness;
+    bool darkModeOn = brightness == Brightness.dark;
     return ViewModelBuilder<SellerSignupViewModel>.reactive(
       onModelReady: (model) => model.init(user),
       builder: (context, model, child) => Stack(
@@ -45,13 +47,14 @@ class SellerSignupView extends StatelessWidget {
                         child: Icon(
                           Icons.arrow_back_rounded,
                           size: 33,
+                          color: darkModeOn ? Colors.white : Colors.black,
                         )),
                     AuthHeader(
                       label: Constants.createSellerLabel,
                     ),
                     Icon(
                       Icons.arrow_back,
-                      color: Colors.white,
+                    color: darkModeOn ? Colors.white : Colors.black,
                     ),
                   ],
                 ),

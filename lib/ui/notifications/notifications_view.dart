@@ -4,6 +4,7 @@ import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/ui/notifications/notifications_viewmodel.dart';
 import 'package:mipromo/ui/profile/seller/seller_profile_viewmodel.dart';
+import 'package:mipromo/ui/shared/helpers/styles.dart';
 import 'package:mipromo/ui/shared/widgets/avatar.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
@@ -17,6 +18,8 @@ class NotificationsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Brightness brightness = Theme.of(context).brightness;
+    bool darkModeOn = brightness == Brightness.dark;
     var size = MediaQuery.of(context).size;
     return ViewModelBuilder<NotificationsViewModel>.reactive(
       onModelReady: (model) => model.init(currentUser.id),
@@ -56,7 +59,7 @@ class NotificationsView extends StatelessWidget {
                                     model.currentUser.id, model.newNotifications[index].id.toString());
                                 model.navigateTo(model.newNotifications[index].userId.toString(), index);
                               } else {
-                                 model.readNotification(
+                                model.readNotification(
                                     model.currentUser.id, model.newNotifications[index].id.toString());
                                 model.navigateToOrder(model.newNotifications[index].orderID.toString());
                               }
@@ -65,7 +68,7 @@ class NotificationsView extends StatelessWidget {
                               children: [
                                 if (index == 0) 8.heightBox,
                                 Container(
-                                  color:  model.newNotifications[index].read == 'true' ? Colors.white : Colors.grey.withOpacity(0.3),
+                                  color: model.newNotifications[index].read == 'false' ? Colors.grey.withOpacity(0.3) : null,
                                   height: size.height * 0.08,
                                   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
                                   child: Row(

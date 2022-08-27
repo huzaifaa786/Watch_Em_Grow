@@ -17,7 +17,6 @@ import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
 import 'package:stacked/stacked.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:video_player/video_player.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class ServiceView extends StatefulWidget {
   final ShopService service;
@@ -39,6 +38,8 @@ class _ServiceViewState extends State<ServiceView> {
   ChewieController? chewieController;
   VideoPlayerController? videoPlayerController;
   bool videoLoading = false;
+  bool videoPlaying = false;
+  late Future<void> _initializeVideoPlayerFuture;
 
   @override
   void initState() {
@@ -52,16 +53,11 @@ class _ServiceViewState extends State<ServiceView> {
       videoLoading = true;
     });
     videoPlayerController = VideoPlayerController.network(widget.service.videoUrl.toString());
-    videoPlayerController!.initialize().then((value) => {
-          setState(() {
-            videoLoading = false;
-          }),
-          videoPlayerController!.setLooping(true),
-        });
+
     chewieController = ChewieController(
       aspectRatio: widget.service.aspectRatio,
       videoPlayerController: videoPlayerController!,
-      autoInitialize: true,
+      // autoInitialize: true,
       allowMuting: true,
       showControls: false,
       looping: true,
@@ -73,11 +69,24 @@ class _ServiceViewState extends State<ServiceView> {
         bufferedColor: Colors.purple.withOpacity(0.4),
       ),
     );
+    // videoPlayerController!.addListener(checkVideo);
+
+    _initializeVideoPlayerFuture = videoPlayerController!.initialize().then((value) => {
+      videoPlayerController!.setLooping(true),
+      videoPlayerController!.play()
+    });
   }
+
+  // checkVideo() {
+  //   if (videoPlayerController!.value.isInitialized) {
+  //     videoPlaying = true;
+  //   }
+  // }
 
   void dispose() {
     videoPlayerController!.dispose();
     chewieController!.dispose();
+    chewieController!.pause();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -151,28 +160,27 @@ class _ServiceViewState extends State<ServiceView> {
                                   ),
                                 ],
                                 if (widget.service.videoUrl != null) ...[
-                                  if (!videoLoading) ...[
-                                    AspectRatio(
-                                      aspectRatio: widget.service.aspectRatio!,
-                                      child: VisibilityDetector(
-                                        key: Key("uniquekey"),
-                                        onVisibilityChanged: (VisibilityInfo info) {
-                                          debugPrint("${info.visibleFraction} of my widget is visible");
-                                          if (info.visibleFraction == 0) {
-                                            chewieController!.pause();
-                                          } else {
-                                            chewieController!.play();
-
-                                          }
-                                        },
-                                        child: Chewie(
-                                          controller: chewieController!,
-                                        ),
-                                      ),
-                                    ),
-                                  ] else ...[
-                                    Container(height: 50, width: 50, child: Center(child: CircularProgressIndicator()))
-                                  ]
+                                  FutureBuilder(
+                                      future: _initializeVideoPlayerFuture,
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.done) {
+                                          // If the VideoPlayerController has finished initialization, use
+                                          // the data it provides to limit the aspect ratio of the video.
+                                          return AspectRatio(
+                                            aspectRatio: widget.service.aspectRatio!,
+                                            child: Chewie(
+                                              controller: chewieController!,
+                                            ),
+                                          );
+                                        }
+                                        else {
+            // If the VideoPlayerController is still initializing, show a
+            // loading spinner.
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+                                      }),
 
                                   // Align(
                                   //   alignment: Alignment.topRight,

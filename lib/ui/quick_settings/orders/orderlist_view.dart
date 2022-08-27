@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/models/order.dart';
 import 'package:mipromo/ui/quick_settings/orders/orderlist_viewmodel.dart';
+import 'package:mipromo/ui/shared/helpers/styles.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
 import 'package:stacked/stacked.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
@@ -119,28 +120,36 @@ class _SoldOrderListViewState extends State<SoldOrderListView> {
   }
 
   String bookingStart(order) {
-    String bookstart;
-    bookstart = DateFormat('h:mm a').format(
-      DateTime.fromMicrosecondsSinceEpoch(int.parse(
-        '${order.bookingStart!}',
-      )),
-    );
+    String bookstart = '';
+    if (order.type == OrderType.service) {
+      bookstart = DateFormat('h:mm a').format(
+        DateTime.fromMicrosecondsSinceEpoch(int.parse(
+          '${order.bookingStart!}',
+        )),
+      );
+    }
     return bookstart;
   }
 
-  String bookingEnd(order) {
-    String bookend;
-    bookend = DateFormat('h:mm a').format(DateTime.fromMicrosecondsSinceEpoch(
-      int.parse(
-        '${order.bookingEnd!}',
-      ),
-    ));
+  String bookingEnd(Order order) {
+    String bookend = '';
+    if (order.type == OrderType.service) {
+      bookend = DateFormat('h:mm a').format(DateTime.fromMicrosecondsSinceEpoch(
+        int.parse(
+          '${order.bookingEnd!}',
+        ),
+      ));
+    }
+
     return bookend;
   }
+
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
   @override
   Widget build(BuildContext context) {
+       Brightness brightness = Theme.of(context).brightness;
+    bool darkModeOn = brightness == Brightness.dark;
     return ViewModelBuilder<SoldOrderListViewModel>.reactive(
       onModelReady: (model) => model.init(currentUser: widget.currentUser),
       builder: (context, model, child) => model.isBusy
@@ -155,14 +164,17 @@ class _SoldOrderListViewState extends State<SoldOrderListView> {
                       focusedDay: selectedDay,
                       firstDay: DateTime(2022),
                       lastDay: DateTime(2050),
-                      
- calendarStyle: const CalendarStyle(
-                          isTodayHighlighted: true,
-                          outsideDaysVisible: false,
+
+                      calendarStyle:  CalendarStyle(
+                        markerDecoration :BoxDecoration(color: Styles.kcPrimaryColor,
+                        borderRadius: BorderRadius.circular(30),
                         ),
-                         availableCalendarFormats: const {
-                          CalendarFormat.month: 'Month',
-                        },
+                        isTodayHighlighted: true,
+                        outsideDaysVisible: false,
+                      ),
+                      availableCalendarFormats: const {
+                        CalendarFormat.month: 'Month',
+                      },
                       calendarFormat: format,
                       onFormatChanged: (CalendarFormat _format) {
                         setState(() {
@@ -171,7 +183,7 @@ class _SoldOrderListViewState extends State<SoldOrderListView> {
                       },
                       startingDayOfWeek: StartingDayOfWeek.sunday,
                       daysOfWeekVisible: true,
-                    
+
                       //Day Changed
                       onDaySelected: (DateTime selectDay, DateTime focusDay) {
                         setState(() {
@@ -183,7 +195,7 @@ class _SoldOrderListViewState extends State<SoldOrderListView> {
                       selectedDayPredicate: (DateTime date) {
                         return isSameDay(selectedDay, date);
                       },
-                    
+
                       eventLoader: model.getEventsfromDay,
                     ),
                     Divider(),
@@ -191,8 +203,11 @@ class _SoldOrderListViewState extends State<SoldOrderListView> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 20.0,top: 10,bottom: 10),
-                          child: Text('Appoinments',style: TextStyle(fontSize: 17, color : Colors.black.withOpacity(0.6)),),
+                          padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
+                          child: Text(
+                            'Appoinments',
+                            style: TextStyle(fontSize: 17,color : darkModeOn ? Colors.white:  Colors.black.withOpacity(0.6)),
+                          ),
                         ),
                       ],
                     ),
@@ -217,9 +232,8 @@ class _SoldOrderListViewState extends State<SoldOrderListView> {
                                           )
                                         : ClipRRect(
                                             borderRadius: BorderRadius.circular(6),
-                                            
                                             child: CachedNetworkImage(
-                                              imageUrl:orders[index].service.imageUrl1!,
+                                              imageUrl: orders[index].service.imageUrl1!,
                                               fit: BoxFit.cover,
                                             ),
                                           ),

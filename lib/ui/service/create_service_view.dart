@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:helpers/helpers/misc.dart';
 import 'package:helpers/helpers/widgets/text.dart';
 import 'package:helpers/helpers/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/ui/service/create_service_viewmodel.dart';
@@ -18,7 +20,6 @@ import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/busy_button.dart';
 import 'package:mipromo/ui/shared/widgets/inputfield.dart';
 import 'package:stacked/stacked.dart';
-import 'package:time_picker_widget/time_picker_widget.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:video_editor/domain/bloc/controller.dart';
 import 'package:video_editor/ui/cover/cover_selection.dart';
@@ -49,9 +50,11 @@ class _CreateServiceViewState extends State<CreateServiceView> {
     return File(file.path.toString());
   }
 
-  var selectedTime;
+  String? _selectedTime;
+
   @override
   Widget build(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
     return ViewModelBuilder<CreateServiceViewModel>.reactive(
       onModelReady: (model) => model.init(widget.user, widget.shop),
       builder: (context, model, child) => model.isBusy
@@ -573,16 +576,16 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           'Duration',
                         ),
                       ),
-                    if (model.selectedType == Constants.serviceLabel) ... [
+                    if (model.selectedType == Constants.serviceLabel) ...[
                       GestureDetector(
                         onTap: () {
-                          showCustomTimePicker(
-                                  context: context,
-                                  // It is a must if you provide selectableTimePredicate
-                                  onFailValidation: (context) => Fluttertoast.showToast(msg: "Cannot select minutes other than Zero"),
-                                  initialTime: TimeOfDay(hour: 6, minute: 0),
-                                  selectableTimePredicate: (time) =>  time!.minute % 60 == 0)
-                              .then((time) => setState(() => model.startController.text = time!.hour.toString()));
+                          DatePicker.showPicker(context, showTitleActions: true, onChanged: (date) {},
+                              onConfirm: (time) {
+                            model.startController.text = time.hour.toString();
+                          }, pickerModel: CustomPicker(currentTime: DateTime.now()), locale: LocaleType.en);
+                          currentFocus.unfocus();
+
+
                         },
                         child: InputField(
                           hintText: "Bookings available from the hours",
@@ -599,25 +602,22 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           ),
                         ),
                       ),
-                      Text("Note : Minutes must be Zero (00)",style: TextStyle(color: Colors.grey),)
+                    
                     ],
                     if (model.selectedType == Constants.serviceLabel)
                       GestureDetector(
-                        onTap: (){
-                             showCustomTimePicker(
-                                  context: context,
-                                  // It is a must if you provide selectableTimePredicate
-                                  onFailValidation: (context) => Fluttertoast.showToast(msg: "Cannot select minutes other than Zero"),
-                                  initialTime: TimeOfDay(hour: 12, minute: 0),
-                                  selectableTimePredicate: (time) =>
-                                       time!.minute % 60 == 0)
-                              .then((time) => setState(() => model.endController.text = time!.hour.toString()));
+                        onTap: () {
+                            DatePicker.showPicker(context, showTitleActions: true, onChanged: (date) {},
+                              onConfirm: (time) {
+                            model.endController.text = time.hour.toString();
+                          }, pickerModel: CustomPicker(currentTime: DateTime.now()), locale: LocaleType.en);
+                          currentFocus.unfocus();
                         },
                         child: InputField(
                           hintText: "Booking available till",
                           maxLength: 24,
                           counter: "",
-                            readOnly: true,
+                          readOnly: true,
                           enable: false,
                           controller: model.endController,
                           textInputType: TextInputType.number,
@@ -629,7 +629,7 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                         ),
                       ),
                     InputField(
-                      hintText: "Appointment Address",
+                      hintText: "Appointment address",
                       //maxLength: 5,
                       counter: "",
                       controller: model.noteController,
@@ -941,5 +941,69 @@ class CropScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class CustomPicker extends CommonPickerModel {
+  String digits(int value, int length) {
+    return '$value'.padLeft(length, "0");
+  }
+
+  CustomPicker({DateTime? currentTime, LocaleType? locale}) : super(locale: locale) {
+    this.currentTime = currentTime ?? DateTime.now();
+    this.setLeftIndex(this.currentTime.hour);
+    this.setMiddleIndex(this.currentTime.minute);
+    this.setRightIndex(this.currentTime.second);
+  }
+
+  @override
+  leftStringAtIndex(int index) {
+    if (index >= 0 && index < 24) {
+      return this.digits(index, 2);
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  middleStringAtIndex(int index) {
+    if (index >= 0 && index < 60) {
+      return this.digits(00, 2);
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  rightStringAtIndex(int index) {
+    if (index >= 0 && index < 60) {
+      return this.digits(index, 2);
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  String leftDivider() {
+    return ":";
+  }
+
+  @override
+  String rightDivider() {
+    return ":";
+  }
+
+  @override
+  List<int> layoutProportions() {
+    return [1, 1, 0];
+  }
+
+  @override
+  DateTime finalTime() {
+    return currentTime.isUtc
+        ? DateTime.utc(currentTime.year, currentTime.month, currentTime.day, this.currentLeftIndex(),
+            this.currentMiddleIndex(), this.currentRightIndex())
+        : DateTime(currentTime.year, currentTime.month, currentTime.day, this.currentLeftIndex(),
+            this.currentMiddleIndex(), this.currentRightIndex());
   }
 }

@@ -38,7 +38,8 @@ class OrderDetailView extends StatelessWidget {
               appBar: AppBar(
                 title: order.service.name.text.make(),
               ),
-              body: Stack(
+              body: 
+              Stack(
                 children: [
                   SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -404,13 +405,14 @@ class OrderDetailView extends StatelessWidget {
                                   10.heightBox,
                                   Row(
                                     children: [
-                                      'Product Name:'.text.make(),
+                                      'Product name:'.text.make(),
                                       10.widthBox,
                                       order.service.name.text.make(),
                                     ],
                                   ),
                                   5.heightBox,
-                                  if (order.service.sizes != null)
+                                  if (order.type == OrderType.service) ...[
+                                       if (order.service.sizes != null)
                                     Row(
                                       children: [
                                         'Size:'.text.make(),
@@ -421,6 +423,8 @@ class OrderDetailView extends StatelessWidget {
                                       ],
                                     ),
                                   if (order.service.sizes != null) 5.heightBox,
+                                  ],
+                               
                                   if (order.shopId == currentUser.shopId)
                                     Row(
                                       children: [
@@ -433,7 +437,8 @@ class OrderDetailView extends StatelessWidget {
                                         '%'.text.make(),
                                       ],
                                     ),
-                                  if (order.type == OrderType.service)5.heightBox,
+                                  if (order.type == OrderType.service)...[
+                                  5.heightBox,
                                     Row(
                                       children: [
                                         'Appointment time:'.text.make(),
@@ -464,6 +469,7 @@ class OrderDetailView extends StatelessWidget {
                                         )
                                       ],
                                     ),
+                                  ],
                                   if (order.shopId == currentUser.shopId)
                                     5.heightBox,
                                 ]),
@@ -517,7 +523,7 @@ class OrderDetailView extends StatelessWidget {
                                   10.heightBox,
                                   Row(
                                     children: [
-                                      'Full Name:'.text.make(),
+                                      'Full name:'.text.make(),
                                       15.widthBox,
                                       order.name!.text.make(),
                                     ],
@@ -533,7 +539,7 @@ class OrderDetailView extends StatelessWidget {
                                   5.heightBox,
                                   Row(
                                     children: [
-                                      'PostCode:'.text.make(),
+                                      'Postcode:'.text.make(),
                                       15.widthBox,
                                       order.postCode!.text.make(),
                                     ],
@@ -1161,15 +1167,15 @@ class OrderDetailView extends StatelessWidget {
 
             ///order received
             if (order.shopId == currentUser.shopId)
-              renderCheckIcon(height, false, "Service Delivered",
-                  "You have Delivered service")
+              renderCheckIcon(height, false, order.type == OrderType.service ?  "Service Delivered" : "Product Delivered",
+                order.type == OrderType.service ?   "You have delivered the service": "You have delivered the product" )
             else
-              renderCheckIcon(height, false, "Received Service",
+              renderCheckIcon(height, false, order.type == OrderType.service ?  "Received Service": "Received Product",
                   "You have received your service"),
             renderCheckDivider(height, false),
 
             ///order accepted
-            renderCheckIcon(height, false, "Completed", "Order Completed"),
+            renderCheckIcon(height, false, "Completed", "Order completed"),
           ],
         );
       case 'REFUNDED':
@@ -1197,14 +1203,14 @@ class OrderDetailView extends StatelessWidget {
             ///order received
             if (order.shopId == currentUser.shopId)
               renderCheckIcon(height, false, "Service Delivered",
-                  "You have Delivered service")
+                  "You have delivered service")
             else
               renderCheckIcon(height, false, "Received Service",
                   "You have received your service"),
             renderCheckDivider(height, false),
 
             ///order accepted
-            renderCheckIcon(height, false, "Completed", "Order Completed"),
+            renderCheckIcon(height, false, "Completed", "Order completed"),
           ],
         );
       case 'COMPLETED':
@@ -1232,14 +1238,14 @@ class OrderDetailView extends StatelessWidget {
             ///order received
             if (order.shopId == currentUser.shopId)
               renderCheckIcon(height, true, "Service Delivered",
-                  "You have Delivered service")
+                  "You have delivered service")
             else
               renderCheckIcon(height, true, "Received Service",
                   "You have received your service"),
             renderCheckDivider(height, true),
 
             ///order accepted
-            renderCheckIcon(height, true, "Completed", "Order Completed"),
+            renderCheckIcon(height, true, "Completed", "Order completed"),
           ],
         );
       case 'BOOK REQUESTED':
@@ -1372,14 +1378,14 @@ class OrderDetailView extends StatelessWidget {
             ///order received
             if (order.shopId == currentUser.shopId)
               renderCheckIcon(height, true, "Service Delivered",
-                  "You have Delivered service")
+                  "You have delivered service")
             else
               renderCheckIcon(height, true, "Received Service",
                   "You have received your service"),
             renderCheckDivider(height, true),
 
             ///order accepted
-            renderCheckIcon(height, true, "Completed", "Order Completed"),
+            renderCheckIcon(height, true, "Completed", "Order completed"),
           ],
         );
       case 'REFUND CASE CLOSED':
@@ -1407,14 +1413,14 @@ class OrderDetailView extends StatelessWidget {
             ///order received
             if (order.shopId == currentUser.shopId)
               renderCheckIcon(height, true, "Service Delivered",
-                  "You have Delivered service")
+                  "You have delivered service")
             else
               renderCheckIcon(height, true, "Received Service",
                   "You have received your service"),
             renderCheckDivider(height, true),
 
             ///order accepted
-            renderCheckIcon(height, true, "Completed", "Order Completed"),
+            renderCheckIcon(height, true, "Completed", "Order completed"),
           ],
         );
     }

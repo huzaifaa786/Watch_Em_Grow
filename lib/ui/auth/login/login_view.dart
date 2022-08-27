@@ -19,6 +19,8 @@ class LoginView extends HookWidget {
   Widget build(BuildContext context) {
     final emailFocusNode = useFocusNode();
     final passwordFocusNode = useFocusNode();
+      Brightness brightness = Theme.of(context).brightness;
+    bool darkModeOn = brightness == Brightness.dark;
 
     return ViewModelBuilder<LoginViewModel>.reactive(
       builder: (context, model, child) => Stack(
@@ -26,6 +28,9 @@ class LoginView extends HookWidget {
           Scaffold(
             appBar: AppBar(
               elevation: 0,
+               iconTheme: IconThemeData(
+                color: darkModeOn ? Colors.white : Colors.black,
+              ),
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             ),
             body: ScrollableBody(

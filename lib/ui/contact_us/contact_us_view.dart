@@ -39,7 +39,7 @@ class ContactUsView extends StatelessWidget {
                     30.heightBox,
                     Row(
                       children: [
-                        "Full Name".text.size(16).make(),
+                        "Full name".text.size(16).make(),
                       ],
                     ),
                     8.heightBox,

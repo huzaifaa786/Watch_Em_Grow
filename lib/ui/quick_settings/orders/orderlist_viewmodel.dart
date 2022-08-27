@@ -69,15 +69,22 @@ class SoldOrderListViewModel extends BaseViewModel {
         orders = cOrders;
         for (var i = 0; i < orders.length; i++) {
           DateTime? date;
+          var newDate;
+
+          if (orders[i].type == OrderType.service) {
             date = DateTime.fromMicrosecondsSinceEpoch(orders[i].bookingStart!, isUtc: true);
-         var newDate =  DateTime.utc(date.year, date.month, date.day, 0, 0, 0);
-    
+             newDate = DateTime.utc(date.year, date.month, date.day, 0, 0, 0);
+          } else {
+             date = DateTime.fromMicrosecondsSinceEpoch(orders[i].time, isUtc: true);
+             newDate = DateTime.utc(date.year, date.month, date.day, 0, 0, 0);
+          }
           if (selectedEvents[newDate] != null) {
             selectedEvents[newDate]!.add(orders[i]);
           } else {
             selectedEvents[DateTime.parse('${newDate}')] = [orders[i]];
           }
         }
+
         print(selectedEvents);
         notifyListeners();
         setBusy(false);
