@@ -42,7 +42,7 @@ class Constants {
   static const String dobLabel = "Date of Birth";
   static const String dobHelperTextLabel =
       "You must be over 16 to create a seller account";
-  static const String fullNameLabel = "Full Name";
+  static const String fullNameLabel = "Full name";
   static const String phoneNumberLabel = "Phone Number";
   static const String createShopLabel = "Create Shop";
   static const String createShopInfoLabel =
@@ -234,5 +234,5 @@ class Constants {
   static final List<String> allLocations =
       cities + londonBoroughs + hertfordshireBoroughs;
   static const String addressLabel = 'Address';
-  static const String postCodeLabel = 'PostCode';
+  static const String postCodeLabel = 'Postcode';
 }

@@ -409,7 +409,7 @@ class OrderDetailViewModel extends BaseViewModel {
 
   Future handleCancelRefundCase(Order order) async {
     final dialogResponse = await _dialogService.showConfirmationDialog(
-      title: 'Do you want to close refund case?',
+      title: 'Do you want to close this refund case ?',
       confirmationTitle: 'Close case',
       cancelTitle: 'Back',
     );

@@ -5,6 +5,7 @@ import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/ui/profile/seller/seller_profile_viewmodel.dart';
+import 'package:mipromo/ui/quick_settings/orders/orders_view.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
 import 'package:mipromo/ui/shared/helpers/styles.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
@@ -36,7 +37,8 @@ class SellerProfileView extends StatelessWidget {
                 leading: viewingAsProfile != true
                     ? BackButton(
                         onPressed: () {
-                          model.backToNotifications();
+                          // model.backToNotifications();
+                          Navigator.pop(context);
                         },
                       )
                     : null,
@@ -101,7 +103,13 @@ class SellerProfileView extends StatelessWidget {
                               ),
                               title: 'Orders'.text.make(),
                               onTap: () {
-                                model.navigateToOrdersView();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OrdersView()),
+                                ).then((val) => {
+                                  model.init(seller.shopId, seller)
+                                });
+                                // model.navigateToOrdersView();
                               },
                             ),
                             ExpansionTile(
@@ -327,35 +335,33 @@ class SellerProfileView extends StatelessWidget {
                                       ).box.border(color: Colors.amber).roundedSM.p12.make().p12()
                                     ],
                                   )
-                                else    
+                                else
                                   GridView.builder(
                                       padding: EdgeInsets.all(0),
                                       shrinkWrap: true,
                                       physics: const BouncingScrollPhysics(),
                                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-
                                         crossAxisCount: 3,
                                         crossAxisSpacing: 1.5,
-                                        mainAxisSpacing: 1.5,   
+                                        mainAxisSpacing: 1.5,
                                         childAspectRatio: 1,
                                       ),
                                       itemCount: model.shop!.ownerId == model.currentUser.id && viewingAsProfile == true
                                           ? model.services.length
                                           : model.services.length,
                                       itemBuilder: (context, index) {
+                                     
                                         String imageUrl(
                                           String? image1,
                                           String? image2,
                                           String? image3,
                                         ) {
-
                                           if (image1 == null) {
                                             if (image2 == null) {
                                               if (image3 == null) {
                                                 return 'https://via.placeholder.com/600x600.jpg?text=No+image';
-                                              }else{
-                                              return image3;
-
+                                              } else {
+                                                return image3;
                                               }
                                             } else {
                                               return image2;

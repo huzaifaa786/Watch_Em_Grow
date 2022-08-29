@@ -60,8 +60,9 @@ class _ServiceViewState extends State<ServiceView> {
     chewieController = ChewieController(
       aspectRatio: widget.service.aspectRatio,
       videoPlayerController: videoPlayerController!,
-      // autoInitialize: true,
+      autoInitialize: true,
       allowMuting: true,
+      autoPlay : true,
       showControls: false,
       looping: true,
       allowFullScreen: true,
@@ -77,11 +78,10 @@ class _ServiceViewState extends State<ServiceView> {
     );
     // videoPlayerController!.addListener(checkVideo);
 
-    _initializeVideoPlayerFuture =
-        videoPlayerController!.initialize().then((value) => {
-              videoPlayerController!.setLooping(true),
-              videoPlayerController!.play(),
-            });
+    _initializeVideoPlayerFuture = videoPlayerController!.initialize().then((value) => {
+      videoPlayerController!.setLooping(true),
+      videoPlayerController!.play()
+    });
   }
 
   // checkVideo() {
