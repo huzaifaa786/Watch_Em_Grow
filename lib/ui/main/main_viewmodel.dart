@@ -232,8 +232,6 @@ class MainViewModel extends BaseViewModel {
     setBusy(true);
     notificationInit();
 
-   
-
     await _userService.updateToken();
     final result = await _userService.syncUser();
     if (!result) {
@@ -243,7 +241,7 @@ class MainViewModel extends BaseViewModel {
     _databaseApi.listenUser(_userService.currentUser.id).listen(
       (user) {
         _currentUser = user;
-        notifyListeners();     
+        notifyListeners();
         setBusy(false);
       },
     );
@@ -253,7 +251,7 @@ class MainViewModel extends BaseViewModel {
 
       notifyListeners();
     });
-     if (index == 3) {
+    if (index == 3) {
       Future.delayed(const Duration(milliseconds: 500), () {
         onNavigationIconTap(3);
       });

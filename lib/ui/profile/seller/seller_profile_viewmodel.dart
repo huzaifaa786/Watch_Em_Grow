@@ -75,6 +75,10 @@ class SellerProfileViewModel extends BaseViewModel {
       );
     }
 
+    void refreshKaro() {
+      init(shopId, seller);
+    }
+
     if (shopId.isNotEmpty) {
       _shopSubscription = _databaseApi.listenShop(shopId).listen(
         (shopData) {
@@ -609,6 +613,7 @@ class SellerProfileViewModel extends BaseViewModel {
       ),
     );
   }
+
   Future<void> navigateToBookingView() async {
     await _navigationService.navigateTo(
       Routes.bookingView,
