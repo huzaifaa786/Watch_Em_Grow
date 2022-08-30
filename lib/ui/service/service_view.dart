@@ -57,9 +57,9 @@ class _ServiceViewState extends State<ServiceView> {
     chewieController = ChewieController(
       aspectRatio: widget.service.aspectRatio,
       videoPlayerController: videoPlayerController!,
-      autoInitialize: true,
+      // autoInitialize: true,
       allowMuting: true,
-      autoPlay : true,
+      // autoPlay : true,
       showControls: false,
       looping: true,
       allowFullScreen: true,

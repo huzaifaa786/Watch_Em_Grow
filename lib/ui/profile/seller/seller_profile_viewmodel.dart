@@ -75,9 +75,7 @@ class SellerProfileViewModel extends BaseViewModel {
       );
     }
 
-    void refreshKaro() {
-      init(shopId, seller);
-    }
+ 
 
     if (shopId.isNotEmpty) {
       _shopSubscription = _databaseApi.listenShop(shopId).listen(
@@ -91,9 +89,6 @@ class SellerProfileViewModel extends BaseViewModel {
                 services = servicesData;
                 print('services**********');
                 print(services);
-                for (var ser in services) {
-                  log(ser.toString());
-                }
                 notifyListeners();
                 setBusy(false);
               },
@@ -431,79 +426,78 @@ class SellerProfileViewModel extends BaseViewModel {
   }
 
   Future<void> navigateToFollowersView(String sellerId) async {
-    await _navigationService
-        .navigateTo(
+    await _navigationService.navigateTo(
       Routes.followersView,
       arguments: FollowersViewArguments(
         sellerId: sellerId,
       ),
-    )!
-        .then((value) async {
-      setBusy(true);
-      await _userService.syncUser();
-      _currentUser = _userService.currentUser;
-      if (_currentUser.shopId.isNotEmpty) {
-        _shopSubscription = _databaseApi.listenShop(_currentUser.shopId).listen(
-          (shopData) {
-            _shop = shopData;
-            notifyListeners();
+    );
+    //     .then((value) async {
 
-            if (_shop!.hasService) {
-              _servicesSubscription = _databaseApi.listenShopServices(_currentUser.shopId).listen(
-                (servicesData) {
-                  services = servicesData;
-                  notifyListeners();
-                  setBusy(false);
-                },
-              );
-            } else {
-              setBusy(false);
-            }
-          },
-        );
-      } else {
-        setBusy(false);
-      }
-      notifyListeners();
-      setBusy(false);
-    });
+    //   setBusy(true);
+    //   await _userService.syncUser();
+    //   _currentUser = _userService.currentUser;
+    //   if (_currentUser.shopId.isNotEmpty) {
+    //     _shopSubscription = _databaseApi.listenShop(_currentUser.shopId).listen(
+    //       (shopData) {
+    //         _shop = shopData;
+    //         notifyListeners();
+
+    //         if (_shop!.hasService) {
+    //           _servicesSubscription = _databaseApi.listenShopServices(_currentUser.shopId).listen(
+    //             (servicesData) {
+    //               services = servicesData;
+    //               notifyListeners();
+    //               setBusy(false);
+    //             },
+    //           );
+    //         } else {
+    //           setBusy(false);
+    //         }
+    //       },
+    //     );
+    //   } else {
+    //     setBusy(false);
+    //   }
+    //   notifyListeners();
+    //   setBusy(false);
+    // });
   }
 
   Future<void> navigateToFollowingView(String sellerId) async {
-    await _navigationService
-        .navigateTo(
+    await _navigationService.navigateTo(
       Routes.followingView,
       arguments: FollowingViewArguments(sellerId: sellerId),
-    )!
-        .then((value) async {
-      setBusy(true);
-      await _userService.syncUser();
-      _currentUser = _userService.currentUser;
-      if (_currentUser.shopId.isNotEmpty) {
-        _shopSubscription = _databaseApi.listenShop(_currentUser.shopId).listen(
-          (shopData) {
-            _shop = shopData;
-            notifyListeners();
+    );
+    //     .then((value) async {
+    //   setBusy(true);
+    //   await _userService.syncUser();
+    //   _currentUser = _userService.currentUser;
+    //   if (_currentUser.shopId.isNotEmpty) {
+    //     _shopSubscription = _databaseApi.listenShop(_currentUser.shopId).listen(
+    //       (shopData) {
+    //         _shop = shopData;
+    //         notifyListeners();
 
-            if (_shop!.hasService) {
-              _servicesSubscription = _databaseApi.listenShopServices(_currentUser.shopId).listen(
-                (servicesData) {
-                  services = servicesData;
-                  notifyListeners();
-                  setBusy(false);
-                },
-              );
-            } else {
-              setBusy(false);
-            }
-          },
-        );
-      } else {
-        setBusy(false);
-      }
-      notifyListeners();
-      setBusy(false);
-    });
+    //         if (_shop!.hasService) {
+    //           _servicesSubscription = _databaseApi.listenShopServices(_currentUser.shopId).listen(
+    //             (servicesData) {
+    //               services = servicesData;
+    //               notifyListeners();
+    //               setBusy(false);
+    //             },
+    //           );
+    //         } else {
+    //           setBusy(false);
+    //         }
+    //       },
+    //     );
+    //   } else {
+    //     setBusy(false);
+    //   }
+    //   notifyListeners();
+    //   setBusy(false);
+    // });
   }
 
   Future<void> follow(String sellerId) async {

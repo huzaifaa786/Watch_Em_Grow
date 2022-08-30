@@ -138,8 +138,6 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                               ),
                             ),
                           ).then((val) {
-                            log(val.toString());
-                            print(val);
                             model.selectedVideo1 = parseToFile(val.finalFile);
                             model.videoName = parseToFile(val.finalFile).path.split('/').last;
                             model.serviceAspectRatio = double.parse(val.ratio.toString());
@@ -895,8 +893,7 @@ class CropScreen extends StatelessWidget {
                     controller.minCrop = controller.cacheMinCrop;
                     controller.maxCrop = controller.cacheMaxCrop;
                     */
-                    log(controller.preferredCropAspectRatio.runtimeType.toString());
-                    log('*******************************');
+                 
                     if (controller.preferredCropAspectRatio == 1.0 || controller.preferredCropAspectRatio == 0.8) {
                       Navigator.pop(context, true);
                     } else {

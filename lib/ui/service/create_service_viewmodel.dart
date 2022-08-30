@@ -138,9 +138,8 @@ class CreateServiceViewModel extends BaseViewModel {
             sizes: selectedType == "Product" ? sizes : null,
             bookingNote: selectedType != "Product" ? noteController.text.toString() : null),
       );
-      log(selectedVideo1.toString());
+
       if (selectedVideo1 != null) {
-        log('1111111111111111111111111111111');
         await _saveServiceVideo();
       }
       await _saveServiceImage();
@@ -307,9 +306,9 @@ class CreateServiceViewModel extends BaseViewModel {
   Future selectVideo(File file) async {
     print(file);
     selectedVideo1 = File(file.path);
-    log(selectedVideo1.toString());
+
     videoName = file.path.split('/').last;
-    log(videoName.toString());
+    
     notifyListeners();
   }
 

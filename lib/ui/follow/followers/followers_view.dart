@@ -37,6 +37,10 @@ class FollowersView extends StatelessWidget {
                           ListTile(
                             onTap: () {
                               if(model.users[index].shopId.isNotEmpty){
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(builder: (context) => FollowersView(sellerId: seller.id)),
+                                // ).then((val) => {model.init(seller.shopId, seller)});
                                 model.navigateToShopView(
                                   owner: model.users[index],
                                 );

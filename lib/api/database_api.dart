@@ -1376,8 +1376,7 @@ class DatabaseApi {
                 ))
             .toList();
         _bookings.add(bookings);
-        log('d,cldcdlc');
-        log(_bookings.toString());
+       
       } else {
         _bookings.add([]);
       }

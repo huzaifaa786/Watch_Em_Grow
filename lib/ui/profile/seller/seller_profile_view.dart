@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mipromo/models/app_user.dart';
+import 'package:mipromo/ui/follow/followers/followers_view.dart';
+import 'package:mipromo/ui/follow/following/following_view.dart';
 import 'package:mipromo/ui/profile/seller/seller_profile_viewmodel.dart';
 import 'package:mipromo/ui/quick_settings/orders/orders_view.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
@@ -103,12 +105,11 @@ class SellerProfileView extends StatelessWidget {
                               ),
                               title: 'Orders'.text.make(),
                               onTap: () {
+                                Navigator.pop(context);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => OrdersView()),
-                                ).then((val) => {
-                                  model.init(seller.shopId, seller)
-                                });
+                                ).then((val) => {model.init(seller.shopId, seller)});
                                 // model.navigateToOrdersView();
                               },
                             ),
@@ -189,10 +190,26 @@ class SellerProfileView extends StatelessWidget {
                               user: seller,
                               shop: model.shop,
                               onFollowersTap: () {
-                                model.navigateToFollowersView(seller.id);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => FollowersView(sellerId: seller.id)),
+                                )
+                                .then((val) => {model.init(seller.shopId, seller)});
+
+                                // model.navigateToFollowersView(seller.id).then((value) {
+                                //   print("ab chal gya yha");
+                                //   model.init(model.shop!.id, seller);
+                                // });
                               },
                               onFollowingTap: () {
-                                model.navigateToFollowingView(seller.id);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => FollowingView(sellerId: seller.id)),
+                                )
+                                .then((val) => {model.init(seller.shopId, seller)});
+                                // model
+                                //     .navigateToFollowingView(seller.id)
+                                //     .then((value) => model.init(model.shop!.id, seller));
                               },
                               headerButton: model.shop != null
                                   ? model.shop!.ownerId == model.currentUser.id
@@ -350,7 +367,6 @@ class SellerProfileView extends StatelessWidget {
                                           ? model.services.length
                                           : model.services.length,
                                       itemBuilder: (context, index) {
-                                     
                                         String imageUrl(
                                           String? image1,
                                           String? image2,
