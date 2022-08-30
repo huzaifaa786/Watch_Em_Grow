@@ -52,7 +52,10 @@ class _ServiceViewState extends State<ServiceView> {
     setState(() {
       videoLoading = true;
     });
-    videoPlayerController = VideoPlayerController.network(widget.service.videoUrl.toString());
+    videoPlayerController =
+        VideoPlayerController.network(widget.service.videoUrl.toString());
+
+    print(widget.service.videoUrl.toString());
 
     chewieController = ChewieController(
       aspectRatio: widget.service.aspectRatio,
@@ -64,7 +67,10 @@ class _ServiceViewState extends State<ServiceView> {
       looping: true,
       allowFullScreen: true,
       fullScreenByDefault: false,
-      deviceOrientationsOnEnterFullScreen: [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+      deviceOrientationsOnEnterFullScreen: [
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown
+      ],
       materialProgressColors: ChewieProgressColors(
         playedColor: Colors.purple,
         bufferedColor: Colors.purple.withOpacity(0.4),
@@ -72,8 +78,10 @@ class _ServiceViewState extends State<ServiceView> {
     );
     // videoPlayerController!.addListener(checkVideo);
 
-    _initializeVideoPlayerFuture = videoPlayerController!.initialize().then((value) => videoPlayerController!.play());
-
+    _initializeVideoPlayerFuture = videoPlayerController!.initialize().then((value) => {
+      videoPlayerController!.setLooping(true),
+      videoPlayerController!.play()
+    });
   }
 
   // checkVideo() {
@@ -127,7 +135,9 @@ class _ServiceViewState extends State<ServiceView> {
                                 ),
                                 Text(
                                   ' ' + model.shop.name,
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ],
                             ),
@@ -141,44 +151,48 @@ class _ServiceViewState extends State<ServiceView> {
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl1!,
                                     fit: BoxFit.fitHeight,
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                   ),
                                 ],
                                 if (widget.service.imageUrl2 != null) ...[
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl2!,
                                     fit: BoxFit.fill,
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                   ),
                                 ],
                                 if (widget.service.imageUrl3 != null) ...[
                                   CachedNetworkImage(
                                     imageUrl: widget.service.imageUrl3!,
                                     fit: BoxFit.fill,
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                   ),
                                 ],
                                 if (widget.service.videoUrl != null) ...[
                                   FutureBuilder(
                                       future: _initializeVideoPlayerFuture,
                                       builder: (context, snapshot) {
-                                        if (snapshot.connectionState == ConnectionState.done) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.done) {
                                           // If the VideoPlayerController has finished initialization, use
                                           // the data it provides to limit the aspect ratio of the video.
                                           return AspectRatio(
-                                            aspectRatio: widget.service.aspectRatio!,
+                                            aspectRatio:
+                                                widget.service.aspectRatio!,
                                             child: Chewie(
                                               controller: chewieController!,
                                             ),
                                           );
+                                        } else {
+                                          // If the VideoPlayerController is still initializing, show a
+                                          // loading spinner.
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
                                         }
-                                        else {
-            // If the VideoPlayerController is still initializing, show a
-            // loading spinner.
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
                                       }),
 
                                   // Align(
@@ -199,13 +213,16 @@ class _ServiceViewState extends State<ServiceView> {
                           4.heightBox,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(model.imagesCount.length, (index) {
+                            children: List.generate(model.imagesCount.length,
+                                (index) {
                               return Container(
                                 height: 8,
                                 width: 8,
                                 margin: EdgeInsets.only(left: 4),
                                 decoration: BoxDecoration(
-                                    color: model.selectedIndex == index ? Color(widget.color) : Colors.grey[400],
+                                    color: model.selectedIndex == index
+                                        ? Color(widget.color)
+                                        : Colors.grey[400],
                                     borderRadius: BorderRadius.circular(55)),
                               );
                             }),
@@ -221,30 +238,41 @@ class _ServiceViewState extends State<ServiceView> {
                                   .box
                                   .width(context.screenWidth / 1.5)
                                   .make(),
-                              "£${widget.service.price.toStringAsFixed(2)}".text.lg.make(),
+                              "£${widget.service.price.toStringAsFixed(2)}"
+                                  .text
+                                  .lg
+                                  .make(),
                             ],
                           ).pOnly(top: 12, left: 20, right: 20),
                           if (widget.service.type == "Product")
-                            if (widget.service.sizes == null || widget.service.sizes!.isEmpty)
+                            if (widget.service.sizes == null ||
+                                widget.service.sizes!.isEmpty)
                               const SizedBox.shrink()
                             else
                               Column(
                                 children: [
                                   20.heightBox,
-                                  "Available Sizes".text.size(15).fontWeight(FontWeight.w600).make(),
+                                  "Available Sizes"
+                                      .text
+                                      .size(15)
+                                      .fontWeight(FontWeight.w600)
+                                      .make(),
                                   10.heightBox,
                                 ],
                               ).px(20),
                           if (widget.service.type == "Product")
-                            if (widget.service.sizes == null || widget.service.sizes!.isEmpty)
+                            if (widget.service.sizes == null ||
+                                widget.service.sizes!.isEmpty)
                               const SizedBox.shrink()
                             else
                               Wrap(
                                 runSpacing: 7,
-                                children: List.generate(widget.service.sizes!.length, (index) {
+                                children: List.generate(
+                                    widget.service.sizes!.length, (index) {
                                   return InkWell(
                                     onTap: () {
-                                      if (widget.service.ownerId == model.user.id) {
+                                      if (widget.service.ownerId ==
+                                          model.user.id) {
                                       } else {
                                         model.onSizeSelected(index);
                                       }
@@ -254,17 +282,25 @@ class _ServiceViewState extends State<ServiceView> {
                                       width: 62,
                                       margin: const EdgeInsets.only(right: 8),
                                       decoration: BoxDecoration(
-                                          color: model.selectedSizeIndex == index ? Color(widget.color) : null,
-                                          borderRadius: BorderRadius.circular(2),
+                                          color:
+                                              model.selectedSizeIndex == index
+                                                  ? Color(widget.color)
+                                                  : null,
+                                          borderRadius:
+                                              BorderRadius.circular(2),
                                           border: Border.all(
-                                              color: model.selectedSizeIndex == index
+                                              color: model.selectedSizeIndex ==
+                                                      index
                                                   ? Color(widget.color)
                                                   : Color(0xFFEEEEEE))),
                                       child: Center(
                                         child: Text(
                                           widget.service.sizes![index],
                                           style: TextStyle(
-                                              color: model.selectedSizeIndex == index ? Colors.white : null,
+                                              color: model.selectedSizeIndex ==
+                                                      index
+                                                  ? Colors.white
+                                                  : null,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -279,14 +315,27 @@ class _ServiceViewState extends State<ServiceView> {
                             color: Colors.grey.withOpacity(0.30),
                           ),
                           20.heightBox,
-                          "Item Description".text.size(15).fontWeight(FontWeight.w600).make().px(20),
+                          "Item Description"
+                              .text
+                              .size(15)
+                              .fontWeight(FontWeight.w600)
+                              .make()
+                              .px(20),
 
-                          widget.service.description!.text.color(Colors.grey).make().py8().px(20),
+                          widget.service.description!.text
+                              .color(Colors.grey)
+                              .make()
+                              .py8()
+                              .px(20),
                           10.heightBox,
                           Row(
                             children: [
                               Image.asset('assets/icon/shield.png', scale: 10),
-                              "Buyer Protection".text.color(Colors.grey).make().px4()
+                              "Buyer Protection"
+                                  .text
+                                  .color(Colors.grey)
+                                  .make()
+                                  .px4()
                             ],
                           ).px(20),
                           /*Row(
@@ -326,7 +375,10 @@ class _ServiceViewState extends State<ServiceView> {
                             width: double.infinity,
                             color: Colors.grey.withOpacity(0.30),
                           ),
-                          if (widget.service.ownerId != model.user.id) 20.heightBox else 5.heightBox,
+                          if (widget.service.ownerId != model.user.id)
+                            20.heightBox
+                          else
+                            5.heightBox,
 
                           // model.user.chatIds != null &&
                           //         model.user.chatIds!.contains(service.ownerId)
@@ -372,7 +424,8 @@ class _ServiceViewState extends State<ServiceView> {
                 ],
               ),
               bottomNavigationBar: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
                 child: Row(
                   children: [
                     if (widget.service.ownerId == model.user.id)
@@ -409,7 +462,8 @@ class _ServiceViewState extends State<ServiceView> {
                                   minWidth: context.screenWidth,
                                   color: Color(widget.color),
                                   onPressed: () {
-                                    if (widget.service.sizes!.isEmpty || widget.service.sizes == null) {
+                                    if (widget.service.sizes!.isEmpty ||
+                                        widget.service.sizes == null) {
                                       if (widget.service.videoUrl != null) {
                                         chewieController!.pause();
                                       }
@@ -425,10 +479,14 @@ class _ServiceViewState extends State<ServiceView> {
                                     alignment: Alignment.center,
                                     children: [
                                       Row(
-                                        children: const [Icon(Icons.calendar_today, size: 25, color: Colors.white)],
+                                        children: const [
+                                          Icon(Icons.calendar_today,
+                                              size: 25, color: Colors.white)
+                                        ],
                                       ),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: const [
                                           Text(
                                             'Buy',
@@ -459,10 +517,14 @@ class _ServiceViewState extends State<ServiceView> {
                                     alignment: Alignment.center,
                                     children: [
                                       Row(
-                                        children: const [Icon(Icons.calendar_today, size: 25, color: Colors.white)],
+                                        children: const [
+                                          Icon(Icons.calendar_today,
+                                              size: 25, color: Colors.white)
+                                        ],
                                       ),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: const [
                                           Text(
                                             'Book',
@@ -485,11 +547,13 @@ class _ServiceViewState extends State<ServiceView> {
                                 //padding: EdgeInsets.symmetric(horizontal: 10),
                                 onPressed: () {
                                   if (model.user.chatIds != null &&
-                                      model.user.chatIds!.contains(widget.service.ownerId)) {
+                                      model.user.chatIds!
+                                          .contains(widget.service.ownerId)) {
                                     if (widget.service.videoUrl != null) {
                                       chewieController!.pause();
                                     }
-                                    model.navigateToDirectChatView(widget.service.ownerId);
+                                    model.navigateToDirectChatView(
+                                        widget.service.ownerId);
                                     //model.navigateToChatsView();
                                   } else {
                                     if (widget.service.videoUrl != null) {
@@ -506,11 +570,13 @@ class _ServiceViewState extends State<ServiceView> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         //Icon(Icons.chat, size: 20, color: Colors.white)
-                                        Image.asset('assets/icon/chat.png', scale: 7),
+                                        Image.asset('assets/icon/chat.png',
+                                            scale: 7),
                                       ],
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: const [
                                         Text(
                                           'Message',
