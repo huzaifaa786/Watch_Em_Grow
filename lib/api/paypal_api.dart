@@ -18,8 +18,8 @@ class PaypalApi {
   static const String transferUrl = 'https://api-m.paypal.com/v1/payments/payouts';
   static const String userInfoUrl = '$domain/v1/identity/oauth2/userinfo?schema=paypalv1.1';
   static const String authCodeUrl = '$domain/v1/oauth2/token?grant_type=authorization_code&code=';
-  static const returnURL = 'https://mipromo.com/';
-  static const cancelURL = 'https://mipromo.com/cancel';
+  static const returnURL = 'https://www.sadje.org';
+  static const cancelURL = 'https://www.sadje.org/cancel';
 
   // for getting the access token from Paypal
   Future<String?> getAccessToken() async {
