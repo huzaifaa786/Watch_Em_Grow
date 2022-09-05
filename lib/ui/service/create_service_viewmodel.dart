@@ -258,11 +258,12 @@ class CreateServiceViewModel extends BaseViewModel {
   List<File> images = [];
   List<CropAspectRatioPreset> ratios = [
     CropAspectRatioPreset.square,
+    CropAspectRatioPreset.ratio4x5,
   ];
 
   static const androidUiSettings = AndroidUiSettings(
     hideBottomControls: false,
-    lockAspectRatio: false,
+    lockAspectRatio: true,
   );
 
   Future selectImage1() async {

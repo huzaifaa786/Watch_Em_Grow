@@ -27,30 +27,31 @@ class MessagesView extends StatelessWidget {
       ),
       builder: (context, model, child) => model.isBusy
           ? const BasicLoader()
-          : SafeArea(
-            child: Scaffold(
-                appBar: AppBar(
-                  title: InkWell(
-                    onTap: (){
-                      if(receiver.shopId.isNotEmpty){
-                        model.toSellerProfile(receiver);
-                      }else{
-                        model.toBuyerProfile(receiver);
-                      }
-                    },
-                      child: Container(
-                          child: Row(
-                            children: [
-                              Text(receiver.username),
-                            ],
-                          ))),
-                ),
-                body: _MessagesBody(
+          : Scaffold(
+              appBar: AppBar(
+                
+                title: InkWell(
+                  onTap: (){
+                    if(receiver.shopId.isNotEmpty){
+                      model.toSellerProfile(receiver);
+                    }else{
+                      model.toBuyerProfile(receiver);
+                    }
+                  },
+                    child: Container(
+                        child: Row(
+                          children: [
+                            Text(receiver.username),
+                          ],
+                        ))),
+              ),
+              body: SafeArea(
+                child: _MessagesBody(
                   currentUser: currentUser,
                   receiver: receiver,
                 ),
               ),
-          ),
+            ),
       viewModelBuilder: () => MessagesViewModel(),
     );
   }
