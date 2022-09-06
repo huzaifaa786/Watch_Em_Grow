@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:mipromo/ui/home/home_viewmodel.dart';
@@ -15,17 +17,18 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  void didChangeDependencies() {  
-      precacheImage(AssetImage("assets/images/category/hair.jpg"), context);   
-        precacheImage(AssetImage("assets/images/category/nails.jpeg"), context); 
-        precacheImage(AssetImage("assets/images/category/makeup.jpg"), context); 
-        precacheImage(AssetImage("assets/images/category/lashes.jpg"), context); 
-        precacheImage(AssetImage("assets/images/category/clothing.jpg"), context); 
-        precacheImage(AssetImage("assets/images/category/trainers.jpeg"), context); 
-        precacheImage(AssetImage("assets/images/category/accessories.jpg"), context); 
-        precacheImage(AssetImage("assets/images/category/other.png"), context); 
-             super.didChangeDependencies();  
-}
+  void didChangeDependencies() {
+    precacheImage(AssetImage("assets/images/category/hair.jpg"), context);
+    precacheImage(AssetImage("assets/images/category/nails.jpeg"), context);
+    precacheImage(AssetImage("assets/images/category/makeup.jpg"), context);
+    precacheImage(AssetImage("assets/images/category/lashes.jpg"), context);
+    precacheImage(AssetImage("assets/images/category/clothing.jpg"), context);
+    precacheImage(AssetImage("assets/images/category/trainers.jpeg"), context);
+    precacheImage(AssetImage("assets/images/category/accessories.jpg"), context);
+    precacheImage(AssetImage("assets/images/category/other.png"), context);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -55,56 +58,41 @@ class _HomeViewState extends State<HomeView> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  "Featured"
-                                      .text
-                                      .xl
-                                      .bold
-                                      .make()
-                                      .pLTRB(22, 12, 0, 12),
+                                  "Featured".text.xl.bold.make().pLTRB(22, 12, 0, 12),
                                   Container(
                                     height: 160,
                                     child: Swiper(
                                       physics: const BouncingScrollPhysics(),
-                                      itemCount: model.featuredShops.length/* <= 3
+                                      itemCount: model.featuredShops
+                                          .length /* <= 3
                                           ? model.allShops.length
-                                          : 3*/,
+                                          : 3*/
+                                      ,
                                       autoplay: true,
-                                      
                                       loop: false,
                                       curve: Curves.easeInOutQuart,
                                       duration: 800,
-                                      itemBuilder: (context, index) =>
-                                          FeaturedShopCard(
+                                      itemBuilder: (context, index) => FeaturedShopCard(
                                         shop: model.featuredShops[index],
                                         shopOwner: model.allSellers.singleWhere(
-                                          (owner) =>
-                                              owner.shopId ==
-                                              model.featuredShops[index].id,
+                                          (owner) => owner.shopId == model.featuredShops[index].id,
                                         ),
                                       ).mdClick(() {
                                         model.navigateToShopView(
                                           shop: model.featuredShops[index],
                                           owner: model.allSellers.singleWhere(
-                                            (owner) =>
-                                                owner.shopId ==
-                                                model.featuredShops[index].id,
+                                            (owner) => owner.shopId == model.featuredShops[index].id,
                                           ),
                                         );
                                       }).make(),
                                     ),
                                   ),
                                 ],
-                              )
-                                 ,
+                              ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  "Shop by Category"
-                                      .text
-                                      .xl
-                                      .bold
-                                      .make()
-                                      .pLTRB(22, 12, 0, 12),
+                                  "Shop by Category".text.xl.bold.make().pLTRB(22, 12, 0, 12),
                                   SizedBox(
                                     height: context.screenWidth / 3,
                                     child: ListView.builder(
@@ -115,7 +103,7 @@ class _HomeViewState extends State<HomeView> {
                                         final assetImage = AssetImage(
                                           model.categories[index].imageUrl,
                                         );
-                                         precacheImage(assetImage, context);
+                                        precacheImage(assetImage, context);
 
                                         return Column(
                                           children: [
@@ -129,25 +117,17 @@ class _HomeViewState extends State<HomeView> {
                                                   child: Image(
                                                     image: assetImage,
                                                     fit: BoxFit.cover,
-                                                   
                                                   ),
                                                 ),
                                               ),
-                                            )
-                                                .card
-                                                .withRounded(value: 100)
-                                                .elevation(4)
-                                                .make()
-                                                .p12()
-                                                .click(
+                                            ).card.withRounded(value: 100).elevation(4).make().p12().click(
                                               () {
                                                 model.navigateToCategoryView(
                                                   model.categories[index].name,
                                                 );
                                               },
                                             ).make(),
-                                            model.categories[index].name.text
-                                                .make(),
+                                            model.categories[index].name.text.make(),
                                           ],
                                         );
                                       },
@@ -155,32 +135,26 @@ class _HomeViewState extends State<HomeView> {
                                   ),
                                 ],
                               ),
-                              if(model.bestSellers.isNotEmpty)
-                              "Best Sellers"
-                                  .text
-                                  .xl
-                                  .bold
-                                  .make()
-                                  .pLTRB(22, 12, 0, 0),
+                              if (model.bestSellers.isNotEmpty) "Best Sellers".text.xl.bold.make().pLTRB(22, 12, 0, 0),
                               ListView.builder(
-                                padding:    
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: model.bestSellers.length,
-                                itemBuilder: (context, index) => ShopCard(
-                                  owner: model.allSellers.singleWhere(
-                                    (e) => e.id == model.bestSellers[index].ownerId,
-                                  ),
-                                  shop: model.bestSellers[index],
-                                  services: model.allServices
-                                      .where(
-                                        (s) =>
-                                            s.shopId == model.bestSellers[index].id,
-                                      )
-                                      .toList(),
-                                ).p8(),
-                              )
+                                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: model.bestSellers.length,
+                                  itemBuilder: (context, index) {
+                                    final owner = model.allSellers
+                                        .singleWhere((owner) => owner.id == model.bestSellers[index].ownerId);
+                                   
+                                    final mservices = model.allServices
+                                        .where((s) => s.shopId == model.bestSellers[index].id)
+                                        .toList();
+                                    return 
+                                     ShopCard(
+                                      owner: owner,
+                                      shop: model.bestSellers[index],
+                                      services: mservices,
+                                    ).p8();
+                                  })
                             ],
                           ),
                         ),

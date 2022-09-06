@@ -9,11 +9,11 @@ class Constants {
 
   // Strings
   static const String landingLabel =
-      'Promote your business\nDiscover local services.';
+      'Promote your business\nDiscover local services';
 
   static const String createAccountLabel = 'Create Account';
 
-  static const String alreadyHaveAnAccountLabel = 'Already have an Account? ';
+  static const String alreadyHaveAnAccountLabel = 'Already have an a  ccount? ';
 
   static const String loginLabel = 'Login';
   static const String emailLabel = 'Email';
@@ -22,7 +22,7 @@ class Constants {
   static const String nextLabel = 'Next';
   static const String backLabel = 'Back';
 
-  static const String bySigningLabel = "By signing up you accept MiPromo's ";
+  static const String bySigningLabel = "By signing up you accept MiyPromo's ";
   static const String tAndCLabel = "Terms of Service";
   static const String andLabel = " and ";
   static const String privacyPolicyLabel = "Privacy Policy";

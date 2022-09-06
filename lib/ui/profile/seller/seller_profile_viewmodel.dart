@@ -87,8 +87,7 @@ class SellerProfileViewModel extends BaseViewModel {
             _servicesSubscription = _databaseApi.listenShopServices(shopId).listen(
               (servicesData) {
                 services = servicesData;
-                print('services**********');
-                print(services);
+               
                 notifyListeners();
                 setBusy(false);
               },
