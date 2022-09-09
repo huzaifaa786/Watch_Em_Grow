@@ -160,7 +160,7 @@ class BuyerProfileView extends StatelessWidget {
                                     ? "${(user.following / 1000).toDoubleStringAsFixed(digit: 1)}k"
                                     : "${user.following}")
                                 .text
-                                .lg
+                                .medium
                                 .bold
                                 .make(),
                             'Following'.text.lg.make(),
@@ -174,7 +174,7 @@ class BuyerProfileView extends StatelessWidget {
 
                         Text(
                           'Transactions Completed : ${user.purchases}',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 15,fontWeight: FontWeight.w400),
                         ),
                         SizedBox(
                           height: 60,
