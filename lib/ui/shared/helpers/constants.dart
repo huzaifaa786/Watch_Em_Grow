@@ -13,7 +13,7 @@ class Constants {
 
   static const String createAccountLabel = 'Create Account';
 
-  static const String alreadyHaveAnAccountLabel = 'Already have an a  ccount? ';
+  static const String alreadyHaveAnAccountLabel = 'Already have an account? ';
 
   static const String loginLabel = 'Login';
   static const String emailLabel = 'Email';
