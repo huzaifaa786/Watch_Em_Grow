@@ -57,7 +57,7 @@ class Validators {
     } else if (password.isEmpty) {
       return "Password can't be empty";
     } else if (!digitRegExp.hasMatch(password)) {
-      return "Password must contain at least One digit";
+      return "Password must contain at least one digit";
     } else if (password.length < 8) {
       return "Password must be 8 characters long";
     } else {
