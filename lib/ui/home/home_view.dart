@@ -22,9 +22,13 @@ class _HomeViewState extends State<HomeView> {
     precacheImage(AssetImage("assets/images/category/nails.jpeg"), context);
     precacheImage(AssetImage("assets/images/category/makeup.jpg"), context);
     precacheImage(AssetImage("assets/images/category/lashes.jpg"), context);
-    precacheImage(AssetImage("assets/images/category/clothing.jpg"), context);
+    precacheImage(AssetImage("assets/images/category/clothing.jpeg"), context);
     precacheImage(AssetImage("assets/images/category/trainers.jpeg"), context);
-    precacheImage(AssetImage("assets/images/category/accessories.jpg"), context);
+    precacheImage(AssetImage("assets/images/category/accessories.jpeg"), context);
+    precacheImage(AssetImage("assets/images/category/photography.jpeg"), context);
+    precacheImage(AssetImage("assets/images/category/aesthetic.jpeg"), context);
+    precacheImage(AssetImage("assets/images/category/barber.jpeg"), context);
+    precacheImage(AssetImage("assets/images/category/barber.jpeg"), context);
     precacheImage(AssetImage("assets/images/category/other.png"), context);
     super.didChangeDependencies();
   }
@@ -94,7 +98,7 @@ class _HomeViewState extends State<HomeView> {
                                 children: [
                                   "Shop by Category".text.xl.bold.make().pLTRB(22, 12, 0, 12),
                                   SizedBox(
-                                    height: context.screenWidth / 3,
+                                    height: context.screenWidth / 2.7,
                                     child: ListView.builder(
                                       physics: const BouncingScrollPhysics(),
                                       itemCount: model.categories.length,
@@ -127,7 +131,10 @@ class _HomeViewState extends State<HomeView> {
                                                 );
                                               },
                                             ).make(),
-                                            model.categories[index].name.text.make(),
+                                            SizedBox(
+                                                width: 110, child: Text(model.categories[index].name,
+                                                textAlign:TextAlign.center
+                                                )),
                                           ],
                                         );
                                       },
@@ -144,12 +151,11 @@ class _HomeViewState extends State<HomeView> {
                                   itemBuilder: (context, index) {
                                     final owner = model.allSellers
                                         .singleWhere((owner) => owner.id == model.bestSellers[index].ownerId);
-                                   
+
                                     final mservices = model.allServices
                                         .where((s) => s.shopId == model.bestSellers[index].id)
                                         .toList();
-                                    return 
-                                     ShopCard(
+                                    return ShopCard(
                                       owner: owner,
                                       shop: model.bestSellers[index],
                                       services: mservices,

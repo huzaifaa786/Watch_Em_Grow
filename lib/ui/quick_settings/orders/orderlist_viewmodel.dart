@@ -71,7 +71,7 @@ class SoldOrderListViewModel extends BaseViewModel {
           DateTime? date;
           var newDate;
 
-          if (orders[i].type == OrderType.service) {
+          if (orders[i].type == OrderType.service) {  
             date = DateTime.fromMicrosecondsSinceEpoch(orders[i].bookingStart!, isUtc: true);
              newDate = DateTime.utc(date.year, date.month, date.day, 0, 0, 0);
           } else {

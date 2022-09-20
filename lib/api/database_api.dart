@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 // import 'package:intl/intl.dart';
 import 'package:mipromo/exceptions/database_api_exception.dart';
 import 'package:mipromo/models/app_user.dart';
+import 'package:mipromo/models/availability.dart';
 import 'package:mipromo/models/book_service.dart';
 import 'package:mipromo/models/chat.dart';
 import 'package:mipromo/models/follow.dart';
@@ -18,6 +19,7 @@ import 'package:mipromo/models/order.dart';
 import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/ui/notifications/notification_model.dart';
+import 'package:mipromo/ui/shared/helpers/data_models.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
 import 'package:http/http.dart' as http;
 // import 'package:intl/intl.dart';
@@ -1043,7 +1045,7 @@ class DatabaseApi {
     return _shopsController.stream;
   }
 
-  Future<List<Shop>> listenNextPaginatedShops( List<Shop> searchedShops, id) async {
+  Future<List<Shop>> listenNextPaginatedShops(List<Shop> searchedShops, id) async {
     var db = FirebaseFirestore.instance;
     List<Shop> all_shops = [];
 
@@ -1241,18 +1243,6 @@ class DatabaseApi {
     return _allServicesController.stream;
   }
 
-  Future<List<ShopService>> getAllServices() async {
-    final result = await _servicesCollection.orderBy('time', descending: true).get();
-
-    final services = result.docs
-        .map(
-          (e) => ShopService.fromJson(e.data()! as Map<String, dynamic>),
-        )
-        .toList();
-
-    return services;
-  }
-
   Future createMessage(Chat chat) async {
     try {
       await _chatsCollection.doc().set(chat.toJson());
@@ -1376,12 +1366,52 @@ class DatabaseApi {
                 ))
             .toList();
         _bookings.add(bookings);
-       
       } else {
         _bookings.add([]);
       }
     });
     return _bookings.stream;
+  }
+
+  changeAvailabilty({required String userId, required Map<String, dynamic> availabilty}) {
+    _usersCollection.doc(userId).collection('availabilty').doc(userId).set(availabilty);
+  }
+
+  Future<Availability> getAvailabilty({required String userId}) async {
+    final result = await _usersCollection.doc(userId).collection('availabilty').doc(userId).get();
+    if (result.data() == null) {
+      print("inside");
+      var ava = [true, true, true, true, true, true, true];
+      Map<String, dynamic> postMap = {for (var i = 0; i <= 6; i++) intDayToEnglish((i)): ava[i]};
+      changeAvailabilty(userId: userId, availabilty: postMap);
+    }
+    final availability = result.data() as Map<String, dynamic>;
+
+    return Availability.fromJson(availability);
+  }
+
+  Future<List<ShopService>> getAllServices() async {
+    final result = await _servicesCollection.orderBy('time', descending: true).get();
+
+    final services = result.docs
+        .map(
+          (e) => ShopService.fromJson(e.data()! as Map<String, dynamic>),
+        )
+        .toList();
+
+    return services;
+  }
+
+  Future<List<BookkingService>> getUserBookingStreamFirebase({required String userId}) async {
+    final result = await _bookingsCollection.where('ownerId', isEqualTo: userId).get();
+
+    final _userBookings = result.docs
+        .map(
+          (e) => BookkingService.fromJson(e.data()! as Map<String, dynamic>),
+        )
+        .toList();
+
+    return _userBookings;
   }
 
   Future<void> readChats({
@@ -1603,7 +1633,6 @@ class DatabaseApi {
 
   void readNotification(String uid, String id) {
     _usersCollection.doc(uid).collection('notifications').doc(id).update({'read': 'true'});
-    
   }
 
   void postNotificationCollection(String userId, Map<String, dynamic> postCollection) {

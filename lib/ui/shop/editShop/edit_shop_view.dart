@@ -5,6 +5,7 @@ import 'package:mipromo/ui/shop/editShop/edit_shop_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:weekday_selector/weekday_selector.dart';
 
 import '../../../models/shop.dart';
 import '../../shared/helpers/constants.dart';
@@ -31,9 +32,7 @@ class EditShopView extends StatelessWidget {
             Scaffold(
               appBar: AppBar(
                 backgroundColor: Color(model.selectedTheme),
-                title: Constants.createShopLabel.text
-                    .fontFamily(model.selectedFontStyle)
-                    .make(),
+                title: Constants.createShopLabel.text.fontFamily(model.selectedFontStyle).make(),
                 centerTitle: true,
                 actions: [
                   IconButton(
@@ -137,6 +136,18 @@ class _EditShopForm extends HookViewModelWidget<EditShopViewModel> {
           ),
         ),
         10.heightBox,
+        "Mark your availabilty".text.bold.make(),
+        10.heightBox,
+
+        WeekdaySelector(
+          firstDayOfWeek: 1,
+          onChanged: (int day) {
+            final index = day % 7;
+            model.selection(index);
+          },
+          values: model.values,
+        ),
+        15.heightBox,
         "Where is your shop located?".text.bold.make(),
         DropdownButton<String>(
           hint: Constants.locationLabel.text.color(Colors.grey).make(),
@@ -278,14 +289,7 @@ class _EditShopForm extends HookViewModelWidget<EditShopViewModel> {
                     CircleAvatar(
                       radius: 30,
                       backgroundColor: Color(model.colors[index]),
-                    )
-                        .p4()
-                        .card
-                        .white
-                        .elevation(12)
-                        .withRounded(value: 100)
-                        .make()
-                        .centered(),
+                    ).p4().card.white.elevation(12).withRounded(value: 100).make().centered(),
                     if (model.selectedTheme == model.colors[index])
                       const Icon(
                         Icons.check,

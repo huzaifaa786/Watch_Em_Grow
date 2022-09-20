@@ -8,6 +8,7 @@ part 'book_service.g.dart';
 class BookkingService {
   /// The generated code assumes these values exist in JSON.
   final String? userId;
+  final String? ownerId;
   final String? userName;
   final String? placeId;
   final String? serviceName;
@@ -43,6 +44,7 @@ class BookkingService {
       this.bookingEnd,
       this.placeId,
       this.userId,
+      this.ownerId,
       this.userName,
       this.serviceName,
       this.serviceDuration,

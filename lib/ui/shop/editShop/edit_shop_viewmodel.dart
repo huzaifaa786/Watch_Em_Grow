@@ -1,3 +1,6 @@
+import 'package:mipromo/models/app_user.dart';
+import 'package:mipromo/models/availability.dart';
+import 'package:mipromo/ui/shared/helpers/data_models.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -10,10 +13,12 @@ import '../../shared/helpers/validators.dart';
 class EditShopViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _databaseApi = locator<DatabaseApi>();
-
-  void init(Shop shop) {
+  var values = List.filled(7, true);
+  late Shop mshop;
+  late Availability availability;
+  void init(Shop shop) async {
     setBusy(true);
-
+    mshop = shop;
     shopName = shop.name;
     description = shop.description;
     selectedCategory = shop.category;
@@ -26,7 +31,10 @@ class EditShopViewModel extends BaseViewModel {
     address = shop.address;
     //selectedFontStyle = shop.fontStyle;
     selectedTheme = shop.color;
-
+    await _databaseApi.getAvailabilty(userId: shop.ownerId).then((value) {
+      availability = value;
+    });
+    values = converToArray(availability);
     setBusy(false);
   }
 
@@ -96,6 +104,15 @@ class EditShopViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  selection(int index) {
+    values[index] = !values[index];
+    notifyListeners();
+
+    Map<String, dynamic> postMap = {for (var i = 0; i <= 6; i++) intDayToEnglish(i): values[i]};
+
+    _databaseApi.changeAvailabilty(userId: mshop.ownerId, availabilty: postMap);
+  }
+
   bool _isFormValid() {
     if (Validators.emptyStringValidator(shopName, 'Shop Name') == null &&
         Validators.emptyStringValidator(description, 'Description') == null &&
@@ -109,8 +126,7 @@ class EditShopViewModel extends BaseViewModel {
         if (selectedLocation == "London" && londonBorough == null) {
           Alerts.showErrorSnackbar('Please select your Location Borough');
           return false;
-        } else if (selectedLocation == "Hertfordshire" &&
-            hertfordshireBorough == null) {
+        } else if (selectedLocation == "Hertfordshire" && hertfordshireBorough == null) {
           Alerts.showErrorSnackbar('Please select your Location Borough');
 
           return false;

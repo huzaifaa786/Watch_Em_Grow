@@ -7,7 +7,7 @@ class AuthApi {
   /// Fetch the current Firebase User
   User? get currentUser => _firebaseAuth.currentUser;
 
-  /// Signup the user using Email and Password
+  /// Signup the user using Email and Password 
   Future<User> signUpWithEmail({
     required String email,
     required String password,

@@ -120,35 +120,51 @@ class HomeViewModel extends BaseViewModel {
       ),
     );
   }
-
+   
   List<CategoryItem> categories = [
     CategoryItem(
       name: "Nails",
       imageUrl: "assets/images/category/nails.jpeg",
     ),
     CategoryItem(
-      name: "Hair",
+      name: "Hair\nSaloons",
       imageUrl: "assets/images/category/hair.jpg",
     ),
     CategoryItem(
-      name: "Makeup",
+      name: "Makeup Services",
       imageUrl: "assets/images/category/makeup.jpg",
     ),
     CategoryItem(
-      name: "Lashes",
+      name: "Eyelash Extensions",
       imageUrl: "assets/images/category/lashes.jpg",
     ),
     CategoryItem(
-      name: "Clothing",
-      imageUrl: "assets/images/category/clothing.jpg",
+      name: "Clothing Brands",
+      imageUrl: "assets/images/category/clothing.jpeg",
     ),
     CategoryItem(
-      name: "Trainers",
+      name: "Footwear & Resellers",
       imageUrl: "assets/images/category/trainers.jpeg",
     ),
     CategoryItem(
       name: "Accessories",
-      imageUrl: "assets/images/category/accessories.jpg",
+      imageUrl: "assets/images/category/accessories.jpeg",
+    ),
+     CategoryItem(
+      name: "Photography & Videography",
+      imageUrl: "assets/images/category/photography.jpeg",
+    ),
+    CategoryItem(
+      name: "Aesthetics",
+      imageUrl: "assets/images/category/aesthetic.jpeg",
+    ),
+    CategoryItem(
+      name: "Barber Shop",
+      imageUrl: "assets/images/category/barber.jpeg",
+    ),
+    CategoryItem(
+      name: "Piercings",
+      imageUrl: "assets/images/category/Piercing.jpeg",
     ),
     CategoryItem(
       name: "Other",

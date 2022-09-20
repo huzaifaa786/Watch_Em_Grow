@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/models/app_user.dart';
+import 'package:mipromo/models/availability.dart';
 import 'package:mipromo/models/book_service.dart';
 import 'package:mipromo/models/order.dart';
 import 'package:mipromo/models/shop.dart';
@@ -45,6 +46,12 @@ class BookingViewModel extends BaseViewModel {
   late BookingService mockBookingService;
   List<DateTimeRange> converted = [];
   List<BookkingService> bookings = [];
+  late List<int> excludedDays = [];
+
+  List<BookkingService> userBookings = [];
+  List<DateTimeRange> userReservedBookings = [];
+  late Availability availability;
+
   late StreamSubscription<List<BookkingService>> _bookings;
   AppUser user;
   final ShopService service;
@@ -56,6 +63,10 @@ class BookingViewModel extends BaseViewModel {
     required bool isDark,
   }) async {
     setBusy(true);
+    await _databaseApi.getAvailabilty(userId: service.ownerId).then((value) {
+      availability = value;
+    });
+    setDays();
     await convertStreamResultMock();
     await _userService.syncUser();
     _currentUser = _userService.currentUser;
@@ -69,39 +80,65 @@ class BookingViewModel extends BaseViewModel {
         userEmail: user.email,
         userName: user.fullName,
         userId: user.id,
-        bookingStart:
-            DateTime(now.year, now.month, now.day, service.startHour!, 0));
+        bookingStart: DateTime(now.year, now.month, now.day, service.startHour!, 0));
+
+    await _databaseApi.getUserBookingStreamFirebase(userId: service.ownerId).then((bookings) {
+      userBookings = bookings;
+    });
+
+    for (var i = 0; i < userBookings.length; i++) {
+      final start = userBookings[i].bookingStart;
+      final end = userBookings[i].bookingEnd;
+      userReservedBookings.add(DateTimeRange(
+          start: (DateTime(start!.year, start.month, start.day, start.hour, 0)),
+          end: (DateTime(end!.year, end.month, end.day, end.hour, end.minute + userBookings[i].serviceDuration!, 0))));
+    }
+    userReservedBookings.add(DateTimeRange(
+        start: DateTime(now.year, now.month, now.day, 0, 0),
+        end: DateTime(now.year, now.month, now.day, now.hour + 1, 0)));
 
     notifyListeners();
 
     setBusy(false);
   }
 
-  Stream<dynamic>? getBookingStreamMock(
-      {required DateTime end, required DateTime start}) {
+  void setDays()  {
+    print("called");
+     !availability.Monday! ? excludedDays.add(DateTime.monday) : null;
+    !availability.Tuesday! ? excludedDays.add(DateTime.tuesday) : null;
+    !availability.Wednesday! ? excludedDays.add(DateTime.wednesday) : null;
+    !availability.Thursday! ? excludedDays.add(DateTime.thursday) : null;
+    !availability.Friday! ? excludedDays.add(DateTime.friday) : null;
+    !availability.Saturday! ? excludedDays.add(DateTime.saturday) : null;
+    !availability.Sunday! ? excludedDays.add(DateTime.sunday) : null;
+    notifyListeners();
+    print(excludedDays);
+  }
+
+  Stream<dynamic>? getBookingStreamMock({required DateTime end, required DateTime start}) {
     return Stream.value([]);
   }
 
-  Future<dynamic> uploadBookingMock(
-      {required BookingService newBooking}) async {
-
- if (await _navigationService.navigateTo(Routes.inputAddressView) ==
-          true) {
-        await _navigationService.navigateTo(
-          Routes.bookServiceView,
-          arguments: BookServiceViewArguments(
-              user: user, service: service, bookingservice: BookkingService(
-            email: newBooking.userEmail,
-            bookingStart: newBooking.bookingStart,
-            bookingEnd: newBooking.bookingEnd,
-            userId: newBooking.userId,
-            userName: newBooking.userName,
-            serviceId: newBooking.serviceId,
-            serviceName: newBooking.serviceName,
-            servicePrice: newBooking.servicePrice,
-            serviceDuration: newBooking.serviceDuration)),
-        );
-      }
+  Future<dynamic> uploadBookingMock({required BookingService newBooking}) async {
+    if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
+      await _navigationService.navigateTo(
+        Routes.bookServiceView,
+        arguments: BookServiceViewArguments(
+            user: user,
+            service: service,
+            bookingservice: BookkingService(
+                email: newBooking.userEmail,
+                bookingStart: newBooking.bookingStart,
+                bookingEnd: newBooking.bookingEnd,
+                userId: newBooking.userId,
+                ownerId: service.ownerId,
+                userName: newBooking.userName,
+                serviceId: newBooking.serviceId,
+                serviceName: newBooking.serviceName,
+                servicePrice: newBooking.servicePrice,
+                serviceDuration: newBooking.serviceDuration)),
+      );
+    }
     // final response = await _dialogService.showCustomDialog(
     //   variant: AlertType.custom,
     //   title: 'Choose Payment Method',
@@ -141,7 +178,7 @@ class BookingViewModel extends BaseViewModel {
     //         servicePrice: newBooking.servicePrice,
     //         serviceDuration: newBooking.serviceDuration));
     //   }
-      
+
     // }
 
     // await Future.delayed(const Duration(seconds: 1));
@@ -162,33 +199,25 @@ class BookingViewModel extends BaseViewModel {
   }
 
   List<DateTimeRange> convertStreamResultMock({dynamic streamResult}) {
-    _bookings = _databaseApi
-        .getBookingStreamFirebase(ServiceId: service.id)
-        .listen((event) {
+    _bookings = _databaseApi.getBookingStreamFirebase(ServiceId: service.id).listen((event) {
       bookings = event;
     });
 
     List<DateTimeRange> converted = [];
     for (var i = 0; i < bookings.length; i++) {
       final item = bookings[i];
-      converted.add(
-          DateTimeRange(start: (item.bookingStart!), end: (item.bookingEnd!)));
+      converted.add(DateTimeRange(start: (item.bookingStart!), end: (item.bookingEnd!)));
     }
     return converted;
   }
 
- List<DateTimeRange> generatePauseSlots() {
-    return [
-      DateTimeRange(
-          start: DateTime(now.year, now.month, now.day, 0, 0),
-          end: DateTime(now.year, now.month, now.day, now.hour + 1, 0))
-    ];
+  List<DateTimeRange> generatePauseSlots() {
+    return userReservedBookings;
   }
 
   sendMessage() async {
     setIsSending(loading: true);
-    await _databaseApi.sendContactMessage(
-        messageController.text, _currentUser.id);
+    await _databaseApi.sendContactMessage(messageController.text, _currentUser.id);
     messageController.clear();
     Fluttertoast.showToast(
         msg: "Thank you for contacting us",
@@ -207,7 +236,7 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  addOrder(DateTime start ,DateTime end) {
+  addOrder(DateTime start, DateTime end) {
     final String timeString = DateTime.now().toString();
     final String orderId = DateTime.now().microsecondsSinceEpoch.toString();
     final order = Order(
@@ -235,8 +264,7 @@ class BookingViewModel extends BaseViewModel {
         var test = _databaseApi.postNotification(
             orderID: order.orderId,
             title: 'New Booking',
-            body:
-                '${order.name} has booked ${order.service.name}(£${order.service.price}) from ${shopDetails.name}',
+            body: '${order.name} has booked ${order.service.name}(£${order.service.price}) from ${shopDetails.name}',
             forRole: 'order',
             userID: '',
             receiverToken: token.toString());
@@ -245,8 +273,7 @@ class BookingViewModel extends BaseViewModel {
           "userId": user.id,
           "orderID": order.orderId,
           "title": 'New Booking',
-          "body":
-              '${order.name} has booked ${order.service.name}(£${order.service.price})',
+          "body": '${order.name} has booked ${order.service.name}(£${order.service.price})',
           "id": DateTime.now().millisecondsSinceEpoch.toString(),
           "read": false,
           "image": user.imageUrl,
@@ -257,8 +284,7 @@ class BookingViewModel extends BaseViewModel {
         _databaseApi.postNotificationCollection(shopDetails.ownerId, postMap);
       }
 
-      if (await _navigationService.navigateTo(Routes.orderSuccessView) ==
-          true) {
+      if (await _navigationService.navigateTo(Routes.orderSuccessView) == true) {
         _navigationService.back();
         _navigationService.back();
         navigateToOrderDetailView(order);
@@ -361,8 +387,7 @@ class BookingViewModel extends BaseViewModel {
       return true;
     } on Exception catch (e) {
       if (e is StripeException) {
-        Fluttertoast.showToast(
-            msg: 'Error from Stripe: ${e.error.localizedMessage}');
+        Fluttertoast.showToast(msg: 'Error from Stripe: ${e.error.localizedMessage}');
         return false;
       } else {
         Fluttertoast.showToast(msg: 'Unforeseen error: ${e}');

@@ -42,9 +42,9 @@ class BuyServiceViewModel extends BaseViewModel {
         accessToken = await _paypalApi.getAccessToken();
         if (accessToken != null) {
           final transactions = getOrderParams();
-          final res =
-              await _paypalApi.createPaypalPayment(transactions, accessToken!);
+          final res = await _paypalApi.createPaypalPayment(transactions, accessToken!);
           if (res != null) {
+           
             checkoutUrl = res["approvalUrl"];
             executeUrl = res["executeUrl"];
             paymentId = res['id'];
@@ -53,10 +53,7 @@ class BuyServiceViewModel extends BaseViewModel {
           setBusy(false);
         }
       } catch (e) {
-        _dialogService.showCustomDialog(
-            variant: AlertType.error,
-            title: 'Error',
-            description: e.toString());
+        _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: e.toString());
       }
     });
   }
@@ -67,10 +64,7 @@ class BuyServiceViewModel extends BaseViewModel {
       _databaseApi.getShop(shopId).then((shopData) {
         _navigationService.navigateTo(Routes.orderDetailView,
             arguments: OrderDetailViewArguments(
-                order: order,
-                color: shopData.color,
-                currentUser: user,
-                fontStyle: shopData.fontStyle));
+                order: order, color: shopData.color, currentUser: user, fontStyle: shopData.fontStyle));
       });
     }
   }
@@ -88,13 +82,11 @@ class BuyServiceViewModel extends BaseViewModel {
             );
             return;
           }
-          final capture =
-              response['purchase_units'][0]['payments']['captures'][0];
+          final capture = response['purchase_units'][0]['payments']['captures'][0];
 
           final String captureId = capture['id'] as String;
           final String timeString = capture['update_time'] as String;
-          final String orderId =
-              DateTime.now().microsecondsSinceEpoch.toString();
+          final String orderId = DateTime.now().microsecondsSinceEpoch.toString();
           final order = Order(
               type: OrderType.product,
               paymentMethod: MPaymentMethod.paypal,
@@ -114,13 +106,11 @@ class BuyServiceViewModel extends BaseViewModel {
           _databaseApi.createOrder(order).then((value) async {
             var token = await _databaseApi.getToken(order.service.ownerId);
             if (token != null) {
-              Shop shopDetails =
-                  await _databaseApi.getShop(order.service.shopId);
+              Shop shopDetails = await _databaseApi.getShop(order.service.shopId);
               var test = _databaseApi.postNotification(
                   orderID: order.orderId,
                   title: 'New Order',
-                  body:
-                      '${order.name} has made order ${order.service.name} on ${shopDetails.name}',
+                  body: '${order.name} has made order ${order.service.name} on ${shopDetails.name}',
                   forRole: 'order',
                   userID: '',
                   receiverToken: token.toString());
@@ -137,11 +127,9 @@ class BuyServiceViewModel extends BaseViewModel {
                 "sound": "default"
               };
 
-              _databaseApi.postNotificationCollection(
-                  shopDetails.ownerId, postMap);
+              _databaseApi.postNotificationCollection(shopDetails.ownerId, postMap);
             }
-            if (await _navigationService.navigateTo(Routes.orderSuccessView) ==
-                true) {
+            if (await _navigationService.navigateTo(Routes.orderSuccessView) == true) {
               _navigationService.back();
               _navigationService.back();
               navigateToOrderDetailView(order);

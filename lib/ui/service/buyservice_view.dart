@@ -29,7 +29,7 @@ class BuyServiceView extends StatelessWidget { ///Product
         body: model.isBusy
             ? const BasicLoader()
             : Stack(
-                children: [
+                children: [  
                   WebView(
                     initialUrl: model.checkoutUrl,
                     javascriptMode: JavascriptMode.unrestricted,

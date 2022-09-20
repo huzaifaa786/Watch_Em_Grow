@@ -11,7 +11,7 @@ class Constants {
   static const String landingLabel =
       'Promote your business\nDiscover local services';
 
-  static const String createAccountLabel = 'Create Account';
+  static const String createAccountLabel = 'Create Account';  
 
   static const String alreadyHaveAnAccountLabel = 'Already have an account? ';
 
@@ -98,12 +98,16 @@ class Constants {
   // Shop Categories
   static const List<String> categories = [
     "Nails",
-    "Hair",
-    "Makeup",
-    "Lashes",
-    "Clothing",
-    "Trainers",
+    "Hair Saloons",
+    "Makeup Services",
+    "EyeLash Extensions",
+    "Clothing Brands",
+    "Footwear & Resellers",
     "Accessories",
+    "Photography & Videography",
+    "Aesthetics",
+    "Barber Shop",
+    "Piercings",
     "Other",
   ];
 

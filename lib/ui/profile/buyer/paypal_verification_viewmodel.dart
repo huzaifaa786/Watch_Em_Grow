@@ -7,7 +7,7 @@ import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/models/order.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
-import 'package:stacked/stacked.dart';
+import 'package:stacked/stacked.dart';       
 import 'package:stacked_services/stacked_services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -18,7 +18,7 @@ import 'package:webview_flutter/webview_flutter.dart';
     final _dialogService = locator<DialogService>();
 
     String? accessToken;
-    String? verifyUrl = 'https://www.paypal.com/connect/?flowEntry=static&response_type=code&scope=openid%20profile%20email&client_id=Aa6veR5J_GbKz7IrpxHcdbMMlqBLrTUuAJuHx5e5uQqTsBk3h1R5TJBFCtQajBqhY9HIChSS_W_olNNm&redirect_uri=https://mipromo.com/';
+    String? verifyUrl = 'https://www.paypal.com/connect/?flowEntry=static&response_type=code&scope=openid%20profile%20email&client_id=Aa6veR5J_GbKz7IrpxHcdbMMlqBLrTUuAJuHx5e5uQqTsBk3h1R5TJBFCtQajBqhY9HIChSS_W_olNNm&redirect_uri=https://www.sadje.org';
     String? executeUrl;
     String? paymentId;
     bool isWebviewLoading = true;
@@ -46,7 +46,7 @@ import 'package:webview_flutter/webview_flutter.dart';
     }
 
     Future<NavigationDecision> handleWebViewVerification(NavigationRequest request) async {
-      if (request.url.contains('https://mipromo.com/')) {
+      if (request.url.contains('https://www.sadje.org')) {
         final uri = Uri.parse(request.url);
         final authCode = uri.queryParameters['code'];
         isWebviewLoading = true;
@@ -55,7 +55,7 @@ import 'package:webview_flutter/webview_flutter.dart';
           await _paypalApi.getUserInfo(accessToken!).then((value){
             isWebviewLoading = false;
             notifyListeners();
-            if(value! == email){
+            if(value!.toLowerCase() == email.toLowerCase()){
               _navigationService.back(result: true);
             }else{
               _navigationService.back(result: false);

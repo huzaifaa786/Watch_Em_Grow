@@ -238,7 +238,7 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           v: 12,
                         ),
                     if (model.selectedType == Constants.productLabel)
-                      if (widget.shop.category == 'Trainers' || widget.shop.category == 'Clothing')
+                      if (widget.shop.category == 'Footwear & Resellers' || widget.shop.category == 'Clothing Brands')
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

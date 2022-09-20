@@ -6,7 +6,7 @@ import 'package:mipromo/models/app_user.dart';
 
 class UserService {
   final _authApi = locator<AuthApi>();
-  final _databaseApi = locator<DatabaseApi>();
+  final _databaseApi = locator<DatabaseApi>();    
 
   AppUser? _currentUser;
 
