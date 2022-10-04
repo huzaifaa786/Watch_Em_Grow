@@ -1,5 +1,10 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mipromo/ui/auth/buyer_signup/profile_update.dart';
 import 'package:mipromo/ui/auth/login/discover_page.dart';
 import 'package:mipromo/ui/home/home_view.dart';
@@ -13,15 +18,23 @@ import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
 import 'package:badges/badges.dart';
+import 'package:uni_links/uni_links.dart';
 
-class MainView extends StatelessWidget {
+class MainView extends StatefulWidget {
   const MainView({Key? key, this.selectedIndex = 0}) : super(key: key);
   final int selectedIndex;
+
+  @override
+  _MainViewState createState() => _MainViewState();
+}
+
+class _MainViewState extends State<MainView> {
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainViewModel>.reactive(
-      onModelReady: (model) => model.init(selectedIndex),
-      builder: (context, model, child) => viewSelector(model, selectedIndex),
+      onModelReady: (model) => model.init(widget.selectedIndex),
+      builder: (context, model, child) => viewSelector(model, widget.selectedIndex),
       viewModelBuilder: () => MainViewModel(),
     );
   }

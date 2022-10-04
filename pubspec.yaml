@@ -56,6 +56,9 @@ dependencies:
   helpers: ^1.1.4
   table_calendar: ^3.0.6
   weekday_selector: ^1.1.0
+  uni_links: ^0.5.1
+  firebase_dynamic_links: ^2.0.7
+  package_info_plus: ^1.4.0
   flutter_datetime_picker:
     git:
       url: https://github.com/Realank/flutter_datetime_picker.git

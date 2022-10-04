@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/app/app.router.dart';
+import 'package:mipromo/services/dynamic_link_service.dart';
 import 'package:mipromo/ui/shared/helpers/setup_dialog_ui.dart';
 import 'package:mipromo/ui/shared/helpers/setup_snackbar_ui.dart';
 import 'package:mipromo/ui/shared/helpers/styles.dart';
@@ -19,8 +20,7 @@ Future<void> main() async {
   Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
-  SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(systemNavigationBarColor: Color(4281348144)));
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(systemNavigationBarColor: Color(4281348144)));
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   if (Platform.isIOS) FirebaseMessaging.instance.requestPermission();

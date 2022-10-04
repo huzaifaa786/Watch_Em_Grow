@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/app/app.router.dart';
@@ -24,6 +25,32 @@ class HomeViewModel extends BaseViewModel {
   List<String> allShopIds = [];
   List<ShopService> allServices = [];
 
+  initDynamicLinks() async {
+    final PendingDynamicLinkData? data = await FirebaseDynamicLinks.instance.getInitialLink();
+    if (data != null) _handleDynamicLink(data);
+
+    FirebaseDynamicLinks.instance.onLink(onSuccess: (PendingDynamicLinkData? dynamicLink) async {
+      _handleDynamicLink(dynamicLink!);
+    }, onError: (OnLinkErrorException e) async {
+      print('onLinkError');
+      print(e.message);
+    });
+  }
+
+  _handleDynamicLink(PendingDynamicLinkData data) async {
+    final Uri deepLink = data.link;
+    var shopId = deepLink.pathSegments[0];
+
+    if (deepLink == null) {
+      return;
+    }
+    var mshop = allShops.singleWhere((shop) => shop.id.contains(shopId));
+    var mowner = allSellers.singleWhere(
+      (owner) => owner.shopId.contains(mshop.id),
+    );
+    navigateToShopView(shop: mshop, owner: mowner);
+  }
+
   void init() {
     setBusy(true);
     _ownersSubscription = _databaseApi.listenShopOwners().listen(
@@ -31,12 +58,12 @@ class HomeViewModel extends BaseViewModel {
         allSellers = sellers;
         notifyListeners();
 
-        if (allSellers.isNotEmpty) {
+        if (allSellers.isNotEmpty) { 
           featuredShops = await _databaseApi.getFeaturedShops();
           bestSellers = await _databaseApi.getBestSellers();
           notifyListeners();
           //_shopsSubscription = _databaseApi.getFeaturedShops().listen(
-              _shopsSubscription = _databaseApi.listenShops().listen(
+          _shopsSubscription = _databaseApi.listenShops().listen(
             (shops) {
               allShops = shops;
               notifyListeners();
@@ -56,6 +83,7 @@ class HomeViewModel extends BaseViewModel {
               }
             },
           );
+          await initDynamicLinks();
         } else {
           setBusy(false);
         }
@@ -99,10 +127,8 @@ class HomeViewModel extends BaseViewModel {
       Routes.categoryView,
       arguments: CategoryViewArguments(
         category: category,
-        categoryShops:
-            allShops.where((shop) => shop.category == category).toList(),
-        allOtherShops:
-            allShops.where((shop) => shop.category != category).toList(),
+        categoryShops: allShops.where((shop) => shop.category == category).toList(),
+        allOtherShops: allShops.where((shop) => shop.category != category).toList(),
         allSellers: allSellers,
         allServices: allServices,
       ),
@@ -120,7 +146,7 @@ class HomeViewModel extends BaseViewModel {
       ),
     );
   }
-   
+
   List<CategoryItem> categories = [
     CategoryItem(
       name: "Nails",
@@ -150,7 +176,7 @@ class HomeViewModel extends BaseViewModel {
       name: "Accessories",
       imageUrl: "assets/images/category/accessories.jpeg",
     ),
-     CategoryItem(
+    CategoryItem(
       name: "Photography & Videography",
       imageUrl: "assets/images/category/photography.jpeg",
     ),

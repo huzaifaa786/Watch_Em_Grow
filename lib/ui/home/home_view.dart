@@ -82,12 +82,12 @@ class _HomeViewState extends State<HomeView> {
                                           (owner) => owner.shopId == model.featuredShops[index].id,
                                         ),
                                       ).mdClick(() {
-                                        model.navigateToShopView(
-                                          shop: model.featuredShops[index],
-                                          owner: model.allSellers.singleWhere(
-                                            (owner) => owner.shopId == model.featuredShops[index].id,
-                                          ),
-                                        );
+                                          model.navigateToShopView(
+                                            shop: model.featuredShops[index],
+                                            owner: model.allSellers.singleWhere(
+                                              (owner) => owner.shopId == model.featuredShops[index].id,
+                                            ),
+                                          );
                                       }).make(),
                                     ),
                                   ),

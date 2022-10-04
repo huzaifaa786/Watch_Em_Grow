@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
+import 'package:mipromo/app/app.locator.dart';
 // import 'package:intl/intl.dart';
 import 'package:mipromo/exceptions/database_api_exception.dart';
 import 'package:mipromo/models/app_user.dart';
@@ -15,8 +16,12 @@ import 'package:mipromo/models/book_service.dart';
 import 'package:mipromo/models/chat.dart';
 import 'package:mipromo/models/follow.dart';
 import 'package:mipromo/models/notification.dart';
+import 'package:mipromo/app/app.router.dart';
+
 import 'package:mipromo/models/order.dart';
 import 'package:mipromo/models/shop.dart';
+import 'package:stacked_services/stacked_services.dart';
+
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/ui/notifications/notification_model.dart';
 import 'package:mipromo/ui/shared/helpers/data_models.dart';
@@ -41,6 +46,8 @@ class DatabaseApi {
   final CollectionReference _chatRoomCollection = _firestore.collection("chatRoom");
   final CollectionReference _followCollection = _firestore.collection("follow");
   final CollectionReference _bookingsCollection = _firestore.collection("bookings");
+
+  final _navigationService = locator<NavigationService>();
 
   // * Controllers
 
@@ -88,8 +95,15 @@ class DatabaseApi {
 
   Future<void> updateUserToken(String uid, String token) async {
     try {
-      await _usersCollection.doc(uid).update({'token': token});
+      await _usersCollection.doc(uid).update({'token': token}).catchError((error) async{
+        await _navigationService.navigateTo(
+        Routes.landingView,
+      );
+      });
     } on PlatformException catch (e) {
+      await _navigationService.navigateTo(
+        Routes.landingView,
+      );
       throw DatabaseApiException(
         title: 'Failed to update User token',
         message: e.message,
