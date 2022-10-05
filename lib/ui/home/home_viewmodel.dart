@@ -38,6 +38,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   _handleDynamicLink(PendingDynamicLinkData data) async {
+    print("i am handling");
     final Uri deepLink = data.link;
     var shopId = deepLink.pathSegments[0];
 
@@ -58,7 +59,7 @@ class HomeViewModel extends BaseViewModel {
         allSellers = sellers;
         notifyListeners();
 
-        if (allSellers.isNotEmpty) { 
+        if (allSellers.isNotEmpty) {
           featuredShops = await _databaseApi.getFeaturedShops();
           bestSellers = await _databaseApi.getBestSellers();
           notifyListeners();

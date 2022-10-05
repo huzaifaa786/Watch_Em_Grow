@@ -193,8 +193,7 @@ class SellerProfileView extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => FollowersView(sellerId: seller.id)),
-                                )
-                                .then((val) => {model.init(seller.shopId, seller)});
+                                ).then((val) => {model.init(seller.shopId, seller)});
 
                                 // model.navigateToFollowersView(seller.id).then((value) {
                                 //   print("ab chal gya yha");
@@ -205,19 +204,38 @@ class SellerProfileView extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => FollowingView(sellerId: seller.id)),
-                                )
-                                .then((val) => {model.init(seller.shopId, seller)});
+                                ).then((val) => {model.init(seller.shopId, seller)});
                                 // model
                                 //     .navigateToFollowingView(seller.id)
                                 //     .then((value) => model.init(model.shop!.id, seller));
                               },
                               headerButton: model.shop != null
                                   ? model.shop!.ownerId == model.currentUser.id
-                                      ? OutlinedButton(
-                                          onPressed: () {
-                                            model.navigateToEditProfile();
-                                          },
-                                          child: 'Edit Profile'.text.make(),
+                                      ? Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            SizedBox(
+                                              width: MediaQuery.of(context).size.width * 0.46,
+                                              child: OutlinedButton(
+                                                onPressed: () {
+                                                  model.navigateToEditProfile();
+                                                },
+                                                child: 'Edit Profile'.text.make(),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context).size.width * 0.46,
+                                              child: OutlinedButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(builder: (context) => OrdersView(index: 1,)),
+                                                  ).then((val) => {model.init(seller.shopId, seller)});
+                                                },
+                                                child: 'Calender'.text.make(),
+                                              ),
+                                            ),
+                                          ],
                                         )
                                       : model.currentfollowingIds.contains(seller.id)
                                           ? OutlinedButton(

@@ -8,6 +8,9 @@ import '../../shared/helpers/styles.dart';
 import 'orders_viewmodel.dart';
 
 class OrdersView extends StatelessWidget {
+    int  index;
+
+   OrdersView({Key? key, this.index=0}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<OrdersViewModel>.reactive(
@@ -17,6 +20,7 @@ class OrdersView extends StatelessWidget {
           :
       model.currentUser.userType == 'seller'
           ? DefaultTabController(
+            initialIndex: index,
               length: 2,
               child: Scaffold(
                 appBar: AppBar(
