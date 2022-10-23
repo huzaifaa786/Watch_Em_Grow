@@ -5,7 +5,7 @@ import 'dart:developer';
 import 'package:booking_calendar/booking_calendar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+// import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:fluttertoast/fluttertoast.dart';
@@ -330,69 +330,69 @@ class BookingViewModel extends BaseViewModel {
     return body['intent'];
   }
 
-  Future<void> initPaymentSheet() async {
-    try {
-      // 1. create payment intent on the server
-      final data = await _createTestPaymentSheet();
+  // Future<void> initPaymentSheet() async {
+  //   try {
+  //     // 1. create payment intent on the server
+  //     final data = await _createTestPaymentSheet();
 
-      // create some billingdetails
-      final billingDetails = BillingDetails(
-        name: 'Flutter Stripe',
-        email: 'email@stripe.com',
-        phone: '+48888000888',
-        address: Address(
-          city: 'Houston',
-          country: 'US',
-          line1: '1459  Circle Drive',
-          line2: '',
-          state: 'Texas',
-          postalCode: '77063',
-        ),
-      ); // mocked data for tests
+  //     // create some billingdetails
+  //     final billingDetails = BillingDetails(
+  //       name: 'Flutter Stripe',
+  //       email: 'email@stripe.com',
+  //       phone: '+48888000888',
+  //       address: Address(
+  //         city: 'Houston',
+  //         country: 'US',
+  //         line1: '1459  Circle Drive',
+  //         line2: '',
+  //         state: 'Texas',
+  //         postalCode: '77063',
+  //       ),
+  //     ); // mocked data for tests
 
-      // 2. initialize the payment sheet
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          // Main params
-          paymentIntentClientSecret: data['client_secret'].toString(),
-          merchantDisplayName: 'Flutter Stripe Store Demo',
-          // Customer params
-          customerId: data['customer'].toString(),
-          customerEphemeralKeySecret: data['ephemeralKey'].toString(),
-          // Extra params
-          applePay: true,
-          googlePay: true,
-          style: ThemeMode.dark,
-          // billingDetails: billingDetails,
-          testEnv: true,
-          merchantCountryCode: 'DE',
-        ),
-      );
-      step = 1;
-    } catch (e) {
-      Fluttertoast.showToast(msg: 'Error: $e');
-      rethrow;
-    }
-  }
+  //     // 2. initialize the payment sheet
+  //     await Stripe.instance.initPaymentSheet(
+  //       paymentSheetParameters: SetupPaymentSheetParameters(
+  //         // Main params
+  //         paymentIntentClientSecret: data['client_secret'].toString(),
+  //         merchantDisplayName: 'Flutter Stripe Store Demo',
+  //         // Customer params
+  //         customerId: data['customer'].toString(),
+  //         customerEphemeralKeySecret: data['ephemeralKey'].toString(),
+  //         // Extra params
+  //         applePay: true,
+  //         googlePay: true,
+  //         style: ThemeMode.dark,
+  //         // billingDetails: billingDetails,
+  //         testEnv: true,
+  //         merchantCountryCode: 'DE',
+  //       ),
+  //     );
+  //     step = 1;
+  //   } catch (e) {
+  //     Fluttertoast.showToast(msg: 'Error: $e');
+  //     rethrow;
+  //   }
+  // }
 
-  Future<bool> confirmPayment() async {
-    print("Asdfasdfsdfasfd");
-    try {
-      // 3. display the payment sheet.
-      await Stripe.instance.presentPaymentSheet();
+  // Future<bool> confirmPayment() async {
+  //   print("Asdfasdfsdfasfd");
+  //   try {
+  //     // 3. display the payment sheet.
+  //     await Stripe.instance.presentPaymentSheet();
 
-      step = 0;
+  //     step = 0;
 
-      Fluttertoast.showToast(msg: 'Payment succesfully completed');
-      return true;
-    } on Exception catch (e) {
-      if (e is StripeException) {
-        Fluttertoast.showToast(msg: 'Error from Stripe: ${e.error.localizedMessage}');
-        return false;
-      } else {
-        Fluttertoast.showToast(msg: 'Unforeseen error: ${e}');
-        return false;
-      }
-    }
-  }
+  //     Fluttertoast.showToast(msg: 'Payment succesfully completed');
+  //     return true;
+  //   } on Exception catch (e) {
+  //     if (e is StripeException) {
+  //       Fluttertoast.showToast(msg: 'Error from Stripe: ${e.error.localizedMessage}');
+  //       return false;
+  //     } else {
+  //       Fluttertoast.showToast(msg: 'Unforeseen error: ${e}');
+  //       return false;
+  //     }
+  //   }
+  // }
 }

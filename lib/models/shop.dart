@@ -15,6 +15,7 @@ class Shop with _$Shop {
     @Default(0) int isFeatured,
     @Default(0) int isBestSeller,
     @Default('') String description,
+    @Default('') String policy,
     @Default('') String location,
     @Default('') String borough,
     @Default('') String address,

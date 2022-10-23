@@ -29,6 +29,7 @@ class EditShopViewModel extends BaseViewModel {
       hertfordshireBorough = shop.borough;
     } else {}
     address = shop.address;
+    policy = shop.policy;
     //selectedFontStyle = shop.fontStyle;
     selectedTheme = shop.color;
     await _databaseApi.getAvailabilty(userId: shop.ownerId).then((value) {
@@ -48,6 +49,7 @@ class EditShopViewModel extends BaseViewModel {
   String? hertfordshireBorough;
 
   String address = "";
+  String policy = "";
 
   String selectedFontStyle = "Default";
 
@@ -118,6 +120,7 @@ class EditShopViewModel extends BaseViewModel {
         Validators.emptyStringValidator(description, 'Description') == null &&
         shopName.length <= 30 &&
         description.length <= 500 &&
+        policy.length <= 1000 &&
         address.length <= 100) {
       if (selectedCategory == null) {
         Alerts.showErrorSnackbar('Please select Category');
@@ -154,6 +157,7 @@ class EditShopViewModel extends BaseViewModel {
         _updateShopLocation(shop),
         _updateShopBorough(shop),
         _updateShopAddress(shop),
+        _updateShopPolicy(shop),
         _updateShopFontStyle(shop),
         _updateShopColor(shop),
       ],
@@ -224,6 +228,13 @@ class EditShopViewModel extends BaseViewModel {
       await _databaseApi.updateShopAddress(
         shop.id,
         address,
+      );
+    }
+  }  Future _updateShopPolicy(Shop shop) async {
+    if (policy != shop.policy) {
+      await _databaseApi.updateShopPolicy(
+        shop.id,
+        policy,
       );
     }
   }

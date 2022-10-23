@@ -67,6 +67,7 @@ class _EditShopForm extends HookViewModelWidget<EditShopViewModel> {
     final nameFocusNode = useFocusNode();
     final descriptionFocusNode = useFocusNode();
     final addressFocusNode = useFocusNode();
+    final policyFocusNode = useFocusNode();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,6 +112,18 @@ class _EditShopForm extends HookViewModelWidget<EditShopViewModel> {
             model.address = address;
           },
           initialValue: model.address,
+        ),
+        20.heightBox,
+        InputField(
+          focusNode: policyFocusNode,
+          hintText: "Policy of your shop ",
+          maxLines: 12,
+          maxLength: 1000,
+          textInputType: TextInputType.multiline,
+          onChanged: (policy) {
+            model.policy = policy;
+          },
+          initialValue: model.policy,
         ),
         20.heightBox,
         "Choose your shop category".text.bold.make(),

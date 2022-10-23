@@ -97,6 +97,16 @@ class BuyerProfileView extends StatelessWidget {
                                   model.navigateToOrders();
                                 },
                               ),
+                                ListTile(
+                                leading: Icon(
+                                  Icons.list_alt,
+                                  color: Colors.grey.shade700,
+                                ),
+                                title: 'Edit Profile'.text.make(),
+                                onTap: () {
+                                  model.navigateToEditProfile(user);
+                                },
+                              ),
                             ],
                           ),
                         ),

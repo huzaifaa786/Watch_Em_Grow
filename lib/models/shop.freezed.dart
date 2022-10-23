@@ -30,6 +30,7 @@ class _$ShopTearOff {
       int isFeatured = 0,
       int isBestSeller = 0,
       String description = '',
+      String policy = '',
       String location = '',
       String borough = '',
       String address = '',
@@ -48,6 +49,7 @@ class _$ShopTearOff {
       isFeatured: isFeatured,
       isBestSeller: isBestSeller,
       description: description,
+      policy: policy,
       location: location,
       borough: borough,
       address: address,
@@ -78,6 +80,7 @@ mixin _$Shop {
   int get isFeatured => throw _privateConstructorUsedError;
   int get isBestSeller => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
+  String get policy => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
   String get borough => throw _privateConstructorUsedError;
   String get address => throw _privateConstructorUsedError;
@@ -106,6 +109,7 @@ abstract class $ShopCopyWith<$Res> {
       int isFeatured,
       int isBestSeller,
       String description,
+      String policy,
       String location,
       String borough,
       String address,
@@ -135,6 +139,7 @@ class _$ShopCopyWithImpl<$Res> implements $ShopCopyWith<$Res> {
     Object? isFeatured = freezed,
     Object? isBestSeller = freezed,
     Object? description = freezed,
+    Object? policy = freezed,
     Object? location = freezed,
     Object? borough = freezed,
     Object? address = freezed,
@@ -180,6 +185,10 @@ class _$ShopCopyWithImpl<$Res> implements $ShopCopyWith<$Res> {
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      policy: policy == freezed
+          ? _value.policy
+          : policy // ignore: cast_nullable_to_non_nullable
               as String,
       location: location == freezed
           ? _value.location
@@ -232,6 +241,7 @@ abstract class _$ShopCopyWith<$Res> implements $ShopCopyWith<$Res> {
       int isFeatured,
       int isBestSeller,
       String description,
+      String policy,
       String location,
       String borough,
       String address,
@@ -262,6 +272,7 @@ class __$ShopCopyWithImpl<$Res> extends _$ShopCopyWithImpl<$Res>
     Object? isFeatured = freezed,
     Object? isBestSeller = freezed,
     Object? description = freezed,
+    Object? policy = freezed,
     Object? location = freezed,
     Object? borough = freezed,
     Object? address = freezed,
@@ -307,6 +318,10 @@ class __$ShopCopyWithImpl<$Res> extends _$ShopCopyWithImpl<$Res>
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      policy: policy == freezed
+          ? _value.policy
+          : policy // ignore: cast_nullable_to_non_nullable
               as String,
       location: location == freezed
           ? _value.location
@@ -357,6 +372,7 @@ class _$_Shop implements _Shop {
       this.isFeatured = 0,
       this.isBestSeller = 0,
       this.description = '',
+      this.policy = '',
       this.location = '',
       this.borough = '',
       this.address = '',
@@ -392,6 +408,9 @@ class _$_Shop implements _Shop {
   final String description;
   @JsonKey(defaultValue: '')
   @override
+  final String policy;
+  @JsonKey(defaultValue: '')
+  @override
   final String location;
   @JsonKey(defaultValue: '')
   @override
@@ -417,7 +436,7 @@ class _$_Shop implements _Shop {
 
   @override
   String toString() {
-    return 'Shop(id: $id, ownerId: $ownerId, name: $name, category: $category, fontStyle: $fontStyle, color: $color, isFeatured: $isFeatured, isBestSeller: $isBestSeller, description: $description, location: $location, borough: $borough, address: $address, ratingCount: $ratingCount, rating: $rating, lowestPrice: $lowestPrice, highestPrice: $highestPrice, hasService: $hasService)';
+    return 'Shop(id: $id, ownerId: $ownerId, name: $name, category: $category, fontStyle: $fontStyle, color: $color, isFeatured: $isFeatured, isBestSeller: $isBestSeller, description: $description,policy: $policy, location: $location, borough: $borough, address: $address, ratingCount: $ratingCount, rating: $rating, lowestPrice: $lowestPrice, highestPrice: $highestPrice, hasService: $hasService)';
   }
 
   @override
@@ -448,6 +467,9 @@ class _$_Shop implements _Shop {
             (identical(other.description, description) ||
                 const DeepCollectionEquality()
                     .equals(other.description, description)) &&
+            (identical(other.policy, policy) ||
+                const DeepCollectionEquality()
+                    .equals(other.policy, policy)) &&
             (identical(other.location, location) ||
                 const DeepCollectionEquality()
                     .equals(other.location, location)) &&
@@ -485,6 +507,7 @@ class _$_Shop implements _Shop {
       const DeepCollectionEquality().hash(isFeatured) ^
       const DeepCollectionEquality().hash(isBestSeller) ^
       const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(policy) ^
       const DeepCollectionEquality().hash(location) ^
       const DeepCollectionEquality().hash(borough) ^
       const DeepCollectionEquality().hash(address) ^
@@ -516,6 +539,7 @@ abstract class _Shop implements Shop {
       int isFeatured,
       int isBestSeller,
       String description,
+      String policy,
       String location,
       String borough,
       String address,
@@ -545,6 +569,8 @@ abstract class _Shop implements Shop {
   int get isBestSeller => throw _privateConstructorUsedError;
   @override
   String get description => throw _privateConstructorUsedError;
+  @override
+  String get policy => throw _privateConstructorUsedError;
   @override
   String get location => throw _privateConstructorUsedError;
   @override

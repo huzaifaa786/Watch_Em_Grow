@@ -77,18 +77,18 @@ class SellerSignupViewModel extends BaseViewModel {
     arguments: PaypalVerificationViewArguments(email: paypalMail));*/
   }
 
-   createStripeConnectedAccount() async { 
-        if (await _navigationService.navigateTo(Routes.connectStripeView) ==
-        true) {
-      _createSellerAccount();
-    } else {
-      _snackbarService.showCustomSnackBar(
-        variant: AlertType.error,
-        title: "Try again",
-        message: "Stripe connect account registration failed",
-      );
-    }
-  }
+  //  createStripeConnectedAccount() async { 
+  //       if (await _navigationService.navigateTo(Routes.connectStripeView) ==
+  //       true) {
+  //     _createSellerAccount();
+  //   } else {
+  //     _snackbarService.showCustomSnackBar(
+  //       variant: AlertType.error,
+  //       title: "Try again",
+  //       message: "Stripe connect account registration failed",
+  //     );
+  //   }
+  // }
 
   bool _isFormValid() {
     final bool isFormEmpty = name.isEmpty && phoneNumber.isEmpty && paypalMail.isEmpty;

@@ -21,40 +21,40 @@ class connectStripeViewModel extends BaseViewModel {
   final Completer<WebViewController> _controller = Completer<WebViewController>();
   bool isWebviewLoading = true;
 
-  String connectUrl =
-      'https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_M5OewgfEWvHw7auL4XNmWRY9BgIT1hLP&scope=read_write&redirect_uri=http%3A%2F%2Ftritec.store%2Fmipromo%2Fpublic%2Fredirect';
+  // String connectUrl =
+  //     'https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_M5OewgfEWvHw7auL4XNmWRY9BgIT1hLP&scope=read_write&redirect_uri=http%3A%2F%2Ftritec.store%2Fmipromo%2Fpublic%2Fredirect';
 
-  void init() {
-    Future.delayed(Duration.zero, () async {
-      try {
-        /*accessToken = await _paypalApi.getVerificationAccessToken();
-        if (accessToken != null) {
-          print('Access Token: ' + accessToken!);
-          //_navigationService.back();
-          setBusy(false);
-        }*/
-      } catch (e) {
-        _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: e.toString());
-      }
-    });
-  }
+  // void init() {
+  //   Future.delayed(Duration.zero, () async {
+  //     try {
+  //       /*accessToken = await _paypalApi.getVerificationAccessToken();
+  //       if (accessToken != null) {
+  //         print('Access Token: ' + accessToken!);
+  //         //_navigationService.back();
+  //         setBusy(false);
+  //       }*/
+  //     } catch (e) {
+  //       _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: e.toString());
+  //     }
+  //   });
+  // }
 
-  Future<NavigationDecision> handleWebViewVerification(NavigationRequest request) async {
+  // Future<NavigationDecision> handleWebViewVerification(NavigationRequest request) async {
 
-    if (request.url.contains('http://tritec.store/mipromo/public/redirect')) {
+  //   if (request.url.contains('http://tritec.store/mipromo/public/redirect')) {
       
-      _navigationService.back(result: true);
-    }
-    else{
-      _navigationService.back(result: false);
+  //     _navigationService.back(result: true);
+  //   }
+  //   else{
+  //     _navigationService.back(result: false);
 
-    }
-      return NavigationDecision.navigate;
+  //   }
+  //     return NavigationDecision.navigate;
 
-  }
+  // }
 
-  void setIsWebviewLoading({required bool loading}) {
-    isWebviewLoading = loading;
-    notifyListeners();
-  }
+  // void setIsWebviewLoading({required bool loading}) {
+  //   isWebviewLoading = loading;
+  //   notifyListeners();
+  // }
 }

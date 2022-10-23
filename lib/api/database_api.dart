@@ -592,6 +592,22 @@ class DatabaseApi {
         message: e.message,
       );
     }
+  }  Future<void> updateShopPolicy(
+    String shopId,
+    String policy,
+  ) async {
+    try {
+      await _shopsCollection.doc(shopId).update(
+        {
+          'policy': policy,
+        },
+      );
+    } on PlatformException catch (e) {
+      throw DatabaseApiException(
+        title: 'Failed to create Shop',
+        message: e.message,
+      );
+    }
   }
 
   Future<void> updateShopFontStyle(

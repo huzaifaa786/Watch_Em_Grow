@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/ui/follow/followers/followers_view.dart';
 import 'package:mipromo/ui/follow/following/following_view.dart';
+import 'package:mipromo/ui/profile/seller/policy.dart';
 import 'package:mipromo/ui/profile/seller/seller_profile_viewmodel.dart';
 import 'package:mipromo/ui/quick_settings/orders/orders_view.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
@@ -229,7 +230,10 @@ class SellerProfileView extends StatelessWidget {
                                                 onPressed: () {
                                                   Navigator.push(
                                                     context,
-                                                    MaterialPageRoute(builder: (context) => OrdersView(index: 1,)),
+                                                    MaterialPageRoute(
+                                                        builder: (context) => OrdersView(
+                                                              index: 1,
+                                                            )),
                                                   ).then((val) => {model.init(seller.shopId, seller)});
                                                 },
                                                 child: 'Calender'.text.make(),
@@ -237,66 +241,73 @@ class SellerProfileView extends StatelessWidget {
                                             ),
                                           ],
                                         )
-                                      : model.currentfollowingIds.contains(seller.id)
-                                          ? OutlinedButton(
-                                              onPressed: model.unfollowed
-                                                  ? null
-                                                  : () {
-                                                      //model.unfollowed = true;
-                                                      //model.notifyListeners();
-                                                      model.unfollow(seller.id).whenComplete(() {
-                                                        model.unfollowed = false;
-                                                        model.notifyListeners();
-                                                      });
-                                                    },
-                                              child: const Text('Following'),
-                                            )
-                                          : ElevatedButton(
-                                              onPressed: () {
-                                                model.follow(seller.id);
-                                              },
-                                              style: ButtonStyle(
-                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(6),
+                                      : Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            model.currentfollowingIds.contains(seller.id)
+                                                ? SizedBox(
+                                                    width: MediaQuery.of(context).size.width * 0.46,
+                                                    child: OutlinedButton(
+                                                      onPressed: model.unfollowed
+                                                          ? null
+                                                          : () {
+                                                              //model.unfollowed = true;
+                                                              //model.notifyListeners();
+                                                              model.unfollow(seller.id).whenComplete(() {
+                                                                model.unfollowed = false;
+                                                                model.notifyListeners();
+                                                              });
+                                                            },
+                                                      child: const Text('Following'),
+                                                    ),
+                                                  )
+                                                : SizedBox(
+                                                    width: MediaQuery.of(context).size.width * 0.46,
+                                                    child: ElevatedButton(
+                                                      onPressed: () {
+                                                        model.follow(seller.id);
+                                                      },
+                                                      style: ButtonStyle(
+                                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(6),
+                                                          ),
+                                                        ),
+                                                        backgroundColor: MaterialStateProperty.all<Color>(
+                                                          Color(model.shop!.color),
+                                                        ),
+                                                      ),
+                                                      child:
+                                                          const Text('Follow', style: TextStyle(color: Colors.white)),
+                                                    ),
+                                                  ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context).size.width * 0.46,
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  print(model.shop!.policy.length);
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => PolicyScreen(policy: model.shop!.policy)),
+                                                  ).then((val) => {model.init(seller.shopId, seller)});
+                                                },
+                                                style: ButtonStyle(
+                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(6),
+                                                    ),
+                                                  ),
+                                                  backgroundColor: MaterialStateProperty.all<Color>(
+                                                    Color(model.shop!.color),
                                                   ),
                                                 ),
-                                                backgroundColor: MaterialStateProperty.all<Color>(
-                                                  Color(model.shop!.color),
-                                                ),
+                                                child: const Text('Policy', style: TextStyle(color: Colors.white)),
                                               ),
-                                              child: const Text('Follow', style: TextStyle(color: Colors.white)),
-                                            )
-                                  : model.currentfollowingIds.contains(seller.id)
-                                      ? OutlinedButton(
-                                          onPressed: model.unfollowed
-                                              ? null
-                                              : () {
-                                                  model.unfollowed = true;
-                                                  model.notifyListeners();
-                                                  model.unfollow(seller.id).whenComplete(() {
-                                                    model.unfollowed = false;
-                                                    model.notifyListeners();
-                                                  });
-                                                },
-                                          child: const Text('Following'),
+                                            ),
+                                          ],
                                         )
-                                      : ElevatedButton(
-                                          onPressed: () {
-                                            model.follow(seller.id);
-                                          },
-                                          style: ButtonStyle(
-                                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(6),
-                                              ),
-                                            ),
-                                            backgroundColor: MaterialStateProperty.all<Color>(
-                                              Color(model.shop != null ? model.shop!.color : 4284402649),
-                                            ),
-                                          ),
-                                          child: const Text('Follow'),
-                                        )),
+                                  : Container()),
                           if (seller.shopId.isEmpty)
                             Column(
                               children: [

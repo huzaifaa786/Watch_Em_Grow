@@ -27,8 +27,9 @@ class HomeViewModel extends BaseViewModel {
 
   initDynamicLinks() async {
     final PendingDynamicLinkData? data = await FirebaseDynamicLinks.instance.getInitialLink();
-    if (data != null) _handleDynamicLink(data);
-
+    if (data != null) {
+      _handleDynamicLink(data);
+    }
     FirebaseDynamicLinks.instance.onLink(onSuccess: (PendingDynamicLinkData? dynamicLink) async {
       _handleDynamicLink(dynamicLink!);
     }, onError: (OnLinkErrorException e) async {
@@ -38,7 +39,6 @@ class HomeViewModel extends BaseViewModel {
   }
 
   _handleDynamicLink(PendingDynamicLinkData data) async {
-    print("i am handling");
     final Uri deepLink = data.link;
     var shopId = deepLink.pathSegments[0];
 
