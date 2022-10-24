@@ -548,19 +548,16 @@ class OrderDetailViewModel extends BaseViewModel {
   }
 
   Future handleRequestReceivedProduct(Order order) async {
-         final DialogResponse? dialogResponse =
-            await _dialogService.showCustomDialog(
-          variant: AlertType.error,
-          title: 'Are you sure',
-          description: 'Have you received your product?',
-          mainButtonTitle: 'Product received',
-          secondaryButtonTitle: "Close",
-          customData: CustomDialogData(
-            isConfirmationDialog: true,
-            
-          ),
-        );
-
+    final DialogResponse? dialogResponse = await _dialogService.showCustomDialog(
+      variant: AlertType.error,
+      title: 'Are you sure',
+      description: 'Have you received your product?',
+      mainButtonTitle: 'Product received',
+      secondaryButtonTitle: "Close",
+      customData: CustomDialogData(
+        isConfirmationDialog: true,
+      ),
+    );
 
     if (dialogResponse?.confirmed ?? false) {
       try {
@@ -626,73 +623,61 @@ class OrderDetailViewModel extends BaseViewModel {
   }
 
   Future handleRequestReceivedService(Order order) async {
-      final DialogResponse? dialogResponse =
-            await _dialogService.showCustomDialog(
-          variant: AlertType.error,
-          title: 'Are you sure',
-          description: 'Have you received your service?',
-          mainButtonTitle: 'service received',
-          secondaryButtonTitle: "Close",
-          customData: CustomDialogData(
-            isConfirmationDialog: true,
-            
-          ),
-        );
+    final DialogResponse? dialogResponse = await _dialogService.showCustomDialog(
+      variant: AlertType.error,
+      title: 'Are you sure',
+      description: 'Have you received your service?',
+      mainButtonTitle: 'service received',
+      secondaryButtonTitle: "Close",
+      customData: CustomDialogData(
+        isConfirmationDialog: true,
+      ),
+    );
 
     if (dialogResponse?.confirmed ?? false) {
       try {
         isApiLoading = true;
         notifyListeners();
-        final shopDetails = await _databaseApi.getShop(order.shopId);
-        final paypalEmail = await _databaseApi.getSellerPaypal(shopDetails.ownerId);
-        final accessToken = await _paypalApi.getAccessToken();
-        final response = await _paypalApi.paySellerPayment(paypalEmail.toString(), order, processingFee, accessToken!);
-        if (response['statusCode'] == 201) {
-          final String timeString = DateTime.now().toString();
-          _databaseApi.completeOrder(order, DateTime.parse(timeString).microsecondsSinceEpoch).then((value) async {
-            _databaseApi.updateTotalSaleCount(order.service.ownerId).then((value) async {
-              var token = await _databaseApi.getToken(order.service.ownerId);
-              if (token != null) {
-                var test = _databaseApi.postNotification(
-                    orderID: order.orderId,
-                    title: 'Booking completed',
-                    body:
-                        '${order.name} has received ${order.service.name}(£${order.service.price}) from ${shopDetails.name}',
-                    forRole: 'order',
-                    userID: '',
-                    receiverToken: token.toString());
 
-                Map<String, dynamic> postMap = {
-                  "userId": user.id,
-                  "orderID": order.orderId,
-                  "title": 'Booking completed',
-                  "body":
+        final String timeString = DateTime.now().toString();
+        _databaseApi.completeOrder(order, DateTime.parse(timeString).microsecondsSinceEpoch).then((value) async {
+          _databaseApi.updateTotalSaleCount(order.service.ownerId).then((value) async {
+            var token = await _databaseApi.getToken(order.service.ownerId);
+            if (token != null) {
+              var test = _databaseApi.postNotification(
+                  orderID: order.orderId,
+                  title: 'Booking completed',
+                  body:
                       '${order.name} has received ${order.service.name}(£${order.service.price}) from ${shopDetails.name}',
-                  "id": DateTime.now().millisecondsSinceEpoch.toString(),
-                  "read": false,
-                  "image": user.imageUrl,
-                  "time": DateTime.now().millisecondsSinceEpoch.toString(),
-                  "sound": "default"
-                };
+                  forRole: 'order',
+                  userID: '',
+                  receiverToken: token.toString());
 
-                _databaseApi.postNotificationCollection(shopDetails.ownerId, postMap);
-              }
-              isApiLoading = false;
-              notifyListeners();
-              await _dialogService.showCustomDialog(
-                variant: AlertType.success,
-                title: 'Service Completed',
-                description: 'Thank you for using our service',
-              );
-              _navigationService.back();
-            });
+              Map<String, dynamic> postMap = {
+                "userId": user.id,
+                "orderID": order.orderId,
+                "title": 'Booking completed',
+                "body":
+                    '${order.name} has received ${order.service.name}(£${order.service.price}) from ${shopDetails.name}',
+                "id": DateTime.now().millisecondsSinceEpoch.toString(),
+                "read": false,
+                "image": user.imageUrl,
+                "time": DateTime.now().millisecondsSinceEpoch.toString(),
+                "sound": "default"
+              };
+
+              _databaseApi.postNotificationCollection(shopDetails.ownerId, postMap);
+            }
+            isApiLoading = false;
+            notifyListeners();
+            await _dialogService.showCustomDialog(
+              variant: AlertType.success,
+              title: 'Service Completed',
+              description: 'Thank you for using our service',
+            );
+            _navigationService.back();
           });
-        } else {
-          isApiLoading = false;
-          notifyListeners();
-          _dialogService.showCustomDialog(
-              variant: AlertType.error, title: 'Error', description: response['message'] as String);
-        }
+        });
       } catch (exception) {
         isApiLoading = false;
         notifyListeners();
@@ -769,43 +754,61 @@ class OrderDetailViewModel extends BaseViewModel {
   Future handleApproveAppointment(Order order) async {
     isApiLoading = true;
     notifyListeners();
-    return _databaseApi.approveAppointment(order, DateTime.now().microsecondsSinceEpoch).then((value) async {
-      var token = await _databaseApi.getToken(order.userId);
-      if (token != null) {
-        Shop shopDetails = await _databaseApi.getShop(order.service.shopId);
-        var test = _databaseApi.postNotification(
-            orderID: order.orderId,
-            title: 'Appointment Approved',
-            body:
+    final shopDetails = await _databaseApi.getShop(order.shopId);
+    final paypalEmail = await _databaseApi.getSellerPaypal(shopDetails.ownerId);
+    final accessToken = await _paypalApi.getAccessToken();
+    final response = await _paypalApi.paySellerPayment(paypalEmail.toString(), order, processingFee, accessToken!);
+    if (response['statusCode'] == 201) {
+      return _databaseApi.approveAppointment(order, DateTime.now().microsecondsSinceEpoch).then((value) async {
+        var token = await _databaseApi.getToken(order.userId);
+        if (token != null) {
+          Shop shopDetails = await _databaseApi.getShop(order.service.shopId);
+          var test = _databaseApi.postNotification(
+              orderID: order.orderId,
+              title: 'Appointment Approved',
+              body:
+                  'Your appointment of ${order.service.name}(£${order.service.price}) has been approved by ${shopDetails.name}',
+              forRole: 'order',
+              userID: '',
+              receiverToken: token.toString());
+
+          Map<String, dynamic> postMap = {
+            "userId": user.id,
+            "orderID": order.orderId,
+            "title": 'Appointment Approved',
+            "body":
                 'Your appointment of ${order.service.name}(£${order.service.price}) has been approved by ${shopDetails.name}',
-            forRole: 'order',
-            userID: '',
-            receiverToken: token.toString());
+            "id": DateTime.now().millisecondsSinceEpoch.toString(),
+            "read": false,
+            "image": user.imageUrl,
+            "time": DateTime.now().millisecondsSinceEpoch.toString(),
+            "sound": "default"
+          };  Map<String, dynamic> mpostMap = {
+            "userId": user.id,
+            "orderID": order.orderId,
+            "title": 'Appointment Approved',
+            "body":
+                'You Approved ${order.service.name}(£${order.service.price}), you have received deposit amount',
+            "id": DateTime.now().millisecondsSinceEpoch.toString(),
+            "read": false,
+            "image": user.imageUrl,
+            "time": DateTime.now().millisecondsSinceEpoch.toString(),
+            "sound": "default"
+          };
 
-        Map<String, dynamic> postMap = {
-          "userId": user.id,
-          "orderID": order.orderId,
-          "title": 'Appointment Approved',
-          "body":
-              'Your appointment of ${order.service.name}(£${order.service.price}) has been approved by ${shopDetails.name}',
-          "id": DateTime.now().millisecondsSinceEpoch.toString(),
-          "read": false,
-          "image": user.imageUrl,
-          "time": DateTime.now().millisecondsSinceEpoch.toString(),
-          "sound": "default"
-        };
-
-        _databaseApi.postNotificationCollection(order.userId, postMap);
-      }
-      isApiLoading = false;
-      await _dialogService.showCustomDialog(
-          variant: AlertType.success, title: 'Success', description: 'Appointment is approved.');
-      _navigationService.back();
-    }, onError: (exception) {
-      isApiLoading = false;
-      notifyListeners();
-      _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
-    });
+          _databaseApi.postNotificationCollection(order.userId, postMap);
+          _databaseApi.postNotificationCollection(order.service.ownerId, mpostMap);
+        }
+        isApiLoading = false;
+        await _dialogService.showCustomDialog(
+            variant: AlertType.success, title: 'Success', description: 'Appointment is approved.');
+        _navigationService.back();
+      }, onError: (exception) {
+        isApiLoading = false;
+        notifyListeners();
+        _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
+      });
+    }
   }
 
   Future handleMakeCompleted(Order order) async {

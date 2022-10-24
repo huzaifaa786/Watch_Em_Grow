@@ -6,12 +6,10 @@ class Constants {
   static const Color enabledColor = Color(0xff76C81B);
   static const Color disabledColor = Color(0xffEFEFEF);
 
-
   // Strings
-  static const String landingLabel =
-      'Promote your business\nDiscover local services';
+  static const String landingLabel = 'Promote your business\nDiscover local services';
 
-  static const String createAccountLabel = 'Create Account';  
+  static const String createAccountLabel = 'Create Account';
 
   static const String alreadyHaveAnAccountLabel = 'Already have an account? ';
 
@@ -40,13 +38,11 @@ class Constants {
   static const String createSellerLabel = "Create Seller";
   static const String createLabel = "Create";
   static const String dobLabel = "Date of Birth";
-  static const String dobHelperTextLabel =
-      "You must be over 16 to create a seller account";
+  static const String dobHelperTextLabel = "You must be over 16 to create a seller account";
   static const String fullNameLabel = "Full name";
   static const String phoneNumberLabel = "Phone Number";
   static const String createShopLabel = "Create Shop";
-  static const String createShopInfoLabel =
-      "Create a new Shop and showcase your services to new customers";
+  static const String createShopInfoLabel = "Create a new Shop and showcase your services to new customers";
 
   static const String categoryLabel = 'Category';
   static const String locationLabel = 'Location';
@@ -82,7 +78,7 @@ class Constants {
   static const String femaleLabel = 'Female';
   static const String otherLabel = 'Other';
 
-  // * Data
+  // "Data
   // Font Style
   static const List<String> fontstyle = [
     "Aladin",
@@ -218,6 +214,28 @@ class Constants {
     "Waltham Forest",
     "Wandsworth",
     "Westminster",
+    "Luton",
+    "Northamptonshire",
+    "Milton Keynes",
+    "Hemel Hempstead",
+    "Bedford",
+    "Kent",
+    "Cornwall",
+    "Slough",
+    "Guildford",
+    "Stafford",
+    "Basildon",
+    "Braintree",
+    "Brentwood",
+    "Castle Point",
+    "Chelmsford",
+    "Colchester",
+    "Epping Forest",
+    "Harlow",
+    "Maldon",
+    "Rochford",
+    "Tendring",
+    "Uttlesford",
   ];
 
   // Hertfordshire boroughs
@@ -235,8 +253,7 @@ class Constants {
   ];
 
   // All locations
-  static final List<String> allLocations =
-      cities + londonBoroughs + hertfordshireBoroughs;
+  static final List<String> allLocations = cities + londonBoroughs + hertfordshireBoroughs;
   static const String addressLabel = 'Address';
   static const String postCodeLabel = 'Postcode';
 }

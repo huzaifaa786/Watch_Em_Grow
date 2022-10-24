@@ -140,9 +140,9 @@ class _CreateShopForm extends HookViewModelWidget<CreateShopViewModel> {
           ListView.builder(
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
-            itemCount: model.searchedLocations.length,
+            itemCount: int.parse(model.searchedLocations.length.toString()),
             itemBuilder: (context, index) => RadioListTile<String>(
-              value: model.searchedLocations[index],
+              value: model.searchedLocations[index].toString(),
               groupValue: model.hasBorough
                   ? model.selectedBorough
                   : model.selectedLocation,
@@ -163,7 +163,7 @@ class _CreateShopForm extends HookViewModelWidget<CreateShopViewModel> {
                   model.notifyListeners();
                 }
               },
-              title: Text(model.searchedLocations[index]),
+              title: Text('${model.searchedLocations[index]}'),
             ),
           ),
         ],

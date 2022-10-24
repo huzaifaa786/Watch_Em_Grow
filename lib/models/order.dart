@@ -24,6 +24,7 @@ class Order with _$Order {
     String? address,
     String? postCode,
     int? rate,
+    int? depositAmount,
     int? selectedSize,
   }) = _Order;
 

@@ -1,5 +1,6 @@
 import 'package:booking_calendar/booking_calendar.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/ui/booking/booking_viewmodel.dart';
@@ -21,6 +22,7 @@ class BookingView extends StatelessWidget {
     return ViewModelBuilder<BookingViewModel>.reactive(
       onModelReady: (model) => model.init(
         isDark: getThemeManager(context).selectedThemeMode == ThemeMode.dark,
+        context: context
       ),
       builder: (context, model, child) => model.isBusy
           ? const BasicLoader()
@@ -73,3 +75,4 @@ class BookingView extends StatelessWidget {
     );
   }
 }
+

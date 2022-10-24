@@ -5,7 +5,11 @@ import 'dart:developer';
 import 'package:booking_calendar/booking_calendar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mipromo/ui/profile/buyer/editProfile/buyer_edit_profile_viewmodel.dart';
+import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
 // import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:stacked_themes/stacked_themes.dart';
+
 import 'package:http/http.dart' as http;
 
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,6 +24,9 @@ import 'package:mipromo/services/user_service.dart';
 import 'package:mipromo/api/auth_api.dart';
 import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
+import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
+import 'package:velocity_x/velocity_x.dart';
+
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:mipromo/app/app.router.dart';
@@ -47,7 +54,8 @@ class BookingViewModel extends BaseViewModel {
   List<DateTimeRange> converted = [];
   List<BookkingService> bookings = [];
   late List<int> excludedDays = [];
-
+  TextEditingController depositAmountController = new TextEditingController();
+  var mcontext;
   List<BookkingService> userBookings = [];
   List<DateTimeRange> userReservedBookings = [];
   late Availability availability;
@@ -61,6 +69,7 @@ class BookingViewModel extends BaseViewModel {
   );
   Future<void> init({
     required bool isDark,
+    required var context,
   }) async {
     setBusy(true);
     await _databaseApi.getAvailabilty(userId: service.ownerId).then((value) {
@@ -96,15 +105,15 @@ class BookingViewModel extends BaseViewModel {
     userReservedBookings.add(DateTimeRange(
         start: DateTime(now.year, now.month, now.day, 0, 0),
         end: DateTime(now.year, now.month, now.day, now.hour + 1, 0)));
-
+    mcontext = context;
     notifyListeners();
 
     setBusy(false);
   }
 
-  void setDays()  {
+  void setDays() {
     print("called");
-     !availability.Monday! ? excludedDays.add(DateTime.monday) : null;
+    !availability.Monday! ? excludedDays.add(DateTime.monday) : null;
     !availability.Tuesday! ? excludedDays.add(DateTime.tuesday) : null;
     !availability.Wednesday! ? excludedDays.add(DateTime.wednesday) : null;
     !availability.Thursday! ? excludedDays.add(DateTime.thursday) : null;
@@ -120,25 +129,37 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future<dynamic> uploadBookingMock({required BookingService newBooking}) async {
-    if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
-      await _navigationService.navigateTo(
-        Routes.bookServiceView,
-        arguments: BookServiceViewArguments(
-            user: user,
-            service: service,
-            bookingservice: BookkingService(
-                email: newBooking.userEmail,
-                bookingStart: newBooking.bookingStart,
-                bookingEnd: newBooking.bookingEnd,
-                userId: newBooking.userId,
-                ownerId: service.ownerId,
-                userName: newBooking.userName,
-                serviceId: newBooking.serviceId,
-                serviceName: newBooking.serviceName,
-                servicePrice: newBooking.servicePrice,
-                serviceDuration: newBooking.serviceDuration)),
-      );
-    }
+    showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        context: mcontext as BuildContext,
+        builder: (context) {
+          return DepositSheet(user: user, service: service);
+        }).then((value) async {
+      if (value == true) {
+        if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
+          await _navigationService.navigateTo(
+            Routes.bookServiceView,
+            arguments: BookServiceViewArguments(
+                user: user,
+                service: service,
+                bookingservice: BookkingService(
+                    email: newBooking.userEmail,
+                    bookingStart: newBooking.bookingStart,
+                    bookingEnd: newBooking.bookingEnd,
+                    userId: newBooking.userId,
+                    ownerId: service.ownerId,
+                    userName: newBooking.userName,
+                    serviceId: newBooking.serviceId,
+                    serviceName: newBooking.serviceName,
+                    servicePrice: newBooking.servicePrice,
+                    depositAmount: int.parse(depositAmountController.text),
+                    serviceDuration: newBooking.serviceDuration)),
+          );
+        }
+      }
+    });
+
     // final response = await _dialogService.showCustomDialog(
     //   variant: AlertType.custom,
     //   title: 'Choose Payment Method',
@@ -395,4 +416,145 @@ class BookingViewModel extends BaseViewModel {
   //     }
   //   }
   // }
+
+}
+
+class DepositSheet extends StatelessWidget {
+  const DepositSheet({Key? key, required this.user, required this.service}) : super(key: key);
+  final ShopService service;
+
+  final AppUser user;
+
+  @override
+  Widget build(BuildContext context) {
+    var media = MediaQuery.of(context).size;
+    double height = media.height;
+    double width = media.width;
+    final _navigationService = locator<NavigationService>();
+
+    return ViewModelBuilder<BookingViewModel>.reactive(
+      builder: (context, model, child) => model.isBusy
+          ? const BasicLoader()
+          : Stack(
+              children: [
+                Wrap(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                      ),
+                      child: Stack(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Container(
+                                    height: height * 0.05,
+                                    width: width * 0.08,
+                                    //color: Colors.red,
+                                    margin: EdgeInsets.only(top: height * 0.005, right: width * 0.01),
+                                    child: Icon(Icons.clear, size: 19)),
+                              )
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+                            child: Column(
+                              //crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(top: height * 0.02),
+                                      child: 'Enter Deposit Amount'.text.bold.size(20).make(),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  height: height * 0.06,
+                                  width: width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: TextFormField(
+                                    style: TextStyle(
+                                      fontSize: height * 0.019,
+                                      color: Colors.black,
+                                    ),
+                                    controller: model.depositAmountController,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      border: OutlineInputBorder(),
+                                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                                      enabledBorder:
+                                          OutlineInputBorder(borderSide: BorderSide(color: Color(0xffEEEEEE))),
+                                      disabledBorder:
+                                          OutlineInputBorder(borderSide: BorderSide(color: Color(0xffEEEEEE))),
+                                      hintText: 'Enter Deposit Amount',
+                                      hintStyle: TextStyle(fontSize: height * 0.019, color: Colors.black54),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Container(
+                                  height: height * 0.055,
+                                  width: width * 0.95,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: MaterialButton(
+                                    color: Color(4286745852),
+                                    onPressed: () {
+                                      if (model.depositAmountController.text.isNotEmpty &&
+                                          int.parse(model.depositAmountController.text) >= 15 &&
+                                          int.parse(model.depositAmountController.text) < 45) {
+                                        FocusScope.of(context).unfocus();
+                                        _navigationService.back(result: true);
+                                      } else {
+                                        Fluttertoast.showToast(
+                                            msg: 'deposit must be greater than 15 and less then',
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            backgroundColor: Colors.black87,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      }
+                                    },
+                                    child: const Text(
+                                      'Confirm',
+                                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.015,
+                                ),
+                                Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom))
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                BusyLoader(busy: model.isBusy),
+              ],
+            ),
+      viewModelBuilder: () => BookingViewModel(user, service),
+    );
+  }
 }

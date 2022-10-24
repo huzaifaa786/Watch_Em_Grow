@@ -1091,22 +1091,21 @@ class OrderDetailView extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                // if (order.status == OrderStatus.bookRequested ||
-                                //     order.status == OrderStatus.bookApproved)
-                                //   OutlinedButton(
-                                //     onPressed: () {
-                                //       if (model.isApiLoading) {
-                                //         return;
-                                //       }
-                                //       model.handleMakeCancel(order);
-                                //     },
-                                //     child: const Text(
-                                //       'Cancel appointments',
-                                //       style: TextStyle(
-                                //         fontWeight: FontWeight.bold,
-                                //       ),
-                                //     ),
-                                //   ),
+                                if (order.status == OrderStatus.bookRequested)
+                                  OutlinedButton(
+                                    onPressed: () {
+                                      if (model.isApiLoading) {
+                                        return;
+                                      }
+                                      model.handleMakeCancel(order);
+                                    },
+                                    child: const Text(
+                                      'Cancel Appointment',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
                                 /*if (order.status == OrderStatus.bookApproved &&
                                     order.userId == currentUser.id)
                                   MaterialButton(

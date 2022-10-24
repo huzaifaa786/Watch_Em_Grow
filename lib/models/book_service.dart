@@ -15,6 +15,7 @@ class BookkingService {
   final String? serviceId;
   final int? serviceDuration;
   final int? servicePrice;
+  final int? depositAmount;
 
   //Because we are storing timestamp in Firestore, we need a converter for DateTime
   /* static DateTime timeStampToDateTime(Timestamp timestamp) {
@@ -49,6 +50,7 @@ class BookkingService {
       this.serviceName,
       this.serviceDuration,
       this.servicePrice,
+      this.depositAmount,
       this.serviceId});
 
   /// Connect the generated [_$SportBookingFromJson] function to the `fromJson`

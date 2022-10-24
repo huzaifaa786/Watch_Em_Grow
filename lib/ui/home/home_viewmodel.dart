@@ -128,8 +128,8 @@ class HomeViewModel extends BaseViewModel {
       Routes.categoryView,
       arguments: CategoryViewArguments(
         category: category,
-        categoryShops: allShops.where((shop) => shop.category == category).toList(),
-        allOtherShops: allShops.where((shop) => shop.category != category).toList(),
+        categoryShops: allShops.where((shop) => shop.category.toLowerCase() == category.toLowerCase()).toList(),
+        allOtherShops: allShops.where((shop) => shop.category.toLowerCase() != category.toLowerCase()).toList(),
         allSellers: allSellers,
         allServices: allServices,
       ),

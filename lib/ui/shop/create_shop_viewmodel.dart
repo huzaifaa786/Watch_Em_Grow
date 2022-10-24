@@ -18,7 +18,7 @@ class CreateShopViewModel extends BaseViewModel {
 
   late AppUser currentUser;
 
-  List<String> searchedLocations = [];
+  List<String> searched = [];
 
   bool hasBorough = false;
 
@@ -40,7 +40,7 @@ class CreateShopViewModel extends BaseViewModel {
   String? selectedBorough;
 
   String address = "";
-
+  var searchedLocations = [];
   String selectedFontStyle = "Default";
 
   bool autoValidate = false;
@@ -93,8 +93,7 @@ class CreateShopViewModel extends BaseViewModel {
         if (selectedLocation == "London" && selectedBorough == null) {
           Alerts.showErrorSnackbar('Please select your Location Borough');
           return false;
-        } else if (selectedLocation == "Hertfordshire" &&
-            selectedBorough == null) {
+        } else if (selectedLocation == "Hertfordshire" && selectedBorough == null) {
           Alerts.showErrorSnackbar('Please select your Location Borough');
 
           return false;
@@ -116,19 +115,18 @@ class CreateShopViewModel extends BaseViewModel {
 
     await _databaseApi.createShop(
       Shop(
-        id: _shopId,
-        ownerId: currentUser.id,
-        name: shopName,
-        description: description,
-        category: selectedCategory!,
-        location: selectedLocation!,
-        borough: selectedBorough ?? '',
-        address: address,
-        fontStyle: selectedFontStyle,
-        color: selectedTheme,
-        isFeatured: 0,
-        isBestSeller: 0
-      ),
+          id: _shopId,
+          ownerId: currentUser.id,
+          name: shopName,
+          description: description,
+          category: selectedCategory!,
+          location: selectedLocation!,
+          borough: selectedBorough ?? '',
+          address: address,
+          fontStyle: selectedFontStyle,
+          color: selectedTheme,
+          isFeatured: 0,
+          isBestSeller: 0),
     );
 
     await _databaseApi.updateUserShopId(
