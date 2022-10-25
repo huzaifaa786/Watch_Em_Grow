@@ -138,7 +138,7 @@ class PaypalApi {
           'Authorization': 'Bearer $accessToken'
         },
           body: jsonEncode({
-          'amount': {'value': order.depositAmount!, 'currency_code': 'GBP'}
+          'amount': {'value': order.service.depositAmount!, 'currency_code': 'GBP'}
          }),
       );
 
@@ -159,7 +159,7 @@ class PaypalApi {
       }
       String batchID = batch_idList.join('');
 
-      double finalPayment = order.depositAmount! * (1 - (processingFee / 100));
+      double finalPayment = order.service.depositAmount! * (1 - (processingFee / 100));
       //double finalPayment = order.service.price * 0.80;
       final response = await http.post(
         Uri.parse(transferUrl),

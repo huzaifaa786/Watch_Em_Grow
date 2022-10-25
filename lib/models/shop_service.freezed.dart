@@ -26,6 +26,7 @@ class _$ShopServiceTearOff {
       required String ownerId,
       required String name,
       required double price,
+      double? depositAmount,
       required String type,
       int? time,
       int? duration,
@@ -49,6 +50,7 @@ class _$ShopServiceTearOff {
       ownerId: ownerId,
       name: name,
       price: price,
+      depositAmount: depositAmount,
       type: type,
       time: time,
       duration: duration,
@@ -84,6 +86,7 @@ mixin _$ShopService {
   String get ownerId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
+  double? get depositAmount => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
   int? get time => throw _privateConstructorUsedError;
   int? get duration => throw _privateConstructorUsedError;
@@ -116,6 +119,7 @@ abstract class $ShopServiceCopyWith<$Res> {
       String ownerId,
       String name,
       double price,
+      double? depositAmount,
       String type,
       int? time,
       int? duration,
@@ -150,6 +154,7 @@ class _$ShopServiceCopyWithImpl<$Res> implements $ShopServiceCopyWith<$Res> {
     Object? ownerId = freezed,
     Object? name = freezed,
     Object? price = freezed,
+    Object? depositAmount = freezed,
     Object? type = freezed,
     Object? time = freezed,
     Object? duration = freezed,
@@ -189,6 +194,10 @@ class _$ShopServiceCopyWithImpl<$Res> implements $ShopServiceCopyWith<$Res> {
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as double,
+      depositAmount: depositAmount == freezed
+          ? _value.depositAmount
+          : depositAmount // ignore: cast_nullable_to_non_nullable
+              as double?,
       type: type == freezed
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -272,6 +281,7 @@ abstract class _$ShopServiceCopyWith<$Res> implements $ShopServiceCopyWith<$Res>
       String ownerId,
       String name,
       double price,
+      double? depositAmount,
       String type,
       int? time,
       int? duration,
@@ -306,6 +316,7 @@ class __$ShopServiceCopyWithImpl<$Res> extends _$ShopServiceCopyWithImpl<$Res> i
     Object? ownerId = freezed,
     Object? name = freezed,
     Object? price = freezed,
+    Object? depositAmount = freezed,
     Object? type = freezed,
     Object? time = freezed,
     Object? duration = freezed,
@@ -345,6 +356,10 @@ class __$ShopServiceCopyWithImpl<$Res> extends _$ShopServiceCopyWithImpl<$Res> i
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as double,
+      depositAmount: depositAmount == freezed
+          ? _value.depositAmount
+          : depositAmount // ignore: cast_nullable_to_non_nullable
+              as double?,
       type: type == freezed
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -426,6 +441,7 @@ class _$_ShopService implements _ShopService {
       required this.ownerId,
       required this.name,
       required this.price,
+      this.depositAmount,
       required this.type,
       this.time,
       this.duration,
@@ -456,6 +472,8 @@ class _$_ShopService implements _ShopService {
   final String name;
   @override
   final double price;
+  @override
+  final double? depositAmount;
   @override
   final String type;
   @override
@@ -493,7 +511,7 @@ class _$_ShopService implements _ShopService {
 
   @override
   String toString() {
-    return 'ShopService(id: $id, shopId: $shopId, ownerId: $ownerId, name: $name, price: $price, type: $type, time: $time, duration: $duration, startHour: $startHour, endHour: $endHour, imageId1: $imageId1, imageUrl1: $imageUrl1, imageId2: $imageId2, imageUrl2: $imageUrl2, imageId3: $imageId3, imageUrl3: $imageUrl3, videoUrl: $videoUrl, description: $description, rating: $rating, aspectRatio: $aspectRatio, sizes: $sizes, bookingNote: $bookingNote)';
+    return 'ShopService(id: $id, shopId: $shopId, ownerId: $ownerId, name: $name, price: $price, depositAmount: $depositAmount, type: $type, time: $time, duration: $duration, startHour: $startHour, endHour: $endHour, imageId1: $imageId1, imageUrl1: $imageUrl1, imageId2: $imageId2, imageUrl2: $imageUrl2, imageId3: $imageId3, imageUrl3: $imageUrl3, videoUrl: $videoUrl, description: $description, rating: $rating, aspectRatio: $aspectRatio, sizes: $sizes, bookingNote: $bookingNote)';
   }
 
   @override
@@ -505,6 +523,7 @@ class _$_ShopService implements _ShopService {
             (identical(other.ownerId, ownerId) || const DeepCollectionEquality().equals(other.ownerId, ownerId)) &&
             (identical(other.name, name) || const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.price, price) || const DeepCollectionEquality().equals(other.price, price)) &&
+            (identical(other.depositAmount, depositAmount) || const DeepCollectionEquality().equals(other.depositAmount, depositAmount)) &&
             (identical(other.type, type) || const DeepCollectionEquality().equals(other.type, type)) &&
             (identical(other.time, time) || const DeepCollectionEquality().equals(other.time, time)) &&
             (identical(other.duration, duration) || const DeepCollectionEquality().equals(other.duration, duration)) &&
@@ -538,6 +557,7 @@ class _$_ShopService implements _ShopService {
       const DeepCollectionEquality().hash(ownerId) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(price) ^
+      const DeepCollectionEquality().hash(depositAmount) ^
       const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(time) ^
       const DeepCollectionEquality().hash(duration) ^
@@ -573,6 +593,7 @@ abstract class _ShopService implements ShopService {
       required String ownerId,
       required String name,
       required double price,
+      double? depositAmount,
       required String type,
       int? time,
       int? duration,
@@ -603,6 +624,8 @@ abstract class _ShopService implements ShopService {
   String get name => throw _privateConstructorUsedError;
   @override
   double get price => throw _privateConstructorUsedError;
+  @override
+  double? get depositAmount => throw _privateConstructorUsedError;
   @override
   String get type => throw _privateConstructorUsedError;
   @override

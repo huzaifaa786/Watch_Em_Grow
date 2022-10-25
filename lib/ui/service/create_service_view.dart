@@ -561,8 +561,23 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                         model.price = price;
                       },
                     ),
-                    if (model.selectedType == Constants.serviceLabel)
-                      InputField(
+                    if (model.selectedType == Constants.serviceLabel)...[
+                       InputField(
+                      hintText: "Deposit Amount",
+                      maxLength: 5,
+                      counter: "",
+                      textInputType: TextInputType.number,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.only(left: 10.0, top: 12),
+                        child: '£'.text.lg.make(),
+                      ),
+                      validate: model.autoValidate,
+                      validator: (depositAmount) => Validators.depositAmountValidator(depositAmount, 'Deposit Amount'),
+                      onChanged: (depositAmount) {
+                        model.depositAmount = depositAmount;
+                      },
+                    ),
+                     InputField(
                         hintText: "Duration/min",
                         maxLength: 2,
                         counter: "",
@@ -574,6 +589,8 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           'Duration',
                         ),
                       ),
+                    ],
+                     
                     if (model.selectedType == Constants.serviceLabel) ...[
                       GestureDetector(
                         onTap: () {

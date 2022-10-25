@@ -47,6 +47,7 @@ class CreateServiceViewModel extends BaseViewModel {
   String serviceName = "";
   String description = "";
   String price = "";
+  String depositAmount = "";
   String bookingNote = "";
   TextEditingController noteController = new TextEditingController();
   TextEditingController durationController = new TextEditingController();
@@ -130,6 +131,7 @@ class CreateServiceViewModel extends BaseViewModel {
             name: serviceName,
             description: description.trimRight(),
             price: double.parse(price),
+            depositAmount: double.parse(depositAmount),
             aspectRatio: serviceAspectRatio,
             type: selectedType!,
             duration: selectedType != "Product" ? int.parse(durationController.text) : null,

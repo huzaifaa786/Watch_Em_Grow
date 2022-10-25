@@ -89,9 +89,13 @@ class BookingViewModel extends BaseViewModel {
         userEmail: user.email,
         userName: user.fullName,
         userId: user.id,
-        bookingStart: DateTime(now.year, now.month, now.day, service.startHour!, 0));
+        depositAmount: service.depositAmount,
+        bookingStart:
+            DateTime(now.year, now.month, now.day, service.startHour!, 0));
 
-    await _databaseApi.getUserBookingStreamFirebase(userId: service.ownerId).then((bookings) {
+    await _databaseApi
+        .getUserBookingStreamFirebase(userId: service.ownerId)
+        .then((bookings) {
       userBookings = bookings;
     });
 
@@ -100,7 +104,8 @@ class BookingViewModel extends BaseViewModel {
       final end = userBookings[i].bookingEnd;
       userReservedBookings.add(DateTimeRange(
           start: (DateTime(start!.year, start.month, start.day, start.hour, 0)),
-          end: (DateTime(end!.year, end.month, end.day, end.hour, end.minute + userBookings[i].serviceDuration!, 0))));
+          end: (DateTime(end!.year, end.month, end.day, end.hour,
+              end.minute + userBookings[i].serviceDuration!, 0))));
     }
     userReservedBookings.add(DateTimeRange(
         start: DateTime(now.year, now.month, now.day, 0, 0),
@@ -124,41 +129,44 @@ class BookingViewModel extends BaseViewModel {
     print(excludedDays);
   }
 
-  Stream<dynamic>? getBookingStreamMock({required DateTime end, required DateTime start}) {
+  Stream<dynamic>? getBookingStreamMock(
+      {required DateTime end, required DateTime start}) {
     return Stream.value([]);
   }
 
-  Future<dynamic> uploadBookingMock({required BookingService newBooking}) async {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        context: mcontext as BuildContext,
-        builder: (context) {
-          return DepositSheet(user: user, service: service);
-        }).then((value) async {
-      if (value == true) {
-        if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
-          await _navigationService.navigateTo(
-            Routes.bookServiceView,
-            arguments: BookServiceViewArguments(
-                user: user,
-                service: service,
-                bookingservice: BookkingService(
-                    email: newBooking.userEmail,
-                    bookingStart: newBooking.bookingStart,
-                    bookingEnd: newBooking.bookingEnd,
-                    userId: newBooking.userId,
-                    ownerId: service.ownerId,
-                    userName: newBooking.userName,
-                    serviceId: newBooking.serviceId,
-                    serviceName: newBooking.serviceName,
-                    servicePrice: newBooking.servicePrice,
-                    depositAmount: int.parse(depositAmountController.text),
-                    serviceDuration: newBooking.serviceDuration)),
-          );
-        }
+  Future<dynamic> uploadBookingMock(
+      {required BookingService newBooking}) async {
+    final dialogResponse = await _dialogService.showConfirmationDialog(
+      title: 'Deposit Amount Policy',
+      description:
+          'Please ensure that the remaining balance is paid directly to the seller when you are at your appointment. Only the Deposit will be taken through MiyPromo',
+      confirmationTitle: 'Proceed',
+      cancelTitle: 'Close',
+    );
+
+    if (dialogResponse?.confirmed ?? false) {
+      if (await _navigationService.navigateTo(Routes.inputAddressView) ==
+          true) {
+        await _navigationService.navigateTo(
+          Routes.bookServiceView,
+          arguments: BookServiceViewArguments(
+              user: user,
+              service: service,
+              bookingservice: BookkingService(
+                  email: newBooking.userEmail,
+                  bookingStart: newBooking.bookingStart,
+                  bookingEnd: newBooking.bookingEnd,
+                  userId: newBooking.userId,
+                  ownerId: service.ownerId,
+                  userName: newBooking.userName,
+                  serviceId: newBooking.serviceId,
+                  depositAmount: service.depositAmount,
+                  serviceName: newBooking.serviceName,
+                  servicePrice: newBooking.servicePrice,
+                  serviceDuration: newBooking.serviceDuration)),
+        );
       }
-    });
+    }
 
     // final response = await _dialogService.showCustomDialog(
     //   variant: AlertType.custom,
@@ -220,14 +228,17 @@ class BookingViewModel extends BaseViewModel {
   }
 
   List<DateTimeRange> convertStreamResultMock({dynamic streamResult}) {
-    _bookings = _databaseApi.getBookingStreamFirebase(ServiceId: service.id).listen((event) {
+    _bookings = _databaseApi
+        .getBookingStreamFirebase(ServiceId: service.id)
+        .listen((event) {
       bookings = event;
     });
 
     List<DateTimeRange> converted = [];
     for (var i = 0; i < bookings.length; i++) {
       final item = bookings[i];
-      converted.add(DateTimeRange(start: (item.bookingStart!), end: (item.bookingEnd!)));
+      converted.add(
+          DateTimeRange(start: (item.bookingStart!), end: (item.bookingEnd!)));
     }
     return converted;
   }
@@ -238,7 +249,8 @@ class BookingViewModel extends BaseViewModel {
 
   sendMessage() async {
     setIsSending(loading: true);
-    await _databaseApi.sendContactMessage(messageController.text, _currentUser.id);
+    await _databaseApi.sendContactMessage(
+        messageController.text, _currentUser.id);
     messageController.clear();
     Fluttertoast.showToast(
         msg: "Thank you for contacting us",
@@ -285,7 +297,8 @@ class BookingViewModel extends BaseViewModel {
         var test = _databaseApi.postNotification(
             orderID: order.orderId,
             title: 'New Booking',
-            body: '${order.name} has booked ${order.service.name}(£${order.service.price}) from ${shopDetails.name}',
+            body:
+                '${order.name} has booked ${order.service.name}(£${order.service.price}) from ${shopDetails.name}',
             forRole: 'order',
             userID: '',
             receiverToken: token.toString());
@@ -294,7 +307,8 @@ class BookingViewModel extends BaseViewModel {
           "userId": user.id,
           "orderID": order.orderId,
           "title": 'New Booking',
-          "body": '${order.name} has booked ${order.service.name}(£${order.service.price})',
+          "body":
+              '${order.name} has booked ${order.service.name}(£${order.service.price})',
           "id": DateTime.now().millisecondsSinceEpoch.toString(),
           "read": false,
           "image": user.imageUrl,
@@ -305,7 +319,8 @@ class BookingViewModel extends BaseViewModel {
         _databaseApi.postNotificationCollection(shopDetails.ownerId, postMap);
       }
 
-      if (await _navigationService.navigateTo(Routes.orderSuccessView) == true) {
+      if (await _navigationService.navigateTo(Routes.orderSuccessView) ==
+          true) {
         _navigationService.back();
         _navigationService.back();
         navigateToOrderDetailView(order);
@@ -420,7 +435,8 @@ class BookingViewModel extends BaseViewModel {
 }
 
 class DepositSheet extends StatelessWidget {
-  const DepositSheet({Key? key, required this.user, required this.service}) : super(key: key);
+  const DepositSheet({Key? key, required this.user, required this.service})
+      : super(key: key);
   final ShopService service;
 
   final AppUser user;
@@ -442,7 +458,9 @@ class DepositSheet extends StatelessWidget {
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15)),
                       ),
                       child: Stack(
                         children: [
@@ -457,13 +475,16 @@ class DepositSheet extends StatelessWidget {
                                     height: height * 0.05,
                                     width: width * 0.08,
                                     //color: Colors.red,
-                                    margin: EdgeInsets.only(top: height * 0.005, right: width * 0.01),
+                                    margin: EdgeInsets.only(
+                                        top: height * 0.005,
+                                        right: width * 0.01),
                                     child: Icon(Icons.clear, size: 19)),
                               )
                             ],
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+                            padding:
+                                EdgeInsets.symmetric(horizontal: width * 0.03),
                             child: Column(
                               //crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -472,8 +493,13 @@ class DepositSheet extends StatelessWidget {
                                 Row(
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.only(top: height * 0.02),
-                                      child: 'Enter Deposit Amount'.text.bold.size(20).make(),
+                                      padding:
+                                          EdgeInsets.only(top: height * 0.02),
+                                      child: 'Enter Deposit Amount'
+                                          .text
+                                          .bold
+                                          .size(20)
+                                          .make(),
                                     ),
                                   ],
                                 ),
@@ -497,13 +523,19 @@ class DepositSheet extends StatelessWidget {
                                       filled: true,
                                       fillColor: Colors.white,
                                       border: OutlineInputBorder(),
-                                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                                      enabledBorder:
-                                          OutlineInputBorder(borderSide: BorderSide(color: Color(0xffEEEEEE))),
-                                      disabledBorder:
-                                          OutlineInputBorder(borderSide: BorderSide(color: Color(0xffEEEEEE))),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.grey)),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Color(0xffEEEEEE))),
+                                      disabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Color(0xffEEEEEE))),
                                       hintText: 'Enter Deposit Amount',
-                                      hintStyle: TextStyle(fontSize: height * 0.019, color: Colors.black54),
+                                      hintStyle: TextStyle(
+                                          fontSize: height * 0.019,
+                                          color: Colors.black54),
                                     ),
                                   ),
                                 ),
@@ -519,14 +551,22 @@ class DepositSheet extends StatelessWidget {
                                   child: MaterialButton(
                                     color: Color(4286745852),
                                     onPressed: () {
-                                      if (model.depositAmountController.text.isNotEmpty &&
-                                          int.parse(model.depositAmountController.text) >= 15 &&
-                                          int.parse(model.depositAmountController.text) < 45) {
+                                      if (model.depositAmountController.text
+                                              .isNotEmpty &&
+                                          int.parse(model
+                                                  .depositAmountController
+                                                  .text) >=
+                                              15 &&
+                                          int.parse(model
+                                                  .depositAmountController
+                                                  .text) <
+                                              45) {
                                         FocusScope.of(context).unfocus();
                                         _navigationService.back(result: true);
                                       } else {
                                         Fluttertoast.showToast(
-                                            msg: 'deposit must be greater than 15 and less then',
+                                            msg:
+                                                'deposit must be greater than 15 and less then',
                                             toastLength: Toast.LENGTH_SHORT,
                                             backgroundColor: Colors.black87,
                                             textColor: Colors.white,
@@ -535,14 +575,21 @@ class DepositSheet extends StatelessWidget {
                                     },
                                     child: const Text(
                                       'Confirm',
-                                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 16),
                                     ),
                                   ),
                                 ),
                                 SizedBox(
                                   height: height * 0.015,
                                 ),
-                                Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom))
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: MediaQuery.of(context)
+                                            .viewInsets
+                                            .bottom))
                               ],
                             ),
                           ),

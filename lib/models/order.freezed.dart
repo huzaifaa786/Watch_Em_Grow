@@ -37,7 +37,6 @@ class _$OrderTearOff {
       String? address,
       String? postCode,
       int? rate,
-      int? depositAmount,
       int? selectedSize}) {
     return _Order(
       orderId: orderId,
@@ -56,7 +55,6 @@ class _$OrderTearOff {
       address: address,
       postCode: postCode,
       rate: rate,
-      depositAmount: depositAmount,
       selectedSize: selectedSize,
     );
   }
@@ -87,7 +85,6 @@ mixin _$Order {
   String? get address => throw _privateConstructorUsedError;
   String? get postCode => throw _privateConstructorUsedError;
   int? get rate => throw _privateConstructorUsedError;
-  int? get depositAmount => throw _privateConstructorUsedError;
   int? get selectedSize => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -116,7 +113,6 @@ abstract class $OrderCopyWith<$Res> {
       String? address,
       String? postCode,
       int? rate,
-      int? depositAmount,
       int? selectedSize});
 
   $ShopServiceCopyWith<$Res> get service;
@@ -148,7 +144,6 @@ class _$OrderCopyWithImpl<$Res> implements $OrderCopyWith<$Res> {
     Object? address = freezed,
     Object? postCode = freezed,
     Object? rate = freezed,
-    Object? depositAmount = freezed,
     Object? selectedSize = freezed,
   }) {
     return _then(_value.copyWith(
@@ -216,10 +211,6 @@ class _$OrderCopyWithImpl<$Res> implements $OrderCopyWith<$Res> {
           ? _value.rate
           : rate // ignore: cast_nullable_to_non_nullable
               as int?,
-      depositAmount: depositAmount == freezed
-          ? _value.depositAmount
-          : depositAmount // ignore: cast_nullable_to_non_nullable
-              as int?,
       selectedSize: selectedSize == freezed
           ? _value.selectedSize
           : selectedSize // ignore: cast_nullable_to_non_nullable
@@ -257,7 +248,6 @@ abstract class _$OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
       String? address,
       String? postCode,
       int? rate,
-      int? depositAmount,
       int? selectedSize});
 
   @override
@@ -291,7 +281,6 @@ class __$OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res>
     Object? address = freezed,
     Object? postCode = freezed,
     Object? rate = freezed,
-    Object? depositAmount = freezed,
     Object? selectedSize = freezed,
   }) {
     return _then(_Order(
@@ -359,10 +348,6 @@ class __$OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res>
           ? _value.rate
           : rate // ignore: cast_nullable_to_non_nullable
               as int?,
-      depositAmount: depositAmount == freezed
-          ? _value.depositAmount
-          : depositAmount // ignore: cast_nullable_to_non_nullable
-              as int?,
       selectedSize: selectedSize == freezed
           ? _value.selectedSize
           : selectedSize // ignore: cast_nullable_to_non_nullable
@@ -391,7 +376,6 @@ class _$_Order implements _Order {
       this.address,
       this.postCode,
       this.rate,
-      this.depositAmount,
       this.selectedSize});
 
   factory _$_Order.fromJson(Map<String, dynamic> json) =>
@@ -430,13 +414,12 @@ class _$_Order implements _Order {
   @override
   final int? rate;
   @override
-  final int? depositAmount;
   @override
   final int? selectedSize;
 
   @override
   String toString() {
-    return 'Order(orderId: $orderId, paymentId: $paymentId, captureId: $captureId, type: $type, paymentMethod: $paymentMethod, userId: $userId, shopId: $shopId, service: $service, time: $time, status: $status, bookingStart: $bookingStart, bookingEnd: $bookingEnd, name: $name, address: $address, postCode: $postCode, rate: $rate, depositAmount: $depositAmount, selectedSize: $selectedSize)';
+    return 'Order(orderId: $orderId, paymentId: $paymentId, captureId: $captureId, type: $type, paymentMethod: $paymentMethod, userId: $userId, shopId: $shopId, service: $service, time: $time, status: $status, bookingStart: $bookingStart, bookingEnd: $bookingEnd, name: $name, address: $address, postCode: $postCode, rate: $rate, selectedSize: $selectedSize)';
   }
 
   @override
@@ -484,8 +467,6 @@ class _$_Order implements _Order {
                     .equals(other.postCode, postCode)) &&
             (identical(other.rate, rate) ||
                 const DeepCollectionEquality().equals(other.rate, rate)) &&
-            (identical(other.depositAmount, depositAmount) ||
-                const DeepCollectionEquality().equals(other.depositAmount, depositAmount)) &&
             (identical(other.selectedSize, selectedSize) ||
                 const DeepCollectionEquality()
                     .equals(other.selectedSize, selectedSize)));
@@ -510,7 +491,6 @@ class _$_Order implements _Order {
       const DeepCollectionEquality().hash(address) ^
       const DeepCollectionEquality().hash(postCode) ^
       const DeepCollectionEquality().hash(rate) ^
-      const DeepCollectionEquality().hash(depositAmount) ^
       const DeepCollectionEquality().hash(selectedSize);
 
   @JsonKey(ignore: true)
@@ -542,7 +522,6 @@ abstract class _Order implements Order {
       String? address,
       String? postCode,
       int? rate,
-      int? depositAmount,
       int? selectedSize}) = _$_Order;
 
   factory _Order.fromJson(Map<String, dynamic> json) = _$_Order.fromJson;
@@ -580,7 +559,6 @@ abstract class _Order implements Order {
   @override
   int? get rate => throw _privateConstructorUsedError;
   @override
-  int? get depositAmount => throw _privateConstructorUsedError;
   @override
   int? get selectedSize => throw _privateConstructorUsedError;
   @override

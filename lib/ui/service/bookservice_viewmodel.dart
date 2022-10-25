@@ -104,7 +104,6 @@ class BookServiceViewModel extends BaseViewModel {
             userId: user.id,
             bookingStart: bookkingService.bookingStart!.microsecondsSinceEpoch,
             bookingEnd: bookkingService.bookingEnd!.microsecondsSinceEpoch,
-            depositAmount: bookkingService.depositAmount,
             status: OrderStatus.bookRequested,
             rate: 0,
             name: user.fullName,
@@ -249,7 +248,7 @@ class BookServiceViewModel extends BaseViewModel {
       // "payer": {"payment_method": "paypal"},
       'purchase_units': [
         {
-          'amount': {'value': bookkingService.depositAmount.toString(), 'currency_code': 'GBP'}
+          'amount': {'value': service.depositAmount, 'currency_code': 'GBP'}
         }
       ],
       'application_context': {

@@ -21,7 +21,7 @@ BookkingService _$BookkingServiceFromJson(Map<String, dynamic> json) {
     serviceName: json['serviceName'] as String?,
     serviceDuration: json['serviceDuration'] as int?,
     servicePrice: json['servicePrice'] as int?,
-    depositAmount: json['depositAmount'] as int?,
+    depositAmount: json['depositAmount'] as double?,
     serviceId: json['serviceId'] as String?,
   );
 }

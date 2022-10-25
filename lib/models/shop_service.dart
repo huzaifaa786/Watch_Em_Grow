@@ -11,6 +11,7 @@ class ShopService with _$ShopService {
     required String ownerId,
     required String name,
     required double price,
+     double? depositAmount,
     required String type,
     int? time,
     int? duration,

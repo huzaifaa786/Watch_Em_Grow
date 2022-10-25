@@ -19,6 +19,23 @@ class Validators {
     }
   }
 
+  static String? depositAmountValidator(
+    String? value,
+    String valueType,
+  ) {
+    if (value == null) {
+      return null;
+    } else if (value.isEmpty) {
+      return "$valueType can't be empty";
+    }  else if (int.parse(value) < 15) {
+      return "$valueType can't be less than 15";
+    } else if (int.parse(value) >  54) {
+      return "$valueType can't be greater than 45";
+    } else {
+      return null;
+    }
+  }
+
   static String? bookingTimeValidator(
     String start,
     String end,

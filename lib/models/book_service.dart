@@ -15,7 +15,7 @@ class BookkingService {
   final String? serviceId;
   final int? serviceDuration;
   final int? servicePrice;
-  final int? depositAmount;
+  final double?  depositAmount;
 
   //Because we are storing timestamp in Firestore, we need a converter for DateTime
   /* static DateTime timeStampToDateTime(Timestamp timestamp) {

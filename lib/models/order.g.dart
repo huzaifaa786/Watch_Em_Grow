@@ -24,7 +24,6 @@ _$_Order _$_$_OrderFromJson(Map<String, dynamic> json) {
     address: json['address'] as String?,
     postCode: json['postCode'] as String?,
     rate: json['rate'] as int?,
-    depositAmount: json['depositAmount'] as int?,
     selectedSize: json['selectedSize'] as int?,
   );
 }
@@ -46,7 +45,6 @@ Map<String, dynamic> _$_$_OrderToJson(_$_Order instance) => <String, dynamic>{
       'address': instance.address,
       'postCode': instance.postCode,
       'rate': instance.rate,
-      'depositAmount': instance.depositAmount,
       'selectedSize': instance.selectedSize,
     };
 
