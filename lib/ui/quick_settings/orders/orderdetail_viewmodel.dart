@@ -566,7 +566,7 @@ class OrderDetailViewModel extends BaseViewModel {
         final shopDetails = await _databaseApi.getShop(order.shopId);
         final paypalEmail = await _databaseApi.getSellerPaypal(shopDetails.ownerId);
         final accessToken = await _paypalApi.getAccessToken();
-        final response = await _paypalApi.paySellerPayment(paypalEmail.toString(), order, processingFee, accessToken!);
+        final response = await _paypalApi.payProductSellerPayment(paypalEmail.toString(), order, processingFee, accessToken!);
         if (response['statusCode'] == 201) {
           final String timeString = DateTime.now().toString();
           _databaseApi.completeOrder(order, DateTime.parse(timeString).microsecondsSinceEpoch).then((value) async {
@@ -748,6 +748,66 @@ class OrderDetailViewModel extends BaseViewModel {
           _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
         });
       }
+    }
+  }
+Future handleCancelNoRefund(Order order) async {
+    final dialogResponse = await _dialogService.showConfirmationDialog(
+      title: 'Are you sure?',
+      confirmationTitle: 'Cancel appointment',
+      cancelTitle: 'Close',
+    );
+
+    if (dialogResponse?.confirmed ?? false) {
+      isApiLoading = true;
+      notifyListeners();
+        _databaseApi.cancelOrder(order, DateTime.now().microsecondsSinceEpoch).then((value) async {
+          var token;
+          if (user.id == order.service.ownerId) {
+            token = await _databaseApi.getToken(order.userId);
+          } else {
+            token = await _databaseApi.getToken(order.service.ownerId);
+          }
+
+          if (token != null) {
+            Shop shopDetails = await _databaseApi.getShop(order.service.shopId);
+            String body;
+            if (user.id == order.service.ownerId) {
+              body = '${shopDetails.name} has cancelled ${order.service.name}(£${order.service.price})';
+            } else {
+              body =
+                  '${order.name} has cancelled ${order.service.name}(£${order.service.price}) from ${shopDetails.name}';
+            }
+            var test = _databaseApi.postNotification(
+                orderID: order.orderId,
+                title: 'Booking has been cancelled',
+                body: body,
+                forRole: 'order',
+                userID: '',
+                receiverToken: token.toString());
+
+            Map<String, dynamic> postMap = {
+              "userId": user.id,
+              "orderID": order.orderId,
+              "title": 'Booking has been cancelled',
+              "body": body,
+              "id": DateTime.now().millisecondsSinceEpoch.toString(),
+              "read": false,
+              "image": user.imageUrl,
+              "time": DateTime.now().millisecondsSinceEpoch.toString(),
+              "sound": "default"
+            };
+
+            _databaseApi.postNotificationCollection(order.userId, postMap);
+          }
+          isApiLoading = false;
+          await _dialogService.showCustomDialog(
+              variant: AlertType.success, title: 'Success', description: 'Booking is cancelled.');
+          _navigationService.back();
+        }, onError: (exception) {
+          isApiLoading = false;
+          notifyListeners();
+          _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
+        });
     }
   }
 

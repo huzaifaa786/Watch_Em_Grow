@@ -130,7 +130,10 @@ class OrderDetailView extends StatelessWidget {
                                       .fontWeight(FontWeight.w600)
                                       .make(),
                                   (size.height * 0.004).heightBox,
-                                  "£${order.service.price.toStringAsFixed(2)}"
+                               order.service.type == "Service" ?   "£${ order.service.depositAmount!.toStringAsFixed(2)}"
+                                      .text
+                                      .size(13)
+                                      .make() : "£${ order.service.price.toStringAsFixed(2)}"
                                       .text
                                       .size(13)
                                       .make(),
@@ -1106,25 +1109,24 @@ class OrderDetailView extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                /*if (order.status == OrderStatus.bookApproved &&
+                                if (order.status == OrderStatus.bookApproved &&
                                     order.userId == currentUser.id)
                                   MaterialButton(
                                     onPressed: () {
                                       if (model.isApiLoading) {
                                         return;
                                       }
-                                      model.handleRequestReceivedService(order);
-                                      //model.navigateToBookServiceView(order);
+                                      model.handleCancelNoRefund(order);
                                     },
                                     color: Color(color),
                                     child: const Text(
-                                      'Received Service',
+                                      'Cancel Appointment',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  ),*/
+                                  ),
                               ],
                             ),
                           ),

@@ -25,7 +25,8 @@ import 'package:video_editor/domain/bloc/controller.dart';
 import 'package:video_editor/ui/cover/cover_selection.dart';
 import 'package:video_editor/ui/cover/cover_viewer.dart';
 import 'package:video_editor/ui/crop/crop_grid.dart';
-import 'package:helpers/helpers.dart' show OpacityTransition, SwipeTransition, AnimatedInteractiveViewer;
+import 'package:helpers/helpers.dart'
+    show OpacityTransition, SwipeTransition, AnimatedInteractiveViewer;
 import 'package:video_editor/ui/trim/trim_slider.dart';
 import 'package:video_editor/ui/trim/trim_timeline.dart';
 import 'package:video_player/video_player.dart';
@@ -72,7 +73,9 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                       height: context.screenHeight / 2.5,
                       width: context.screenWidth,
                       child: PageView.builder(
-                        itemCount: model.images.length < 3 ? model.images.length + 1 : model.images.length,
+                        itemCount: model.images.length < 3
+                            ? model.images.length + 1
+                            : model.images.length,
                         itemBuilder: (context, index) {
                           if (index == model.images.length) {
                             return SizedBox(
@@ -84,7 +87,10 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                                     Icons.add,
                                     color: Styles.kcPrimaryColor,
                                   ),
-                                  'Add Image'.text.color(Styles.kcPrimaryColor).make(),
+                                  'Add Image'
+                                      .text
+                                      .color(Styles.kcPrimaryColor)
+                                      .make(),
                                 ],
                               ).mdClick(
                                 () {
@@ -126,7 +132,8 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        final PickedFile? file = await _picker.getVideo(source: ImageSource.gallery);
+                        final PickedFile? file =
+                            await _picker.getVideo(source: ImageSource.gallery);
                         if (file != null) {
                           await Navigator.push(
                             context,
@@ -139,8 +146,10 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                             ),
                           ).then((val) {
                             model.selectedVideo1 = parseToFile(val.finalFile);
-                            model.videoName = parseToFile(val.finalFile).path.split('/').last;
-                            model.serviceAspectRatio = double.parse(val.ratio.toString());
+                            model.videoName =
+                                parseToFile(val.finalFile).path.split('/').last;
+                            model.serviceAspectRatio =
+                                double.parse(val.ratio.toString());
 
                             setState(() {});
                           });
@@ -159,14 +168,18 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           ),
                           Text(
                             "Add Video",
-                            style: TextStyle(color: Styles.kcPrimaryColor, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Styles.kcPrimaryColor,
+                                fontWeight: FontWeight.bold),
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width * 0.6,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: Text(
-                                model.videoName == null ? 'no video selected' : model.videoName.toString(),
+                                model.videoName == null
+                                    ? 'no video selected'
+                                    : model.videoName.toString(),
                                 maxLines: 2,
                                 style: TextStyle(color: Colors.grey),
                               ),
@@ -178,7 +191,8 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                     InputField(
                       hintText: Constants.serviceNameLabel,
                       validate: model.autoValidate,
-                      validator: (serviceName) => Validators.emptyStringValidator(
+                      validator: (serviceName) =>
+                          Validators.emptyStringValidator(
                         serviceName,
                         'Service Name',
                       ),
@@ -193,7 +207,8 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                       maxLength: 150,
                       counter: '',
                       textInputType: TextInputType.multiline,
-                      validator: (description) => Validators.emptyStringValidator(
+                      validator: (description) =>
+                          Validators.emptyStringValidator(
                         description,
                         'Description',
                       ),
@@ -202,8 +217,9 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                       },
                     ),
                     DropdownButtonFormField<String>(
-                      autovalidateMode:
-                          model.autoValidate ? AutovalidateMode.always : AutovalidateMode.onUserInteraction,
+                      autovalidateMode: model.autoValidate
+                          ? AutovalidateMode.always
+                          : AutovalidateMode.onUserInteraction,
                       decoration: const InputDecoration.collapsed(
                         hintText: 'Type',
                       ),
@@ -238,11 +254,14 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           v: 12,
                         ),
                     if (model.selectedType == Constants.productLabel)
-                      if (widget.shop.category == 'Footwear & Resellers' || widget.shop.category == 'Clothing Brands')
+                      if (widget.shop.category == 'Footwear & Resellers' ||
+                          widget.shop.category == 'Clothing Brands')
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Constants.selectSizesLabel.text.gray600.make().py4(),
+                            Constants.selectSizesLabel.text.gray600
+                                .make()
+                                .py4(),
                             Wrap(
                               spacing: 10,
                               children: [
@@ -445,7 +464,9 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Constants.selectSizesLabel.text.gray600.make().py4(),
+                            Constants.selectSizesLabel.text.gray600
+                                .make()
+                                .py4(),
                             Wrap(
                               spacing: 10,
                               children: [
@@ -556,51 +577,56 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                         child: '£'.text.lg.make(),
                       ),
                       validate: model.autoValidate,
-                      validator: (price) => Validators.emptyStringValidator(price, 'Price'),
+                      validator: (price) =>
+                          Validators.emptyStringValidator(price, 'Price'),
                       onChanged: (price) {
                         model.price = price;
                       },
                     ),
-                    if (model.selectedType == Constants.serviceLabel)...[
-                       InputField(
-                      hintText: "Deposit Amount",
-                      maxLength: 5,
-                      counter: "",
-                      textInputType: TextInputType.number,
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.only(left: 10.0, top: 12),
-                        child: '£'.text.lg.make(),
+                    if (model.selectedType == Constants.serviceLabel) ...[
+                      InputField(
+                        hintText: "Deposit Amount",
+                        maxLength: 5,
+                        counter: "",
+                        textInputType: TextInputType.number,
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.only(left: 10.0, top: 12),
+                          child: '£'.text.lg.make(),
+                        ),
+                        validate: model.autoValidate,
+                        validator: (depositAmount) =>
+                            Validators.depositAmountValidator(
+                                depositAmount, 'Deposit Amount'),
+                        onChanged: (depositAmount) {
+                          model.depositAmount = depositAmount;
+                        },
                       ),
-                      validate: model.autoValidate,
-                      validator: (depositAmount) => Validators.depositAmountValidator(depositAmount, 'Deposit Amount'),
-                      onChanged: (depositAmount) {
-                        model.depositAmount = depositAmount;
-                      },
-                    ),
-                     InputField(
+                      InputField(
                         hintText: "Duration/min",
                         maxLength: 2,
                         counter: "",
                         controller: model.durationController,
                         textInputType: TextInputType.number,
                         validate: model.autoValidate,
-                        validator: (duration) => Validators.emptyStringValidator(
+                        validator: (duration) =>
+                            Validators.emptyStringValidator(
                           duration,
                           'Duration',
                         ),
                       ),
                     ],
-                     
                     if (model.selectedType == Constants.serviceLabel) ...[
                       GestureDetector(
                         onTap: () {
-                          DatePicker.showPicker(context, showTitleActions: true, onChanged: (date) {},
-                              onConfirm: (time) {
+                          DatePicker.showPicker(context,
+                              showTitleActions: true,
+                              onChanged: (date) {}, onConfirm: (time) {
                             model.startController.text = time.hour.toString();
-                          }, pickerModel: CustomPicker(currentTime: DateTime.now()), locale: LocaleType.en);
+                          },
+                              pickerModel:
+                                  CustomPicker(currentTime: DateTime.now()),
+                              locale: LocaleType.en);
                           currentFocus.unfocus();
-
-
                         },
                         child: InputField(
                           hintText: "Bookings available from the hours",
@@ -611,21 +637,25 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           controller: model.startController,
                           textInputType: TextInputType.number,
                           validate: model.autoValidate,
-                          validator: (startHour) => Validators.emptyStringValidator(
+                          validator: (startHour) =>
+                              Validators.emptyStringValidator(
                             startHour,
                             'Bookings available from',
                           ),
                         ),
                       ),
-                    
                     ],
                     if (model.selectedType == Constants.serviceLabel)
                       GestureDetector(
                         onTap: () {
-                            DatePicker.showPicker(context, showTitleActions: true, onChanged: (date) {},
-                              onConfirm: (time) {
+                          DatePicker.showPicker(context,
+                              showTitleActions: true,
+                              onChanged: (date) {}, onConfirm: (time) {
                             model.endController.text = time.hour.toString();
-                          }, pickerModel: CustomPicker(currentTime: DateTime.now()), locale: LocaleType.en);
+                          },
+                              pickerModel:
+                                  CustomPicker(currentTime: DateTime.now()),
+                              locale: LocaleType.en);
                           currentFocus.unfocus();
                         },
                         child: InputField(
@@ -637,7 +667,8 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           controller: model.endController,
                           textInputType: TextInputType.number,
                           validate: model.autoValidate,
-                          validator: (endHour) => Validators.emptyStringValidator(
+                          validator: (endHour) =>
+                              Validators.emptyStringValidator(
                             endHour,
                             'Booking available till',
                           ),
@@ -655,7 +686,13 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                       busy: model.isBusy,
                       icon: Icons.done,
                       onPressed: () {
+                        if (model.selectedType == "Service") {
+                          model.confirmBeforeCreate();
+                        }
+                        else{
                         model.createService();
+
+                        }
                       },
                     ).objectCenterRight(),
                   ],
@@ -675,7 +712,9 @@ class VideoDetails {
 }
 
 class VideoEditor extends StatefulWidget {
-  VideoEditor({Key? key, required this.file, required this.user, required this.shop}) : super(key: key);
+  VideoEditor(
+      {Key? key, required this.file, required this.user, required this.shop})
+      : super(key: key);
 
   final File file;
   final AppUser user;
@@ -713,8 +752,11 @@ class _VideoEditorState extends State<VideoEditor> {
   }
 
   void _openCropScreen() {
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => CropScreen(controller: _controller)))
-        .then((val) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) =>
+                CropScreen(controller: _controller))).then((val) {
       if (val == true) {
         setState(() {
           isCropped = true;
@@ -738,7 +780,8 @@ class _VideoEditorState extends State<VideoEditor> {
         if (_firstStat) {
           _firstStat = false;
         } else {
-          _exportingProgress.value = statics.getTime() / _controller.video.value.duration.inMilliseconds;
+          _exportingProgress.value = statics.getTime() /
+              _controller.video.value.duration.inMilliseconds;
         }
       },
       onCompleted: (file) {
@@ -749,7 +792,8 @@ class _VideoEditorState extends State<VideoEditor> {
         if (file != null) {
           setState(() => _exported = true);
           Misc.delayed(2000, () => setState(() => _exported = false));
-          Navigator.pop(context, VideoDetails(file, _controller.preferredCropAspectRatio!));
+          Navigator.pop(context,
+              VideoDetails(file, _controller.preferredCropAspectRatio!));
         }
       },
     );
@@ -772,8 +816,10 @@ class _VideoEditorState extends State<VideoEditor> {
                                   Column(children: [
                                     !isCropped
                                         ? Padding(
-                                            padding: const EdgeInsets.only(top: 18.0),
-                                            child: Text("Crop the video to continue",
+                                            padding: const EdgeInsets.only(
+                                                top: 18.0),
+                                            child: Text(
+                                                "Crop the video to continue",
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                 )),
@@ -785,54 +831,82 @@ class _VideoEditorState extends State<VideoEditor> {
                                             child: Column(children: [
                                               Expanded(
                                                   child: TabBarView(
-                                                physics: NeverScrollableScrollPhysics(),
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
                                                 children: [
-                                                  Stack(alignment: Alignment.center, children: [
-                                                    CropGridViewer(
-                                                      controller: _controller,
-                                                      showGrid: false,
-                                                    ),
-                                                    AnimatedBuilder(
-                                                      animation: _controller.video,
-                                                      builder: (_, __) => OpacityTransition(
-                                                        visible: !_controller.isPlaying,
-                                                        child: GestureDetector(
-                                                          onTap: _controller.video.play,
-                                                          child: Container(
-                                                            width: 40,
-                                                            height: 40,
-                                                            decoration: BoxDecoration(
-                                                              color: Colors.white,
-                                                              shape: BoxShape.circle,
+                                                  Stack(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      children: [
+                                                        CropGridViewer(
+                                                          controller:
+                                                              _controller,
+                                                          showGrid: false,
+                                                        ),
+                                                        AnimatedBuilder(
+                                                          animation:
+                                                              _controller.video,
+                                                          builder: (_, __) =>
+                                                              OpacityTransition(
+                                                            visible:
+                                                                !_controller
+                                                                    .isPlaying,
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: _controller
+                                                                  .video.play,
+                                                              child: Container(
+                                                                width: 40,
+                                                                height: 40,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                ),
+                                                                child: Icon(
+                                                                    Icons
+                                                                        .play_arrow,
+                                                                    color: Colors
+                                                                        .black),
+                                                              ),
                                                             ),
-                                                            child: Icon(Icons.play_arrow, color: Colors.black),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  ]),
-                                                  CoverViewer(controller: _controller)
+                                                      ]),
+                                                  CoverViewer(
+                                                      controller: _controller)
                                                 ],
                                               )),
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
                                                   Expanded(
                                                     child: GestureDetector(
                                                       onTap: () async {
-                                                        isCropped ? await _exportVideo() : Navigator.pop(context);
+                                                        isCropped
+                                                            ? await _exportVideo()
+                                                            : Navigator.pop(
+                                                                context);
                                                       },
                                                       child: Padding(
-                                                        padding: const EdgeInsets.all(10.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(10.0),
                                                         child: isCropped
                                                             ? Icon(
                                                                 Icons.done,
-                                                                color: Colors.white,
+                                                                color: Colors
+                                                                    .white,
                                                                 size: 38,
                                                               )
                                                             : Icon(
                                                                 Icons.close,
-                                                                color: Colors.white,
+                                                                color: Colors
+                                                                    .white,
                                                                 size: 38,
                                                               ),
                                                       ),
@@ -893,13 +967,15 @@ class CropScreen extends StatelessWidget {
                   icon: const Center(
                     child: Text(
                       "CANCEL",
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                 ),
               ),
               buildSplashTap("1:1", 1 / 1),
-              buildSplashTap("4:5", 4 / 5, padding: const EdgeInsets.symmetric(horizontal: 10)),
+              buildSplashTap("4:5", 4 / 5,
+                  padding: const EdgeInsets.symmetric(horizontal: 10)),
               Expanded(
                 child: IconButton(
                   onPressed: () {
@@ -910,8 +986,9 @@ class CropScreen extends StatelessWidget {
                     controller.minCrop = controller.cacheMinCrop;
                     controller.maxCrop = controller.cacheMaxCrop;
                     */
-                 
-                    if (controller.preferredCropAspectRatio == 1.0 || controller.preferredCropAspectRatio == 0.8) {
+
+                    if (controller.preferredCropAspectRatio == 1.0 ||
+                        controller.preferredCropAspectRatio == 0.8) {
                       Navigator.pop(context, true);
                     } else {
                       Navigator.pop(context, false);
@@ -920,7 +997,8 @@ class CropScreen extends StatelessWidget {
                   icon: const Center(
                     child: Text(
                       "Done",
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                 ),
@@ -949,7 +1027,8 @@ class CropScreen extends StatelessWidget {
             const Icon(Icons.aspect_ratio, color: Colors.white),
             Text(
               title,
-              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ],
         ),
@@ -963,7 +1042,8 @@ class CustomPicker extends CommonPickerModel {
     return '$value'.padLeft(length, "0");
   }
 
-  CustomPicker({DateTime? currentTime, LocaleType? locale}) : super(locale: locale) {
+  CustomPicker({DateTime? currentTime, LocaleType? locale})
+      : super(locale: locale) {
     this.currentTime = currentTime ?? DateTime.now();
     this.setLeftIndex(this.currentTime.hour);
     this.setMiddleIndex(this.currentTime.minute);
@@ -1015,9 +1095,19 @@ class CustomPicker extends CommonPickerModel {
   @override
   DateTime finalTime() {
     return currentTime.isUtc
-        ? DateTime.utc(currentTime.year, currentTime.month, currentTime.day, this.currentLeftIndex(),
-            this.currentMiddleIndex(), this.currentRightIndex())
-        : DateTime(currentTime.year, currentTime.month, currentTime.day, this.currentLeftIndex(),
-            this.currentMiddleIndex(), this.currentRightIndex());
+        ? DateTime.utc(
+            currentTime.year,
+            currentTime.month,
+            currentTime.day,
+            this.currentLeftIndex(),
+            this.currentMiddleIndex(),
+            this.currentRightIndex())
+        : DateTime(
+            currentTime.year,
+            currentTime.month,
+            currentTime.day,
+            this.currentLeftIndex(),
+            this.currentMiddleIndex(),
+            this.currentRightIndex());
   }
 }
