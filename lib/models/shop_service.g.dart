@@ -13,7 +13,7 @@ _$_ShopService _$_$_ShopServiceFromJson(Map<String, dynamic> json) {
     ownerId: json['ownerId'] as String,
     name: json['name'] as String,
     price: (json['price'] as num).toDouble(),
-    depositAmount: double.parse(json['depositAmount'].toString()) as double?,
+    depositAmount: (json['depositAmount'] as num?)?.toDouble(),
     type: json['type'] as String,
     time: json['time'] as int?,
     duration: json['duration'] as int?,

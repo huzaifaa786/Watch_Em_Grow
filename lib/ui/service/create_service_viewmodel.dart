@@ -45,9 +45,11 @@ class CreateServiceViewModel extends BaseViewModel {
 
   double? serviceAspectRatio;
   String serviceName = "";
+  final _dialogService = locator<DialogService>();
+
   String description = "";
   String price = "";
-  String depositAmount = "";
+  String depositAmount = "0";
   String bookingNote = "";
   TextEditingController noteController = new TextEditingController();
   TextEditingController durationController = new TextEditingController();
@@ -119,6 +121,19 @@ class CreateServiceViewModel extends BaseViewModel {
     return completer.future;
   }
 
+  confirmBeforeCreate() async {
+    final dialogResponse = await _dialogService.showConfirmationDialog(
+      title: 'Deposits',
+      description:
+          'Please note that it is your responsibility to ensure that the full balance is paid by your customer at the appointment. Only the Deposit will be taken through MiyPromo',
+      confirmationTitle: 'Proceed',
+      cancelTitle: 'Close',
+    );
+    if (dialogResponse?.confirmed ?? false) {
+      createService();
+    }
+  }
+
   Future createService() async {
     setBusy(true);
     if (_validateServiceForm()) {
@@ -134,11 +149,19 @@ class CreateServiceViewModel extends BaseViewModel {
             depositAmount: double.parse(depositAmount),
             aspectRatio: serviceAspectRatio,
             type: selectedType!,
-            duration: selectedType != "Product" ? int.parse(durationController.text) : null,
-            startHour: selectedType != "Product" ? int.parse(startController.text) : null,
-            endHour: selectedType != "Product" ? int.parse(endController.text) : null,
+            duration: selectedType != "Product"
+                ? int.parse(durationController.text)
+                : null,
+            startHour: selectedType != "Product"
+                ? int.parse(startController.text)
+                : null,
+            endHour: selectedType != "Product"
+                ? int.parse(endController.text)
+                : null,
             sizes: selectedType == "Product" ? sizes : null,
-            bookingNote: selectedType != "Product" ? noteController.text.toString() : null),
+            bookingNote: selectedType != "Product"
+                ? noteController.text.toString()
+                : null),
       );
 
       if (selectedVideo1 != null) {
@@ -156,7 +179,8 @@ class CreateServiceViewModel extends BaseViewModel {
           shopId: shop.id,
           highestPrice: double.parse(price),
         );
-      } else if (double.parse(price) < shop.highestPrice && shop.lowestPrice == 0) {
+      } else if (double.parse(price) < shop.highestPrice &&
+          shop.lowestPrice == 0) {
         await _databaseApi.updateShopLowestPrice(
           shopId: shop.id,
           lowestPrice: double.parse(price),
@@ -187,21 +211,29 @@ class CreateServiceViewModel extends BaseViewModel {
         Validators.emptyStringValidator(price, 'Price') == null) {
       if (selectedType == null) {
         Alerts.showErrorSnackbar('Please Select Type');
-          return false;
-
+        return false;
       }
       if (selectedType == 'Service') {
-        if (Validators.emptyStringValidator(durationController.text, 'Duration') != null) {
+        if (Validators.emptyStringValidator(
+                durationController.text, 'Duration') !=
+            null) {
           Alerts.showErrorSnackbar('Please Enter Duration');
           return false;
-        } else if (Validators.emptyStringValidator(startController.text, 'Start Hour') != null) {
+        } else if (Validators.emptyStringValidator(
+                startController.text, 'Start Hour') !=
+            null) {
           Alerts.showErrorSnackbar('Please select Booking Starting time');
           return false;
-        } else if (Validators.emptyStringValidator(endController.text, 'End Hour') != null) {
+        } else if (Validators.emptyStringValidator(
+                endController.text, 'End Hour') !=
+            null) {
           Alerts.showErrorSnackbar('Please select Booking Ending time');
           return false;
-        } else if (Validators.bookingTimeValidator(startController.text, endController.text) != null) {
-          Alerts.showErrorSnackbar('Booking starting time must be earlier than the ending time');
+        } else if (Validators.bookingTimeValidator(
+                startController.text, endController.text) !=
+            null) {
+          Alerts.showErrorSnackbar(
+              'Booking starting time must be earlier than the ending time');
           return false;
         }
       }
@@ -311,13 +343,14 @@ class CreateServiceViewModel extends BaseViewModel {
     selectedVideo1 = File(file.path);
 
     videoName = file.path.split('/').last;
-    
+
     notifyListeners();
   }
 
   Future _saveServiceVideo() async {
     if (selectedImage1 != null) {
-      final CloudStorageResult storageResult = await _storageApi.uploadServiceVideo(
+      final CloudStorageResult storageResult =
+          await _storageApi.uploadServiceVideo(
         serviceId: _serviceId,
         videoToUpload: selectedVideo1!,
       );
@@ -402,7 +435,8 @@ class CreateServiceViewModel extends BaseViewModel {
 
   Future _saveServiceImage() async {
     if (selectedImage1 != null) {
-      final CloudStorageResult storageResult = await _storageApi.uploadServiceImages(
+      final CloudStorageResult storageResult =
+          await _storageApi.uploadServiceImages(
         serviceId: _serviceId,
         imageNumber: '1',
         imageToUpload: _finalImage1!,
@@ -416,7 +450,8 @@ class CreateServiceViewModel extends BaseViewModel {
       );
     }
     if (selectedImage2 != null) {
-      final CloudStorageResult storageResult = await _storageApi.uploadServiceImages(
+      final CloudStorageResult storageResult =
+          await _storageApi.uploadServiceImages(
         serviceId: _serviceId,
         imageNumber: '2',
         imageToUpload: _finalImage2!,
@@ -430,7 +465,8 @@ class CreateServiceViewModel extends BaseViewModel {
       );
     }
     if (selectedImage3 != null) {
-      final CloudStorageResult storageResult = await _storageApi.uploadServiceImages(
+      final CloudStorageResult storageResult =
+          await _storageApi.uploadServiceImages(
         serviceId: _serviceId,
         imageNumber: '3',
         imageToUpload: _finalImage3!,
