@@ -39,8 +39,10 @@ class HomeViewModel extends BaseViewModel {
   }
 
   _handleDynamicLink(PendingDynamicLinkData data) async {
+    print("handling ************");
     final Uri deepLink = data.link;
     var shopId = deepLink.pathSegments[0];
+    print(shopId.toString());
 
     if (deepLink == null) {
       return;
@@ -49,7 +51,9 @@ class HomeViewModel extends BaseViewModel {
     var mowner = allSellers.singleWhere(
       (owner) => owner.shopId.contains(mshop.id),
     );
-    navigateToShopView(shop: mshop, owner: mowner);
+    print(mshop.toString());
+    print(mowner.toString());
+    await navigateToShopView(shop: mshop, owner: mowner);
   }
 
   void init() {

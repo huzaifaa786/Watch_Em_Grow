@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io' show Platform;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -23,6 +24,8 @@ class MainViewModel extends BaseViewModel {
   final _dialogService = locator<DialogService>();
   final _navigationService = locator<NavigationService>();
   List<Notification> notifications = [];
+  final _firebaseAuth = FirebaseAuth.instance;
+
   late final StreamSubscription<List<Notification>> _notificationsSubscription;
   late PageController pageController;
   late AppUser _currentUser;
@@ -120,10 +123,12 @@ class MainViewModel extends BaseViewModel {
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
     final NotificationSettings settings = await messaging.requestPermission();
     if (settings.authorizationStatus != AuthorizationStatus.authorized) {
-      await _dialogService.showCustomDialog(
-        variant: AlertType.warning,
-        title: 'Notification permission denied',
+    
+      await _firebaseAuth.signOut();   
+       _navigationService.popUntil(
+        (route) => route.settings.name == Routes.mainView,
       );
+      await _navigationService.replaceWith(Routes.startUpView);
     }
     await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, // Required to display a heads up notification
