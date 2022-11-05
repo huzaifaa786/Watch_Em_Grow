@@ -57,13 +57,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  booking_calendar:
-    dependency: "direct main"
-    description:
-      name: booking_calendar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.4"
   boolean_selector:
     dependency: transitive
     description:
@@ -901,7 +894,7 @@ packages:
     source: hosted
     version: "4.0.0"
   provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: provider
       url: "https://pub.dartlang.org"

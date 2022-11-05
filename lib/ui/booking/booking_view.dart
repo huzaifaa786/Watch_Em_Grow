@@ -1,6 +1,6 @@
-import 'package:booking_calendar/booking_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mipromo/booking_calender/src/core/booking_calendar.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/ui/booking/booking_viewmodel.dart';
@@ -41,13 +41,15 @@ class BookingView extends StatelessWidget {
                         bookingGridCrossAxisCount: 1,
                         bookingGridChildAspectRatio:0.75,
                         bookingService: model.mockBookingService,
+                         unavailableDays : model.unavailableDays,
+                    unavailableSlots : model.unavailableSlots,
                         getBookingStream: model.getBookingStreamMock,
                         uploadBooking: model.uploadBookingMock,
                         convertStreamResultToDateTimeRanges: model.convertStreamResultMock,
                         excludedDays : model.excludedDays,
                         pauseSlots: model.generatePauseSlots(),
                         pauseSlotText: 'LUNCH',
-
+                        showData: true,
                         availableSlotColor: model.isDarkMode ? Colors.black : Colors.white,
                         hideBreakTime: model.isDarkMode ? true : false,
                         bookedSlotColor: Color(4286745852).withOpacity(0.3),

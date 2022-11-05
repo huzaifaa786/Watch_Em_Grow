@@ -50,7 +50,7 @@ dependencies:
   cached_network_image: ^3.2.0
   dio: ^4.0.6
   platform: ^3.1.0
-  booking_calendar: ^1.1.4
+  # booking_calendar: ^1.1.4
   video_editor: ^1.2.0
   helpers: ^1.1.4
   table_calendar: ^3.0.6
@@ -58,6 +58,7 @@ dependencies:
   uni_links: ^0.5.1
   firebase_dynamic_links: ^2.0.7
   package_info_plus: ^1.4.0
+  provider: ^6.0.3
   flutter_datetime_picker:
     git:
       url: https://github.com/Realank/flutter_datetime_picker.git

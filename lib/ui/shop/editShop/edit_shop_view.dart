@@ -148,18 +148,7 @@ class _EditShopForm extends HookViewModelWidget<EditShopViewModel> {
             ),
           ),
         ),
-        10.heightBox,
-        "Mark your availabilty".text.bold.make(),
-        10.heightBox,
 
-        WeekdaySelector(
-          firstDayOfWeek: 1,
-          onChanged: (int day) {
-            final index = day % 7;
-            model.selection(index);
-          },
-          values: model.values,
-        ),
         15.heightBox,
         "Where is your shop located?".text.bold.make(),
         DropdownButton<String>(

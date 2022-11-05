@@ -601,79 +601,10 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           model.depositAmount = depositAmount;
                         },
                       ),
-                      InputField(
-                        hintText: "Duration/min",
-                        maxLength: 2,
-                        counter: "",
-                        controller: model.durationController,
-                        textInputType: TextInputType.number,
-                        validate: model.autoValidate,
-                        validator: (duration) =>
-                            Validators.emptyStringValidator(
-                          duration,
-                          'Duration',
-                        ),
-                      ),
+                     
                     ],
-                    if (model.selectedType == Constants.serviceLabel) ...[
-                      GestureDetector(
-                        onTap: () {
-                          DatePicker.showPicker(context,
-                              showTitleActions: true,
-                              onChanged: (date) {}, onConfirm: (time) {
-                            model.startController.text = time.hour.toString();
-                          },
-                              pickerModel:
-                                  CustomPicker(currentTime: DateTime.now()),
-                              locale: LocaleType.en);
-                          currentFocus.unfocus();
-                        },
-                        child: InputField(
-                          hintText: "Bookings available from the hours",
-                          maxLength: 24,
-                          counter: "",
-                          readOnly: true,
-                          enable: false,
-                          controller: model.startController,
-                          textInputType: TextInputType.number,
-                          validate: model.autoValidate,
-                          validator: (startHour) =>
-                              Validators.emptyStringValidator(
-                            startHour,
-                            'Bookings available from',
-                          ),
-                        ),
-                      ),
-                    ],
-                    if (model.selectedType == Constants.serviceLabel)
-                      GestureDetector(
-                        onTap: () {
-                          DatePicker.showPicker(context,
-                              showTitleActions: true,
-                              onChanged: (date) {}, onConfirm: (time) {
-                            model.endController.text = time.hour.toString();
-                          },
-                              pickerModel:
-                                  CustomPicker(currentTime: DateTime.now()),
-                              locale: LocaleType.en);
-                          currentFocus.unfocus();
-                        },
-                        child: InputField(
-                          hintText: "Booking available till",
-                          maxLength: 24,
-                          counter: "",
-                          readOnly: true,
-                          enable: false,
-                          controller: model.endController,
-                          textInputType: TextInputType.number,
-                          validate: model.autoValidate,
-                          validator: (endHour) =>
-                              Validators.emptyStringValidator(
-                            endHour,
-                            'Booking available till',
-                          ),
-                        ),
-                      ),
+                    
+                    
                     InputField(
                       hintText: "Appointment address",
                       //maxLength: 5,
@@ -688,10 +619,8 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                       onPressed: () {
                         if (model.selectedType == "Service") {
                           model.confirmBeforeCreate();
-                        }
-                        else{
-                        model.createService();
-
+                        } else {
+                          model.createService();
                         }
                       },
                     ).objectCenterRight(),

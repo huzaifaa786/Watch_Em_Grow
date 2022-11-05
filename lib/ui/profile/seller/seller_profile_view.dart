@@ -143,13 +143,13 @@ class SellerProfileView extends StatelessWidget {
                                 model.navigateToEditShopView();
                               },
                             ),
-                            // ListTile(
-                            //   leading: const Icon(Icons.calendar_today),
-                            //   title: const Text('Set Availability'),
-                            //   onTap: () {
-                            //     model.navigateToBookingView();
-                            //   },
-                            // ),
+                            ListTile(
+                              leading: const Icon(Icons.calendar_today),
+                              title: const Text('Edit Profile'),
+                              onTap: () {
+                                model.navigateToEditProfile();
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -219,9 +219,9 @@ class SellerProfileView extends StatelessWidget {
                                               width: MediaQuery.of(context).size.width * 0.46,
                                               child: OutlinedButton(
                                                 onPressed: () {
-                                                  model.navigateToEditProfile();
+                                                  model.navigateToSetAvailability();
                                                 },
-                                                child: 'Edit Profile'.text.make(),
+                                                child: 'Set Availability'.text.make(),
                                               ),
                                             ),
                                             SizedBox(

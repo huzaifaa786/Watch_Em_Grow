@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:booking_calendar/booking_calendar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -1404,15 +1403,20 @@ class DatabaseApi {
   }
 
   changeAvailabilty({required String userId, required Map<String, dynamic> availabilty}) {
-    _usersCollection.doc(userId).collection('availabilty').doc(userId).set(availabilty);
+    _usersCollection.doc(userId).collection('availabilty').doc(userId).update(availabilty);
   }
 
   Future<Availability> getAvailabilty({required String userId}) async {
     final result = await _usersCollection.doc(userId).collection('availabilty').doc(userId).get();
-    if (result.data() == null) {
+   
+    if (result.data()!['duration'] == null) {
       print("inside");
       var ava = [true, true, true, true, true, true, true];
-      Map<String, dynamic> postMap = {for (var i = 0; i <= 6; i++) intDayToEnglish((i)): ava[i]};
+      Map<String, dynamic> postMap = {for (var i = 0; i <= 6; i++) intDayToEnglish((i)): ava[i],
+      'duration' : 30,
+      'startHour' : 7,
+      'endHour' : 20
+      };
       changeAvailabilty(userId: userId, availabilty: postMap);
     }
     final availability = result.data() as Map<String, dynamic>;

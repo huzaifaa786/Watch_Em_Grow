@@ -54,6 +54,7 @@ import '../ui/shop/create_shop_view.dart';
 import '../ui/shop/editShop/edit_shop_view.dart';
 import '../ui/startup/startup_view.dart';
 import '../ui/contact_us/contact_us_view.dart';
+import '../ui/availlability/availablity_view.dart';
 
 class Routes {
   static const String startUpView = '/';
@@ -96,6 +97,7 @@ class Routes {
   static const String orderSuccessView = '/order-success-view';
   static const String bookServiceView = '/book-service-view';
   static const String bookingView = '/booking-view';
+  static const String availabilityView = '/availability-view';
   static const String connectStripeView = '/connect-stripe-view';
   static const all = <String>{
     startUpView,
@@ -138,6 +140,7 @@ class Routes {
     orderSuccessView,
     bookServiceView,
     bookingView,
+    availabilityView,
     connectStripeView,
   };
 }
@@ -186,6 +189,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.orderSuccessView, page: OrderSuccessView),
     RouteDef(Routes.bookServiceView, page: BookServiceView),
     RouteDef(Routes.bookingView, page: BookingView),
+    RouteDef(Routes.availabilityView, page: AvailabilityView),
     RouteDef(Routes.connectStripeView, page: ConnectStripeView),
   ];
   @override
@@ -555,6 +559,17 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    AvailabilityView: (data) {
+      var args = data.getArgs<AvailabilityViewArguments>(nullOk: false);
+
+       return MaterialPageRoute<dynamic>(
+        builder: (context) => AvailabilityView(
+          key: args.key,
+          shop: args.shop
+        ),
+        settings: data,
+      );
+    },
     ConnectStripeView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const ConnectStripeView(),
@@ -789,4 +804,10 @@ class BookingViewArguments {
   final AppUser user;
   final ShopService service;
   BookingViewArguments({this.key, required this.user, required this.service});
+}
+
+class AvailabilityViewArguments {
+  final Key? key;
+  final Shop shop;
+  AvailabilityViewArguments({this.key, required this.shop});
 }

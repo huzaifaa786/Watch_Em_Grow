@@ -428,7 +428,7 @@ class _ServiceViewState extends State<ServiceView> {
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
                 child: Row(
                   children: [
-                    if (widget.service.ownerId == model.user.id)
+                    if (widget.service.ownerId == model.user.id) ...[
                       InkWell(
                         onTap: () {
                           model.deleteService(widget.service);
@@ -449,6 +449,7 @@ class _ServiceViewState extends State<ServiceView> {
                           ),
                         ).px(2),
                       )
+                    ]
                     else
                       Container(
                         width: context.screenWidth * 0.95,
