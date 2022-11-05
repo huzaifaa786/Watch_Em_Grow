@@ -85,6 +85,22 @@ class BuyerProfileViewModel extends BaseViewModel {
 
     _navigationService.back(result: unfollowed2);
   }
+
+    Future<void> navigateToDirectChatView(String receiverId) async {
+    // isApiRunning = true;
+    notifyListeners();
+    await _databaseApi.getUser(receiverId).then((receiver) {
+      // isApiRunning = false;
+      notifyListeners();
+      _navigationService.replaceWith(
+        Routes.messagesView,
+        arguments: MessagesViewArguments(
+          currentUser: currentUser,
+          receiver: receiver,
+        ),
+      );
+    });
+  }
   
 
   Future<void> navigateToEditProfile(AppUser user) async {

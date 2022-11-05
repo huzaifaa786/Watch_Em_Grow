@@ -119,6 +119,16 @@ class SellerProfileViewModel extends BaseViewModel {
       arguments: SellerEditProfileViewArguments(user: currentUser),
     );*/
   }
+  Future<void> navigateToSetAvailability() async {
+     _navigationService.navigateTo(
+        Routes.availabilityView,
+          arguments: AvailabilityViewArguments(
+          shop: _shop!,
+        ),
+      );
+    }
+   
+  
 
   Future<void> navigateToCreateShopView() async {
     await _navigationService.navigateTo(

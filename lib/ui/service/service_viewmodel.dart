@@ -10,10 +10,12 @@ import 'package:mipromo/api/storage_api.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/app/app.router.dart';
 import 'package:mipromo/models/app_user.dart';
+import 'package:mipromo/models/availability.dart';
 import 'package:mipromo/models/order.dart';
 import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/services/user_service.dart';
+import 'package:mipromo/ui/availlability/availablity_view.dart';
 import 'package:mipromo/ui/shared/helpers/data_models.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
 import 'package:stacked/stacked.dart';
@@ -325,6 +327,7 @@ class ServiceViewModel extends BaseViewModel {
       );
     });
   }
+
 
   Future<void> navigateToChatsView() async {
     _navigationService.back();

@@ -11,6 +11,7 @@ import 'package:mipromo/ui/auth/login/discover_page.dart';
 import 'package:mipromo/ui/auth/login/forgot_password_view.dart';
 import 'package:mipromo/ui/auth/login/login_view.dart';
 import 'package:mipromo/ui/auth/seller_signup/seller_signup_view.dart';
+import 'package:mipromo/ui/availlability/availablity_view.dart';
 import 'package:mipromo/ui/booking/booking_view.dart';
 import 'package:mipromo/ui/category/category_view.dart';
 import 'package:mipromo/ui/category/filter/category_filter_view.dart';
@@ -83,6 +84,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: OrderSuccessView),
     MaterialRoute(page: BookServiceView),
     MaterialRoute(page: BookingView),
+    MaterialRoute(page: AvailabilityView),
     MaterialRoute(page: ConnectStripeView),
   ],
   dependencies: [

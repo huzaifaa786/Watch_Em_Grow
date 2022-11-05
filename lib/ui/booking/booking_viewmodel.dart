@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:booking_calendar/booking_calendar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mipromo/booking_calender/src/model/booking_service.dart';
 import 'package:mipromo/ui/profile/buyer/editProfile/buyer_edit_profile_viewmodel.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
 // import 'package:flutter_stripe/flutter_stripe.dart';
@@ -41,7 +41,8 @@ class BookingViewModel extends BaseViewModel {
   final _dialogService = locator<DialogService>();
   static final SnackbarService _snackbarService = locator<SnackbarService>();
   final _databaseApi = locator<DatabaseApi>();
-
+  List? unavailableDays = [];
+  List? unavailableSlots = [];
   late AppUser _currentUser;
   AppUser get currentUser => _currentUser;
   late bool isDarkMode;
@@ -53,12 +54,13 @@ class BookingViewModel extends BaseViewModel {
   late BookingService mockBookingService;
   List<DateTimeRange> converted = [];
   List<BookkingService> bookings = [];
+  late Availability availability;
+
   late List<int> excludedDays = [];
   TextEditingController depositAmountController = new TextEditingController();
   var mcontext;
   List<BookkingService> userBookings = [];
   List<DateTimeRange> userReservedBookings = [];
-  late Availability availability;
 
   late StreamSubscription<List<BookkingService>> _bookings;
   AppUser user;
@@ -75,6 +77,8 @@ class BookingViewModel extends BaseViewModel {
     await _databaseApi.getAvailabilty(userId: service.ownerId).then((value) {
       availability = value;
     });
+     unavailableDays = availability.unavailableDays ?? [];
+    unavailableSlots = availability.unavailableSlots ?? [];
     setDays();
     await convertStreamResultMock();
     await _userService.syncUser();
@@ -82,16 +86,16 @@ class BookingViewModel extends BaseViewModel {
     isDarkMode = isDark;
     mockBookingService = BookingService(
         serviceName: service.name,
-        serviceDuration: service.duration!,
+        serviceDuration: availability.duration!,
         servicePrice: service.price.toInt(),
-        bookingEnd: DateTime(now.year, now.month, now.day, service.endHour!, 0),
+        bookingEnd: DateTime(now.year, now.month, now.day, availability.endHour!, 0),
         serviceId: service.id,
         userEmail: user.email,
         userName: user.fullName,
         userId: user.id,
         depositAmount: service.depositAmount,
         bookingStart:
-            DateTime(now.year, now.month, now.day, service.startHour!, 0));
+            DateTime(now.year, now.month, now.day, availability.startHour!, 0));
 
     await _databaseApi
         .getUserBookingStreamFirebase(userId: service.ownerId)
@@ -106,6 +110,16 @@ class BookingViewModel extends BaseViewModel {
           start: (DateTime(start!.year, start.month, start.day, start.hour, 0)),
           end: (DateTime(end!.year, end.month, end.day, end.hour,
               end.minute + userBookings[i].serviceDuration!, 0))));
+    }
+       for (var i = 0; i < availability.unavailableSlots!.length; i++) {
+      var datesahab = DateTime.fromMicrosecondsSinceEpoch(
+          availability.unavailableSlots![i].microsecondsSinceEpoch as int);
+
+      userReservedBookings.add(DateTimeRange(
+          start: (DateTime(datesahab.year, datesahab.month, datesahab.day,
+              datesahab.hour,datesahab.minute, 0)),
+          end: (DateTime(datesahab.year, datesahab.month, datesahab.day,
+              datesahab.hour, datesahab.minute + availability.duration!, 0))));
     }
     userReservedBookings.add(DateTimeRange(
         start: DateTime(now.year, now.month, now.day, 0, 0),

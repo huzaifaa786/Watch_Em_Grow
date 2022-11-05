@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/ui/profile/buyer/buyer_profile_viewmodel.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
+import 'package:mipromo/ui/shared/helpers/styles.dart';
 import 'package:mipromo/ui/shared/widgets/avatar.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
@@ -186,6 +187,49 @@ class BuyerProfileView extends StatelessWidget {
                           'Transactions Completed : ${user.purchases}',
                           style: TextStyle(fontSize: 15,fontWeight: FontWeight.w400),
                         ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        if(user.id != model.currentUser.id)
+                         Container(
+                          width: MediaQuery.of(context).size.width * 0.45,
+                           child: MaterialButton(
+                                  //padding: EdgeInsets.symmetric(horizontal: 10),
+                                  onPressed: () {
+                                   
+                                      model.navigateToDirectChatView(user.id);
+                                    
+                                  },
+                                  color: Styles.kcPrimaryColor,
+                         
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          //Icon(Icons.chat, size: 20, color: Colors.white)
+                                          Image.asset('assets/icon/chat.png',
+                                              scale: 7),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Text(
+                                            'Message',
+                                            //textScaleFactor: 1.125,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                         ),
                         SizedBox(
                           height: 60,
                         ),

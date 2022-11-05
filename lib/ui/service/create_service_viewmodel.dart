@@ -149,15 +149,6 @@ class CreateServiceViewModel extends BaseViewModel {
             depositAmount: double.parse(depositAmount),
             aspectRatio: serviceAspectRatio,
             type: selectedType!,
-            duration: selectedType != "Product"
-                ? int.parse(durationController.text)
-                : null,
-            startHour: selectedType != "Product"
-                ? int.parse(startController.text)
-                : null,
-            endHour: selectedType != "Product"
-                ? int.parse(endController.text)
-                : null,
             sizes: selectedType == "Product" ? sizes : null,
             bookingNote: selectedType != "Product"
                 ? noteController.text.toString()
@@ -213,30 +204,7 @@ class CreateServiceViewModel extends BaseViewModel {
         Alerts.showErrorSnackbar('Please Select Type');
         return false;
       }
-      if (selectedType == 'Service') {
-        if (Validators.emptyStringValidator(
-                durationController.text, 'Duration') !=
-            null) {
-          Alerts.showErrorSnackbar('Please Enter Duration');
-          return false;
-        } else if (Validators.emptyStringValidator(
-                startController.text, 'Start Hour') !=
-            null) {
-          Alerts.showErrorSnackbar('Please select Booking Starting time');
-          return false;
-        } else if (Validators.emptyStringValidator(
-                endController.text, 'End Hour') !=
-            null) {
-          Alerts.showErrorSnackbar('Please select Booking Ending time');
-          return false;
-        } else if (Validators.bookingTimeValidator(
-                startController.text, endController.text) !=
-            null) {
-          Alerts.showErrorSnackbar(
-              'Booking starting time must be earlier than the ending time');
-          return false;
-        }
-      }
+    
       if (_selectedImage1 != null) {
         return true;
       } else {
