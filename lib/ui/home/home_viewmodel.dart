@@ -126,14 +126,14 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future navigateToCategoryView(
-    String category,
+    String category,   
   ) async {
     await _navigationService.navigateTo(
       Routes.categoryView,
       arguments: CategoryViewArguments(
         category: category,
-        categoryShops: allShops.where((shop) => shop.category.toLowerCase() == category.toLowerCase()).toList(),
-        allOtherShops: allShops.where((shop) => shop.category.toLowerCase() != category.toLowerCase()).toList(),
+        categoryShops: allShops.where((shop) => shop.category.toLowerCase() == category.replaceAll('\n', ' ').toLowerCase()).toList(),
+        allOtherShops: allShops.where((shop) => shop.category.toLowerCase() != category.replaceAll('\n', ' ').toLowerCase()).toList(),
         allSellers: allSellers,
         allServices: allServices,
       ),
