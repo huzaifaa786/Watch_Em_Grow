@@ -56,8 +56,8 @@ class SetAvailabilityViewModel extends BaseViewModel {
   updateTime() async {
     Map<String, dynamic> postMap = {
       'duration': int.parse(durationController.text),
-      'startHour': int.parse(startController.text),
-      'endHour': int.parse(endController.text)
+      'startHour': int.parse(startController.text.replaceAll(':00', '')),
+      'endHour': int.parse(endController.text.replaceAll(':00', ''))
     };
 
     await _databaseApi.changeAvailabilty(
@@ -79,15 +79,15 @@ class SetAvailabilityViewModel extends BaseViewModel {
     });
     unavailableDays = availability.unavailableDays ?? [];
     unavailableSlots = availability.unavailableSlots ?? [];
-    durationController.text = availability.duration.toString();
-    startController.text = availability.startHour.toString();
-    endController.text = availability.endHour.toString();
+    durationController.text = availability.duration.toString() ;
+    startController.text = availability.startHour.toString() + ':00';
+    endController.text = availability.endHour.toString()+ ':00';
     values = converToArray(availability);
     setDays();
 
     mockBookingService = BookingService(
         serviceName: 'service.name',
-        serviceDuration: 30,
+        serviceDuration: availability.duration!,
         servicePrice: 30,
         bookingEnd:
             DateTime(now.year, now.month, now.day, availability.endHour!, 0),

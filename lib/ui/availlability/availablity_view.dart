@@ -66,7 +66,7 @@ class AvailabilityView extends StatelessWidget {
                             DatePicker.showPicker(context,
                                 showTitleActions: true,
                                 onChanged: (date) {}, onConfirm: (time) {
-                              model.startController.text = time.hour.toString();
+                              model.startController.text = time.hour.toString() + ":00";
                             },
                                 pickerModel:
                                     CustomPicker(currentTime: DateTime.now()),
@@ -104,7 +104,7 @@ class AvailabilityView extends StatelessWidget {
                             DatePicker.showPicker(context,
                                 showTitleActions: true,
                                 onChanged: (date) {}, onConfirm: (time) {
-                              model.endController.text = time.hour.toString();
+                              model.endController.text = time.hour.toString()+ ":00";;
                             },
                                 pickerModel:
                                     CustomPicker(currentTime: DateTime.now()),
@@ -137,7 +137,7 @@ class AvailabilityView extends StatelessWidget {
                           child: Text("Time slot duration")),
                       SizedBox(width: 10),
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
+                        width: MediaQuery.of(context).size.width * 0.09,
                         child: InputField(
                           hintText: "Duration/min",
                           maxLength: 2,
@@ -152,6 +152,7 @@ class AvailabilityView extends StatelessWidget {
                           ),
                         ),
                       ),
+                      Text('m',style: TextStyle(fontSize: 17),)
                     ],
                   ),
                   Row(
