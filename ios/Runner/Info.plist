@@ -6,11 +6,6 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>NSAppTransportSecurity</key>
-	<dict> 
-		<key>NSAllowsArbitraryLoads</key> 
-		<true/> 
-	</dict>
 	<key>CFBundleDisplayName</key>
 	<string>MiyPromo</string>
 	<key>CFBundleExecutable</key>
@@ -33,23 +28,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>io.Branch.Timber</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>Timber</string>
-			</array>
-		</dict>
-	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
 			<string>com.sadje.mipromo</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>logrckt</string>
+				<string>com.sadje.mipromo</string>
 			</array>
 		</dict>
 	</array>
@@ -57,6 +39,11 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>MiyPromo requires access to your photo library in order to allow you to select items or services you want to upload</string>
 	<key>NSCameraUsageDescription</key>
