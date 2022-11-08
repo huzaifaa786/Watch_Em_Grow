@@ -98,9 +98,9 @@ class SetAvailabilityViewModel extends BaseViewModel {
         depositAmount: 20,
         bookingStart:
             DateTime(now.year, now.month, now.day, availability.startHour!, 0));
-    for (var i = 0; i < availability.unavailableSlots!.length; i++) {
+    for (var i = 0; i < unavailableSlots!.length; i++) {
       var datesahab = DateTime.fromMicrosecondsSinceEpoch(
-          availability.unavailableSlots![i].microsecondsSinceEpoch as int);
+          unavailableSlots![i].microsecondsSinceEpoch as int);
 
       userReservedBookings.add(DateTimeRange(
           start: (DateTime(datesahab.year, datesahab.month, datesahab.day,

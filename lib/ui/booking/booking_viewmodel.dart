@@ -79,6 +79,7 @@ class BookingViewModel extends BaseViewModel {
     });
      unavailableDays = availability.unavailableDays ?? [];
     unavailableSlots = availability.unavailableSlots ?? [];
+   
     setDays();
     await convertStreamResultMock();
     await _userService.syncUser();
@@ -111,9 +112,9 @@ class BookingViewModel extends BaseViewModel {
           end: (DateTime(end!.year, end.month, end.day, end.hour,
               end.minute + userBookings[i].serviceDuration!, 0))));
     }
-       for (var i = 0; i < availability.unavailableSlots!.length; i++) {
+       for (var i = 0; i < unavailableSlots!.length; i++) {
       var datesahab = DateTime.fromMicrosecondsSinceEpoch(
-          availability.unavailableSlots![i].microsecondsSinceEpoch as int);
+          unavailableSlots![i].microsecondsSinceEpoch as int);
 
       userReservedBookings.add(DateTimeRange(
           start: (DateTime(datesahab.year, datesahab.month, datesahab.day,
