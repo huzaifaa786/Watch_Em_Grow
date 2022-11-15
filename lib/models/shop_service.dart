@@ -14,6 +14,7 @@ class ShopService with _$ShopService {
      double? depositAmount,
     required String type,
     int? time,
+    int? duration,
     String? imageId1,
     String? imageUrl1,
     String? imageId2,

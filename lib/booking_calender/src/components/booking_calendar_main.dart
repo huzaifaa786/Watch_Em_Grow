@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:mipromo/booking_calender/src/components/booking_dialog.dart';
 import 'package:mipromo/booking_calender/src/components/booking_slot.dart';
 import 'package:mipromo/booking_calender/src/components/common_button.dart';
@@ -94,16 +95,16 @@ class BookingCalendarMain extends StatefulWidget {
 class _BookingCalendarMainState extends State<BookingCalendarMain> {
   late BookingController controller;
   final now = DateTime.now();
-
+  bool enableButton = false;
   @override
   void initState() {
     super.initState();
     controller = context.read<BookingController>();
-
     startOfDay = now.startOfDayService(controller.serviceOpening!);
     endOfDay = now.endOfDayService(controller.serviceClosing!);
     _focusedDay = now;
     _selectedDay = now;
+    controller.daytoAvail = now;
   }
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -121,6 +122,13 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
 
     controller.base = startOfDay;
     controller.resetSelectedSlot();
+  }
+
+  enableDay(DateTime date) {
+    setState(() {
+      enableButton = true;
+      controller.daytoAvail = date;
+    });
   }
 
   @override
@@ -146,6 +154,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         availableCalendarFormats: const {
                           CalendarFormat.month: 'Month',
                         },
+                        onDisabledDayTapped: enableDay,
                         calendarFormat: _calendarFormat,
                         calendarStyle: const CalendarStyle(
                           isTodayHighlighted: true,
@@ -159,6 +168,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                             setState(() {
                               _selectedDay = selectedDay;
                               _focusedDay = focusedDay;
+                              enableButton = false;
                             });
                             selectNewDateRange();
                           }
@@ -182,10 +192,16 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                               flag = false;
                             }
                           }
-                       
-                          for(var i = 0; i<=widget.unavailableDays!.length -1 ; i++){
-                            var datesahab = DateTime.fromMicrosecondsSinceEpoch(widget.unavailableDays![i].microsecondsSinceEpoch as int);
-                            if(date.year == datesahab.year && date.month == datesahab.month && date.day == datesahab.day){
+
+                          for (var i = 0;
+                              i <= widget.unavailableDays!.length - 1;
+                              i++) {
+                            var datesahab = DateTime.fromMicrosecondsSinceEpoch(
+                                widget.unavailableDays![i]
+                                    .microsecondsSinceEpoch as int);
+                            if (date.year == datesahab.year &&
+                                date.month == datesahab.month &&
+                                date.day == datesahab.day) {
                               flag = false;
                             }
                           }
@@ -351,10 +367,27 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                       height: 8,
                     ),
                     CommonButton(
-                      text: 'Mark this day as "Unavailable"',
+                      text: enableButton
+                          ? 'Mark this day as "Available" (' +
+                              DateFormat('dd-MM-yyyy')
+                                  .format(controller.daytoAvail!) +
+                              ')'
+                          : 'Mark this day as "Unavailable"',
                       onTap: () async {
-                        controller.markDayUnavailable(widget.unavailableDays!,
-                            widget.bookingService.userId);
+                        if (!enableButton) {
+                          controller.markDayUnavailable(widget.unavailableDays!,
+                              widget.bookingService.userId);
+                          setState(() {
+                            enableButton = true;
+                          });
+                        } else {
+                          controller.markDayAvailable(widget.unavailableDays!,
+                              widget.bookingService.userId);
+                          setState(() {
+                            enableButton = false;
+                          });
+                        }
+
                         controller.resetSelectedSlot();
                       },
                       isDisabled: false,

@@ -583,6 +583,19 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                         model.price = price;
                       },
                     ),
+                    if (model.selectedType == Constants.serviceLabel)
+                      InputField(
+                        hintText: "Duration/min",
+                        maxLength: 3,
+                        counter: "",
+                        controller: model.durationController,
+                        textInputType: TextInputType.number,
+                        validate: model.autoValidate,
+                        validator: (duration) => Validators.emptyStringValidator(
+                          duration,
+                          'Duration',
+                        ),
+                      ),
                     if (model.selectedType == Constants.serviceLabel) ...[
                       InputField(
                         hintText: "Deposit Amount",

@@ -1437,7 +1437,7 @@ class DatabaseApi {
   }
 
   Future<List<BookkingService>> getUserBookingStreamFirebase({required String userId}) async {
-    final result = await _bookingsCollection.where('ownerId', isEqualTo: userId).get();
+    final result = await _bookingsCollection.where('userId', isEqualTo: userId).get();
 
     final _userBookings = result.docs
         .map(

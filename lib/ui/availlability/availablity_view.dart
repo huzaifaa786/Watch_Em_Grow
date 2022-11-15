@@ -50,6 +50,12 @@ class AvailabilityView extends StatelessWidget {
                     onChanged: (int day) {
                       final index = day % 7;
                       model.selection(index);
+                      model.init(
+                              mshop: shop,
+                              isDark:
+                                  getThemeManager(context).selectedThemeMode ==
+                                      ThemeMode.dark,
+                              context: context);
                     },
                     values: model.values,
                   ),
@@ -130,31 +136,7 @@ class AvailabilityView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Container(
-                          width: MediaQuery.of(context).size.width * 0.32,
-                          child: Text("Time slot duration")),
-                      SizedBox(width: 10),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.09,
-                        child: InputField(
-                          hintText: "Duration/min",
-                          maxLength: 2,
-                          counter: "",
-                          controller: model.durationController,
-                          textInputType: TextInputType.number,
-                          validate: model.autoValidate,
-                          validator: (duration) =>
-                              Validators.emptyStringValidator(
-                            duration,
-                            'Duration',
-                          ),
-                        ),
-                      ),
-                      Text('m',style: TextStyle(fontSize: 17),)
-                    ],
-                  ),
+                 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [

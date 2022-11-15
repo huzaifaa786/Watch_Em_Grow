@@ -77,9 +77,9 @@ class BookingViewModel extends BaseViewModel {
     await _databaseApi.getAvailabilty(userId: service.ownerId).then((value) {
       availability = value;
     });
-     unavailableDays = availability.unavailableDays ?? [];
+    unavailableDays = availability.unavailableDays ?? [];
     unavailableSlots = availability.unavailableSlots ?? [];
-   
+
     setDays();
     await convertStreamResultMock();
     await _userService.syncUser();
@@ -87,13 +87,14 @@ class BookingViewModel extends BaseViewModel {
     isDarkMode = isDark;
     mockBookingService = BookingService(
         serviceName: service.name,
-        serviceDuration: availability.duration!,
+        serviceDuration: 30,
         servicePrice: service.price.toInt(),
-        bookingEnd: DateTime(now.year, now.month, now.day, availability.endHour!, 0),
+        bookingEnd:
+            DateTime(now.year, now.month, now.day, availability.endHour!, 0),
         serviceId: service.id,
         userEmail: user.email,
         userName: user.fullName,
-        userId: user.id,
+        userId: service.ownerId,
         depositAmount: service.depositAmount,
         bookingStart:
             DateTime(now.year, now.month, now.day, availability.startHour!, 0));
@@ -107,18 +108,20 @@ class BookingViewModel extends BaseViewModel {
     for (var i = 0; i < userBookings.length; i++) {
       final start = userBookings[i].bookingStart;
       final end = userBookings[i].bookingEnd;
+      print(start);
+      print(end);
       userReservedBookings.add(DateTimeRange(
-          start: (DateTime(start!.year, start.month, start.day, start.hour, 0)),
+          start: (DateTime(start!.year, start.month, start.day, start.hour,start.minute, 0)),
           end: (DateTime(end!.year, end.month, end.day, end.hour,
-              end.minute + userBookings[i].serviceDuration!, 0))));
+              start.minute + service.duration!, 0))));
     }
-       for (var i = 0; i < unavailableSlots!.length; i++) {
+    for (var i = 0; i < unavailableSlots!.length; i++) {
       var datesahab = DateTime.fromMicrosecondsSinceEpoch(
           unavailableSlots![i].microsecondsSinceEpoch as int);
 
       userReservedBookings.add(DateTimeRange(
           start: (DateTime(datesahab.year, datesahab.month, datesahab.day,
-              datesahab.hour,datesahab.minute, 0)),
+              datesahab.hour, datesahab.minute, 0)),
           end: (DateTime(datesahab.year, datesahab.month, datesahab.day,
               datesahab.hour, datesahab.minute + availability.duration!, 0))));
     }
@@ -170,7 +173,7 @@ class BookingViewModel extends BaseViewModel {
               bookingservice: BookkingService(
                   email: newBooking.userEmail,
                   bookingStart: newBooking.bookingStart,
-                  bookingEnd: newBooking.bookingEnd,
+                  bookingEnd: newBooking.bookingStart.add(Duration(minutes: service.duration!)),
                   userId: newBooking.userId,
                   ownerId: service.ownerId,
                   userName: newBooking.userName,
