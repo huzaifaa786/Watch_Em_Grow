@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mipromo/booking_calender/src/model/booking_service.dart';
@@ -111,7 +112,8 @@ class BookingViewModel extends BaseViewModel {
       print(start);
       print(end);
       userReservedBookings.add(DateTimeRange(
-          start: (DateTime(start!.year, start.month, start.day, start.hour,start.minute, 0)),
+          start: (DateTime(start!.year, start.month, start.day, start.hour,
+              start.minute, 0)),
           end: (DateTime(end!.year, end.month, end.day, end.hour,
               start.minute + service.duration!, 0))));
     }
@@ -154,6 +156,28 @@ class BookingViewModel extends BaseViewModel {
 
   Future<dynamic> uploadBookingMock(
       {required BookingService newBooking}) async {
+    Duration d = Duration(minutes: service.duration!);
+    DateTimeRange time = DateTimeRange(
+        start: newBooking.bookingStart, end: newBooking.bookingStart.add(d));
+
+
+    final result = await _databaseApi.checkbooking(
+        ServiceId: service.id, start: time.start, end: time.end);
+
+    // print(availability.unavailableDays);
+    // for (var avail in availability.unavailableSlots!) {
+    // print( DateTime.fromMicrosecondsSinceEpoch(int.parse(avail.microsecondsSinceEpoch.toString())));
+    // }
+    if (result) {
+      final dialogResponse = await _dialogService.showConfirmationDialog(
+        title: 'Please select another time slot',
+        description:
+            'The duration of this service overslaps with another booked slot.',
+        cancelTitle: 'Close',
+      );
+      return;
+    }
+
     final dialogResponse = await _dialogService.showConfirmationDialog(
       title: 'Deposit Amount Policy',
       description:
@@ -173,7 +197,8 @@ class BookingViewModel extends BaseViewModel {
               bookingservice: BookkingService(
                   email: newBooking.userEmail,
                   bookingStart: newBooking.bookingStart,
-                  bookingEnd: newBooking.bookingStart.add(Duration(minutes: service.duration!)),
+                  bookingEnd: newBooking.bookingStart
+                      .add(Duration(minutes: service.duration!)),
                   userId: newBooking.userId,
                   ownerId: service.ownerId,
                   userName: newBooking.userName,
