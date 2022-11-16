@@ -1513,14 +1513,18 @@ class DatabaseApi {
         .update(availabilty);
   }
 
-  bool checkbooking({required String ServiceId, required DateTime start,required DateTime end,}) {
+  Future<bool> checkbooking({required String ServiceId, required DateTime start,required DateTime end,}) async {
+    print(start);
+    print(end);
+    print(Timestamp.fromDate(start));
+    print(Timestamp.fromDate(end));
     bool result = false;
-    _bookingsCollection
-        .where('serviceId', isEqualTo: ServiceId)
+   await _bookingsCollection
+        .where('userId', isEqualTo: ServiceId)
         .where('bookingStart', isGreaterThanOrEqualTo: Timestamp.fromDate(start))
-        .where('bookingStart', isLessThanOrEqualTo: Timestamp.fromDate(end)).snapshots()
-        .listen((event) {
-          
+        .where('bookingStart', isLessThanOrEqualTo: Timestamp.fromDate(end)).get()
+        .then((event) {
+        print(event.docs);
       if (event.docs.isNotEmpty) {
         result = true;
       } else {

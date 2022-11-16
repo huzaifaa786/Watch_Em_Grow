@@ -163,6 +163,7 @@ class AvailabilityView extends StatelessWidget {
                     ],
                   ),
                   BookingCalendar(
+              
                     bookingGridCrossAxisCount: 1,
                     bookingGridChildAspectRatio: 0.75,
                     bookingService: model.mockBookingService,

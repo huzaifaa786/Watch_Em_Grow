@@ -62,6 +62,7 @@ class BookingViewModel extends BaseViewModel {
   var mcontext;
   List<BookkingService> userBookings = [];
   List<DateTimeRange> userReservedBookings = [];
+  List<DateTime> unavailableBookings = [];
 
   late StreamSubscription<List<BookkingService>> _bookings;
   AppUser user;
@@ -109,14 +110,15 @@ class BookingViewModel extends BaseViewModel {
     for (var i = 0; i < userBookings.length; i++) {
       final start = userBookings[i].bookingStart;
       final end = userBookings[i].bookingEnd;
-      print(start);
+      print(start?.minute);
       print(end);
       userReservedBookings.add(DateTimeRange(
           start: (DateTime(start!.year, start.month, start.day, start.hour,
               start.minute, 0)),
-          end: (DateTime(end!.year, end.month, end.day, end.hour,
-              start.minute + service.duration!, 0))));
+          end: (DateTime(
+              end!.year, end.month, end.day, end.hour, end.minute, 0))));
     }
+    print(userReservedBookings);
     for (var i = 0; i < unavailableSlots!.length; i++) {
       var datesahab = DateTime.fromMicrosecondsSinceEpoch(
           unavailableSlots![i].microsecondsSinceEpoch as int);
@@ -157,18 +159,21 @@ class BookingViewModel extends BaseViewModel {
   Future<dynamic> uploadBookingMock(
       {required BookingService newBooking}) async {
     Duration d = Duration(minutes: service.duration!);
+
     DateTimeRange time = DateTimeRange(
         start: newBooking.bookingStart, end: newBooking.bookingStart.add(d));
 
-
     final result = await _databaseApi.checkbooking(
-        ServiceId: service.id, start: time.start, end: time.end);
+        ServiceId: service.ownerId, start: time.start, end: time.end);
 
-    // print(availability.unavailableDays);
-    // for (var avail in availability.unavailableSlots!) {
-    // print( DateTime.fromMicrosecondsSinceEpoch(int.parse(avail.microsecondsSinceEpoch.toString())));
-    // }
-    if (result) {
+    for (var avail in availability.unavailableSlots!) {
+      unavailableBookings.add(DateTime.fromMicrosecondsSinceEpoch(
+          int.parse(avail.microsecondsSinceEpoch.toString())));
+      
+    }
+   unavailableBookings = unavailableBookings.where((e) => e.isAfter(time.start)).where((e) => e.isBefore(time.end)).toList();
+
+    if (result || unavailableBookings.isNotEmpty) {
       final dialogResponse = await _dialogService.showConfirmationDialog(
         title: 'Please select another time slot',
         description:

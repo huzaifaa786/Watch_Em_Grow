@@ -8,6 +8,7 @@ import 'package:mipromo/booking_calender/src/util/booking_util.dart';
 import 'package:flutter/material.dart';
 import 'package:mipromo/booking_calender/booking_calendar.dart';
 import 'package:mipromo/booking_calender/src/core/booking_controller.dart';
+import 'package:mipromo/models/shop_service.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -19,6 +20,7 @@ class BookingCalendarMain extends StatefulWidget {
     required this.convertStreamResultToDateTimeRanges,
     required this.uploadBooking,
     required this.bookingService,
+    this.service,
     this.bookingExplanation,
     this.bookingGridCrossAxisCount,
     this.bookingGridChildAspectRatio,
@@ -87,6 +89,7 @@ class BookingCalendarMain extends StatefulWidget {
   final bool? hideBreakTime;
 
   final String? locale;
+  final ShopService? service;
 
   @override
   State<BookingCalendarMain> createState() => _BookingCalendarMainState();
@@ -307,7 +310,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                   ),
                   if (widget.showData == true) ...[
                     Container(
-                      padding: EdgeInsets.all(18),
+                      padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(30))),
                       child: Row(
@@ -320,7 +323,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(18),
+                      padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(30))),
                       child: Row(
@@ -332,6 +335,20 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                               : Text("£" +
                                   widget.bookingService.depositAmount!
                                       .toStringAsFixed(2)),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Duration"),
+                          widget.service!.duration != null
+                              ? Text(widget.service!.duration.toString()+'m')
+                              : Text(""),
                         ],
                       ),
                     ),
