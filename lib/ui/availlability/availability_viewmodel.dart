@@ -109,9 +109,9 @@ class SetAvailabilityViewModel extends BaseViewModel {
       final start = userBookings[i].bookingStart;
       final end = userBookings[i].bookingEnd;
       userReservedBookings.add(DateTimeRange(
-          start: (DateTime(start!.year, start.month, start.day, start.hour, 0)),
+          start: (DateTime(start!.year, start.month, start.day, start.hour, start.minute,0)),
           end: (DateTime(end!.year, end.month, end.day, end.hour,
-              end.minute + userBookings[i].serviceDuration!, 0))));
+              end.minute, 0))));
     }
     for (var i = 0; i < unavailableSlots!.length; i++) {
       var datesahab = DateTime.fromMicrosecondsSinceEpoch(
