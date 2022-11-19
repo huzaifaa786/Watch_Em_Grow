@@ -37,8 +37,8 @@ class HomeViewModel extends BaseViewModel {
 
   initDynamicLinks() async {
   logger.d('inside dynamic link');
+  await Future.delayed(Duration(seconds: 2));
     final PendingDynamicLinkData? data = await FirebaseDynamicLinks.instance.getInitialLink();
-    logger.d(data.toString());
     if (data != null) {
       _handleDynamicLink(data);
     }
