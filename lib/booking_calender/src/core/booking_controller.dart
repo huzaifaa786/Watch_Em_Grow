@@ -1,11 +1,12 @@
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/booking_calender/booking_calendar.dart';
 import 'package:mipromo/api/database_api.dart';
 
 import 'package:mipromo/booking_calender/src/util/booking_util.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class BookingController extends ChangeNotifier {
   BookingService bookingService;
@@ -26,6 +27,7 @@ class BookingController extends ChangeNotifier {
 
   DateTime? serviceOpening;
   DateTime? serviceClosing;
+  DateTime? daytoAvail;
 
   List<DateTime> _allBookingSlots = [];
   List<DateTime> get allBookingSlots => _allBookingSlots;
@@ -121,25 +123,46 @@ class BookingController extends ChangeNotifier {
     }
     return result;
   }
-  markDayUnavailable(List unavailableDays ,ownerId) async {
-   final bookingDate = allBookingSlots.elementAt(0);
-   unavailableDays.add(bookingDate);
-        Map<String, dynamic> postMap = {
-          'unavailableDays' : unavailableDays
-    };
 
-   await  _databaseApi.changeAvailabilty(userId: ownerId.toString(), availabilty: postMap);
+  markDayUnavailable(List unavailableDays, ownerId) async {
+    final bookingDate = allBookingSlots.elementAt(0);
+    unavailableDays.add(bookingDate);
+    Map<String, dynamic> postMap = {'unavailableDays': unavailableDays};
 
-   Fluttertoast.showToast(msg: 'Done');
-  }markSlotUnavailable(List unavailableSlots ,ownerId) async {
-   final bookingDate = allBookingSlots.elementAt(selectedSlot);
-   unavailableSlots.add(bookingDate);
-        Map<String, dynamic> postMap = {
-          'unavailableSlots' : unavailableSlots
-    };
+    await _databaseApi.changeAvailabilty(
+        userId: ownerId.toString(), availabilty: postMap);
 
-   await  _databaseApi.changeAvailabilty(userId: ownerId.toString(), availabilty: postMap);
+    Fluttertoast.showToast(msg: 'Done');
+  }
 
-   Fluttertoast.showToast(msg: 'Done');
+  markDayAvailable(List unavailableDays, ownerId) async {
+    final bookingDate = allBookingSlots.elementAt(0);
+    
+    var dayToMarkAvailable = unavailableDays.singleWhere((day) {
+      DateTime parsedDate = DateTime.fromMicrosecondsSinceEpoch(
+        day.microsecondsSinceEpoch as int);
+      return isSameDay(daytoAvail, parsedDate);
+    });
+
+    unavailableDays.remove(dayToMarkAvailable);
+
+    Map<String, dynamic> postMap = {'unavailableDays': unavailableDays};
+    print(unavailableDays);
+
+    await _databaseApi.changeAvailabilty(
+        userId: ownerId.toString(), availabilty: postMap);
+
+    Fluttertoast.showToast(msg: 'Done');
+  }
+
+  markSlotUnavailable(List unavailableSlots, ownerId) async {
+    final bookingDate = allBookingSlots.elementAt(selectedSlot);
+    unavailableSlots.add(bookingDate);
+    Map<String, dynamic> postMap = {'unavailableSlots': unavailableSlots};
+
+    await _databaseApi.changeAvailabilty(
+        userId: ownerId.toString(), availabilty: postMap);
+
+    Fluttertoast.showToast(msg: 'Done');
   }
 }

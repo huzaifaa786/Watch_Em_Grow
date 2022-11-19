@@ -37,7 +37,8 @@ class BookingView extends StatelessWidget {
                       height: MediaQuery.of(context).size.height,
                       decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30))),
                       width: MediaQuery.of(context).size.width,
-                      child: BookingCalendar(    
+                      child: BookingCalendar(   
+                        service: service, 
                         bookingGridCrossAxisCount: 1,
                         bookingGridChildAspectRatio:0.75,
                         bookingService: model.mockBookingService,

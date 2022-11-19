@@ -50,6 +50,12 @@ class AvailabilityView extends StatelessWidget {
                     onChanged: (int day) {
                       final index = day % 7;
                       model.selection(index);
+                      model.init(
+                              mshop: shop,
+                              isDark:
+                                  getThemeManager(context).selectedThemeMode ==
+                                      ThemeMode.dark,
+                              context: context);
                     },
                     values: model.values,
                   ),
@@ -66,7 +72,7 @@ class AvailabilityView extends StatelessWidget {
                             DatePicker.showPicker(context,
                                 showTitleActions: true,
                                 onChanged: (date) {}, onConfirm: (time) {
-                              model.startController.text = time.hour.toString();
+                              model.startController.text = time.hour.toString() + ":00";
                             },
                                 pickerModel:
                                     CustomPicker(currentTime: DateTime.now()),
@@ -104,7 +110,7 @@ class AvailabilityView extends StatelessWidget {
                             DatePicker.showPicker(context,
                                 showTitleActions: true,
                                 onChanged: (date) {}, onConfirm: (time) {
-                              model.endController.text = time.hour.toString();
+                              model.endController.text = time.hour.toString()+ ":00";;
                             },
                                 pickerModel:
                                     CustomPicker(currentTime: DateTime.now()),
@@ -130,30 +136,7 @@ class AvailabilityView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Container(
-                          width: MediaQuery.of(context).size.width * 0.32,
-                          child: Text("Time slot duration")),
-                      SizedBox(width: 10),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: InputField(
-                          hintText: "Duration/min",
-                          maxLength: 2,
-                          counter: "",
-                          controller: model.durationController,
-                          textInputType: TextInputType.number,
-                          validate: model.autoValidate,
-                          validator: (duration) =>
-                              Validators.emptyStringValidator(
-                            duration,
-                            'Duration',
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -180,6 +163,7 @@ class AvailabilityView extends StatelessWidget {
                     ],
                   ),
                   BookingCalendar(
+              
                     bookingGridCrossAxisCount: 1,
                     bookingGridChildAspectRatio: 0.75,
                     bookingService: model.mockBookingService,

@@ -149,6 +149,7 @@ class CreateServiceViewModel extends BaseViewModel {
             depositAmount: double.parse(depositAmount),
             aspectRatio: serviceAspectRatio,
             type: selectedType!,
+             duration: selectedType != "Product" ? int.parse(durationController.text) : null,
             sizes: selectedType == "Product" ? sizes : null,
             bookingNote: selectedType != "Product"
                 ? noteController.text.toString()
@@ -203,6 +204,12 @@ class CreateServiceViewModel extends BaseViewModel {
       if (selectedType == null) {
         Alerts.showErrorSnackbar('Please Select Type');
         return false;
+      }
+      if (selectedType == 'Service') {
+        if (Validators.emptyStringValidator(durationController.text, 'Duration') != null) {
+          Alerts.showErrorSnackbar('Please Enter Duration');
+          return false;
+        } 
       }
     
       if (_selectedImage1 != null) {

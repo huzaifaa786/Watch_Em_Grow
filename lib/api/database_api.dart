@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:intl/intl.dart';
+// import 'package:freezed_annotation/freezed_annotation.dart';
+// import 'package:intl/intl.dart';
 import 'package:mipromo/app/app.locator.dart';
 // import 'package:intl/intl.dart';
 import 'package:mipromo/exceptions/database_api_exception.dart';
@@ -36,49 +37,71 @@ class DatabaseApi {
   final CollectionReference _usersCollection = _firestore.collection("users");
   final CollectionReference _ordersCollection = _firestore.collection("orders");
   final CollectionReference _shopsCollection = _firestore.collection("shops");
-  final CollectionReference _serviceChargesCollection = _firestore.collection("serviceCharges");
-  final CollectionReference _disputesCollection = _firestore.collection("disputes");
-  final CollectionReference _contactMessages = _firestore.collection("contactMessages");
-  final CollectionReference _reportCollection = _firestore.collection("reports");
-  final CollectionReference _servicesCollection = _firestore.collection("services");
+  final CollectionReference _serviceChargesCollection =
+      _firestore.collection("serviceCharges");
+  final CollectionReference _disputesCollection =
+      _firestore.collection("disputes");
+  final CollectionReference _contactMessages =
+      _firestore.collection("contactMessages");
+  final CollectionReference _reportCollection =
+      _firestore.collection("reports");
+  final CollectionReference _servicesCollection =
+      _firestore.collection("services");
   final CollectionReference _chatsCollection = _firestore.collection("chats");
-  final CollectionReference _chatRoomCollection = _firestore.collection("chatRoom");
+  final CollectionReference _chatRoomCollection =
+      _firestore.collection("chatRoom");
   final CollectionReference _followCollection = _firestore.collection("follow");
-  final CollectionReference _bookingsCollection = _firestore.collection("bookings");
+  final CollectionReference _bookingsCollection =
+      _firestore.collection("bookings");
 
   final _navigationService = locator<NavigationService>();
 
   // * Controllers
 
   // * User Controllers
-  final StreamController<AppUser> _userController = StreamController<AppUser>.broadcast();
+  final StreamController<AppUser> _userController =
+      StreamController<AppUser>.broadcast();
 
-  final StreamController<List<AppUser>> _usersController = StreamController<List<AppUser>>.broadcast();
+  final StreamController<List<AppUser>> _usersController =
+      StreamController<List<AppUser>>.broadcast();
 
-  final StreamController<List<AppUser>> _shopOwnersController = StreamController<List<AppUser>>.broadcast();
+  final StreamController<List<AppUser>> _shopOwnersController =
+      StreamController<List<AppUser>>.broadcast();
 
   // * Shop Controllers
-  final StreamController<Shop> _shopController = StreamController<Shop>.broadcast();
+  final StreamController<Shop> _shopController =
+      StreamController<Shop>.broadcast();
 
-  final StreamController<List<Shop>> _shopsController = StreamController<List<Shop>>.broadcast();
+  final StreamController<List<Shop>> _shopsController =
+      StreamController<List<Shop>>.broadcast();
 
   // * Service Controller
-  final StreamController<List<ShopService>> _servicesController = StreamController<List<ShopService>>.broadcast();
+  final StreamController<List<ShopService>> _servicesController =
+      StreamController<List<ShopService>>.broadcast();
 
-  final StreamController<List<ShopService>> _allServicesController = StreamController<List<ShopService>>.broadcast();
+  final StreamController<List<ShopService>> _allServicesController =
+      StreamController<List<ShopService>>.broadcast();
 
   // * Chats Controller
-  final StreamController<List<Chat>> _chatsController = StreamController<List<Chat>>.broadcast();
+  final StreamController<List<Chat>> _chatsController =
+      StreamController<List<Chat>>.broadcast();
 
-  final StreamController<List<Chat>> _currentUserChatsController = StreamController<List<Chat>>.broadcast();
+  final StreamController<List<Chat>> _currentUserChatsController =
+      StreamController<List<Chat>>.broadcast();
 
-  final StreamController<List<AppUser>> _usersChatsController = StreamController<List<AppUser>>.broadcast();
+  final StreamController<List<AppUser>> _usersChatsController =
+      StreamController<List<AppUser>>.broadcast();
 
-  final StreamController<List<Follow>> _followController = StreamController<List<Follow>>.broadcast();
+  final StreamController<List<Follow>> _followController =
+      StreamController<List<Follow>>.broadcast();
 
-  final StreamController<List<Order>> _boughtOrder = StreamController<List<Order>>.broadcast();
-  final StreamController<List<BookkingService>> _bookings = StreamController<List<BookkingService>>.broadcast();
-  final StreamController<List<Order>> _soldOrder = StreamController<List<Order>>.broadcast();
+  final StreamController<List<Order>> _boughtOrder =
+      StreamController<List<Order>>.broadcast();
+  final StreamController<List<BookkingService>> _bookings =
+      StreamController<List<BookkingService>>.broadcast();
+
+  final StreamController<List<Order>> _soldOrder =
+      StreamController<List<Order>>.broadcast();
   // * Create
   /// Creates a User document inside the users collection with User Id as Document Id
   Future<void> createUser(AppUser user) async {
@@ -94,10 +117,12 @@ class DatabaseApi {
 
   Future<void> updateUserToken(String uid, String token) async {
     try {
-      await _usersCollection.doc(uid).update({'token': token}).catchError((error) async{
+      await _usersCollection
+          .doc(uid)
+          .update({'token': token}).catchError((error) async {
         await _navigationService.navigateTo(
-        Routes.landingView,
-      );
+          Routes.landingView,
+        );
       });
     } on PlatformException catch (e) {
       await _navigationService.navigateTo(
@@ -136,26 +161,50 @@ class DatabaseApi {
     required String currentUserId,
     required String userId,
   }) async {
-    await _followCollection.doc(currentUserId).collection('following').doc(userId).set({'id': userId});
+    await _followCollection
+        .doc(currentUserId)
+        .collection('following')
+        .doc(userId)
+        .set({'id': userId});
 
-    await _usersCollection.doc(currentUserId).update({'following': FieldValue.increment(1)});
+    await _usersCollection
+        .doc(currentUserId)
+        .update({'following': FieldValue.increment(1)});
 
-    await _followCollection.doc(userId).collection('followers').doc(currentUserId).set({'id': currentUserId});
+    await _followCollection
+        .doc(userId)
+        .collection('followers')
+        .doc(currentUserId)
+        .set({'id': currentUserId});
 
-    await _usersCollection.doc(userId).update({'followers': FieldValue.increment(1)});
+    await _usersCollection
+        .doc(userId)
+        .update({'followers': FieldValue.increment(1)});
   }
 
   Future<void> unfollow({
     required String currentUserId,
     required String userId,
   }) async {
-    await _followCollection.doc(currentUserId).collection('following').doc(userId).delete();
+    await _followCollection
+        .doc(currentUserId)
+        .collection('following')
+        .doc(userId)
+        .delete();
 
-    await _usersCollection.doc(currentUserId).update({'following': FieldValue.increment(-1)});
+    await _usersCollection
+        .doc(currentUserId)
+        .update({'following': FieldValue.increment(-1)});
 
-    await _followCollection.doc(userId).collection('followers').doc(currentUserId).delete();
+    await _followCollection
+        .doc(userId)
+        .collection('followers')
+        .doc(currentUserId)
+        .delete();
 
-    await _usersCollection.doc(userId).update({'followers': FieldValue.increment(-1)});
+    await _usersCollection
+        .doc(userId)
+        .update({'followers': FieldValue.increment(-1)});
   }
 
   // * Read
@@ -234,7 +283,8 @@ class DatabaseApi {
     });
   }
 
-  Future<void> sendReportBuyer(AppUser currentUser, AppUser? otherUser, String type) async {
+  Future<void> sendReportBuyer(
+      AppUser currentUser, AppUser? otherUser, String type) async {
     await _reportCollection.doc(otherUser!.id).set({
       "reportBy": currentUser.id,
       "reported": otherUser.id,
@@ -285,7 +335,8 @@ class DatabaseApi {
 
       final services = servicesCollectionSnapshot.docs
           .map(
-            (servicesData) => ShopService.fromJson(servicesData.data()! as Map<String, dynamic>),
+            (servicesData) => ShopService.fromJson(
+                servicesData.data()! as Map<String, dynamic>),
           )
           .toList();
 
@@ -300,7 +351,8 @@ class DatabaseApi {
 
   Future<double> getProcessingFee() async {
     try {
-      final shopDocumentSnapshot = await _serviceChargesCollection.doc('1').get();
+      final shopDocumentSnapshot =
+          await _serviceChargesCollection.doc('1').get();
       final shopData = shopDocumentSnapshot.data()! as Map<String, dynamic>;
       return double.parse(shopData['processingFee'].toString());
     } on PlatformException catch (e) {
@@ -328,7 +380,8 @@ class DatabaseApi {
   }
 
   Future<List<Follow>> getFollowers(String userId) async {
-    final followData = await _followCollection.doc(userId).collection('followers').get();
+    final followData =
+        await _followCollection.doc(userId).collection('followers').get();
     final follows = followData.docs
         .map((snapshot) => Follow.fromJson(
               snapshot.data(),
@@ -339,7 +392,8 @@ class DatabaseApi {
   }
 
   Future<List<Follow>> getMyFollowers(String userId) async {
-    final followData = await _followCollection.doc(userId).collection('following').get();
+    final followData =
+        await _followCollection.doc(userId).collection('following').get();
     final follows = followData.docs
         .map((snapshot) => Follow.fromJson(
               snapshot.data(),
@@ -350,7 +404,8 @@ class DatabaseApi {
   }
 
   Future<List<Follow>> getFollowing(String userId) async {
-    final followData = await _followCollection.doc(userId).collection('following').get();
+    final followData =
+        await _followCollection.doc(userId).collection('following').get();
     final follows = followData.docs
         .map((snapshot) => Follow.fromJson(
               snapshot.data(),
@@ -401,9 +456,10 @@ class DatabaseApi {
     required String lastName,
   }) async {
     try {
-      await _usersCollection
-          .doc(userId)
-          .update({"username": username, "fullName": firstName.trim() + " " + lastName.trim()});
+      await _usersCollection.doc(userId).update({
+        "username": username,
+        "fullName": firstName.trim() + " " + lastName.trim()
+      });
     } on PlatformException catch (e) {
       throw DatabaseApiException(
         title: 'Failed to create username',
@@ -419,7 +475,8 @@ class DatabaseApi {
     required String postCode,
   }) async {
     try {
-      await _usersCollection.doc(userId).update({"fullName": fullName, "address": address, 'postCode': postCode});
+      await _usersCollection.doc(userId).update(
+          {"fullName": fullName, "address": address, 'postCode': postCode});
     } on PlatformException catch (e) {
       throw DatabaseApiException(
         title: 'Failed to update address.',
@@ -591,7 +648,9 @@ class DatabaseApi {
         message: e.message,
       );
     }
-  }  Future<void> updateShopPolicy(
+  }
+
+  Future<void> updateShopPolicy(
     String shopId,
     String policy,
   ) async {
@@ -876,7 +935,10 @@ class DatabaseApi {
           .doc(userId)
           .collection('chats')
           .doc(receiverId)
-          .set({"id": receiverId, "time": DateTime.now().millisecondsSinceEpoch});
+          .set({
+        "id": receiverId,
+        "time": DateTime.now().millisecondsSinceEpoch
+      });
       await _chatRoomCollection
           .doc(receiverId)
           .collection('chats')
@@ -903,7 +965,10 @@ class DatabaseApi {
     try {
       bool result = false;
 
-      _servicesCollection.doc(serviceId).delete().whenComplete(() => result = true);
+      _servicesCollection
+          .doc(serviceId)
+          .delete()
+          .whenComplete(() => result = true);
 
       return result;
     } on PlatformException catch (e) {
@@ -935,7 +1000,8 @@ class DatabaseApi {
         if (usersSnapshots.docs.isNotEmpty) {
           final users = usersSnapshots.docs
               .map(
-                (snapshot) => AppUser.fromJson(snapshot.data()! as Map<String, dynamic>),
+                (snapshot) =>
+                    AppUser.fromJson(snapshot.data()! as Map<String, dynamic>),
               )
               .toList();
 
@@ -953,7 +1019,8 @@ class DatabaseApi {
         if (usersSnapshots.docs.isNotEmpty) {
           final users = usersSnapshots.docs
               .map(
-                (snapshot) => AppUser.fromJson(snapshot.data()! as Map<String, dynamic>),
+                (snapshot) =>
+                    AppUser.fromJson(snapshot.data()! as Map<String, dynamic>),
               )
               .where((user) => chatIds.contains(user.id))
               .toList();
@@ -967,7 +1034,8 @@ class DatabaseApi {
   }
 
   Stream<List<AppUser>> sortChatUsersID(AppUser chatIds) {
-    StreamController<List<AppUser>> uniqueMessageID = StreamController<List<AppUser>>.broadcast();
+    StreamController<List<AppUser>> uniqueMessageID =
+        StreamController<List<AppUser>>.broadcast();
     List<String> sortedMessageID = [];
     List<AppUser> usersList = [];
 
@@ -981,12 +1049,15 @@ class DatabaseApi {
       usersList.clear();
       sortedMessageID.clear();
       chatSnapshot.docs.forEach((element) {
-        sortedMessageID.add(jsonDecode(jsonEncode(element.data()))['id'].toString());
+        sortedMessageID
+            .add(jsonDecode(jsonEncode(element.data()))['id'].toString());
       });
 
       for (var item in sortedMessageID.toSet()) {
-        QuerySnapshot userRaw = await _usersCollection.where('id', isEqualTo: item).get();
-        usersList.add(AppUser.fromJson(userRaw.docs.first.data() as Map<String, dynamic>));
+        QuerySnapshot userRaw =
+            await _usersCollection.where('id', isEqualTo: item).get();
+        usersList.add(AppUser.fromJson(
+            userRaw.docs.first.data() as Map<String, dynamic>));
       }
       uniqueMessageID.add(usersList);
     });
@@ -1054,13 +1125,15 @@ class DatabaseApi {
         if (shopsSnapshots.docs.isNotEmpty) {
           final shops = shopsSnapshots.docs
               .map(
-                (snapshot) => Shop.fromJson(snapshot.data()! as Map<String, dynamic>),
+                (snapshot) =>
+                    Shop.fromJson(snapshot.data()! as Map<String, dynamic>),
               )
               .where((shop) => shop.hasService && shop.isBestSeller == 1)
               .toList();
           final mshops = shopsSnapshots.docs
               .map(
-                (snapshot) => Shop.fromJson(snapshot.data()! as Map<String, dynamic>),
+                (snapshot) =>
+                    Shop.fromJson(snapshot.data()! as Map<String, dynamic>),
               )
               .where((shop) => shop.hasService && shop.isBestSeller != 1)
               .toList();
@@ -1074,7 +1147,8 @@ class DatabaseApi {
     return _shopsController.stream;
   }
 
-  Future<List<Shop>> listenNextPaginatedShops(List<Shop> searchedShops, id) async {
+  Future<List<Shop>> listenNextPaginatedShops(
+      List<Shop> searchedShops, id) async {
     var db = FirebaseFirestore.instance;
     List<Shop> all_shops = [];
 
@@ -1084,13 +1158,15 @@ class DatabaseApi {
         if (shopsSnapshots.docs.isNotEmpty) {
           final shops = shopsSnapshots.docs
               .map(
-                (snapshot) => Shop.fromJson(snapshot.data()! as Map<String, dynamic>),
+                (snapshot) =>
+                    Shop.fromJson(snapshot.data()! as Map<String, dynamic>),
               )
               .where((shop) => shop.hasService && shop.isBestSeller == 1)
               .toList();
           final mshops = shopsSnapshots.docs
               .map(
-                (snapshot) => Shop.fromJson(snapshot.data()! as Map<String, dynamic>),
+                (snapshot) =>
+                    Shop.fromJson(snapshot.data()! as Map<String, dynamic>),
               )
               .where((shop) => shop.hasService && shop.isBestSeller != 1)
               .toList();
@@ -1109,13 +1185,15 @@ class DatabaseApi {
         if (shopsSnapshots.docs.isNotEmpty) {
           final shops = shopsSnapshots.docs
               .map(
-                (snapshot) => Shop.fromJson(snapshot.data()! as Map<String, dynamic>),
+                (snapshot) =>
+                    Shop.fromJson(snapshot.data()! as Map<String, dynamic>),
               )
               .where((shop) => shop.hasService && shop.isBestSeller == 1)
               .toList();
           final mshops = shopsSnapshots.docs
               .map(
-                (snapshot) => Shop.fromJson(snapshot.data()! as Map<String, dynamic>),
+                (snapshot) =>
+                    Shop.fromJson(snapshot.data()! as Map<String, dynamic>),
               )
               .where((shop) => shop.hasService && shop.isBestSeller != 1)
               .toList();
@@ -1206,7 +1284,8 @@ class DatabaseApi {
         if (usersSnapshots.docs.isNotEmpty) {
           final users = usersSnapshots.docs
               .map(
-                (snapshot) => AppUser.fromJson(snapshot.data()! as Map<String, dynamic>),
+                (snapshot) =>
+                    AppUser.fromJson(snapshot.data()! as Map<String, dynamic>),
               )
               .where((item) => item.userType == "seller")
               .where((item) => item.shopId.isNotEmpty)
@@ -1260,7 +1339,8 @@ class DatabaseApi {
         if (servicesSnapshots.docs.isNotEmpty) {
           final services = servicesSnapshots.docs
               .map(
-                (snapshot) => ShopService.fromJson(snapshot.data()! as Map<String, dynamic>),
+                (snapshot) => ShopService.fromJson(
+                    snapshot.data()! as Map<String, dynamic>),
               )
               .toList();
 
@@ -1287,10 +1367,17 @@ class DatabaseApi {
     final StreamController<List<Notification>> _notificationsController =
         StreamController<List<Notification>>.broadcast();
 
-    final _notificationCollection = _firestore.collection("users").doc(userId).collection('notifications').limit(50);
-    final _notificationSnapshot = _notificationCollection.orderBy('time', descending: true);
+    final _notificationCollection = _firestore
+        .collection("users")
+        .doc(userId)
+        .collection('notifications')
+        .limit(50);
+    final _notificationSnapshot =
+        _notificationCollection.orderBy('time', descending: true);
     _notificationSnapshot.snapshots().listen((snapShot) {
-      final notifications = snapShot.docs.map((doc) => Notification.fromJson(doc.data())).toList();
+      final notifications = snapShot.docs
+          .map((doc) => Notification.fromJson(doc.data()))
+          .toList();
       _notificationsController.add(notifications);
     });
     return _notificationsController.stream;
@@ -1301,10 +1388,17 @@ class DatabaseApi {
     final StreamController<List<NotificationModel>> _notificationsController =
         StreamController<List<NotificationModel>>.broadcast();
 
-    final _notificationCollection = _firestore.collection("users").doc(userId).collection('notifications').limit(50);
-    final _notificationSnapshot = _notificationCollection.orderBy('time', descending: true);
+    final _notificationCollection = _firestore
+        .collection("users")
+        .doc(userId)
+        .collection('notifications')
+        .limit(50);
+    final _notificationSnapshot =
+        _notificationCollection.orderBy('time', descending: true);
     _notificationSnapshot.snapshots().listen((snapShot) {
-      final notifications = snapShot.docs.map((doc) => NotificationModel.fromMap(doc.data())).toList();
+      final notifications = snapShot.docs
+          .map((doc) => NotificationModel.fromMap(doc.data()))
+          .toList();
       _notificationsController.add(notifications);
     });
     return _notificationsController.stream;
@@ -1334,12 +1428,15 @@ class DatabaseApi {
         if (messageSnapshot.docs.isNotEmpty) {
           final messages = messageSnapshot.docs
               .map(
-                (snapshot) => Chat.fromJson(snapshot.data()! as Map<String, dynamic>),
+                (snapshot) =>
+                    Chat.fromJson(snapshot.data()! as Map<String, dynamic>),
               )
               .where(
                 (chat) =>
-                    (chat.receiverId == receiverId && chat.senderId == currentUserId) ||
-                    (chat.receiverId == currentUserId && chat.senderId == receiverId),
+                    (chat.receiverId == receiverId &&
+                        chat.senderId == currentUserId) ||
+                    (chat.receiverId == currentUserId &&
+                        chat.senderId == receiverId),
               )
               .toList();
 
@@ -1381,13 +1478,18 @@ class DatabaseApi {
 
   CollectionReference<BookkingService> getBookingStream() {
     return _bookingsCollection.withConverter<BookkingService>(
-      fromFirestore: (snapshots, _) => BookkingService.fromJson(snapshots.data()!),
+      fromFirestore: (snapshots, _) =>
+          BookkingService.fromJson(snapshots.data()!),
       toFirestore: (snapshots, _) => snapshots.toJson(),
     );
   }
 
-  Stream<List<BookkingService>> getBookingStreamFirebase({required String ServiceId}) {
-    _bookingsCollection.where('serviceId', isEqualTo: ServiceId).snapshots().listen((event) {
+  Stream<List<BookkingService>> getBookingStreamFirebase(
+      {required String ServiceId}) {
+    _bookingsCollection
+        .where('serviceId', isEqualTo: ServiceId)
+        .snapshots()
+        .listen((event) {
       if (event.docs.isNotEmpty) {
         final bookings = event.docs
             .map((e) => BookkingService.fromJson(
@@ -1402,20 +1504,51 @@ class DatabaseApi {
     return _bookings.stream;
   }
 
-  changeAvailabilty({required String userId, required Map<String, dynamic> availabilty}) {
-    _usersCollection.doc(userId).collection('availabilty').doc(userId).update(availabilty);
+  changeAvailabilty(
+      {required String userId, required Map<String, dynamic> availabilty}) {
+    _usersCollection
+        .doc(userId)
+        .collection('availabilty')
+        .doc(userId)
+        .update(availabilty);
+  }
+
+  Future<bool> checkbooking({required String ServiceId, required DateTime start,required DateTime end,}) async {
+    print(start);
+    print(end);
+    print(Timestamp.fromDate(start));
+    print(Timestamp.fromDate(end));
+    bool result = false;
+   await _bookingsCollection
+        .where('userId', isEqualTo: ServiceId)
+        .where('bookingStart', isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+        .where('bookingStart', isLessThanOrEqualTo: Timestamp.fromDate(end)).get()
+        .then((event) {
+        print(event.docs);
+      if (event.docs.isNotEmpty) {
+        result = true;
+      } else {
+        result = false;
+      }
+    });
+    return result;
   }
 
   Future<Availability> getAvailabilty({required String userId}) async {
-    final result = await _usersCollection.doc(userId).collection('availabilty').doc(userId).get();
-   
+    final result = await _usersCollection
+        .doc(userId)
+        .collection('availabilty')
+        .doc(userId)
+        .get();
+
     if (result.data()!['duration'] == null) {
       print("inside");
       var ava = [true, true, true, true, true, true, true];
-      Map<String, dynamic> postMap = {for (var i = 0; i <= 6; i++) intDayToEnglish((i)): ava[i],
-      'duration' : 30,
-      'startHour' : 7,
-      'endHour' : 20
+      Map<String, dynamic> postMap = {
+        for (var i = 0; i <= 6; i++) intDayToEnglish((i)): ava[i],
+        'duration': 30,
+        'startHour': 7,
+        'endHour': 20
       };
       changeAvailabilty(userId: userId, availabilty: postMap);
     }
@@ -1425,7 +1558,8 @@ class DatabaseApi {
   }
 
   Future<List<ShopService>> getAllServices() async {
-    final result = await _servicesCollection.orderBy('time', descending: true).get();
+    final result =
+        await _servicesCollection.orderBy('time', descending: true).get();
 
     final services = result.docs
         .map(
@@ -1436,8 +1570,10 @@ class DatabaseApi {
     return services;
   }
 
-  Future<List<BookkingService>> getUserBookingStreamFirebase({required String userId}) async {
-    final result = await _bookingsCollection.where('ownerId', isEqualTo: userId).get();
+  Future<List<BookkingService>> getUserBookingStreamFirebase(
+      {required String userId}) async {
+    final result =
+        await _bookingsCollection.where('userId', isEqualTo: userId).get();
 
     final _userBookings = result.docs
         .map(
@@ -1474,7 +1610,10 @@ class DatabaseApi {
   }
 
   Future<Order> getOrder(String orderId) {
-    return _ordersCollection.doc(orderId).get().then((value) => Order.fromJson(value.data()! as Map<String, dynamic>));
+    return _ordersCollection
+        .doc(orderId)
+        .get()
+        .then((value) => Order.fromJson(value.data()! as Map<String, dynamic>));
   }
 
   Future getToken(String userId) async {
@@ -1499,7 +1638,8 @@ class DatabaseApi {
     return _ordersCollection.doc(order.orderId).set(order.toJson());
   }
 
-  Future<dynamic> uploadBookingFirebase({required BookkingService newBooking}) async {
+  Future<dynamic> uploadBookingFirebase(
+      {required BookkingService newBooking}) async {
     await _bookingsCollection
         .doc()
         .set(newBooking.toJson())
@@ -1537,7 +1677,8 @@ class DatabaseApi {
       },
       "to": receiverToken,
     });
-    var response = await http.post(Uri.parse(url), headers: headers, body: json);
+    var response =
+        await http.post(Uri.parse(url), headers: headers, body: json);
     return true;
   }
 
@@ -1554,20 +1695,28 @@ class DatabaseApi {
     await _usersCollection.doc(userID).update({'purchases': newCount});
   }
 
-  Future bookOrder(Order order, String paymentId, String captureId, int time) async {
-    return _ordersCollection
-        .doc(order.orderId)
-        .update({'status': OrderStatus.progress.index, 'paymentId': paymentId, 'captureId': captureId, 'time': time});
+  Future bookOrder(
+      Order order, String paymentId, String captureId, int time) async {
+    return _ordersCollection.doc(order.orderId).update({
+      'status': OrderStatus.progress.index,
+      'paymentId': paymentId,
+      'captureId': captureId,
+      'time': time
+    });
   }
 
   Future<void> refundOrder(Order order, int time) async {
-    return _ordersCollection.doc(order.orderId).update({'status': OrderStatus.refunded.index, 'time': time});
+    return _ordersCollection
+        .doc(order.orderId)
+        .update({'status': OrderStatus.refunded.index, 'time': time});
   }
 
   Future<void> sendContactMessage(String message, String userID) {
-    return _contactMessages
-        .doc(userID)
-        .set({'userID': userID, 'message': message, 'time': DateTime.now().millisecondsSinceEpoch});
+    return _contactMessages.doc(userID).set({
+      'userID': userID,
+      'message': message,
+      'time': DateTime.now().millisecondsSinceEpoch
+    });
   }
 
   Future<void> refundCaseOpen(String reason, Order order, int time) async {
@@ -1577,9 +1726,10 @@ class DatabaseApi {
     buyer = await getUser(order.userId);
     seller = await getUser(order.service.ownerId);
 
-    _ordersCollection
-        .doc(order.orderId)
-        .update({'status': OrderStatus.refundRequested.index, 'time': time}).then((value) {
+    _ordersCollection.doc(order.orderId).update({
+      'status': OrderStatus.refundRequested.index,
+      'time': time
+    }).then((value) {
       _disputesCollection.doc(order.orderId).set({
         'orderID': order.orderId,
         'captureID': order.captureId,
@@ -1598,19 +1748,26 @@ class DatabaseApi {
   }
 
   Future<void> refundCaseClose(Order order, int time) async {
-    return _ordersCollection
-        .doc(order.orderId)
-        .update({'status': OrderStatus.refundCaseClosed.index, 'time': time}).then((value) {
-      _disputesCollection.doc(order.orderId).update({'status': 'close', 'closeTime': time});
+    return _ordersCollection.doc(order.orderId).update({
+      'status': OrderStatus.refundCaseClosed.index,
+      'time': time
+    }).then((value) {
+      _disputesCollection
+          .doc(order.orderId)
+          .update({'status': 'close', 'closeTime': time});
     });
   }
 
   Future<void> completeOrder(Order order, int time) async {
-    return _ordersCollection.doc(order.orderId).update({'status': OrderStatus.completed.index, 'time': time});
+    return _ordersCollection
+        .doc(order.orderId)
+        .update({'status': OrderStatus.completed.index, 'time': time});
   }
 
   Future<void> rateShop(double rating, int ratingCount, Order order) async {
-    return _shopsCollection.doc(order.shopId).update({'rating': rating, 'ratingCount': ratingCount});
+    return _shopsCollection
+        .doc(order.shopId)
+        .update({'rating': rating, 'ratingCount': ratingCount});
   }
 
   Future<void> rateOrder(int rating, Order order) async {
@@ -1618,19 +1775,29 @@ class DatabaseApi {
   }
 
   Future<void> approveAppointment(Order order, int time) async {
-    return _ordersCollection.doc(order.orderId).update({'status': OrderStatus.bookApproved.index, 'time': time});
+    return _ordersCollection
+        .doc(order.orderId)
+        .update({'status': OrderStatus.bookApproved.index, 'time': time});
   }
 
   Future<void> cancelOrder(Order order, int time) async {
-    return _ordersCollection.doc(order.orderId).update({'status': OrderStatus.bookCancelled.index, 'time': time});
+    return _ordersCollection
+        .doc(order.orderId)
+        .update({'status': OrderStatus.bookCancelled.index, 'time': time});
   }
 
   Future<void> requestRefundOrder(Order order, int time) async {
-    return _ordersCollection.doc(order.orderId).update({'status': OrderStatus.refundRequested.index, 'time': time});
+    return _ordersCollection
+        .doc(order.orderId)
+        .update({'status': OrderStatus.refundRequested.index, 'time': time});
   }
 
   Stream<List<Order>> listenOrdersByUserId(String userId) {
-    _ordersCollection.where('userId', isEqualTo: userId).orderBy('time', descending: true).snapshots().listen((event) {
+    _ordersCollection
+        .where('userId', isEqualTo: userId)
+        .orderBy('time', descending: true)
+        .snapshots()
+        .listen((event) {
       if (event.docs.isNotEmpty) {
         final orders = event.docs
             .map((e) => Order.fromJson(
@@ -1666,10 +1833,19 @@ class DatabaseApi {
   }
 
   void readNotification(String uid, String id) {
-    _usersCollection.doc(uid).collection('notifications').doc(id).update({'read': 'true'});
+    _usersCollection
+        .doc(uid)
+        .collection('notifications')
+        .doc(id)
+        .update({'read': 'true'});
   }
 
-  void postNotificationCollection(String userId, Map<String, dynamic> postCollection) {
-    _usersCollection.doc(userId).collection('notifications').doc(postCollection['id'].toString()).set(postCollection);
+  void postNotificationCollection(
+      String userId, Map<String, dynamic> postCollection) {
+    _usersCollection
+        .doc(userId)
+        .collection('notifications')
+        .doc(postCollection['id'].toString())
+        .set(postCollection);
   }
 }

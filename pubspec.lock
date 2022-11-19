@@ -379,6 +379,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.11"
+  firebase_dynamic_links_platform_interface:
+    dependency: "direct overridden"
+    description:
+      path: "packages/firebase_dynamic_links/firebase_dynamic_links_platform_interface"
+      ref: fix-type-cast-issue-in-dynamic-link-handling
+      resolved-ref: "8bb4bee7e678241e75ab37a2bcfa0831426b91fa"
+      url: "https://github.com/defiq-dev/flutterfire"
+    source: git
+    version: "0.2.2"
   firebase_messaging:
     dependency: "direct main"
     description:
@@ -704,6 +713,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.3"
+  logger:
+    dependency: "direct main"
+    description:
+      name: logger
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   logging:
     dependency: transitive
     description:

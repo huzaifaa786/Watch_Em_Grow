@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mipromo/booking_calender/booking_calendar.dart';
 import 'package:mipromo/booking_calender/src/components/booking_calendar_main.dart';
 import 'package:mipromo/booking_calender/src/core/booking_controller.dart';
+import 'package:mipromo/models/shop_service.dart';
 import 'package:provider/provider.dart';
 
 class BookingCalendar extends StatelessWidget {
@@ -12,6 +13,7 @@ class BookingCalendar extends StatelessWidget {
     required this.getBookingStream,
     required this.uploadBooking,
     required this.convertStreamResultToDateTimeRanges,
+    this.service,
     this.bookingExplanation,
     this.showData,
     this.docId,
@@ -123,6 +125,7 @@ class BookingCalendar extends StatelessWidget {
 
   ///for localizing the calendar, String code to locale property. (intl format) See: [https://pub.dev/packages/table_calendar#locale]
   final String? locale;
+  final ShopService? service;
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +134,7 @@ class BookingCalendar extends StatelessWidget {
       child: BookingCalendarMain(
         key: key,
         bookingService: bookingService,
+        service: service,
         getBookingStream: getBookingStream,
         uploadBooking: uploadBooking,
         excludedDays: excludedDays,

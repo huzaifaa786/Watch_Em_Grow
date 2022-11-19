@@ -29,6 +29,7 @@ class _$ShopServiceTearOff {
       double? depositAmount,
       required String type,
       int? time,
+      int? duration,
       String? imageId1,
       String? imageUrl1,
       String? imageId2,
@@ -50,6 +51,7 @@ class _$ShopServiceTearOff {
       depositAmount: depositAmount,
       type: type,
       time: time,
+            duration: duration,
       imageId1: imageId1,
       imageUrl1: imageUrl1,
       imageId2: imageId2,
@@ -83,6 +85,7 @@ mixin _$ShopService {
   double? get depositAmount => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
   int? get time => throw _privateConstructorUsedError;
+    int? get duration => throw _privateConstructorUsedError;
   String? get imageId1 => throw _privateConstructorUsedError;
   String? get imageUrl1 => throw _privateConstructorUsedError;
   String? get imageId2 => throw _privateConstructorUsedError;
@@ -113,6 +116,7 @@ abstract class $ShopServiceCopyWith<$Res> {
       double? depositAmount,
       String type,
       int? time,
+      int? duration,
       String? imageId1,
       String? imageUrl1,
       String? imageId2,
@@ -145,6 +149,7 @@ class _$ShopServiceCopyWithImpl<$Res> implements $ShopServiceCopyWith<$Res> {
     Object? depositAmount = freezed,
     Object? type = freezed,
     Object? time = freezed,
+     Object? duration = freezed,
     Object? imageId1 = freezed,
     Object? imageUrl1 = freezed,
     Object? imageId2 = freezed,
@@ -190,6 +195,10 @@ class _$ShopServiceCopyWithImpl<$Res> implements $ShopServiceCopyWith<$Res> {
       time: time == freezed
           ? _value.time
           : time // ignore: cast_nullable_to_non_nullable
+              as int?,
+                    duration: duration == freezed
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
               as int?,
       imageId1: imageId1 == freezed
           ? _value.imageId1
@@ -257,6 +266,7 @@ abstract class _$ShopServiceCopyWith<$Res> implements $ShopServiceCopyWith<$Res>
       double? depositAmount,
       String type,
       int? time,
+      int? duration,
       String? imageId1,
       String? imageUrl1,
       String? imageId2,
@@ -289,6 +299,7 @@ class __$ShopServiceCopyWithImpl<$Res> extends _$ShopServiceCopyWithImpl<$Res> i
     Object? depositAmount = freezed,
     Object? type = freezed,
     Object? time = freezed,
+        Object? duration = freezed,
     Object? imageId1 = freezed,
     Object? imageUrl1 = freezed,
     Object? imageId2 = freezed,
@@ -334,6 +345,10 @@ class __$ShopServiceCopyWithImpl<$Res> extends _$ShopServiceCopyWithImpl<$Res> i
       time: time == freezed
           ? _value.time
           : time // ignore: cast_nullable_to_non_nullable
+              as int?,
+                    duration: duration == freezed
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
               as int?,
       imageId1: imageId1 == freezed
           ? _value.imageId1
@@ -399,6 +414,7 @@ class _$_ShopService implements _ShopService {
       this.depositAmount,
       required this.type,
       this.time,
+      this.duration,
       this.imageId1,
       this.imageUrl1,
       this.imageId2,
@@ -430,6 +446,8 @@ class _$_ShopService implements _ShopService {
   final String type;
   @override
   final int? time;
+    @override
+  final int? duration;
   @override
   final String? imageId1;
   @override
@@ -457,7 +475,7 @@ class _$_ShopService implements _ShopService {
 
   @override
   String toString() {
-    return 'ShopService(id: $id, shopId: $shopId, ownerId: $ownerId, name: $name, price: $price, depositAmount: $depositAmount, type: $type, time: $time, imageId1: $imageId1, imageUrl1: $imageUrl1, imageId2: $imageId2, imageUrl2: $imageUrl2, imageId3: $imageId3, imageUrl3: $imageUrl3, videoUrl: $videoUrl, description: $description, rating: $rating, aspectRatio: $aspectRatio, sizes: $sizes, bookingNote: $bookingNote)';
+    return 'ShopService(id: $id, shopId: $shopId, ownerId: $ownerId, name: $name, price: $price, depositAmount: $depositAmount, type: $type, time: $time,duration: $duration, imageId1: $imageId1, imageUrl1: $imageUrl1, imageId2: $imageId2, imageUrl2: $imageUrl2, imageId3: $imageId3, imageUrl3: $imageUrl3, videoUrl: $videoUrl, description: $description, rating: $rating, aspectRatio: $aspectRatio, sizes: $sizes, bookingNote: $bookingNote)';
   }
 
   @override
@@ -472,6 +490,7 @@ class _$_ShopService implements _ShopService {
             (identical(other.depositAmount, depositAmount) || const DeepCollectionEquality().equals(other.depositAmount, depositAmount)) &&
             (identical(other.type, type) || const DeepCollectionEquality().equals(other.type, type)) &&
             (identical(other.time, time) || const DeepCollectionEquality().equals(other.time, time)) &&
+            (identical(other.duration, duration) || const DeepCollectionEquality().equals(other.duration, duration)) &&
             (identical(other.imageId1, imageId1) || const DeepCollectionEquality().equals(other.imageId1, imageId1)) &&
             (identical(other.imageUrl1, imageUrl1) ||
                 const DeepCollectionEquality().equals(other.imageUrl1, imageUrl1)) &&
@@ -502,6 +521,7 @@ class _$_ShopService implements _ShopService {
       const DeepCollectionEquality().hash(depositAmount) ^
       const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(time) ^
+            const DeepCollectionEquality().hash(duration) ^
       const DeepCollectionEquality().hash(imageId1) ^
       const DeepCollectionEquality().hash(imageUrl1) ^
       const DeepCollectionEquality().hash(imageId2) ^
@@ -535,6 +555,7 @@ abstract class _ShopService implements ShopService {
       double? depositAmount,
       required String type,
       int? time,
+      int? duration,
       String? imageId1,
       String? imageUrl1,
       String? imageId2,
@@ -566,6 +587,8 @@ abstract class _ShopService implements ShopService {
   String get type => throw _privateConstructorUsedError;
   @override
   int? get time => throw _privateConstructorUsedError;
+    @override
+  int? get duration => throw _privateConstructorUsedError;
   @override
   String? get imageId1 => throw _privateConstructorUsedError;
   @override

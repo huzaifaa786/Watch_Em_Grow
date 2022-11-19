@@ -5,11 +5,20 @@ import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/app/app.router.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/models/shop.dart';
+import 'package:logger/logger.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/ui/home/category_item.dart';
 import 'package:stacked/stacked.dart';
+import 'dart:developer';
 import 'package:stacked_services/stacked_services.dart';
 
+
+class MyFilter extends LogFilter {
+  @override
+  bool shouldLog(LogEvent event) {
+    return true;
+  }
+}
 class HomeViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _databaseApi = locator<DatabaseApi>();
@@ -24,8 +33,11 @@ class HomeViewModel extends BaseViewModel {
   List<Shop> bestSellers = [];
   List<String> allShopIds = [];
   List<ShopService> allServices = [];
+    var logger = Logger(filter: MyFilter());
 
   initDynamicLinks() async {
+  logger.d('inside dynamic link');
+  await Future.delayed(Duration(seconds: 2));
     final PendingDynamicLinkData? data = await FirebaseDynamicLinks.instance.getInitialLink();
     if (data != null) {
       _handleDynamicLink(data);
@@ -39,10 +51,10 @@ class HomeViewModel extends BaseViewModel {
   }
 
   _handleDynamicLink(PendingDynamicLinkData data) async {
-    print("handling ************");
+    log("handling ************");
     final Uri deepLink = data.link;
     var shopId = deepLink.pathSegments[0];
-    print(shopId.toString());
+    logger.d(shopId.toString());
 
     if (deepLink == null) {
       return;
@@ -51,8 +63,8 @@ class HomeViewModel extends BaseViewModel {
     var mowner = allSellers.singleWhere(
       (owner) => owner.shopId.contains(mshop.id),
     );
-    print(mshop.toString());
-    print(mowner.toString());
+    logger.d(mshop.toString());
+    logger.d(mowner.toString());
     await navigateToShopView(shop: mshop, owner: mowner);
   }
 

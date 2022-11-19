@@ -5,6 +5,7 @@ import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/booking_calender/booking_calendar.dart';
 import 'package:mipromo/models/availability.dart';
+import 'package:mipromo/models/book_service.dart';
 import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/services/user_service.dart';
@@ -24,7 +25,7 @@ class SetAvailabilityViewModel extends BaseViewModel {
   List? unavailableDays = [];
   List? unavailableSlots = [];
   late BookingService mockBookingService;
-
+  List<BookkingService> userBookings = [];
   TextEditingController durationController = new TextEditingController();
   TextEditingController startController = new TextEditingController();
   TextEditingController endController = new TextEditingController();
@@ -55,9 +56,9 @@ class SetAvailabilityViewModel extends BaseViewModel {
 
   updateTime() async {
     Map<String, dynamic> postMap = {
-      'duration': int.parse(durationController.text),
-      'startHour': int.parse(startController.text),
-      'endHour': int.parse(endController.text)
+      'duration': 30,
+      'startHour': int.parse(startController.text.replaceAll(':00', '')),
+      'endHour': int.parse(endController.text.replaceAll(':00', ''))
     };
 
     await _databaseApi.changeAvailabilty(
@@ -80,8 +81,8 @@ class SetAvailabilityViewModel extends BaseViewModel {
     unavailableDays = availability.unavailableDays ?? [];
     unavailableSlots = availability.unavailableSlots ?? [];
     durationController.text = availability.duration.toString();
-    startController.text = availability.startHour.toString();
-    endController.text = availability.endHour.toString();
+    startController.text = availability.startHour.toString() + ':00';
+    endController.text = availability.endHour.toString() + ':00';
     values = converToArray(availability);
     setDays();
 
@@ -98,18 +99,31 @@ class SetAvailabilityViewModel extends BaseViewModel {
         depositAmount: 20,
         bookingStart:
             DateTime(now.year, now.month, now.day, availability.startHour!, 0));
-    for (var i = 0; i < availability.unavailableSlots!.length; i++) {
+    await _databaseApi
+        .getUserBookingStreamFirebase(userId: shop.ownerId)
+        .then((bookings) {
+      userBookings = bookings;
+    });
+
+    for (var i = 0; i < userBookings.length; i++) {
+      final start = userBookings[i].bookingStart;
+      final end = userBookings[i].bookingEnd;
+      userReservedBookings.add(DateTimeRange(
+          start: (DateTime(start!.year, start.month, start.day, start.hour, start.minute,0)),
+          end: (DateTime(end!.year, end.month, end.day, end.hour,
+              end.minute, 0))));
+    }
+    for (var i = 0; i < unavailableSlots!.length; i++) {
       var datesahab = DateTime.fromMicrosecondsSinceEpoch(
-          availability.unavailableSlots![i].microsecondsSinceEpoch as int);
+          unavailableSlots![i].microsecondsSinceEpoch as int);
 
       userReservedBookings.add(DateTimeRange(
           start: (DateTime(datesahab.year, datesahab.month, datesahab.day,
-              datesahab.hour,datesahab.minute, 0)),
+              datesahab.hour, datesahab.minute, 0)),
           end: (DateTime(datesahab.year, datesahab.month, datesahab.day,
               datesahab.hour, datesahab.minute + availability.duration!, 0))));
     }
-    print("user reserved *************");
-    print(userReservedBookings);
+
     notifyListeners();
 
     setBusy(false);
@@ -127,6 +141,7 @@ class SetAvailabilityViewModel extends BaseViewModel {
   }
 
   void setDays() {
+    excludedDays = [];
     !availability.Monday! ? excludedDays.add(DateTime.monday) : null;
     !availability.Tuesday! ? excludedDays.add(DateTime.tuesday) : null;
     !availability.Wednesday! ? excludedDays.add(DateTime.wednesday) : null;

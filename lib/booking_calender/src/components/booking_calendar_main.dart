@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:mipromo/booking_calender/src/components/booking_dialog.dart';
 import 'package:mipromo/booking_calender/src/components/booking_slot.dart';
 import 'package:mipromo/booking_calender/src/components/common_button.dart';
@@ -7,6 +8,7 @@ import 'package:mipromo/booking_calender/src/util/booking_util.dart';
 import 'package:flutter/material.dart';
 import 'package:mipromo/booking_calender/booking_calendar.dart';
 import 'package:mipromo/booking_calender/src/core/booking_controller.dart';
+import 'package:mipromo/models/shop_service.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -18,6 +20,7 @@ class BookingCalendarMain extends StatefulWidget {
     required this.convertStreamResultToDateTimeRanges,
     required this.uploadBooking,
     required this.bookingService,
+    this.service,
     this.bookingExplanation,
     this.bookingGridCrossAxisCount,
     this.bookingGridChildAspectRatio,
@@ -86,6 +89,7 @@ class BookingCalendarMain extends StatefulWidget {
   final bool? hideBreakTime;
 
   final String? locale;
+  final ShopService? service;
 
   @override
   State<BookingCalendarMain> createState() => _BookingCalendarMainState();
@@ -94,16 +98,16 @@ class BookingCalendarMain extends StatefulWidget {
 class _BookingCalendarMainState extends State<BookingCalendarMain> {
   late BookingController controller;
   final now = DateTime.now();
-
+  bool enableButton = false;
   @override
   void initState() {
     super.initState();
     controller = context.read<BookingController>();
-
     startOfDay = now.startOfDayService(controller.serviceOpening!);
     endOfDay = now.endOfDayService(controller.serviceClosing!);
     _focusedDay = now;
     _selectedDay = now;
+    controller.daytoAvail = now;
   }
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -121,6 +125,13 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
 
     controller.base = startOfDay;
     controller.resetSelectedSlot();
+  }
+
+  enableDay(DateTime date) {
+    setState(() {
+      enableButton = true;
+      controller.daytoAvail = date;
+    });
   }
 
   @override
@@ -146,6 +157,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         availableCalendarFormats: const {
                           CalendarFormat.month: 'Month',
                         },
+                        onDisabledDayTapped: enableDay,
                         calendarFormat: _calendarFormat,
                         calendarStyle: const CalendarStyle(
                           isTodayHighlighted: true,
@@ -159,6 +171,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                             setState(() {
                               _selectedDay = selectedDay;
                               _focusedDay = focusedDay;
+                              enableButton = false;
                             });
                             selectNewDateRange();
                           }
@@ -182,10 +195,16 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                               flag = false;
                             }
                           }
-                       
-                          for(var i = 0; i<=widget.unavailableDays!.length -1 ; i++){
-                            var datesahab = DateTime.fromMicrosecondsSinceEpoch(widget.unavailableDays![i].microsecondsSinceEpoch as int);
-                            if(date.year == datesahab.year && date.month == datesahab.month && date.day == datesahab.day){
+
+                          for (var i = 0;
+                              i <= widget.unavailableDays!.length - 1;
+                              i++) {
+                            var datesahab = DateTime.fromMicrosecondsSinceEpoch(
+                                widget.unavailableDays![i]
+                                    .microsecondsSinceEpoch as int);
+                            if (date.year == datesahab.year &&
+                                date.month == datesahab.month &&
+                                date.day == datesahab.day) {
                               flag = false;
                             }
                           }
@@ -291,7 +310,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                   ),
                   if (widget.showData == true) ...[
                     Container(
-                      padding: EdgeInsets.all(18),
+                      padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(30))),
                       child: Row(
@@ -304,7 +323,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(18),
+                      padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(30))),
                       child: Row(
@@ -316,6 +335,20 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                               : Text("£" +
                                   widget.bookingService.depositAmount!
                                       .toStringAsFixed(2)),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Duration"),
+                          widget.service!.duration != null
+                              ? Text(widget.service!.duration.toString()+'m')
+                              : Text(""),
                         ],
                       ),
                     ),
@@ -351,10 +384,27 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                       height: 8,
                     ),
                     CommonButton(
-                      text: 'Mark this day as "Unavailable"',
+                      text: enableButton
+                          ? 'Mark this day as "Available" (' +
+                              DateFormat('dd-MM-yyyy')
+                                  .format(controller.daytoAvail!) +
+                              ')'
+                          : 'Mark this day as "Unavailable"',
                       onTap: () async {
-                        controller.markDayUnavailable(widget.unavailableDays!,
-                            widget.bookingService.userId);
+                        if (!enableButton) {
+                          controller.markDayUnavailable(widget.unavailableDays!,
+                              widget.bookingService.userId);
+                          setState(() {
+                            enableButton = true;
+                          });
+                        } else {
+                          controller.markDayAvailable(widget.unavailableDays!,
+                              widget.bookingService.userId);
+                          setState(() {
+                            enableButton = false;
+                          });
+                        }
+
                         controller.resetSelectedSlot();
                       },
                       isDisabled: false,
