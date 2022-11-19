@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:mipromo/booking_calender/src/model/booking_service.dart';
 import 'package:mipromo/ui/profile/buyer/editProfile/buyer_edit_profile_viewmodel.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
-// import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
 import 'package:http/http.dart' as http;
@@ -158,71 +158,71 @@ class BookingViewModel extends BaseViewModel {
       cancelTitle: 'Close',
     );
 
-    if (dialogResponse?.confirmed ?? false) {
-      if (await _navigationService.navigateTo(Routes.inputAddressView) ==
-          true) {
-        await _navigationService.navigateTo(
-          Routes.bookServiceView,
-          arguments: BookServiceViewArguments(
-              user: user,
-              service: service,
-              bookingservice: BookkingService(
-                  email: newBooking.userEmail,
-                  bookingStart: newBooking.bookingStart,
-                  bookingEnd: newBooking.bookingEnd,
-                  userId: newBooking.userId,
-                  ownerId: service.ownerId,
-                  userName: newBooking.userName,
-                  serviceId: newBooking.serviceId,
-                  depositAmount: service.depositAmount,
-                  serviceName: newBooking.serviceName,
-                  servicePrice: newBooking.servicePrice,
-                  serviceDuration: newBooking.serviceDuration)),
-        );
-      }
-    }
-
-    // final response = await _dialogService.showCustomDialog(
-    //   variant: AlertType.custom,
-    //   title: 'Choose Payment Method',
-    // );
-
-    // if (response != null && response.confirmed) {
+    // if (dialogResponse?.confirmed ?? false) {
     //   if (await _navigationService.navigateTo(Routes.inputAddressView) ==
     //       true) {
     //     await _navigationService.navigateTo(
     //       Routes.bookServiceView,
     //       arguments: BookServiceViewArguments(
-    //           user: user, service: service, bookingservice: BookkingService(
-    //         email: newBooking.userEmail,
-    //         bookingStart: newBooking.bookingStart,
-    //         bookingEnd: newBooking.bookingEnd,
-    //         userId: newBooking.userId,
-    //         userName: newBooking.userName,
-    //         serviceId: newBooking.serviceId,
-    //         serviceName: newBooking.serviceName,
-    //         servicePrice: newBooking.servicePrice,
-    //         serviceDuration: newBooking.serviceDuration)),
+    //           user: user,
+    //           service: service,
+    //           bookingservice: BookkingService(
+    //               email: newBooking.userEmail,
+    //               bookingStart: newBooking.bookingStart,
+    //               bookingEnd: newBooking.bookingEnd,
+    //               userId: newBooking.userId,
+    //               ownerId: service.ownerId,
+    //               userName: newBooking.userName,
+    //               serviceId: newBooking.serviceId,
+    //               depositAmount: service.depositAmount,
+    //               serviceName: newBooking.serviceName,
+    //               servicePrice: newBooking.servicePrice,
+    //               serviceDuration: newBooking.serviceDuration)),
     //     );
     //   }
-    // } else if (response != null && !response.confirmed) {
-    //   await initPaymentSheet();
-    //   if (await confirmPayment()) {
-    //     await addOrder(newBooking.bookingStart,newBooking.bookingEnd);
-    //     await _databaseApi.uploadBookingFirebase(
-    //     newBooking: BookkingService(
-    //         email: newBooking.userEmail,
-    //         bookingStart: newBooking.bookingStart,
-    //         bookingEnd: newBooking.bookingEnd,
-    //         userId: newBooking.userId,
-    //         userName: newBooking.userName,
-    //         serviceId: newBooking.serviceId,
-    //         serviceName: newBooking.serviceName,
-    //         servicePrice: newBooking.servicePrice,
-    //         serviceDuration: newBooking.serviceDuration));
-    //   }
-
     // }
+
+    final response = await _dialogService.showCustomDialog(
+      variant: AlertType.custom,
+      title: 'Choose Payment Method',
+    );
+
+    if (response != null && response.confirmed) {
+      if (await _navigationService.navigateTo(Routes.inputAddressView) ==
+          true) {
+        await _navigationService.navigateTo(
+          Routes.bookServiceView,
+          arguments: BookServiceViewArguments(
+              user: user, service: service, bookingservice: BookkingService(
+            email: newBooking.userEmail,
+            bookingStart: newBooking.bookingStart,
+            bookingEnd: newBooking.bookingEnd,
+            userId: newBooking.userId,
+            userName: newBooking.userName,
+            serviceId: newBooking.serviceId,
+            serviceName: newBooking.serviceName,
+            servicePrice: newBooking.servicePrice,
+            serviceDuration: newBooking.serviceDuration)),
+        );
+      }
+    } else if (response != null && !response.confirmed) {
+      await initPaymentSheet();
+      if (await confirmPayment()) {
+        await addOrder(newBooking.bookingStart,newBooking.bookingEnd);
+        await _databaseApi.uploadBookingFirebase(
+        newBooking: BookkingService(
+            email: newBooking.userEmail,
+            bookingStart: newBooking.bookingStart,
+            bookingEnd: newBooking.bookingEnd,
+            userId: newBooking.userId,
+            userName: newBooking.userName,
+            serviceId: newBooking.serviceId,
+            serviceName: newBooking.serviceName,
+            servicePrice: newBooking.servicePrice,
+            serviceDuration: newBooking.serviceDuration));
+      }
+
+    }
 
     // await Future.delayed(const Duration(seconds: 1));
     // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
@@ -380,71 +380,71 @@ class BookingViewModel extends BaseViewModel {
     return body['intent'];
   }
 
-  // Future<void> initPaymentSheet() async {
-  //   try {
-  //     // 1. create payment intent on the server
-  //     final data = await _createTestPaymentSheet();
+  Future<void> initPaymentSheet() async {
+    try {
+      // 1. create payment intent on the server
+      final data = await _createTestPaymentSheet();
 
-  //     // create some billingdetails
-  //     final billingDetails = BillingDetails(
-  //       name: 'Flutter Stripe',
-  //       email: 'email@stripe.com',
-  //       phone: '+48888000888',
-  //       address: Address(
-  //         city: 'Houston',
-  //         country: 'US',
-  //         line1: '1459  Circle Drive',
-  //         line2: '',
-  //         state: 'Texas',
-  //         postalCode: '77063',
-  //       ),
-  //     ); // mocked data for tests
+      // create some billingdetails
+      final billingDetails = BillingDetails(
+        name: 'Flutter Stripe',
+        email: 'email@stripe.com',
+        phone: '+48888000888',
+        address: Address(
+          city: 'Houston',
+          country: 'US',
+          line1: '1459  Circle Drive',
+          line2: '',
+          state: 'Texas',
+          postalCode: '77063',
+        ),
+      ); // mocked data for tests
 
-  //     // 2. initialize the payment sheet
-  //     await Stripe.instance.initPaymentSheet(
-  //       paymentSheetParameters: SetupPaymentSheetParameters(
-  //         // Main params
-  //         paymentIntentClientSecret: data['client_secret'].toString(),
-  //         merchantDisplayName: 'Flutter Stripe Store Demo',
-  //         // Customer params
-  //         customerId: data['customer'].toString(),
-  //         customerEphemeralKeySecret: data['ephemeralKey'].toString(),
-  //         // Extra params
-  //         applePay: true,
-  //         googlePay: true,
-  //         style: ThemeMode.dark,
-  //         // billingDetails: billingDetails,
-  //         testEnv: true,
-  //         merchantCountryCode: 'DE',
-  //       ),
-  //     );
-  //     step = 1;
-  //   } catch (e) {
-  //     Fluttertoast.showToast(msg: 'Error: $e');
-  //     rethrow;
-  //   }
-  // }
+      // 2. initialize the payment sheet
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          // Main params
+          paymentIntentClientSecret: data['client_secret'].toString(),
+          merchantDisplayName: 'Flutter Stripe Store Demo',
+          // Customer params
+          customerId: data['customer'].toString(),
+          customerEphemeralKeySecret: data['ephemeralKey'].toString(),
+          // Extra params
+          applePay: true,
+          googlePay: true,
+          style: ThemeMode.dark,
+          // billingDetails: billingDetails,
+          testEnv: true,
+          merchantCountryCode: 'DE',
+        ),
+      );
+      step = 1;
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Error: $e');
+      rethrow;
+    }
+  }
 
-  // Future<bool> confirmPayment() async {
-  //   print("Asdfasdfsdfasfd");
-  //   try {
-  //     // 3. display the payment sheet.
-  //     await Stripe.instance.presentPaymentSheet();
+  Future<bool> confirmPayment() async {
+    print("Asdfasdfsdfasfd");
+    try {
+      // 3. display the payment sheet.
+      await Stripe.instance.presentPaymentSheet();
 
-  //     step = 0;
+      step = 0;
 
-  //     Fluttertoast.showToast(msg: 'Payment succesfully completed');
-  //     return true;
-  //   } on Exception catch (e) {
-  //     if (e is StripeException) {
-  //       Fluttertoast.showToast(msg: 'Error from Stripe: ${e.error.localizedMessage}');
-  //       return false;
-  //     } else {
-  //       Fluttertoast.showToast(msg: 'Unforeseen error: ${e}');
-  //       return false;
-  //     }
-  //   }
-  // }
+      Fluttertoast.showToast(msg: 'Payment succesfully completed');
+      return true;
+    } on Exception catch (e) {
+      if (e is StripeException) {
+        Fluttertoast.showToast(msg: 'Error from Stripe: ${e.error.localizedMessage}');
+        return false;
+      } else {
+        Fluttertoast.showToast(msg: 'Unforeseen error: ${e}');
+        return false;
+      }
+    }
+  }
 
 }
 

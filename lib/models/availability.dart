@@ -24,8 +24,7 @@ class Availability {
       this.startHour,
       this.endHour,
       this.unavailableDays,
-      this.unavailableSlots
-      });
+      this.unavailableSlots});
 
   Availability.fromJson(Map<String, dynamic> json) {
     Monday = json['Monday'] as bool;
@@ -35,7 +34,7 @@ class Availability {
     Friday = json['Friday'] as bool;
     Saturday = json['Saturday'] as bool;
     Sunday = json['Sunday'] as bool;
-    duration = json['duration'] as int;
+    duration = json['duration'] as int? ?? 30;
     startHour = json['startHour'] as int;
     endHour = json['endHour'] as int;
     unavailableDays = json['unavailableDays'] as List?;
