@@ -104,6 +104,7 @@ class BuyerProfileViewModel extends BaseViewModel {
   
 
   Future<void> navigateToEditProfile(AppUser user) async {
+
     if (await _navigationService.navigateTo(
           Routes.buyerEditProfileView,
           arguments: BuyerEditProfileViewArguments(user: user),

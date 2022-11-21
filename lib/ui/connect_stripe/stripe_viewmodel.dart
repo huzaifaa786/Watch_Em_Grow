@@ -19,23 +19,25 @@ class connectStripeViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _dialogService = locator<DialogService>();
   final _paypalApi = locator<PaypalApi>();
-  final Completer<WebViewController> _controller = Completer<WebViewController>();
+  final Completer<WebViewController> _controller =
+      Completer<WebViewController>();
+  WebViewController? ccontroller;
   bool isWebviewLoading = true;
-  
+
   // String connectUrl =
   //     'https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_M5OewgfEWvHw7auL4XNmWRY9BgIT1hLP&scope=read_write&redirect_uri=http%3A%2F%2Ftritec.store%2Fmipromo%2Fpublic%2Fredirect';
-  
+
   String connectUrl =
-      'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_MlHkWL4ntgQZEKaTP6bHxoUoXplKS4OT';
+      'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_M5OewgfEWvHw7auL4XNmWRY9BgIT1hLP';
 
   void init() {
     Future.delayed(Duration.zero, () async {
       try {
-      //    final result = await Stripe.instance.(
-      //   clientSecret: clientSecret,
-      // );
-    
-      // Stripe.instance.retrievePaymentIntent('');
+        //    final result = await Stripe.instance.(
+        //   clientSecret: clientSecret,
+        // );
+
+        // Stripe.instance.retrievePaymentIntent('');
         /*accessToken = await _paypalApi.getVerificationAccessToken();
         if (accessToken != null) {
           print('Access Token: ' + accessToken!);
@@ -43,23 +45,31 @@ class connectStripeViewModel extends BaseViewModel {
           setBusy(false);
         }*/
       } catch (e) {
-        _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: e.toString());
+        _dialogService.showCustomDialog(
+            variant: AlertType.error,
+            title: 'Error',
+            description: e.toString());
       }
     });
   }
 
-  Future<NavigationDecision> handleWebViewVerification(NavigationRequest request) async {
-
+  Future<NavigationDecision> handleWebViewVerification(
+      NavigationRequest request) async {
+        print(request);
     if (request.url.contains('http://tritec.store/mipromo/public/redirect')) {
-      
       _navigationService.back(result: true);
-    }
-    else{
+    } else {
       _navigationService.back(result: false);
-
     }
-      return NavigationDecision.navigate;
+    return NavigationDecision.navigate;
+  }
 
+  readResponse() async {
+    ccontroller!
+        .evaluateJavascript("document.documentElement.innerHTML")
+        .then((value) async {
+      print(value);
+    });
   }
 
   void setIsWebviewLoading({required bool loading}) {

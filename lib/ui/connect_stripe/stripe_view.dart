@@ -14,7 +14,8 @@ class ConnectStripeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Completer<WebViewController> _controller = Completer<WebViewController>();
+    final Completer<WebViewController> _controller =
+        Completer<WebViewController>();
     return ViewModelBuilder<connectStripeViewModel>.reactive(
       onModelReady: (model) => model.init(),
       builder: (context, model, child) => Scaffold(
@@ -29,18 +30,19 @@ class ConnectStripeView extends StatelessWidget {
                   WebView(
                     initialUrl: model.connectUrl,
                     javascriptMode: JavascriptMode.unrestricted,
-                    navigationDelegate: ( request) {
+                    navigationDelegate: (request) {
                       return model.handleWebViewVerification(request);
                     },
                     onWebViewCreated: (WebViewController webViewController) {
                       _controller.complete(webViewController);
+                      model.ccontroller = webViewController;
                     },
                     onProgress: (_) {
                       model.setIsWebviewLoading(loading: true);
                     },
                     onPageFinished: (_) {
                       model.setIsWebviewLoading(loading: false);
-                      
+                      model.readResponse;
                     },
                   ),
                   if (model.isWebviewLoading) const BasicLoader()
