@@ -56,7 +56,7 @@ dependencies:
   table_calendar: ^3.0.6
   weekday_selector: ^1.1.0
   uni_links: ^0.5.1
-  firebase_dynamic_links: ^2.0.7
+  firebase_dynamic_links: ^3.0.2
   package_info_plus: ^1.4.0
   provider: ^6.0.3
   logger: ^1.1.0
