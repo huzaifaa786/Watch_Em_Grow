@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/app/app.router.dart';
 import 'package:mipromo/api/paypal_api.dart';
@@ -18,43 +19,61 @@ class connectStripeViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _dialogService = locator<DialogService>();
   final _paypalApi = locator<PaypalApi>();
-  final Completer<WebViewController> _controller = Completer<WebViewController>();
+  final Completer<WebViewController> _controller =
+      Completer<WebViewController>();
+  WebViewController? ccontroller;
   bool isWebviewLoading = true;
 
   // String connectUrl =
   //     'https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_M5OewgfEWvHw7auL4XNmWRY9BgIT1hLP&scope=read_write&redirect_uri=http%3A%2F%2Ftritec.store%2Fmipromo%2Fpublic%2Fredirect';
 
-  // void init() {
-  //   Future.delayed(Duration.zero, () async {
-  //     try {
-  //       /*accessToken = await _paypalApi.getVerificationAccessToken();
-  //       if (accessToken != null) {
-  //         print('Access Token: ' + accessToken!);
-  //         //_navigationService.back();
-  //         setBusy(false);
-  //       }*/
-  //     } catch (e) {
-  //       _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: e.toString());
-  //     }
-  //   });
-  // }
+  String connectUrl =
+      'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_M5OewgfEWvHw7auL4XNmWRY9BgIT1hLP';
 
-  // Future<NavigationDecision> handleWebViewVerification(NavigationRequest request) async {
+  void init() {
+    Future.delayed(Duration.zero, () async {
+      try {
+        //    final result = await Stripe.instance.(
+        //   clientSecret: clientSecret,
+        // );
 
-  //   if (request.url.contains('http://tritec.store/mipromo/public/redirect')) {
-      
-  //     _navigationService.back(result: true);
-  //   }
-  //   else{
-  //     _navigationService.back(result: false);
+        // Stripe.instance.retrievePaymentIntent('');
+        /*accessToken = await _paypalApi.getVerificationAccessToken();
+        if (accessToken != null) {
+          print('Access Token: ' + accessToken!);
+          //_navigationService.back();
+          setBusy(false);
+        }*/
+      } catch (e) {
+        _dialogService.showCustomDialog(
+            variant: AlertType.error,
+            title: 'Error',
+            description: e.toString());
+      }
+    });
+  }
 
-  //   }
-  //     return NavigationDecision.navigate;
+  Future<NavigationDecision> handleWebViewVerification(
+      NavigationRequest request) async {
+        print(request);
+    if (request.url.contains('http://tritec.store/mipromo/public/redirect')) {
+      _navigationService.back(result: true);
+    } else {
+      _navigationService.back(result: false);
+    }
+    return NavigationDecision.navigate;
+  }
 
-  // }
+  readResponse() async {
+    ccontroller!
+        .evaluateJavascript("document.documentElement.innerHTML")
+        .then((value) async {
+      print(value);
+    });
+  }
 
-  // void setIsWebviewLoading({required bool loading}) {
-  //   isWebviewLoading = loading;
-  //   notifyListeners();
-  // }
+  void setIsWebviewLoading({required bool loading}) {
+    isWebviewLoading = loading;
+    notifyListeners();
+  }
 }

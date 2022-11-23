@@ -14,41 +14,42 @@ class ConnectStripeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final Completer<WebViewController> _controller = Completer<WebViewController>();
-    return Container();
-    // ViewModelBuilder<connectStripeViewModel>.reactive(
-    //   onModelReady: (model) => model.init(),
-    //   builder: (context, model, child) => Scaffold(
-    //     resizeToAvoidBottomInset: false,
-    //     appBar: AppBar(
-    //       title: const Text('Connect Stripe'),
-    //     ),
-    //     body: model.isBusy
-    //         ? const BasicLoader()
-    //         : Stack(
-    //             children: [
-    //               WebView(
-    //                 initialUrl: model.connectUrl,
-    //                 javascriptMode: JavascriptMode.unrestricted,
-    //                 navigationDelegate: ( request) {
-    //                   return model.handleWebViewVerification(request);
-    //                 },
-    //                 onWebViewCreated: (WebViewController webViewController) {
-    //                   _controller.complete(webViewController);
-    //                 },
-    //                 onProgress: (_) {
-    //                   model.setIsWebviewLoading(loading: true);
-    //                 },
-    //                 onPageFinished: (_) {
-    //                   model.setIsWebviewLoading(loading: false);
-                      
-    //                 },
-    //               ),
-    //               if (model.isWebviewLoading) const BasicLoader()
-    //             ],
-    //           ),
-    //   ),
-    //   viewModelBuilder: () => connectStripeViewModel(),
-    // );
+    final Completer<WebViewController> _controller =
+        Completer<WebViewController>();
+    return ViewModelBuilder<connectStripeViewModel>.reactive(
+      onModelReady: (model) => model.init(),
+      builder: (context, model, child) => Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: const Text('Connect Stripe'),
+        ),
+        body: model.isBusy
+            ? const BasicLoader()
+            : Stack(
+                children: [
+                  WebView(
+                    initialUrl: model.connectUrl,
+                    javascriptMode: JavascriptMode.unrestricted,
+                    navigationDelegate: (request) {
+                      return model.handleWebViewVerification(request);
+                    },
+                    onWebViewCreated: (WebViewController webViewController) {
+                      _controller.complete(webViewController);
+                      model.ccontroller = webViewController;
+                    },
+                    onProgress: (_) {
+                      model.setIsWebviewLoading(loading: true);
+                    },
+                    onPageFinished: (_) {
+                      model.setIsWebviewLoading(loading: false);
+                      model.readResponse;
+                    },
+                  ),
+                  if (model.isWebviewLoading) const BasicLoader()
+                ],
+              ),
+      ),
+      viewModelBuilder: () => connectStripeViewModel(),
+    );
   }
 }
