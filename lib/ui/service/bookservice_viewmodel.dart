@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-// import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/app/app.router.dart';
 import 'package:mipromo/api/paypal_api.dart';
