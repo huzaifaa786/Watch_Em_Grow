@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/api/paypal_api.dart';
 import 'package:mipromo/api/storage_api.dart';
+import 'package:mipromo/api/stripe_api.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/app/app.router.dart';
 import 'package:mipromo/models/app_user.dart';
@@ -24,6 +25,7 @@ class OrderDetailViewModel extends BaseViewModel {
   final _dialogService = locator<DialogService>();
   final _databaseApi = locator<DatabaseApi>();
   final _paypalApi = locator<PaypalApi>();
+  final _stripeApi = StripeApi();
   final _storageApi = locator<StorageApi>();
   final _userService = locator<UserService>();
   late Order order;
@@ -175,14 +177,17 @@ class OrderDetailViewModel extends BaseViewModel {
       if (response['statusCode'] == 201) {
         isApiLoading = false;
         notifyListeners();
-        _databaseApi.refundOrder(order, DateTime.now().microsecondsSinceEpoch).then((value) async {
+        _databaseApi
+            .refundOrder(order, DateTime.now().microsecondsSinceEpoch)
+            .then((value) async {
           var token = await _databaseApi.getToken(order.userId);
           if (token != null) {
             Shop shopDetails = await _databaseApi.getShop(order.service.shopId);
             var test = _databaseApi.postNotification(
                 orderID: order.orderId,
                 title: 'Order has been cancelled',
-                body: '${shopDetails.name} has cancelled ${order.service.name}(£${order.service.price})',
+                body:
+                    '${shopDetails.name} has cancelled ${order.service.name}(£${order.service.price})',
                 forRole: 'order',
                 userID: '',
                 receiverToken: token.toString());
@@ -191,7 +196,8 @@ class OrderDetailViewModel extends BaseViewModel {
               "userId": user.id,
               "orderID": order.orderId,
               "title": 'Order has been cancelled',
-              "body": '${shopDetails.name} has cancelled ${order.service.name}(£${order.service.price})',
+              "body":
+                  '${shopDetails.name} has cancelled ${order.service.name}(£${order.service.price})',
               "id": DateTime.now().millisecondsSinceEpoch.toString(),
               "read": false,
               "image": user.imageUrl,
@@ -203,19 +209,26 @@ class OrderDetailViewModel extends BaseViewModel {
           }
 
           await _dialogService.showCustomDialog(
-              variant: AlertType.success, title: 'Success', description: 'Order is cancelled');
+              variant: AlertType.success,
+              title: 'Success',
+              description: 'Order is cancelled');
           _navigationService.back();
         });
       } else {
         isApiLoading = false;
         notifyListeners();
         _dialogService.showCustomDialog(
-            variant: AlertType.error, title: 'Error', description: response['message'] as String);
+            variant: AlertType.error,
+            title: 'Error',
+            description: response['message'] as String);
       }
     } catch (exception) {
       isApiLoading = false;
       notifyListeners();
-      _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
+      _dialogService.showCustomDialog(
+          variant: AlertType.error,
+          title: 'Error',
+          description: exception.toString());
     }
   }
 
@@ -303,7 +316,8 @@ class OrderDetailViewModel extends BaseViewModel {
                       height: 90,
                       padding: EdgeInsets.only(left: 5),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5), border: Border.all(color: Color(0x60A09C9C))),
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Color(0x60A09C9C))),
                       child: TextField(
                         maxLines: 4,
                         controller: _reasonCont,
@@ -347,7 +361,8 @@ class OrderDetailViewModel extends BaseViewModel {
                                   isApiLoading = true;
                                   notifyListeners();
                                   _databaseApi
-                                      .refundCaseOpen(_reasonCont.text, order, DateTime.now().microsecondsSinceEpoch)
+                                      .refundCaseOpen(_reasonCont.text, order,
+                                          DateTime.now().microsecondsSinceEpoch)
                                       .then((value) async {
                                     isApiLoading = false;
                                     notifyListeners();
@@ -362,7 +377,9 @@ class OrderDetailViewModel extends BaseViewModel {
                                   isApiLoading = false;
                                   notifyListeners();
                                   _dialogService.showCustomDialog(
-                                      variant: AlertType.error, title: 'Error', description: exception.toString());
+                                      variant: AlertType.error,
+                                      title: 'Error',
+                                      description: exception.toString());
                                 }
                               } else {
                                 Fluttertoast.showToast(
@@ -417,17 +434,24 @@ class OrderDetailViewModel extends BaseViewModel {
       try {
         isApiLoading = true;
         notifyListeners();
-        _databaseApi.refundCaseClose(order, DateTime.now().microsecondsSinceEpoch).then((value) async {
+        _databaseApi
+            .refundCaseClose(order, DateTime.now().microsecondsSinceEpoch)
+            .then((value) async {
           isApiLoading = false;
           notifyListeners();
           await _dialogService.showCustomDialog(
-              variant: AlertType.success, title: 'Refund case closed', description: "Thank you for using our service.");
+              variant: AlertType.success,
+              title: 'Refund case closed',
+              description: "Thank you for using our service.");
           _navigationService.back();
         });
       } catch (exception) {
         isApiLoading = false;
         notifyListeners();
-        _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
+        _dialogService.showCustomDialog(
+            variant: AlertType.error,
+            title: 'Error',
+            description: exception.toString());
       }
     }
   }
@@ -448,21 +472,30 @@ class OrderDetailViewModel extends BaseViewModel {
         if (response['statusCode'] == 201) {
           isApiLoading = false;
           notifyListeners();
-          _databaseApi.refundOrder(order, DateTime.now().microsecondsSinceEpoch).then((value) async {
+          _databaseApi
+              .refundOrder(order, DateTime.now().microsecondsSinceEpoch)
+              .then((value) async {
             await _dialogService.showCustomDialog(
-                variant: AlertType.success, title: 'Success', description: 'Payment is refunded.');
+                variant: AlertType.success,
+                title: 'Success',
+                description: 'Payment is refunded.');
             _navigationService.back();
           });
         } else {
           isApiLoading = false;
           notifyListeners();
           _dialogService.showCustomDialog(
-              variant: AlertType.error, title: 'Error', description: response['message'] as String);
+              variant: AlertType.error,
+              title: 'Error',
+              description: response['message'] as String);
         }
       } catch (exception) {
         isApiLoading = false;
         notifyListeners();
-        _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
+        _dialogService.showCustomDialog(
+            variant: AlertType.error,
+            title: 'Error',
+            description: exception.toString());
       }
 
       /*isApiLoading = true;
@@ -503,14 +536,18 @@ class OrderDetailViewModel extends BaseViewModel {
         if (response['statusCode'] == 201) {
           isApiLoading = false;
           notifyListeners();
-          _databaseApi.refundOrder(order, DateTime.now().microsecondsSinceEpoch).then((value) async {
+          _databaseApi
+              .refundOrder(order, DateTime.now().microsecondsSinceEpoch)
+              .then((value) async {
             var token = await _databaseApi.getToken(order.service.ownerId);
             if (token != null) {
-              Shop shopDetails = await _databaseApi.getShop(order.service.shopId);
+              Shop shopDetails =
+                  await _databaseApi.getShop(order.service.shopId);
               var test = _databaseApi.postNotification(
                   orderID: order.orderId,
                   title: 'Order has been cancelled',
-                  body: '${order.service.name}(£${order.service.price}) on ${shopDetails.name} by ${order.name}',
+                  body:
+                      '${order.service.name}(£${order.service.price}) on ${shopDetails.name} by ${order.name}',
                   forRole: 'order',
                   userID: '',
                   receiverToken: token.toString());
@@ -519,7 +556,8 @@ class OrderDetailViewModel extends BaseViewModel {
                 "userId": user.id,
                 "orderID": order.orderId,
                 "title": 'Order has been cancelled',
-                "body": '${order.service.name}(£${order.service.price}) on ${shopDetails.name} by ${order.name}',
+                "body":
+                    '${order.service.name}(£${order.service.price}) on ${shopDetails.name} by ${order.name}',
                 "id": DateTime.now().millisecondsSinceEpoch.toString(),
                 "read": false,
                 "image": user.imageUrl,
@@ -527,28 +565,37 @@ class OrderDetailViewModel extends BaseViewModel {
                 "sound": "default"
               };
 
-              _databaseApi.postNotificationCollection(shopDetails.ownerId, postMap);
+              _databaseApi.postNotificationCollection(
+                  shopDetails.ownerId, postMap);
             }
             await _dialogService.showCustomDialog(
-                variant: AlertType.success, title: 'Success', description: 'Payment is refunded.');
+                variant: AlertType.success,
+                title: 'Success',
+                description: 'Payment is refunded.');
             _navigationService.back();
           });
         } else {
           isApiLoading = false;
           notifyListeners();
           _dialogService.showCustomDialog(
-              variant: AlertType.error, title: 'Error', description: response['message'] as String);
+              variant: AlertType.error,
+              title: 'Error',
+              description: response['message'] as String);
         }
       } catch (exception) {
         isApiLoading = false;
         notifyListeners();
-        _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
+        _dialogService.showCustomDialog(
+            variant: AlertType.error,
+            title: 'Error',
+            description: exception.toString());
       }
     }
   }
 
   Future handleRequestReceivedProduct(Order order) async {
-    final DialogResponse? dialogResponse = await _dialogService.showCustomDialog(
+    final DialogResponse? dialogResponse =
+        await _dialogService.showCustomDialog(
       variant: AlertType.error,
       title: 'Are you sure',
       description: 'Have you received your product?',
@@ -564,13 +611,20 @@ class OrderDetailViewModel extends BaseViewModel {
         isApiLoading = true;
         notifyListeners();
         final shopDetails = await _databaseApi.getShop(order.shopId);
-        final paypalEmail = await _databaseApi.getSellerPaypal(shopDetails.ownerId);
+        final paypalEmail =
+            await _databaseApi.getSellerPaypal(shopDetails.ownerId);
         final accessToken = await _paypalApi.getAccessToken();
-        final response = await _paypalApi.payProductSellerPayment(paypalEmail.toString(), order, processingFee, accessToken!);
+        final response = await _paypalApi.payProductSellerPayment(
+            paypalEmail.toString(), order, processingFee, accessToken!);
         if (response['statusCode'] == 201) {
           final String timeString = DateTime.now().toString();
-          _databaseApi.completeOrder(order, DateTime.parse(timeString).microsecondsSinceEpoch).then((value) async {
-            _databaseApi.updateTotalSaleCount(order.service.ownerId).then((value) async {
+          _databaseApi
+              .completeOrder(
+                  order, DateTime.parse(timeString).microsecondsSinceEpoch)
+              .then((value) async {
+            _databaseApi
+                .updateTotalSaleCount(order.service.ownerId)
+                .then((value) async {
               ///Notification
               var token = await _databaseApi.getToken(order.service.ownerId);
               if (token != null) {
@@ -596,7 +650,8 @@ class OrderDetailViewModel extends BaseViewModel {
                   "sound": "default"
                 };
 
-                _databaseApi.postNotificationCollection(shopDetails.ownerId, postMap);
+                _databaseApi.postNotificationCollection(
+                    shopDetails.ownerId, postMap);
               }
               isApiLoading = false;
               notifyListeners();
@@ -612,18 +667,24 @@ class OrderDetailViewModel extends BaseViewModel {
           isApiLoading = false;
           notifyListeners();
           _dialogService.showCustomDialog(
-              variant: AlertType.error, title: 'Error', description: response['message'] as String);
+              variant: AlertType.error,
+              title: 'Error',
+              description: response['message'] as String);
         }
       } catch (exception) {
         isApiLoading = false;
         notifyListeners();
-        _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
+        _dialogService.showCustomDialog(
+            variant: AlertType.error,
+            title: 'Error',
+            description: exception.toString());
       }
     }
   }
 
   Future handleRequestReceivedService(Order order) async {
-    final DialogResponse? dialogResponse = await _dialogService.showCustomDialog(
+    final DialogResponse? dialogResponse =
+        await _dialogService.showCustomDialog(
       variant: AlertType.error,
       title: 'Are you sure',
       description: 'Have you received your service?',
@@ -640,8 +701,13 @@ class OrderDetailViewModel extends BaseViewModel {
         notifyListeners();
 
         final String timeString = DateTime.now().toString();
-        _databaseApi.completeOrder(order, DateTime.parse(timeString).microsecondsSinceEpoch).then((value) async {
-          _databaseApi.updateTotalSaleCount(order.service.ownerId).then((value) async {
+        _databaseApi
+            .completeOrder(
+                order, DateTime.parse(timeString).microsecondsSinceEpoch)
+            .then((value) async {
+          _databaseApi
+              .updateTotalSaleCount(order.service.ownerId)
+              .then((value) async {
             var token = await _databaseApi.getToken(order.service.ownerId);
             if (token != null) {
               var test = _databaseApi.postNotification(
@@ -666,7 +732,8 @@ class OrderDetailViewModel extends BaseViewModel {
                 "sound": "default"
               };
 
-              _databaseApi.postNotificationCollection(shopDetails.ownerId, postMap);
+              _databaseApi.postNotificationCollection(
+                  shopDetails.ownerId, postMap);
             }
             isApiLoading = false;
             notifyListeners();
@@ -681,7 +748,10 @@ class OrderDetailViewModel extends BaseViewModel {
       } catch (exception) {
         isApiLoading = false;
         notifyListeners();
-        _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
+        _dialogService.showCustomDialog(
+            variant: AlertType.error,
+            title: 'Error',
+            description: exception.toString());
       }
     }
   }
@@ -699,7 +769,9 @@ class OrderDetailViewModel extends BaseViewModel {
       final accessToken = await _paypalApi.getAccessToken();
       final response = await _paypalApi.refundPayment(order, accessToken!);
       if (response['statusCode'] == 201) {
-        _databaseApi.cancelOrder(order, DateTime.now().microsecondsSinceEpoch).then((value) async {
+        _databaseApi
+            .cancelOrder(order, DateTime.now().microsecondsSinceEpoch)
+            .then((value) async {
           var token;
           if (user.id == order.service.ownerId) {
             token = await _databaseApi.getToken(order.userId);
@@ -711,7 +783,8 @@ class OrderDetailViewModel extends BaseViewModel {
             Shop shopDetails = await _databaseApi.getShop(order.service.shopId);
             String body;
             if (user.id == order.service.ownerId) {
-              body = '${shopDetails.name} has cancelled ${order.service.name}(£${order.service.price})';
+              body =
+                  '${shopDetails.name} has cancelled ${order.service.name}(£${order.service.price})';
             } else {
               body =
                   '${order.name} has cancelled ${order.service.name}(£${order.service.price}) from ${shopDetails.name}';
@@ -740,17 +813,23 @@ class OrderDetailViewModel extends BaseViewModel {
           }
           isApiLoading = false;
           await _dialogService.showCustomDialog(
-              variant: AlertType.success, title: 'Success', description: 'Booking is cancelled.');
+              variant: AlertType.success,
+              title: 'Success',
+              description: 'Booking is cancelled.');
           _navigationService.back();
         }, onError: (exception) {
           isApiLoading = false;
           notifyListeners();
-          _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
+          _dialogService.showCustomDialog(
+              variant: AlertType.error,
+              title: 'Error',
+              description: exception.toString());
         });
       }
     }
   }
-Future handleCancelNoRefund(Order order) async {
+
+  Future handleCancelNoRefund(Order order) async {
     final dialogResponse = await _dialogService.showConfirmationDialog(
       title: 'Are you sure?',
       confirmationTitle: 'Cancel appointment',
@@ -760,54 +839,62 @@ Future handleCancelNoRefund(Order order) async {
     if (dialogResponse?.confirmed ?? false) {
       isApiLoading = true;
       notifyListeners();
-        _databaseApi.cancelOrder(order, DateTime.now().microsecondsSinceEpoch).then((value) async {
-          var token;
+      _databaseApi
+          .cancelOrder(order, DateTime.now().microsecondsSinceEpoch)
+          .then((value) async {
+        var token;
+        if (user.id == order.service.ownerId) {
+          token = await _databaseApi.getToken(order.userId);
+        } else {
+          token = await _databaseApi.getToken(order.service.ownerId);
+        }
+
+        if (token != null) {
+          Shop shopDetails = await _databaseApi.getShop(order.service.shopId);
+          String body;
           if (user.id == order.service.ownerId) {
-            token = await _databaseApi.getToken(order.userId);
+            body =
+                '${shopDetails.name} has cancelled ${order.service.name}(£${order.service.price})';
           } else {
-            token = await _databaseApi.getToken(order.service.ownerId);
+            body =
+                '${order.name} has cancelled ${order.service.name}(£${order.service.price}) from ${shopDetails.name}';
           }
+          var test = _databaseApi.postNotification(
+              orderID: order.orderId,
+              title: 'Booking has been cancelled',
+              body: body,
+              forRole: 'order',
+              userID: '',
+              receiverToken: token.toString());
 
-          if (token != null) {
-            Shop shopDetails = await _databaseApi.getShop(order.service.shopId);
-            String body;
-            if (user.id == order.service.ownerId) {
-              body = '${shopDetails.name} has cancelled ${order.service.name}(£${order.service.price})';
-            } else {
-              body =
-                  '${order.name} has cancelled ${order.service.name}(£${order.service.price}) from ${shopDetails.name}';
-            }
-            var test = _databaseApi.postNotification(
-                orderID: order.orderId,
-                title: 'Booking has been cancelled',
-                body: body,
-                forRole: 'order',
-                userID: '',
-                receiverToken: token.toString());
+          Map<String, dynamic> postMap = {
+            "userId": user.id,
+            "orderID": order.orderId,
+            "title": 'Booking has been cancelled',
+            "body": body,
+            "id": DateTime.now().millisecondsSinceEpoch.toString(),
+            "read": false,
+            "image": user.imageUrl,
+            "time": DateTime.now().millisecondsSinceEpoch.toString(),
+            "sound": "default"
+          };
 
-            Map<String, dynamic> postMap = {
-              "userId": user.id,
-              "orderID": order.orderId,
-              "title": 'Booking has been cancelled',
-              "body": body,
-              "id": DateTime.now().millisecondsSinceEpoch.toString(),
-              "read": false,
-              "image": user.imageUrl,
-              "time": DateTime.now().millisecondsSinceEpoch.toString(),
-              "sound": "default"
-            };
-
-            _databaseApi.postNotificationCollection(order.userId, postMap);
-          }
-          isApiLoading = false;
-          await _dialogService.showCustomDialog(
-              variant: AlertType.success, title: 'Success', description: 'Booking is cancelled.');
-          _navigationService.back();
-        }, onError: (exception) {
-          isApiLoading = false;
-          notifyListeners();
-          _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
-        });
+          _databaseApi.postNotificationCollection(order.userId, postMap);
+        }
+        isApiLoading = false;
+        await _dialogService.showCustomDialog(
+            variant: AlertType.success,
+            title: 'Success',
+            description: 'Booking is cancelled.');
+        _navigationService.back();
+      }, onError: (exception) {
+        isApiLoading = false;
+        notifyListeners();
+        _dialogService.showCustomDialog(
+            variant: AlertType.error,
+            title: 'Error',
+            description: exception.toString());
+      });
     }
   }
 
@@ -815,11 +902,25 @@ Future handleCancelNoRefund(Order order) async {
     isApiLoading = true;
     notifyListeners();
     final shopDetails = await _databaseApi.getShop(order.shopId);
-    final paypalEmail = await _databaseApi.getSellerPaypal(shopDetails.ownerId);
-    final accessToken = await _paypalApi.getAccessToken();
-    final response = await _paypalApi.paySellerPayment(paypalEmail.toString(), order, processingFee, accessToken!);
-    if (response['statusCode'] == 201) {
-      return _databaseApi.approveAppointment(order, DateTime.now().microsecondsSinceEpoch).then((value) async {
+
+    final response;
+    if (order.paymentMethod == MPaymentMethod.paypal) {
+      final paypalEmail =
+          await _databaseApi.getSellerPaypal(shopDetails.ownerId);
+      final accessToken = await _paypalApi.getAccessToken();
+      response = await _paypalApi.paySellerPayment(
+          paypalEmail.toString(), order, processingFee, accessToken!);
+    } else {
+      print('hello');
+      final account = await _databaseApi.getSellerStripe(order.service.ownerId);
+      response =
+          await _stripeApi.paySellerPayment(order, processingFee, account);
+    }
+  
+    if (response['statusCode'] == 201 || response['id'] != null) {
+      return _databaseApi
+          .approveAppointment(order, DateTime.now().microsecondsSinceEpoch)
+          .then((value) async {
         var token = await _databaseApi.getToken(order.userId);
         if (token != null) {
           Shop shopDetails = await _databaseApi.getShop(order.service.shopId);
@@ -843,7 +944,8 @@ Future handleCancelNoRefund(Order order) async {
             "image": user.imageUrl,
             "time": DateTime.now().millisecondsSinceEpoch.toString(),
             "sound": "default"
-          };  Map<String, dynamic> mpostMap = {
+          };
+          Map<String, dynamic> mpostMap = {
             "userId": user.id,
             "orderID": order.orderId,
             "title": 'Appointment Approved',
@@ -857,16 +959,22 @@ Future handleCancelNoRefund(Order order) async {
           };
 
           _databaseApi.postNotificationCollection(order.userId, postMap);
-          _databaseApi.postNotificationCollection(order.service.ownerId, mpostMap);
+          _databaseApi.postNotificationCollection(
+              order.service.ownerId, mpostMap);
         }
         isApiLoading = false;
         await _dialogService.showCustomDialog(
-            variant: AlertType.success, title: 'Success', description: 'Appointment is approved.');
+            variant: AlertType.success,
+            title: 'Success',
+            description: 'Appointment is approved.');
         _navigationService.back();
       }, onError: (exception) {
         isApiLoading = false;
         notifyListeners();
-        _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
+        _dialogService.showCustomDialog(
+            variant: AlertType.error,
+            title: 'Error',
+            description: exception.toString());
       });
     }
   }
@@ -874,17 +982,26 @@ Future handleCancelNoRefund(Order order) async {
   Future handleMakeCompleted(Order order) async {
     isApiLoading = true;
     notifyListeners();
-    _databaseApi.completeOrder(order, DateTime.now().microsecondsSinceEpoch).then((value) async {
-      _databaseApi.updateTotalSaleCount(order.service.ownerId).then((value) async {
+    _databaseApi
+        .completeOrder(order, DateTime.now().microsecondsSinceEpoch)
+        .then((value) async {
+      _databaseApi
+          .updateTotalSaleCount(order.service.ownerId)
+          .then((value) async {
         isApiLoading = false;
         await _dialogService.showCustomDialog(
-            variant: AlertType.success, title: 'Success', description: 'Order is completed.');
+            variant: AlertType.success,
+            title: 'Success',
+            description: 'Order is completed.');
         _navigationService.back();
       });
     }, onError: (exception) {
       isApiLoading = false;
       notifyListeners();
-      _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
+      _dialogService.showCustomDialog(
+          variant: AlertType.error,
+          title: 'Error',
+          description: exception.toString());
     });
   }
 
@@ -907,10 +1024,12 @@ Future handleCancelNoRefund(Order order) async {
       double newRating = 0.0;
       if (totalRatings == 0) {
         totalRatings += 1;
-        newRating = double.parse(((previousRating + rating) / 1).toStringAsFixed(1));
+        newRating =
+            double.parse(((previousRating + rating) / 1).toStringAsFixed(1));
       } else {
         totalRatings += 1;
-        newRating = double.parse(((previousRating + rating) / 2).toStringAsFixed(1));
+        newRating =
+            double.parse(((previousRating + rating) / 2).toStringAsFixed(1));
       }
       await _databaseApi.rateOrder(int.parse(rating.toStringAsFixed(0)), order);
       _databaseApi.rateShop(newRating, totalRatings, order).then((value) async {
@@ -942,12 +1061,17 @@ Future handleCancelNoRefund(Order order) async {
         isRatingLoading = false;
         notifyListeners();
         await _dialogService.showCustomDialog(
-            variant: AlertType.success, title: 'Success', description: 'Rated Successfully');
+            variant: AlertType.success,
+            title: 'Success',
+            description: 'Rated Successfully');
         _navigationService.back();
       }, onError: (exception) {
         isApiLoading = false;
         notifyListeners();
-        _dialogService.showCustomDialog(variant: AlertType.error, title: 'Error', description: exception.toString());
+        _dialogService.showCustomDialog(
+            variant: AlertType.error,
+            title: 'Error',
+            description: exception.toString());
       });
     }
   }

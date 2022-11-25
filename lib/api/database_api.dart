@@ -314,6 +314,23 @@ class DatabaseApi {
     }
   }
 
+  Future<String?> getSellerStripe(String userId) async {
+    try {
+      final userDoc = await _usersCollection.doc(userId).get();
+
+      if (!userDoc.exists) {
+        return null;
+      }
+      final userData = userDoc.data()! as Map<String, dynamic>;
+        return userData['stripeID'].toString();
+    } on PlatformException catch (e) {
+      throw DatabaseApiException(
+        title: 'Failed to get User Data',
+        message: e.message,
+      );
+    }
+  }
+
   /// Get a Shop's data
   Future<Shop> getShop(String shopId) async {
     try {
@@ -532,11 +549,28 @@ class DatabaseApi {
         "phoneNumber": phoneNumber,
         "dateOfBirth": dateOfBirth,
         "paypalMail": paypalMail,
+        "stripeID": '',
         "userType": "seller",
       });
     } on PlatformException catch (e) {
       throw DatabaseApiException(
         title: 'Failed to create seller account',
+        message: e.message,
+      );
+    }
+  }
+
+  Future<void> connectStripe({
+    required String userId,
+    required String accountId,
+  }) async {
+    try {
+      await _usersCollection.doc(userId).update({
+        "stripeID": accountId,
+      });
+    } on PlatformException catch (e) {
+      throw DatabaseApiException(
+        title: 'Failed to Connect Stripe account',
         message: e.message,
       );
     }

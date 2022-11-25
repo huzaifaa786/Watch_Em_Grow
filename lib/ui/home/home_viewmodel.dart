@@ -59,6 +59,7 @@ class HomeViewModel extends BaseViewModel {
     if (deepLink == null) {
       return;
     }
+    
     var mshop = allShops.singleWhere((shop) => shop.id.contains(shopId));
     var mowner = allSellers.singleWhere(
       (owner) => owner.shopId.contains(mshop.id),

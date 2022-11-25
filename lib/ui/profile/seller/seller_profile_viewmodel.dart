@@ -12,6 +12,7 @@ import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/services/user_service.dart';
 import 'package:mipromo/ui/booking/booking_view.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
+import 'package:mipromo/ui/shared/helpers/enums.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -26,7 +27,7 @@ class SellerProfileViewModel extends BaseViewModel {
   late StreamSubscription<List<Follow>> _followSubscription;
   late StreamSubscription<Shop> _shopSubscription;
   late StreamSubscription<List<ShopService>> _servicesSubscription;
-
+  String? StripeID;
   bool isApiLoading = false;
   late AppUser _currentUser;
   AppUser get currentUser => _currentUser;
@@ -54,6 +55,7 @@ class SellerProfileViewModel extends BaseViewModel {
     "Suicide or self-injury",
     "Sale of illegal or regulated goods"
   ];
+  
   Future<void> init(String shopId, AppUser seller) async {
     setBusy(true);
     await _userService.syncUser();
@@ -95,8 +97,10 @@ class SellerProfileViewModel extends BaseViewModel {
           } else {
             setBusy(false);
           }
+
         },
       );
+      StripeID = await _databaseApi.getSellerStripe(_currentUser.id);
     } else {
       setBusy(false);
     }
@@ -118,6 +122,17 @@ class SellerProfileViewModel extends BaseViewModel {
       Routes.sellerEditProfileView,
       arguments: SellerEditProfileViewArguments(user: currentUser),
     );*/
+  }
+  Future<void> navigateToConnectedAccount() async { 
+        await _navigationService.navigateTo(Routes.connectStripeView);
+    
+    // } else {
+    //   _snackbarService.showCustomSnackBar(
+    //     variant: AlertType.error,
+    //     title: "Try again",
+    //     message: "Stripe connect account registration failed",
+    //   );
+    // }
   }
   Future<void> navigateToSetAvailability() async {
      _navigationService.navigateTo(

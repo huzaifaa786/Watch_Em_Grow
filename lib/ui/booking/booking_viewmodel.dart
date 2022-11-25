@@ -42,6 +42,7 @@ class BookingViewModel extends BaseViewModel {
   final _dialogService = locator<DialogService>();
   static final SnackbarService _snackbarService = locator<SnackbarService>();
   final _databaseApi = locator<DatabaseApi>();
+
   List? unavailableDays = [];
   List? unavailableSlots = [];
   late AppUser _currentUser;
@@ -160,6 +161,7 @@ class BookingViewModel extends BaseViewModel {
       {required BookingService newBooking}) async {
     Duration d = Duration(minutes: service.duration!);
 
+   
     DateTimeRange time = DateTimeRange(
         start: newBooking.bookingStart, end: newBooking.bookingStart.add(d));
 
@@ -169,9 +171,11 @@ class BookingViewModel extends BaseViewModel {
     for (var avail in availability.unavailableSlots!) {
       unavailableBookings.add(DateTime.fromMicrosecondsSinceEpoch(
           int.parse(avail.microsecondsSinceEpoch.toString())));
-      
     }
-   unavailableBookings = unavailableBookings.where((e) => e.isAfter(time.start)).where((e) => e.isBefore(time.end)).toList();
+    unavailableBookings = unavailableBookings
+        .where((e) => e.isAfter(time.start))
+        .where((e) => e.isBefore(time.end))
+        .toList();
 
     if (result || unavailableBookings.isNotEmpty) {
       final dialogResponse = await _dialogService.showConfirmationDialog(
@@ -191,100 +195,76 @@ class BookingViewModel extends BaseViewModel {
       cancelTitle: 'Close',
     );
 
+    final StripeId = await _databaseApi.getSellerStripe(service.ownerId);
     if (dialogResponse?.confirmed ?? false) {
-      if (await _navigationService.navigateTo(Routes.inputAddressView) ==
-          true) {
-        await _navigationService.navigateTo(
-          Routes.bookServiceView,
-          arguments: BookServiceViewArguments(
-              user: user,
-              service: service,
-              bookingservice: BookkingService(
-                  email: newBooking.userEmail,
-                  bookingStart: newBooking.bookingStart,
-                  bookingEnd: newBooking.bookingStart
-                      .add(Duration(minutes: service.duration!)),
-                  userId: newBooking.userId,
-                  ownerId: service.ownerId,
-                  userName: newBooking.userName,
-                  serviceId: newBooking.serviceId,
-                  depositAmount: service.depositAmount,
-                  serviceName: newBooking.serviceName,
-                  servicePrice: newBooking.servicePrice,
-                  serviceDuration: newBooking.serviceDuration)),
+      if (StripeId == '') {
+        if (await _navigationService.navigateTo(Routes.inputAddressView) ==
+            true) {
+          await _navigationService.navigateTo(
+            Routes.bookServiceView,
+            arguments: BookServiceViewArguments(
+                user: user,
+                service: service,
+                bookingservice: BookkingService(
+                    email: newBooking.userEmail,
+                    bookingStart: newBooking.bookingStart,
+                    bookingEnd: newBooking.bookingStart
+                        .add(Duration(minutes: service.duration!)),
+                    userId: newBooking.userId,
+                    ownerId: service.ownerId,
+                    userName: newBooking.userName,
+                    serviceId: newBooking.serviceId,
+                    depositAmount: service.depositAmount,
+                    serviceName: newBooking.serviceName,
+                    servicePrice: newBooking.servicePrice,
+                    serviceDuration: newBooking.serviceDuration)),
+          );
+        }
+      } else if (StripeId != '') {
+       
+        final response = await _dialogService.showCustomDialog(
+          variant: AlertType.custom,
+          title: 'Choose Payment Method',
         );
+
+        if (response != null && response.confirmed) {
+          if (await _navigationService.navigateTo(Routes.inputAddressView) ==
+              true) {
+            await _navigationService.navigateTo(
+              Routes.bookServiceView,
+              arguments: BookServiceViewArguments(
+                  user: user,
+                  service: service,
+                  bookingservice: BookkingService(
+                      email: newBooking.userEmail,
+                      bookingStart: newBooking.bookingStart,
+                      bookingEnd: newBooking.bookingEnd,
+                      userId: newBooking.userId,
+                      userName: newBooking.userName,
+                      serviceId: newBooking.serviceId,
+                      serviceName: newBooking.serviceName,
+                      servicePrice: newBooking.servicePrice,
+                      serviceDuration: newBooking.serviceDuration)),
+            );
+          }
+        } else if (response != null && !response.confirmed) {
+          await initPaymentSheet();
+          if (await confirmPayment()) {
+            await addOrder(newBooking.bookingStart, newBooking.bookingEnd);
+            await _databaseApi.uploadBookingFirebase(
+                newBooking: BookkingService(
+                    email: newBooking.userEmail,
+                    bookingStart: newBooking.bookingStart,
+                    bookingEnd: newBooking.bookingEnd,
+                    userId: newBooking.userId,
+                    userName: newBooking.userName,
+                    serviceId: newBooking.serviceId,
+                    serviceName: newBooking.serviceName,
+                    servicePrice: newBooking.servicePrice,
+                    serviceDuration: newBooking.serviceDuration));
+          }
+        }
       }
-    }
-
-    // final response = await _dialogService.showCustomDialog(
-    //   variant: AlertType.custom,
-    //   title: 'Choose Payment Method',
-    // );
-
-    // if (response != null && response.confirmed) {
-    //   if (await _navigationService.navigateTo(Routes.inputAddressView) ==
-    //       true) {
-    //     await _navigationService.navigateTo(
-    //       Routes.bookServiceView,
-    //       arguments: BookServiceViewArguments(
-    //           user: user,
-    //           service: service,
-    //           bookingservice: BookkingService(
-    //               email: newBooking.userEmail,
-    //               bookingStart: newBooking.bookingStart,
-    //               bookingEnd: newBooking.bookingEnd,
-    //               userId: newBooking.userId,
-    //               ownerId: service.ownerId,
-    //               userName: newBooking.userName,
-    //               serviceId: newBooking.serviceId,
-    //               depositAmount: service.depositAmount,
-    //               serviceName: newBooking.serviceName,
-    //               servicePrice: newBooking.servicePrice,
-    //               serviceDuration: newBooking.serviceDuration)),
-    //     );
-    //   }
-    // }
-
-    final response = await _dialogService.showCustomDialog(
-      variant: AlertType.custom,
-      title: 'Choose Payment Method',
-    );
-
-    if (response != null && response.confirmed) {
-      if (await _navigationService.navigateTo(Routes.inputAddressView) ==
-          true) {
-        await _navigationService.navigateTo(
-          Routes.bookServiceView,
-          arguments: BookServiceViewArguments(
-              user: user, service: service, bookingservice: BookkingService(
-            email: newBooking.userEmail,
-            bookingStart: newBooking.bookingStart,
-            bookingEnd: newBooking.bookingEnd,
-            userId: newBooking.userId,
-            userName: newBooking.userName,
-            serviceId: newBooking.serviceId,
-            serviceName: newBooking.serviceName,
-            servicePrice: newBooking.servicePrice,
-            serviceDuration: newBooking.serviceDuration)),
-        );
-      }
-    } else if (response != null && !response.confirmed) {
-      await initPaymentSheet();
-      if (await confirmPayment()) {
-        await addOrder(newBooking.bookingStart,newBooking.bookingEnd);
-        await _databaseApi.uploadBookingFirebase(
-        newBooking: BookkingService(
-            email: newBooking.userEmail,
-            bookingStart: newBooking.bookingStart,
-            bookingEnd: newBooking.bookingEnd,
-            userId: newBooking.userId,
-            userName: newBooking.userName,
-            serviceId: newBooking.serviceId,
-            serviceName: newBooking.serviceName,
-            servicePrice: newBooking.servicePrice,
-            serviceDuration: newBooking.serviceDuration));
-      }
-
     }
 
     // await Future.delayed(const Duration(seconds: 1));
@@ -426,66 +406,71 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future _createTestPaymentSheet() async {
-    final url = Uri.parse('http://attn.tritec.store/api/create/intent');
+    final url = Uri.parse('http://tritec.store/mipromo/public/api/create/intent');
     final response = await http.post(
       url,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: json.encode({'a': 'a', 'price': service.price}),
+      body: json.encode({
+        'a': 'a',
+        'price': service.depositAmount,
+        'connected_account': 'acct_1M7iQrRTmuR2qUZU'
+      }),
     );
     final body = json.decode(response.body);
-
+    final data = jsonDecode(body['intent'].toString());
     // if (body['error'] != null) {
     //   throw Exception(body['error']);
     // }
-    print(body);
-    return body['intent'];
+
+    return data;
   }
 
   Future<void> initPaymentSheet() async {
-    try {
-      // 1. create payment intent on the server
-      final data = await _createTestPaymentSheet();
+    // try {
+    // 1. create payment intent on the server
 
-      // create some billingdetails
-      final billingDetails = BillingDetails(
-        name: 'Flutter Stripe',
-        email: 'email@stripe.com',
-        phone: '+48888000888',
-        address: Address(
-          city: 'Houston',
-          country: 'US',
-          line1: '1459  Circle Drive',
-          line2: '',
-          state: 'Texas',
-          postalCode: '77063',
-        ),
-      ); // mocked data for tests
+    final data = await _createTestPaymentSheet();
 
-      // 2. initialize the payment sheet
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          // Main params
-          paymentIntentClientSecret: data['client_secret'].toString(),
-          merchantDisplayName: 'Flutter Stripe Store Demo',
-          // Customer params
-          customerId: data['customer'].toString(),
-          customerEphemeralKeySecret: data['ephemeralKey'].toString(),
-          // Extra params
-          applePay: true,
-          googlePay: true,
-          style: ThemeMode.dark,
-          // billingDetails: billingDetails,
-          testEnv: true,
-          merchantCountryCode: 'DE',
-        ),
-      );
-      step = 1;
-    } catch (e) {
-      Fluttertoast.showToast(msg: 'Error: $e');
-      rethrow;
-    }
+    // create some billingdetails
+    // final billingDetails = BillingDetails(
+    //   name: 'Flutter Stripe',
+    //   email: 'email@stripe.com',
+    //   phone: '+48888000888',
+    //   address: Address(
+    //     city: 'Houston',
+    //     country: 'US',
+    //     line1: '1459  Circle Drive',
+    //     line2: '',
+    //     state: 'Texas',
+    //     postalCode: '77063',
+    //   ),
+    // ); // mocked data for tests
+
+    // 2. initialize the payment sheet
+    await Stripe.instance.initPaymentSheet(
+      paymentSheetParameters: SetupPaymentSheetParameters(
+        // Main params
+        paymentIntentClientSecret: data['paymentIntent'].toString(),
+        merchantDisplayName: 'Miypromo',
+        // Customer params
+        customerId: data['customer'].toString(),
+        customerEphemeralKeySecret: data['ephemeralKey'].toString(),
+        // Extra params
+        applePay: true,
+        googlePay: true,
+        style: ThemeMode.dark,
+        // billingDetails: billingDetails,
+        testEnv: true,
+        merchantCountryCode: 'GBP',
+      ),
+    );
+    step = 1;
+    // } catch (e) {
+    //   Fluttertoast.showToast(msg: 'Error: $e');
+    //   rethrow;
+    // }
   }
 
   Future<bool> confirmPayment() async {
@@ -500,7 +485,8 @@ class BookingViewModel extends BaseViewModel {
       return true;
     } on Exception catch (e) {
       if (e is StripeException) {
-        Fluttertoast.showToast(msg: 'Error from Stripe: ${e.error.localizedMessage}');
+        Fluttertoast.showToast(
+            msg: 'Error from Stripe: ${e.error.localizedMessage}');
         return false;
       } else {
         Fluttertoast.showToast(msg: 'Unforeseen error: ${e}');
@@ -508,7 +494,6 @@ class BookingViewModel extends BaseViewModel {
       }
     }
   }
-
 }
 
 class DepositSheet extends StatelessWidget {
