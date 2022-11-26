@@ -99,6 +99,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
   late BookingController controller;
   final now = DateTime.now();
   bool enableButton = false;
+  bool enableslotbutton = false;
   @override
   void initState() {
     super.initState();
@@ -131,6 +132,21 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
     setState(() {
       enableButton = true;
       controller.daytoAvail = date;
+    });
+  }
+
+  enableSlot(DateTime date, int idx) {
+    controller.selectSlot(idx);
+    setState(() {
+      enableslotbutton = true;
+      controller.slottoAvail = date;
+    });
+  }
+
+  disableSlot(int index) {
+    controller.selectSlot(index);
+    setState(() {
+      enableslotbutton = false;
     });
   }
 
@@ -265,6 +281,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         height: 80,
                         width: MediaQuery.of(context).size.width,
                         child: GridView.builder(
+                          padding: EdgeInsets.zero,
                           physics: widget.gridScrollPhysics ??
                               const BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
@@ -273,24 +290,61 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                           itemBuilder: (context, index) {
                             final slot =
                                 controller.allBookingSlots.elementAt(index);
-
-                            return BookingSlot(
-                              hideBreakSlot: false,
-                              pauseSlotColor: widget.pauseSlotColor,
-                              availableSlotColor: widget.availableSlotColor,
-                              bookedSlotColor: widget.bookedSlotColor,
-                              selectedSlotColor: widget.selectedSlotColor,
-                              isPauseTime: controller.isSlotInPauseTime(slot),
-                              isBooked: controller.isSlotBooked(index),
-                              isSelected: index == controller.selectedSlot,
-                              onTap: () => controller.selectSlot(index),
-                              child: Center(
-                                child: Text(
-                                  widget.formatDateTime?.call(slot) ??
-                                      BookingUtil.formatDateTime(slot),
-                                ),
-                              ),
-                            );
+                            return widget.showData == true
+                                ?  controller.isSlotBooked(index) ==
+                                                true ||
+                                            controller.isSlotInPauseTime(slot) ==
+                                                true ? SizedBox():BookingSlot(
+                                    hidethisSlot:false,
+                                    hideBreakSlot: false,
+                                    sellerPauseTime: false,
+                                    pauseSlotColor: widget.pauseSlotColor,
+                                    availableSlotColor:
+                                        widget.availableSlotColor,
+                                    bookedSlotColor: widget.bookedSlotColor,
+                                    selectedSlotColor: widget.selectedSlotColor,
+                                    isPauseTime:
+                                        controller.isSlotInPauseTime(slot),
+                                    isBooked: controller.isSlotBooked(index),
+                                    isSelected:
+                                        index == controller.selectedSlot,
+                                    onTap: () => controller.selectSlot(index),
+                                    child: Center(
+                                      child: Text(
+                                        widget.formatDateTime?.call(slot) ??
+                                            BookingUtil.formatDateTime(slot),
+                                      ),
+                                    ),
+                                  )
+                                : BookingSlot(
+                                    hidethisSlot: false,
+                                    hideBreakSlot: false,
+                                    sellerPauseTime:
+                                        controller.isSlotInPauseTime(slot) ==
+                                                true
+                                            ? true
+                                            : false,
+                                    pauseSlotColor: widget.pauseSlotColor,
+                                    availableSlotColor:
+                                        widget.availableSlotColor,
+                                    bookedSlotColor: widget.bookedSlotColor,
+                                    selectedSlotColor: widget.selectedSlotColor,
+                                    isPauseTime:
+                                        controller.isSlotInPauseTime(slot),
+                                    isBooked: controller.isSlotBooked(index),
+                                    isSelected:
+                                        index == controller.selectedSlot,
+                                    onTap: () =>
+                                        controller.isSlotInPauseTime(slot)
+                                            ? enableSlot(slot, index)
+                                            : disableSlot(index),
+                                    child: Center(
+                                      child: Text(
+                                        widget.formatDateTime?.call(slot) ??
+                                            BookingUtil.formatDateTime(slot),
+                                      ),
+                                    ),
+                                  );
                           },
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -347,7 +401,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         children: [
                           Text("Duration"),
                           widget.service!.duration != null
-                              ? Text(widget.service!.duration.toString()+'m')
+                              ? Text(widget.service!.duration.toString() + 'm')
                               : Text(""),
                         ],
                       ),
@@ -372,10 +426,21 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                     ),
                   if (widget.showData == false) ...[
                     CommonButton(
-                      text: "Remove time slot",
+                      text: enableslotbutton
+                          ? 'Avail Slot(' +
+                              BookingUtil.formatDateTime(
+                                  controller.slottoAvail!) +
+                              ') '
+                          : "Remove time slot",
                       onTap: () async {
-                        controller.markSlotUnavailable(widget.unavailableSlots!,
-                            widget.bookingService.userId);
+                        if (enableslotbutton == true) {
+                          controller.markSlotavailable(widget.unavailableSlots!,
+                              widget.bookingService.userId);
+                        } else {
+                          controller.markSlotUnavailable(
+                              widget.unavailableSlots!,
+                              widget.bookingService.userId);
+                        }
                       },
                       isDisabled: controller.selectedSlot == -1,
                       buttonActiveColor: widget.bookingButtonColor,
@@ -386,7 +451,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                     CommonButton(
                       text: enableButton
                           ? 'Mark this day as "Available" (' +
-                              DateFormat('dd-MM-yyyy')
+                              DateFormat('HH:mm:ss')
                                   .format(controller.daytoAvail!) +
                               ')'
                           : 'Mark this day as "Unavailable"',

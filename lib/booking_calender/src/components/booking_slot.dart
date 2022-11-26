@@ -14,6 +14,8 @@ class BookingSlot extends StatelessWidget {
     this.availableSlotColor,
     this.pauseSlotColor,
     this.hideBreakSlot,
+    this.hidethisSlot,
+    this.sellerPauseTime,
   }) : super(key: key);
 
   final Widget child;
@@ -26,6 +28,8 @@ class BookingSlot extends StatelessWidget {
   final Color? availableSlotColor;
   final Color? pauseSlotColor;
   final bool? hideBreakSlot;
+  final bool? hidethisSlot;
+  final bool? sellerPauseTime;
 
   Color getSlotColor() {
     if (isPauseTime) {
@@ -43,10 +47,10 @@ class BookingSlot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (hideBreakSlot != null && hideBreakSlot == true)
-        ? const SizedBox()
+    return (hideBreakSlot != null && hideBreakSlot == true || hidethisSlot == true)
+        ? const Text('')
         : GestureDetector(
-            onTap: (!isBooked && !isPauseTime) ? onTap : null,
+            onTap: (!isBooked && !isPauseTime || sellerPauseTime == true) ? onTap : null,
             child: CommonCard(
                 margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 padding:

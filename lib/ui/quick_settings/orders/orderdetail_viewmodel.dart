@@ -911,7 +911,7 @@ class OrderDetailViewModel extends BaseViewModel {
       response = await _paypalApi.paySellerPayment(
           paypalEmail.toString(), order, processingFee, accessToken!);
     } else {
-      print('hello');
+   
       final account = await _databaseApi.getSellerStripe(order.service.ownerId);
       response =
           await _stripeApi.paySellerPayment(order, processingFee, account);

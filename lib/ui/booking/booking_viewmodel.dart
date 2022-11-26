@@ -168,16 +168,16 @@ class BookingViewModel extends BaseViewModel {
     final result = await _databaseApi.checkbooking(
         ServiceId: service.ownerId, start: time.start, end: time.end);
 
-    for (var avail in availability.unavailableSlots!) {
-      unavailableBookings.add(DateTime.fromMicrosecondsSinceEpoch(
-          int.parse(avail.microsecondsSinceEpoch.toString())));
-    }
-    unavailableBookings = unavailableBookings
-        .where((e) => e.isAfter(time.start))
-        .where((e) => e.isBefore(time.end))
-        .toList();
+    // for (var avail in availability.unavailableSlots!) {
+    //   unavailableBookings.add(DateTime.fromMicrosecondsSinceEpoch(
+    //       int.parse(avail.microsecondsSinceEpoch.toString())));
+    // }
+    // unavailableBookings = unavailableBookings
+    //     .where((e) => e.isAfter(time.start))
+    //     .where((e) => e.isBefore(time.end))
+    //     .toList();
 
-    if (result || unavailableBookings.isNotEmpty) {
+    if (result) {
       final dialogResponse = await _dialogService.showConfirmationDialog(
         title: 'Please select another time slot',
         description:

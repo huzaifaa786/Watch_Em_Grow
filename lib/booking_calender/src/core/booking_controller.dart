@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +29,7 @@ class BookingController extends ChangeNotifier {
   DateTime? serviceOpening;
   DateTime? serviceClosing;
   DateTime? daytoAvail;
+  DateTime? slottoAvail;
 
   List<DateTime> _allBookingSlots = [];
   List<DateTime> get allBookingSlots => _allBookingSlots;
@@ -137,13 +139,13 @@ class BookingController extends ChangeNotifier {
 
   markDayAvailable(List unavailableDays, ownerId) async {
     final bookingDate = allBookingSlots.elementAt(0);
-    
+
     var dayToMarkAvailable = unavailableDays.singleWhere((day) {
       DateTime parsedDate = DateTime.fromMicrosecondsSinceEpoch(
-        day.microsecondsSinceEpoch as int);
+          day.microsecondsSinceEpoch as int);
       return isSameDay(daytoAvail, parsedDate);
     });
-
+    print(dayToMarkAvailable);
     unavailableDays.remove(dayToMarkAvailable);
 
     Map<String, dynamic> postMap = {'unavailableDays': unavailableDays};
@@ -156,8 +158,25 @@ class BookingController extends ChangeNotifier {
   }
 
   markSlotUnavailable(List unavailableSlots, ownerId) async {
+    print('availableSlots');
     final bookingDate = allBookingSlots.elementAt(selectedSlot);
+
     unavailableSlots.add(bookingDate);
+
+    Map<String, dynamic> postMap = {'unavailableSlots': unavailableSlots};
+
+    await _databaseApi.changeAvailabilty(
+        userId: ownerId.toString(), availabilty: postMap);
+
+    Fluttertoast.showToast(msg: 'Done');
+  }
+
+  markSlotavailable(List unavailableSlots, ownerId) async {
+    final bookingDate = allBookingSlots.elementAt(selectedSlot);
+      
+      
+    unavailableSlots.remove(Timestamp.fromDate(bookingDate));
+  
     Map<String, dynamic> postMap = {'unavailableSlots': unavailableSlots};
 
     await _databaseApi.changeAvailabilty(
