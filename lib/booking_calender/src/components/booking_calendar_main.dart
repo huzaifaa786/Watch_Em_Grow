@@ -286,7 +286,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                               const BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
-                          itemCount: controller.allBookingSlots.length,
+                          itemCount: controller.allBookingSlots.length ,
                           itemBuilder: (context, index) {
                             final slot =
                                 controller.allBookingSlots.elementAt(index);
@@ -294,28 +294,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                                 ?  controller.isSlotBooked(index) ==
                                                 true ||
                                             controller.isSlotInPauseTime(slot) ==
-                                                true ? BookingSlot(
-                                    hidethisSlot:true,
-                                    hideBreakSlot: true,
-                                    sellerPauseTime: true,
-                                    pauseSlotColor: widget.pauseSlotColor,
-                                    availableSlotColor:
-                                        widget.availableSlotColor,
-                                    bookedSlotColor: widget.bookedSlotColor,
-                                    selectedSlotColor: widget.selectedSlotColor,
-                                    isPauseTime:
-                                        controller.isSlotInPauseTime(slot),
-                                    isBooked: controller.isSlotBooked(index),
-                                    isSelected:
-                                        index == controller.selectedSlot,
-                                    onTap: () => controller.selectSlot(index),
-                                    child: Center(
-                                      child: Text(
-                                        widget.formatDateTime?.call(slot) ??
-                                            BookingUtil.formatDateTime(slot),
-                                      ),
-                                    ),
-                                  ):BookingSlot(
+                                                true ? SizedBox():BookingSlot(
                                     hidethisSlot:false,
                                     hideBreakSlot: false,
                                     sellerPauseTime: false,

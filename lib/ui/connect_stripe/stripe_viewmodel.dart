@@ -48,9 +48,9 @@ class connectStripeViewModel extends BaseViewModel {
         final result = await dio.get(url);
         final response = jsonDecode(result.toString());
         final ac_id = response['account']['id'];
-
+       
         final uname =
-            'sk_test_51LMrcMIyrTaw9WhhtWlvhUnHmylcBY5T3aueLNXurC12srsvfUp0756TaVZqPDxGvtcnFMdaRKdeuzSD1Tnp8tRp00u9SHZmf7';
+            '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';
         final pword = '';
         final authn = 'Basic ' + base64Encode(utf8.encode('$uname:$pword'));
 
@@ -64,8 +64,9 @@ class connectStripeViewModel extends BaseViewModel {
 
         final url2 = Uri.parse('https://api.stripe.com/v1/account_links');
         final res = await http.post(url2, headers: headers, body: data);
-
+        
         final res2 = jsonDecode(res.body.toString());
+        print(res2);
         final link = res2['url'];
         connectUrl = link.toString();
         await launch(connectUrl);

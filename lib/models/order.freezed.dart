@@ -35,6 +35,7 @@ class _$OrderTearOff {
       int? bookingEnd,
       String? name,
       String? address,
+      String? paymentIntent,      
       String? postCode,
       int? rate,
       int? selectedSize}) {
@@ -53,6 +54,7 @@ class _$OrderTearOff {
       bookingEnd: bookingEnd,
       name: name,
       address: address,
+      paymentIntent:paymentIntent,
       postCode: postCode,
       rate: rate,
       selectedSize: selectedSize,
@@ -83,6 +85,7 @@ mixin _$Order {
   int? get bookingEnd => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get address => throw _privateConstructorUsedError;
+  String? get paymentIntent => throw _privateConstructorUsedError;
   String? get postCode => throw _privateConstructorUsedError;
   int? get rate => throw _privateConstructorUsedError;
   int? get selectedSize => throw _privateConstructorUsedError;
@@ -111,6 +114,7 @@ abstract class $OrderCopyWith<$Res> {
       int? bookingEnd,
       String? name,
       String? address,
+      String? paymentIntent,
       String? postCode,
       int? rate,
       int? selectedSize});
@@ -142,6 +146,7 @@ class _$OrderCopyWithImpl<$Res> implements $OrderCopyWith<$Res> {
     Object? bookingEnd = freezed,
     Object? name = freezed,
     Object? address = freezed,
+    Object? paymentIntent = freezed,
     Object? postCode = freezed,
     Object? rate = freezed,
     Object? selectedSize = freezed,
@@ -203,6 +208,10 @@ class _$OrderCopyWithImpl<$Res> implements $OrderCopyWith<$Res> {
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String?,
+      paymentIntent: paymentIntent == freezed
+          ? _value.paymentIntent
+          : paymentIntent // ignore: cast_nullable_to_non_nullable
+              as String?,
       postCode: postCode == freezed
           ? _value.postCode
           : postCode // ignore: cast_nullable_to_non_nullable
@@ -246,6 +255,7 @@ abstract class _$OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
       int? bookingEnd,
       String? name,
       String? address,
+      String? paymentIntent,
       String? postCode,
       int? rate,
       int? selectedSize});
@@ -279,6 +289,7 @@ class __$OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res>
     Object? bookingEnd = freezed,
     Object? name = freezed,
     Object? address = freezed,
+    Object? paymentIntent = freezed,
     Object? postCode = freezed,
     Object? rate = freezed,
     Object? selectedSize = freezed,
@@ -340,6 +351,10 @@ class __$OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String?,
+      paymentIntent: paymentIntent == freezed
+          ? _value.paymentIntent
+          : paymentIntent // ignore: cast_nullable_to_non_nullable
+              as String?,
       postCode: postCode == freezed
           ? _value.postCode
           : postCode // ignore: cast_nullable_to_non_nullable
@@ -374,6 +389,7 @@ class _$_Order implements _Order {
       this.bookingEnd,
       this.name,
       this.address,
+      this.paymentIntent,
       this.postCode,
       this.rate,
       this.selectedSize});
@@ -410,6 +426,8 @@ class _$_Order implements _Order {
   @override
   final String? address;
   @override
+  final String? paymentIntent;
+  @override
   final String? postCode;
   @override
   final int? rate;
@@ -419,7 +437,7 @@ class _$_Order implements _Order {
 
   @override
   String toString() {
-    return 'Order(orderId: $orderId, paymentId: $paymentId, captureId: $captureId, type: $type, paymentMethod: $paymentMethod, userId: $userId, shopId: $shopId, service: $service, time: $time, status: $status, bookingStart: $bookingStart, bookingEnd: $bookingEnd, name: $name, address: $address, postCode: $postCode, rate: $rate, selectedSize: $selectedSize)';
+    return 'Order(orderId: $orderId, paymentId: $paymentId, captureId: $captureId, type: $type, paymentMethod: $paymentMethod, userId: $userId, shopId: $shopId, service: $service, time: $time, status: $status, bookingStart: $bookingStart, bookingEnd: $bookingEnd, name: $name, address: $address, paymentIntent:$paymentIntent, postCode: $postCode, rate: $rate, selectedSize: $selectedSize)';
   }
 
   @override
@@ -462,6 +480,9 @@ class _$_Order implements _Order {
             (identical(other.address, address) ||
                 const DeepCollectionEquality()
                     .equals(other.address, address)) &&
+            (identical(other.paymentIntent, paymentIntent) ||
+                const DeepCollectionEquality()
+                    .equals(other.paymentIntent, paymentIntent)) &&
             (identical(other.postCode, postCode) ||
                 const DeepCollectionEquality()
                     .equals(other.postCode, postCode)) &&
@@ -489,6 +510,7 @@ class _$_Order implements _Order {
       const DeepCollectionEquality().hash(bookingEnd) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(address) ^
+      const DeepCollectionEquality().hash(paymentIntent) ^
       const DeepCollectionEquality().hash(postCode) ^
       const DeepCollectionEquality().hash(rate) ^
       const DeepCollectionEquality().hash(selectedSize);
@@ -520,6 +542,7 @@ abstract class _Order implements Order {
       int? bookingEnd,
       String? name,
       String? address,
+      String? paymentIntent,
       String? postCode,
       int? rate,
       int? selectedSize}) = _$_Order;
@@ -554,6 +577,8 @@ abstract class _Order implements Order {
   String? get name => throw _privateConstructorUsedError;
   @override
   String? get address => throw _privateConstructorUsedError;
+  @override
+  String? get paymentIntent => throw _privateConstructorUsedError;
   @override
   String? get postCode => throw _privateConstructorUsedError;
   @override

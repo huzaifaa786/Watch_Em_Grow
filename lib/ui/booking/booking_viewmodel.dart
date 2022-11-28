@@ -42,6 +42,7 @@ class BookingViewModel extends BaseViewModel {
   final _dialogService = locator<DialogService>();
   static final SnackbarService _snackbarService = locator<SnackbarService>();
   final _databaseApi = locator<DatabaseApi>();
+  String paymentIntent = '';
 
   List? unavailableDays = [];
   List? unavailableSlots = [];
@@ -161,7 +162,6 @@ class BookingViewModel extends BaseViewModel {
       {required BookingService newBooking}) async {
     Duration d = Duration(minutes: service.duration!);
 
-   
     DateTimeRange time = DateTimeRange(
         start: newBooking.bookingStart, end: newBooking.bookingStart.add(d));
 
@@ -221,7 +221,6 @@ class BookingViewModel extends BaseViewModel {
           );
         }
       } else if (StripeId != '') {
-       
         final response = await _dialogService.showCustomDialog(
           variant: AlertType.custom,
           title: 'Choose Payment Method',
@@ -343,6 +342,7 @@ class BookingViewModel extends BaseViewModel {
       status: OrderStatus.bookRequested,
       rate: 0,
       name: user.fullName,
+      paymentIntent: paymentIntent,
       address: user.address,
       postCode: user.postCode,
       time: DateTime.now().microsecondsSinceEpoch,
@@ -406,7 +406,8 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future _createTestPaymentSheet() async {
-    final url = Uri.parse('http://tritec.store/mipromo/public/api/create/intent');
+    final url =
+        Uri.parse('http://tritec.store/mipromo/public/api/create/intent');
     final response = await http.post(
       url,
       headers: {
@@ -420,9 +421,8 @@ class BookingViewModel extends BaseViewModel {
     );
     final body = json.decode(response.body);
     final data = jsonDecode(body['intent'].toString());
-    // if (body['error'] != null) {
-    //   throw Exception(body['error']);
-    // }
+
+    paymentIntent = data['intent']['id'].toString();
 
     return data;
   }
@@ -475,6 +475,7 @@ class BookingViewModel extends BaseViewModel {
 
   Future<bool> confirmPayment() async {
     print("Asdfasdfsdfasfd");
+    final x;
     try {
       // 3. display the payment sheet.
       await Stripe.instance.presentPaymentSheet();

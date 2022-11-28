@@ -25,6 +25,7 @@ class Order with _$Order {
     String? postCode,
     int? rate,
     int? selectedSize,
+    String? paymentIntent,
   }) = _Order;
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);

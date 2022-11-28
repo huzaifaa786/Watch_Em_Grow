@@ -13,6 +13,8 @@ class StripeApi {
 
   static const String transferUrl =
       '$domain/transfers';
+  static const String refundUrl =
+      '$domain/refunds';
 
 
   // for getting the access token from Paypal
@@ -25,7 +27,7 @@ class StripeApi {
       double finalPayment =
           order.service.depositAmount! * (1 - (processingFee / 100));
     
-      var uname = 'sk_test_51LMrcMIyrTaw9WhhtWlvhUnHmylcBY5T3aueLNXurC12srsvfUp0756TaVZqPDxGvtcnFMdaRKdeuzSD1Tnp8tRp00u9SHZmf7';
+      var uname = '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';
       var pword = '';
       var authn = 'Basic ' + base64Encode(utf8.encode('$uname:$pword'));
 
@@ -50,6 +52,37 @@ class StripeApi {
 
       final body = jsonDecode(response.body);
      
+      return body;
+    } catch (e, stack) {
+      print(stack.toString());
+      rethrow;
+    }
+  }
+
+  Future<dynamic> refundPayment(Order order) async {
+    try {
+      var uname = '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';
+      var pword = '';
+      var authn = 'Basic ' + base64Encode(utf8.encode('$uname:$pword'));
+
+      var headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': authn,
+      };
+
+  
+      var data = {
+        'payment_intent': order.paymentIntent,
+      };
+      //double finalPayment = order.service.price * 0.80;
+      final response = await http.post(
+        Uri.parse(refundUrl),
+        headers: headers,
+        body: data
+      );
+
+      final body = jsonDecode(response.body);
+     print(body);
       return body;
     } catch (e, stack) {
       print(stack.toString());

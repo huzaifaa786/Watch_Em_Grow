@@ -173,8 +173,13 @@ class OrderDetailViewModel extends BaseViewModel {
       isApiLoading = true;
       notifyListeners();
       final accessToken = await _paypalApi.getAccessToken();
-      final response = await _paypalApi.refundPayment(order, accessToken!);
-      if (response['statusCode'] == 201) {
+      final response;
+      if (order.paymentMethod == MPaymentMethod.paypal) {
+          response = await _paypalApi.refundPayment(order, accessToken!);
+      }else{
+        response = await _stripeApi.refundPayment(order);
+      }
+      if (response['statusCode'] == 201 || response['id'] != null) {
         isApiLoading = false;
         notifyListeners();
         _databaseApi
@@ -468,8 +473,13 @@ class OrderDetailViewModel extends BaseViewModel {
         isApiLoading = true;
         notifyListeners();
         final accessToken = await _paypalApi.getAccessToken();
-        final response = await _paypalApi.refundPayment(order, accessToken!);
-        if (response['statusCode'] == 201) {
+         final response;
+      if (order.paymentMethod == MPaymentMethod.paypal) {
+          response = await _paypalApi.refundPayment(order, accessToken!);
+      }else{
+        response = await _stripeApi.refundPayment(order);
+      }
+        if (response['statusCode'] == 201 || response['id'] != null) {
           isApiLoading = false;
           notifyListeners();
           _databaseApi
@@ -532,8 +542,13 @@ class OrderDetailViewModel extends BaseViewModel {
         isApiLoading = true;
         notifyListeners();
         final accessToken = await _paypalApi.getAccessToken();
-        final response = await _paypalApi.refundPayment(order, accessToken!);
-        if (response['statusCode'] == 201) {
+         final response;
+      if (order.paymentMethod == MPaymentMethod.paypal) {
+          response = await _paypalApi.refundPayment(order, accessToken!);
+      }else{
+        response = await _stripeApi.refundPayment(order);
+      }
+        if (response['statusCode'] == 201 || response['id'] != null) {
           isApiLoading = false;
           notifyListeners();
           _databaseApi
@@ -767,8 +782,13 @@ class OrderDetailViewModel extends BaseViewModel {
       isApiLoading = true;
       notifyListeners();
       final accessToken = await _paypalApi.getAccessToken();
-      final response = await _paypalApi.refundPayment(order, accessToken!);
-      if (response['statusCode'] == 201) {
+       final response;
+      if (order.paymentMethod == MPaymentMethod.paypal) {
+          response = await _paypalApi.refundPayment(order, accessToken!);
+      }else{
+        response = await _stripeApi.refundPayment(order);
+      }
+      if (response['statusCode'] == 201 || response['id'] != null) {
         _databaseApi
             .cancelOrder(order, DateTime.now().microsecondsSinceEpoch)
             .then((value) async {
