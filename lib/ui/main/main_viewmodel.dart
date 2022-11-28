@@ -124,11 +124,11 @@ class MainViewModel extends BaseViewModel {
     final NotificationSettings settings = await messaging.requestPermission();
     if (settings.authorizationStatus != AuthorizationStatus.authorized) {
     
-      await _firebaseAuth.signOut();   
-       _navigationService.popUntil(
-        (route) => route.settings.name == Routes.mainView,
-      );
-      await _navigationService.replaceWith(Routes.startUpView);
+      // await _firebaseAuth.signOut();   
+      //  _navigationService.popUntil(
+      //   (route) => route.settings.name == Routes.mainView,
+      // );
+      // await _navigationService.replaceWith(Routes.startUpView);
     }
     await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, // Required to display a heads up notification

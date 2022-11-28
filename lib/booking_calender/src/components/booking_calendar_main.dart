@@ -294,7 +294,28 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                                 ?  controller.isSlotBooked(index) ==
                                                 true ||
                                             controller.isSlotInPauseTime(slot) ==
-                                                true ? SizedBox():BookingSlot(
+                                                true ? BookingSlot(
+                                    hidethisSlot:true,
+                                    hideBreakSlot: true,
+                                    sellerPauseTime: true,
+                                    pauseSlotColor: widget.pauseSlotColor,
+                                    availableSlotColor:
+                                        widget.availableSlotColor,
+                                    bookedSlotColor: widget.bookedSlotColor,
+                                    selectedSlotColor: widget.selectedSlotColor,
+                                    isPauseTime:
+                                        controller.isSlotInPauseTime(slot),
+                                    isBooked: controller.isSlotBooked(index),
+                                    isSelected:
+                                        index == controller.selectedSlot,
+                                    onTap: () => controller.selectSlot(index),
+                                    child: Center(
+                                      child: Text(
+                                        widget.formatDateTime?.call(slot) ??
+                                            BookingUtil.formatDateTime(slot),
+                                      ),
+                                    ),
+                                  ):BookingSlot(
                                     hidethisSlot:false,
                                     hideBreakSlot: false,
                                     sellerPauseTime: false,
@@ -427,7 +448,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                   if (widget.showData == false) ...[
                     CommonButton(
                       text: enableslotbutton
-                          ? 'Avail Slot(' +
+                          ? 'Mark this slot as available(' +
                               BookingUtil.formatDateTime(
                                   controller.slottoAvail!) +
                               ') '

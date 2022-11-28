@@ -150,7 +150,7 @@ class SellerProfileView extends StatelessWidget {
                                 model.navigateToEditProfile();
                               },
                             ),
-                            model.StripeID == null ?
+                            model.StripeID == '' ?
                             ListTile(
                               leading: const Icon(Icons.money),
                               title: const Text('Connect Stripe'),

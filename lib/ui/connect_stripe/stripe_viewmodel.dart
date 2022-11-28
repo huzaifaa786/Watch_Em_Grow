@@ -35,7 +35,7 @@ class connectStripeViewModel extends BaseViewModel {
   //     'https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_M5OewgfEWvHw7auL4XNmWRY9BgIT1hLP&scope=read_write&redirect_uri=http%3A%2F%2Ftritec.store%2Fmipromo%2Fpublic%2Fredirect';
 
   // String connectUrl =
-  //     'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_M5OewgfEWvHw7auL4XNmWRY9BgIT1hLP&redirect_uri=http%3A%2F%2Ftritec.store%2Fmipromo%2Fpublic%2Fredirect';
+  //     'https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_M5OewgfEWvHw7auL4XNmWRY9BgIT1hLP&redirect_uri=http%3A%2F%2Ftore%2Fmipromo%2Fpublic%2Fredirect';
   // String connectUrl =
   //     'https://connect.stripe.com/setup/e/acct_1M7Bj9IT7ZExORx2/YlbviveWBqR3';
 
