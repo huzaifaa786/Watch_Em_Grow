@@ -93,11 +93,13 @@ class BookServiceViewModel extends BaseViewModel {
           final String captureId = capture['id'] as String;
           final String timeString = capture['update_time'] as String;
           final String orderId = DateTime.now().microsecondsSinceEpoch.toString();
+          await _databaseApi.uploadBookingFirebase(newBooking: bookkingService);
           final order = Order(
             type: OrderType.service,
             paymentMethod: MPaymentMethod.paypal,
             orderId: orderId,
             paymentId: paymentId,
+            bookkingId: bookkingService.id,
             shopId: service.shopId,
             captureId: captureId,
             service: service,
@@ -115,7 +117,7 @@ class BookServiceViewModel extends BaseViewModel {
             var token = await _databaseApi.getToken(order.service.ownerId);
             if (token != null) {
               Shop shopDetails = await _databaseApi.getShop(order.service.shopId);
-              await _databaseApi.uploadBookingFirebase(newBooking: bookkingService);
+              
               var test = _databaseApi.postNotification(
                   orderID: order.orderId,
                   title: 'New Booking',

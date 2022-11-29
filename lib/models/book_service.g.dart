@@ -8,6 +8,7 @@ part of 'book_service.dart';
 
 BookkingService _$BookkingServiceFromJson(Map<String, dynamic> json) {
   return BookkingService(
+    id: json['id'] as String?,
     email: json['email'] as String?,
     phoneNumber: json['phoneNumber'] as String?,
     placeAddress: json['placeAddress'] as String?,
@@ -22,16 +23,19 @@ BookkingService _$BookkingServiceFromJson(Map<String, dynamic> json) {
     serviceDuration: json['serviceDuration'] as int?,
     servicePrice: json['servicePrice'] as int?,
     depositAmount: json['depositAmount'] as double?,
+    approved: json['approved'] as bool? ?? false,
     serviceId: json['serviceId'] as String?,
   );
 }
 
 Map<String, dynamic> _$BookkingServiceToJson(BookkingService instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'userId': instance.userId,
       'userName': instance.userName,
       'placeId': instance.placeId,
       'serviceName': instance.serviceName,
+      'approved': instance.approved,
       'serviceId': instance.serviceId,
       'serviceDuration': instance.serviceDuration,
       'servicePrice': instance.servicePrice,

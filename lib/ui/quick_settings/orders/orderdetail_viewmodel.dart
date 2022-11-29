@@ -977,7 +977,7 @@ class OrderDetailViewModel extends BaseViewModel {
             "time": DateTime.now().millisecondsSinceEpoch.toString(),
             "sound": "default"
           };
-
+          _databaseApi.updateBooking(order.bookkingId!);
           _databaseApi.postNotificationCollection(order.userId, postMap);
           _databaseApi.postNotificationCollection(
               order.service.ownerId, mpostMap);

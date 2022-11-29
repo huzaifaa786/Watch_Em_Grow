@@ -24,6 +24,7 @@ class _$OrderTearOff {
       {required String orderId,
       String? paymentId,
       String? captureId,
+      String? bookkingId,
       required OrderType type,
       required MPaymentMethod paymentMethod,
       required String userId,
@@ -43,6 +44,7 @@ class _$OrderTearOff {
       orderId: orderId,
       paymentId: paymentId,
       captureId: captureId,
+      bookkingId: bookkingId,
       type: type,
       paymentMethod: paymentMethod,
       userId: userId,
@@ -74,6 +76,7 @@ mixin _$Order {
   String get orderId => throw _privateConstructorUsedError;
   String? get paymentId => throw _privateConstructorUsedError;
   String? get captureId => throw _privateConstructorUsedError;
+  String? get bookkingId => throw _privateConstructorUsedError;
   OrderType get type => throw _privateConstructorUsedError;
   MPaymentMethod get paymentMethod => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
@@ -103,6 +106,7 @@ abstract class $OrderCopyWith<$Res> {
       {String orderId,
       String? paymentId,
       String? captureId,
+      String? bookkingId,
       OrderType type,
       MPaymentMethod paymentMethod,
       String userId,
@@ -135,6 +139,7 @@ class _$OrderCopyWithImpl<$Res> implements $OrderCopyWith<$Res> {
     Object? orderId = freezed,
     Object? paymentId = freezed,
     Object? captureId = freezed,
+    Object? bookkingId = freezed,
     Object? type = freezed,
     Object? paymentMethod = freezed,
     Object? userId = freezed,
@@ -163,6 +168,10 @@ class _$OrderCopyWithImpl<$Res> implements $OrderCopyWith<$Res> {
       captureId: captureId == freezed
           ? _value.captureId
           : captureId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      bookkingId: bookkingId == freezed
+          ? _value.bookkingId
+          : bookkingId // ignore: cast_nullable_to_non_nullable
               as String?,
       type: type == freezed
           ? _value.type
@@ -244,6 +253,7 @@ abstract class _$OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
       {String orderId,
       String? paymentId,
       String? captureId,
+      String? bookkingId,
       OrderType type,
       MPaymentMethod paymentMethod,
       String userId,
@@ -278,6 +288,7 @@ class __$OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res>
     Object? orderId = freezed,
     Object? paymentId = freezed,
     Object? captureId = freezed,
+    Object? bookkingId = freezed,
     Object? type = freezed,
     Object? paymentMethod = freezed,
     Object? userId = freezed,
@@ -306,6 +317,10 @@ class __$OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res>
       captureId: captureId == freezed
           ? _value.captureId
           : captureId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      bookkingId: bookkingId == freezed
+          ? _value.bookkingId
+          : bookkingId // ignore: cast_nullable_to_non_nullable
               as String?,
       type: type == freezed
           ? _value.type
@@ -378,6 +393,7 @@ class _$_Order implements _Order {
       {required this.orderId,
       this.paymentId,
       this.captureId,
+      this.bookkingId,
       required this.type,
       required this.paymentMethod,
       required this.userId,
@@ -403,6 +419,8 @@ class _$_Order implements _Order {
   final String? paymentId;
   @override
   final String? captureId;
+  @override
+  final String? bookkingId;
   @override
   final OrderType type;
   @override
@@ -437,7 +455,7 @@ class _$_Order implements _Order {
 
   @override
   String toString() {
-    return 'Order(orderId: $orderId, paymentId: $paymentId, captureId: $captureId, type: $type, paymentMethod: $paymentMethod, userId: $userId, shopId: $shopId, service: $service, time: $time, status: $status, bookingStart: $bookingStart, bookingEnd: $bookingEnd, name: $name, address: $address, paymentIntent:$paymentIntent, postCode: $postCode, rate: $rate, selectedSize: $selectedSize)';
+    return 'Order(orderId: $orderId, paymentId: $paymentId, captureId: $captureId, bookkingId:$bookkingId, type: $type, paymentMethod: $paymentMethod, userId: $userId, shopId: $shopId, service: $service, time: $time, status: $status, bookingStart: $bookingStart, bookingEnd: $bookingEnd, name: $name, address: $address, paymentIntent:$paymentIntent, postCode: $postCode, rate: $rate, selectedSize: $selectedSize)';
   }
 
   @override
@@ -453,6 +471,9 @@ class _$_Order implements _Order {
             (identical(other.captureId, captureId) ||
                 const DeepCollectionEquality()
                     .equals(other.captureId, captureId)) &&
+            (identical(other.bookkingId, bookkingId) ||
+                const DeepCollectionEquality()
+                    .equals(other.bookkingId, bookkingId)) &&
             (identical(other.type, type) ||
                 const DeepCollectionEquality().equals(other.type, type)) &&
             (identical(other.paymentMethod, paymentMethod) ||
@@ -499,6 +520,7 @@ class _$_Order implements _Order {
       const DeepCollectionEquality().hash(orderId) ^
       const DeepCollectionEquality().hash(paymentId) ^
       const DeepCollectionEquality().hash(captureId) ^
+      const DeepCollectionEquality().hash(bookkingId) ^
       const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(paymentMethod) ^
       const DeepCollectionEquality().hash(userId) ^
@@ -531,6 +553,7 @@ abstract class _Order implements Order {
       {required String orderId,
       String? paymentId,
       String? captureId,
+      String? bookkingId,
       required OrderType type,
       required MPaymentMethod paymentMethod,
       required String userId,
@@ -555,6 +578,8 @@ abstract class _Order implements Order {
   String? get paymentId => throw _privateConstructorUsedError;
   @override
   String? get captureId => throw _privateConstructorUsedError;
+  @override
+  String? get bookkingId => throw _privateConstructorUsedError;
   @override
   OrderType get type => throw _privateConstructorUsedError;
   @override

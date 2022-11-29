@@ -22,6 +22,7 @@ class SearchViewModel extends BaseViewModel {
   List<Shop> otherShops = [];
 
   List<Shop>? allShops;
+  List<Shop>? allSearchingShops;
   List<Follow> _follows = [];
   List<String> ids = [];
   List<AppUser> users = [];
@@ -38,7 +39,7 @@ class SearchViewModel extends BaseViewModel {
     _listenShopOwners();
     _listenAllServices();
     _listenAllShops();
-
+    _listenShops();
     setBusy(false);
   }
 
@@ -63,6 +64,15 @@ class SearchViewModel extends BaseViewModel {
         var seen = Set<Shop>();
         List<Shop> uniquelist = searchedShops.where((shop) => seen.add(shop)).toList();
         searchedShops = uniquelist;
+        notifyListeners();
+      },
+    );
+  }
+
+  void _listenShops() {
+    _databaseApi.listenallShops().listen(
+      (shopsData) {
+        allSearchingShops = shopsData;
         notifyListeners();
       },
     );
@@ -139,7 +149,7 @@ class SearchViewModel extends BaseViewModel {
     }
 
     // ignore: avoid_function_literals_in_foreach_calls
-    allShops!.forEach((shop) {
+    allSearchingShops!.forEach((shop) {
       if (shop.name.trim().replaceAll(' ', '').toLowerCase().contains(text.trim().replaceAll(' ', '').toLowerCase())) {
         searchedShops.add(shop);
         notifyListeners();

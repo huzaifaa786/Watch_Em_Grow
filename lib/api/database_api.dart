@@ -1181,6 +1181,34 @@ class DatabaseApi {
     return _shopsController.stream;
   }
 
+  Stream<List<Shop>> listenallShops() {
+    _shopsCollection.snapshots().listen(
+      (shopsSnapshots) {
+        if (shopsSnapshots.docs.isNotEmpty) {
+          final shops = shopsSnapshots.docs
+              .map(
+                (snapshot) =>
+                    Shop.fromJson(snapshot.data()! as Map<String, dynamic>),
+              )
+              .where((shop) => shop.hasService && shop.isBestSeller == 1)
+              .toList();
+          final mshops = shopsSnapshots.docs
+              .map(
+                (snapshot) =>
+                    Shop.fromJson(snapshot.data()! as Map<String, dynamic>),
+              )
+              .where((shop) => shop.hasService && shop.isBestSeller != 1)
+              .toList();
+          List<Shop> all_shops = [];
+          all_shops = shops + mshops;
+          _shopsController.add(all_shops);
+        }
+      },
+    );
+
+    return _shopsController.stream;
+  }
+
   Future<List<Shop>> listenNextPaginatedShops(
       List<Shop> searchedShops, id) async {
     var db = FirebaseFirestore.instance;
@@ -1607,13 +1635,14 @@ class DatabaseApi {
   Future<List<BookkingService>> getUserBookingStreamFirebase(
       {required String userId}) async {
     final result =
-        await _bookingsCollection.where('userId', isEqualTo: userId).get();
-
+        await _bookingsCollection.where('userId', isEqualTo: userId).where('approved',isEqualTo: true).get();
+    print('hello');
     final _userBookings = result.docs
         .map(
           (e) => BookkingService.fromJson(e.data()! as Map<String, dynamic>),
         )
         .toList();
+
 
     return _userBookings;
   }
@@ -1675,7 +1704,7 @@ class DatabaseApi {
   Future<dynamic> uploadBookingFirebase(
       {required BookkingService newBooking}) async {
     await _bookingsCollection
-        .doc()
+        .doc(newBooking.id)
         .set(newBooking.toJson())
         .then((value) => log("Booking Added"))
         .catchError((error) => log("Failed to add booking: $error"));
@@ -1727,6 +1756,14 @@ class DatabaseApi {
     var previousTotalCount = userData['purchases'];
     int newCount = int.parse(previousTotalCount.toString()) + 1;
     await _usersCollection.doc(userID).update({'purchases': newCount});
+  }
+
+  Future updateBooking(String bookingId) async {
+    final bookingDoc = await _bookingsCollection.doc(bookingId).get();
+    if (!bookingDoc.exists) {
+      return null;
+    }
+    await _bookingsCollection.doc(bookingId).update({'approved': true});
   }
 
   Future bookOrder(

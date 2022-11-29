@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 // import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mipromo/ui/service/booking_util.dart';
@@ -7,6 +8,7 @@ part 'book_service.g.dart';
 @JsonSerializable(explicitToJson: true)
 class BookkingService {
   /// The generated code assumes these values exist in JSON.
+  final String? id;
   final String? userId;
   final String? ownerId;
   final String? userName;
@@ -16,6 +18,7 @@ class BookkingService {
   final int? serviceDuration;
   final int? servicePrice;
   final double?  depositAmount;
+  @Default(false) bool? approved;
 
   //Because we are storing timestamp in Firestore, we need a converter for DateTime
   /* static DateTime timeStampToDateTime(Timestamp timestamp) {
@@ -38,7 +41,9 @@ class BookkingService {
   final String? placeAddress;
 
   BookkingService(
-      {this.email,
+      {
+      this.id,
+      this.email,
       this.phoneNumber,
       this.placeAddress,
       this.bookingStart,
@@ -48,6 +53,7 @@ class BookkingService {
       this.ownerId,
       this.userName,
       this.serviceName,
+      this.approved,
       this.serviceDuration,
       this.servicePrice,
       this.depositAmount,
