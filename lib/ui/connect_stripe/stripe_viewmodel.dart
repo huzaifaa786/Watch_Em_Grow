@@ -89,13 +89,13 @@ class connectStripeViewModel extends BaseViewModel {
           _dialogService.showCustomDialog(
               variant: AlertType.success,
               title: 'Success',
-              description: 'Stripe Account Connected Succesfully!');
+              description: 'Stripe account Cannected Succesfully!');
         } else {
           _navigationService.back(result: true);
           _dialogService.showCustomDialog(
               variant: AlertType.error,
               title: 'Error',
-              description: 'Stripe Account Not Connected TryAgain!');
+              description: 'Stripe account not connected try again!');
         }
         // var url3 = Uri.parse('https://api.stripe.com/v1/customers');
         // var res3 = await http.post(url3, headers: {'Authorization': authn});
