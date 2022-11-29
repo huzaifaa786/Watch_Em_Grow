@@ -194,7 +194,7 @@ class BookingViewModel extends BaseViewModel {
       confirmationTitle: 'Proceed',
       cancelTitle: 'Close',
     );
-
+    final String bookingId = DateTime.now().microsecondsSinceEpoch.toString();
     final StripeId = await _databaseApi.getSellerStripe(service.ownerId);
     if (dialogResponse?.confirmed ?? false) {
       if (StripeId == '') {
@@ -206,6 +206,7 @@ class BookingViewModel extends BaseViewModel {
                 user: user,
                 service: service,
                 bookingservice: BookkingService(
+                    id: bookingId,
                     email: newBooking.userEmail,
                     bookingStart: newBooking.bookingStart,
                     bookingEnd: newBooking.bookingStart
@@ -235,6 +236,7 @@ class BookingViewModel extends BaseViewModel {
                   user: user,
                   service: service,
                   bookingservice: BookkingService(
+                      id: bookingId,
                       email: newBooking.userEmail,
                       bookingStart: newBooking.bookingStart,
                       bookingEnd: newBooking.bookingEnd,
@@ -249,9 +251,8 @@ class BookingViewModel extends BaseViewModel {
         } else if (response != null && !response.confirmed) {
           await initPaymentSheet();
           if (await confirmPayment()) {
-            await addOrder(newBooking.bookingStart, newBooking.bookingEnd);
-            await _databaseApi.uploadBookingFirebase(
-                newBooking: BookkingService(
+            final bookservice = BookkingService(
+                    id: bookingId,
                     email: newBooking.userEmail,
                     bookingStart: newBooking.bookingStart,
                     bookingEnd: newBooking.bookingEnd,
@@ -260,7 +261,11 @@ class BookingViewModel extends BaseViewModel {
                     serviceId: newBooking.serviceId,
                     serviceName: newBooking.serviceName,
                     servicePrice: newBooking.servicePrice,
-                    serviceDuration: newBooking.serviceDuration));
+                    serviceDuration: newBooking.serviceDuration);
+                       await _databaseApi.uploadBookingFirebase(
+                newBooking:bookservice);
+            await addOrder(newBooking.bookingStart, newBooking.bookingEnd,bookservice.id);
+         
           }
         }
       }
@@ -325,7 +330,7 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  addOrder(DateTime start, DateTime end) {
+  addOrder(DateTime start, DateTime end,String? id) {
     final String timeString = DateTime.now().toString();
     final String orderId = DateTime.now().microsecondsSinceEpoch.toString();
     final order = Order(
@@ -336,6 +341,7 @@ class BookingViewModel extends BaseViewModel {
       shopId: service.shopId,
       captureId: 'captureId',
       service: service,
+      bookkingId: id,
       bookingStart: start.microsecondsSinceEpoch,
       bookingEnd: end.microsecondsSinceEpoch,
       userId: user.id,

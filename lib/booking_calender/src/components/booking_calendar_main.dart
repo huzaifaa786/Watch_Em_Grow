@@ -276,7 +276,8 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                       controller.generateBookedSlots(
                           widget.convertStreamResultToDateTimeRanges(
                               streamResult: data));
-
+                      List<DateTime> dataa = controller.allBookingSlots.where((element) =>  controller.isSlotInPauseTime(element) == false ).where((element) => controller.isSlotBooked(controller.allBookingSlots.indexOf(element)) == false).toList();
+                              print(dataa.length);
                       return Container(
                         height: 80,
                         width: MediaQuery.of(context).size.width,
@@ -286,15 +287,11 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                               const BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
-                          itemCount: controller.allBookingSlots.length ,
+                          itemCount: widget.showData == true ? dataa.length : controller.allBookingSlots.length,
                           itemBuilder: (context, index) {
-                            final slot =
-                                controller.allBookingSlots.elementAt(index);
+                            final slot =  widget.showData == true ?  dataa.elementAt(index) : controller.allBookingSlots.elementAt(index) ;
                             return widget.showData == true
-                                ?  controller.isSlotBooked(index) ==
-                                                true ||
-                                            controller.isSlotInPauseTime(slot) ==
-                                                true ? SizedBox():BookingSlot(
+                                ? BookingSlot(
                                     hidethisSlot:false,
                                     hideBreakSlot: false,
                                     sellerPauseTime: false,
