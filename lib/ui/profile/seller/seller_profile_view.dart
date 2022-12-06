@@ -46,19 +46,22 @@ class SellerProfileView extends StatelessWidget {
                       )
                     : null,
                 actions: [
-                  if (model.shop!.ownerId != model.currentUser.id && viewingAsProfile != true)
+                  if (model.shop!.ownerId != model.currentUser.id &&
+                      viewingAsProfile != true)
                     Builder(
                         builder: (context) => InkWell(
                               onTap: () async {
                                 await model.handleReport(context);
                                 if (model.selectReport) {
-                                  Future.delayed(Duration(milliseconds: 800)).then((value) {
+                                  Future.delayed(Duration(milliseconds: 800))
+                                      .then((value) {
                                     model.reportedDone(context);
                                   });
                                 }
                               },
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -70,7 +73,8 @@ class SellerProfileView extends StatelessWidget {
                             ))
                   else
                     const SizedBox.shrink(),
-                  if (model.shop!.ownerId == model.currentUser.id && viewingAsProfile == true)
+                  if (model.shop!.ownerId == model.currentUser.id &&
+                      viewingAsProfile == true)
                     Builder(
                       builder: (context) => IconButton(
                         icon: const Icon(Icons.menu),
@@ -109,8 +113,10 @@ class SellerProfileView extends StatelessWidget {
                                 Navigator.pop(context);
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => OrdersView()),
-                                ).then((val) => {model.init(seller.shopId, seller)});
+                                  MaterialPageRoute(
+                                      builder: (context) => OrdersView()),
+                                ).then((val) =>
+                                    {model.init(seller.shopId, seller)});
                                 // model.navigateToOrdersView();
                               },
                             ),
@@ -119,7 +125,10 @@ class SellerProfileView extends StatelessWidget {
                               leading: const Icon(Icons.copyright_rounded),
                               children: [
                                 ListTile(
-                                  title: model.currentUser.referCode.toString().text.make(),
+                                  title: model.currentUser.referCode
+                                      .toString()
+                                      .text
+                                      .make(),
                                   trailing: IconButton(
                                     icon: const Icon(
                                       Icons.copy,
@@ -128,7 +137,8 @@ class SellerProfileView extends StatelessWidget {
                                     onPressed: () {
                                       Clipboard.setData(
                                         ClipboardData(
-                                          text: model.currentUser.referCode.toString(),
+                                          text: model.currentUser.referCode
+                                              .toString(),
                                         ),
                                       );
                                     },
@@ -150,14 +160,15 @@ class SellerProfileView extends StatelessWidget {
                                 model.navigateToEditProfile();
                               },
                             ),
-                            model.StripeID == '' ?
-                            ListTile(
-                              leading: const Icon(Icons.money),
-                              title: const Text('Connect Stripe'),
-                              onTap: () {
-                                model.navigateToConnectedAccount();
-                              },
-                            ):Text(''),
+                            model.StripeID == ''
+                                ? ListTile(
+                                    leading: const Icon(Icons.money),
+                                    title: const Text('Connect Stripe'),
+                                    onTap: () {
+                                      model.navigateToConnectedAccount();
+                                    },
+                                  )
+                                : Text(''),
                           ],
                         ),
                       ),
@@ -201,8 +212,11 @@ class SellerProfileView extends StatelessWidget {
                               onFollowersTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => FollowersView(sellerId: seller.id)),
-                                ).then((val) => {model.init(seller.shopId, seller)});
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          FollowersView(sellerId: seller.id)),
+                                ).then((val) =>
+                                    {model.init(seller.shopId, seller)});
 
                                 // model.navigateToFollowersView(seller.id).then((value) {
                                 //   print("ab chal gya yha");
@@ -212,8 +226,11 @@ class SellerProfileView extends StatelessWidget {
                               onFollowingTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => FollowingView(sellerId: seller.id)),
-                                ).then((val) => {model.init(seller.shopId, seller)});
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          FollowingView(sellerId: seller.id)),
+                                ).then((val) =>
+                                    {model.init(seller.shopId, seller)});
                                 // model
                                 //     .navigateToFollowingView(seller.id)
                                 //     .then((value) => model.init(model.shop!.id, seller));
@@ -221,96 +238,160 @@ class SellerProfileView extends StatelessWidget {
                               headerButton: model.shop != null
                                   ? model.shop!.ownerId == model.currentUser.id
                                       ? Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
                                             SizedBox(
-                                              width: MediaQuery.of(context).size.width * 0.46,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.46,
                                               child: OutlinedButton(
                                                 onPressed: () {
-                                                  model.navigateToSetAvailability();
+                                                  model
+                                                      .navigateToSetAvailability();
                                                 },
-                                                child: 'Set Availability'.text.make(),
+                                                child: 'Set Availability'
+                                                    .text
+                                                    .make(),
                                               ),
                                             ),
                                             SizedBox(
-                                              width: MediaQuery.of(context).size.width * 0.46,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.46,
                                               child: OutlinedButton(
                                                 onPressed: () {
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                        builder: (context) => OrdersView(
+                                                        builder: (context) =>
+                                                            OrdersView(
                                                               index: 1,
                                                             )),
-                                                  ).then((val) => {model.init(seller.shopId, seller)});
+                                                  ).then((val) => {
+                                                        model.init(
+                                                            seller.shopId,
+                                                            seller)
+                                                      });
                                                 },
-                                                child: 'Calender'.text.make(),
+                                                child: 'Calendar'.text.make(),
                                               ),
                                             ),
                                           ],
                                         )
                                       : Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
-                                            model.currentfollowingIds.contains(seller.id)
+                                            model.currentfollowingIds
+                                                    .contains(seller.id)
                                                 ? SizedBox(
-                                                    width: MediaQuery.of(context).size.width * 0.46,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.46,
                                                     child: OutlinedButton(
-                                                      onPressed: model.unfollowed
+                                                      onPressed: model
+                                                              .unfollowed
                                                           ? null
                                                           : () {
                                                               //model.unfollowed = true;
                                                               //model.notifyListeners();
-                                                              model.unfollow(seller.id).whenComplete(() {
-                                                                model.unfollowed = false;
-                                                                model.notifyListeners();
+                                                              model
+                                                                  .unfollow(
+                                                                      seller.id)
+                                                                  .whenComplete(
+                                                                      () {
+                                                                model.unfollowed =
+                                                                    false;
+                                                                model
+                                                                    .notifyListeners();
                                                               });
                                                             },
-                                                      child: const Text('Following'),
+                                                      child: const Text(
+                                                          'Following'),
                                                     ),
                                                   )
                                                 : SizedBox(
-                                                    width: MediaQuery.of(context).size.width * 0.46,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.46,
                                                     child: ElevatedButton(
                                                       onPressed: () {
                                                         model.follow(seller.id);
                                                       },
                                                       style: ButtonStyle(
-                                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                        shape: MaterialStateProperty
+                                                            .all<
+                                                                RoundedRectangleBorder>(
                                                           RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.circular(6),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        6),
                                                           ),
                                                         ),
-                                                        backgroundColor: MaterialStateProperty.all<Color>(
-                                                          Color(model.shop!.color),
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all<Color>(
+                                                          Color(model
+                                                              .shop!.color),
                                                         ),
                                                       ),
-                                                      child:
-                                                          const Text('Follow', style: TextStyle(color: Colors.white)),
+                                                      child: const Text(
+                                                          'Follow',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white)),
                                                     ),
                                                   ),
                                             SizedBox(
-                                              width: MediaQuery.of(context).size.width * 0.46,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.46,
                                               child: ElevatedButton(
                                                 onPressed: () {
-                                                  print(model.shop!.policy.length);
+                                                  print(model
+                                                      .shop!.policy.length);
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                        builder: (context) => PolicyScreen(policy: model.shop!.policy)),
-                                                  ).then((val) => {model.init(seller.shopId, seller)});
+                                                        builder: (context) =>
+                                                            PolicyScreen(
+                                                                policy: model
+                                                                    .shop!
+                                                                    .policy)),
+                                                  ).then((val) => {
+                                                        model.init(
+                                                            seller.shopId,
+                                                            seller)
+                                                      });
                                                 },
                                                 style: ButtonStyle(
-                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  shape:
+                                                      MaterialStateProperty.all<
+                                                          RoundedRectangleBorder>(
                                                     RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(6),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              6),
                                                     ),
                                                   ),
-                                                  backgroundColor: MaterialStateProperty.all<Color>(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all<
+                                                          Color>(
                                                     Color(model.shop!.color),
                                                   ),
                                                 ),
-                                                child: const Text('Policy', style: TextStyle(color: Colors.white)),
+                                                child: const Text('Policy',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                               ),
                                             ),
                                           ],
@@ -333,7 +414,11 @@ class SellerProfileView extends StatelessWidget {
                                   onPressed: () {
                                     model.navigateToCreateShopView();
                                   },
-                                  child: "+ ${Constants.createShopLabel}".text.bold.color(Styles.kcPrimaryColor).make(),
+                                  child: "+ ${Constants.createShopLabel}"
+                                      .text
+                                      .bold
+                                      .color(Styles.kcPrimaryColor)
+                                      .make(),
                                 ),
                               ],
                             )
@@ -356,11 +441,13 @@ class SellerProfileView extends StatelessWidget {
                                 // const Divider(
                                 //   thickness: 1,
                                 // ),
-                                if (model.services.isEmpty && model.shop!.ownerId == model.currentUser.id)
+                                if (model.services.isEmpty &&
+                                    model.shop!.ownerId == model.currentUser.id)
                                   Column(
                                     children: [
                                       TextButton.icon(
-                                        label: Constants.addServiceLabel.text.make(),
+                                        label: Constants.addServiceLabel.text
+                                            .make(),
                                         icon: const Icon(
                                           Icons.add,
                                           size: 18,
@@ -386,7 +473,13 @@ class SellerProfileView extends StatelessWidget {
                                                     .make(),
                                           ),
                                         ],
-                                      ).box.border(color: Colors.amber).roundedSM.p12.make().p12()
+                                      )
+                                          .box
+                                          .border(color: Colors.amber)
+                                          .roundedSM
+                                          .p12
+                                          .make()
+                                          .p12()
                                     ],
                                   )
                                 else
@@ -394,13 +487,16 @@ class SellerProfileView extends StatelessWidget {
                                       padding: EdgeInsets.all(0),
                                       shrinkWrap: true,
                                       physics: const BouncingScrollPhysics(),
-                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 3,
                                         crossAxisSpacing: 1.5,
                                         mainAxisSpacing: 1.5,
                                         childAspectRatio: 1,
                                       ),
-                                      itemCount: model.shop!.ownerId == model.currentUser.id && viewingAsProfile == true
+                                      itemCount: model.shop!.ownerId ==
+                                                  model.currentUser.id &&
+                                              viewingAsProfile == true
                                           ? model.services.length
                                           : model.services.length,
                                       itemBuilder: (context, index) {
@@ -443,7 +539,8 @@ class SellerProfileView extends StatelessWidget {
                                         // } else {
                                         return Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Container(
                                               decoration: BoxDecoration(
@@ -458,12 +555,17 @@ class SellerProfileView extends StatelessWidget {
                                                   //borderRadius: BorderRadius.circular(2),
                                                   child: CachedNetworkImage(
                                                     imageUrl: imageUrl(
-                                                      model.services[index].imageUrl1,
-                                                      model.services[index].imageUrl2,
-                                                      model.services[index].imageUrl3,
+                                                      model.services[index]
+                                                          .imageUrl1,
+                                                      model.services[index]
+                                                          .imageUrl2,
+                                                      model.services[index]
+                                                          .imageUrl3,
                                                     ),
                                                     fit: BoxFit.cover,
-                                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        const Icon(Icons.error),
                                                   ),
                                                 ),
                                               ),
@@ -498,16 +600,18 @@ class SellerProfileView extends StatelessWidget {
                   BusyLoader(busy: model.isApiLoading),
                 ],
               ),
-              floatingActionButton: (model.shop!.ownerId == model.currentUser.id && viewingAsProfile == true)
-                  ? FloatingActionButton(
-                      onPressed: () {
-                        model.navigateToCreateServiceView(model.shop!);
-                      },
-                      child: Icon(Icons.add),
-                      backgroundColor: Styles.kcPrimaryColor,
-                      foregroundColor: Colors.white,
-                    )
-                  : null,
+              floatingActionButton:
+                  (model.shop!.ownerId == model.currentUser.id &&
+                          viewingAsProfile == true)
+                      ? FloatingActionButton(
+                          onPressed: () {
+                            model.navigateToCreateServiceView(model.shop!);
+                          },
+                          child: Icon(Icons.add),
+                          backgroundColor: Styles.kcPrimaryColor,
+                          foregroundColor: Colors.white,
+                        )
+                      : null,
             ),
       viewModelBuilder: () => SellerProfileViewModel(),
     );

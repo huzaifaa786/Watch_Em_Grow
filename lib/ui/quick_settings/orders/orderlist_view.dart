@@ -16,7 +16,8 @@ import 'package:velocity_x/velocity_x.dart';
 class BoughtOrderListView extends StatelessWidget {
   final AppUser currentUser;
 
-  const BoughtOrderListView({Key? key, required this.currentUser}) : super(key: key);
+  const BoughtOrderListView({Key? key, required this.currentUser})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,8 @@ class BoughtOrderListView extends StatelessWidget {
                         onTap: () {
                           model.navigateToOrderDetailView(model.orders[index]);
                         },
-                        leading: model.orders[index].service.imageUrl1 == null ||
+                        leading: model.orders[index].service.imageUrl1 ==
+                                    null ||
                                 model.orders[index].service.imageUrl1!.isEmpty
                             ? const Center(
                                 child: Icon(Icons.broken_image_outlined),
@@ -68,12 +70,15 @@ class BoughtOrderListView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            '£${model.orders[index].service.price.toStringAsFixed(2)}'.text.make(),
+                            '£${model.orders[index].service.price.toStringAsFixed(2)}'
+                                .text
+                                .make(),
                             Padding(
                               padding: const EdgeInsets.only(top: 8),
                               child: model.orders[index].status.index == 2
                                   ? 'REFUND CASE OPENED'.text.sm.bold.make()
-                                  : model.orders[index].status.name.text.sm.bold.make(),
+                                  : model.orders[index].status.name.text.sm.bold
+                                      .make(),
                             )
                           ],
                         ),
@@ -98,7 +103,8 @@ class BoughtOrderListView extends StatelessWidget {
 class SoldOrderListView extends StatefulWidget {
   final AppUser currentUser;
 
-  const SoldOrderListView({Key? key, required this.currentUser}) : super(key: key);
+  const SoldOrderListView({Key? key, required this.currentUser})
+      : super(key: key);
 
   @override
   _SoldOrderListViewState createState() => _SoldOrderListViewState();
@@ -148,7 +154,7 @@ class _SoldOrderListViewState extends State<SoldOrderListView> {
 
   @override
   Widget build(BuildContext context) {
-       Brightness brightness = Theme.of(context).brightness;
+    Brightness brightness = Theme.of(context).brightness;
     bool darkModeOn = brightness == Brightness.dark;
     return ViewModelBuilder<SoldOrderListViewModel>.reactive(
       onModelReady: (model) => model.init(currentUser: widget.currentUser),
@@ -165,9 +171,10 @@ class _SoldOrderListViewState extends State<SoldOrderListView> {
                       firstDay: DateTime(2022),
                       lastDay: DateTime(2050),
 
-                      calendarStyle:  CalendarStyle(
-                        markerDecoration :BoxDecoration(color: Styles.kcPrimaryColor,
-                        borderRadius: BorderRadius.circular(30),
+                      calendarStyle: CalendarStyle(
+                        markerDecoration: BoxDecoration(
+                          color: Styles.kcPrimaryColor,
+                          borderRadius: BorderRadius.circular(30),
                         ),
                         isTodayHighlighted: true,
                         outsideDaysVisible: false,
@@ -203,10 +210,15 @@ class _SoldOrderListViewState extends State<SoldOrderListView> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
+                          padding: const EdgeInsets.only(
+                              left: 20.0, top: 10, bottom: 10),
                           child: Text(
-                            'Appoinments',
-                            style: TextStyle(fontSize: 17,color : darkModeOn ? Colors.white:  Colors.black.withOpacity(0.6)),
+                            'Appointments',
+                            style: TextStyle(
+                                fontSize: 17,
+                                color: darkModeOn
+                                    ? Colors.white
+                                    : Colors.black.withOpacity(0.6)),
                           ),
                         ),
                       ],
@@ -223,46 +235,79 @@ class _SoldOrderListViewState extends State<SoldOrderListView> {
                                 children: [
                                   ListTile(
                                     onTap: () {
-                                      model.navigateToOrderDetailView(orders[index]);
+                                      model.navigateToOrderDetailView(
+                                          orders[index]);
                                     },
-                                    leading: orders[index].service.imageUrl1 == null ||
-                                            orders[index].service.imageUrl1!.isEmpty
+                                    leading: orders[index].service.imageUrl1 ==
+                                                null ||
+                                            orders[index]
+                                                .service
+                                                .imageUrl1!
+                                                .isEmpty
                                         ? const Center(
-                                            child: Icon(Icons.broken_image_outlined),
+                                            child: Icon(
+                                                Icons.broken_image_outlined),
                                           )
                                         : ClipRRect(
-                                            borderRadius: BorderRadius.circular(6),
+                                            borderRadius:
+                                                BorderRadius.circular(6),
                                             child: CachedNetworkImage(
-                                              imageUrl: orders[index].service.imageUrl1!,
+                                              imageUrl: orders[index]
+                                                  .service
+                                                  .imageUrl1!,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                     trailing: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
-                                        '£${orders[index].service.price}'.text.make(),
+                                        '£${orders[index].service.price}'
+                                            .text
+                                            .make(),
                                         Padding(
-                                          padding: const EdgeInsets.only(top: 8),
-                                          child: orders[index].status.name.text.sm.bold.make(),
+                                          padding:
+                                              const EdgeInsets.only(top: 8),
+                                          child: orders[index]
+                                              .status
+                                              .name
+                                              .text
+                                              .sm
+                                              .bold
+                                              .make(),
                                         )
                                       ],
                                     ),
                                     title: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        orders[index].service.name.text.gray400.make(),
+                                        orders[index]
+                                            .service
+                                            .name
+                                            .text
+                                            .gray400
+                                            .make(),
                                         4.heightBox,
                                       ],
                                     ),
                                   ).pSymmetric(v: 10),
                                   if (orders[index].type == OrderType.service)
                                     Container(
-                                      padding: EdgeInsets.only(left: 18, right: 18, bottom: 8),
+                                      padding: EdgeInsets.only(
+                                          left: 18, right: 18, bottom: 8),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [Text(bookingStart(orders[index]) + '-' + bookingEnd(orders[index]))],
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(bookingStart(orders[index]) +
+                                              '-' +
+                                              bookingEnd(orders[index]))
+                                        ],
                                       ),
                                     ),
                                 ],
