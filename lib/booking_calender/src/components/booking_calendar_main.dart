@@ -448,7 +448,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                     CommonButton(
                       text: enableButton
                           ? 'Mark this day as "Available" (' +
-                              DateFormat('HH:mm:ss')
+                              DateFormat('dd-MM-yyyy')
                                   .format(controller.daytoAvail!) +
                               ')'
                           : 'Mark this day as "Unavailable"',

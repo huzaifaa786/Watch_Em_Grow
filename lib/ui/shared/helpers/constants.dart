@@ -200,6 +200,9 @@ class Constants {
     "Rochford",
     "Tendring",
     "Uttlesford",
+    "Thurrock",
+    "Norfolk",
+    "Suffolk",
   ];
 
   // London boroughs

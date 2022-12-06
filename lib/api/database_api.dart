@@ -1574,6 +1574,14 @@ class DatabaseApi {
         .doc(userId)
         .update(availabilty);
   }
+    createAvailabilty(
+      {required String userId, required Map<String, dynamic> availabilty}) {
+    _usersCollection
+        .doc(userId)
+        .collection('availabilty')
+        .doc(userId)
+        .set(availabilty);
+  }
 
   Future<bool> checkbooking({required String ServiceId, required DateTime start,required DateTime end,}) async {
     print(start);
@@ -1603,7 +1611,7 @@ class DatabaseApi {
         .doc(userId)
         .get();
 
-    if (result.data()!['duration'] == null) {
+    if (result.data() == null) {
       print("inside");
       var ava = [true, true, true, true, true, true, true];
       Map<String, dynamic> postMap = {
@@ -1612,7 +1620,7 @@ class DatabaseApi {
         'startHour': 7,
         'endHour': 20
       };
-      changeAvailabilty(userId: userId, availabilty: postMap);
+      createAvailabilty(userId: userId, availabilty: postMap);
     }
     final availability = result.data() as Map<String, dynamic>;
 
