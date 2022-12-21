@@ -94,7 +94,7 @@ class Constants {
   // Shop Categories
   static const List<String> categories = [
     "Nails",
-    "Hair Saloons",
+    "Hair Salons",
     "Makeup Services",
     "EyeLash Extensions",
     "Clothing Brands",

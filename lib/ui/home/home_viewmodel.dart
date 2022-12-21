@@ -171,7 +171,7 @@ class HomeViewModel extends BaseViewModel {
       imageUrl: "assets/images/category/nails.jpeg",
     ),
     CategoryItem(
-      name: "Hair\nSaloons",
+      name: "Hair\nSalons",
       imageUrl: "assets/images/category/hair.jpg",
     ),
     CategoryItem(
