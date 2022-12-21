@@ -204,7 +204,7 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                       hintText: Constants.descriptionLabel,
                       validate: model.autoValidate,
                       maxLines: null,
-                      maxLength: 150,
+                      maxLength: 1000,
                       counter: '',
                       textInputType: TextInputType.multiline,
                       validator: (description) =>

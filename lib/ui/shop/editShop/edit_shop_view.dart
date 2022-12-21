@@ -118,7 +118,7 @@ class _EditShopForm extends HookViewModelWidget<EditShopViewModel> {
           focusNode: policyFocusNode,
           hintText: "Policy of your shop ",
           maxLines: 12,
-          maxLength: 1000,
+          maxLength: 8000,
           textInputType: TextInputType.multiline,
           onChanged: (policy) {
             model.policy = policy;
