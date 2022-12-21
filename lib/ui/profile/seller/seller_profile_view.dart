@@ -424,7 +424,19 @@ class SellerProfileView extends StatelessWidget {
                             )
                           else
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: IconButton(
+                                      onPressed: () {
+                                        model.toggleGridView();
+                                        
+                                      },
+                                      icon: model.listview
+                                          ? Icon(Icons.grid_on)
+                                          : Icon(Icons.view_list)),
+                                ),
                                 // model.shop!.name.text.xl2
                                 //     .fontFamily(model.shop!.fontStyle)
                                 //     .color(Color(model.shop!.color))
@@ -482,7 +494,7 @@ class SellerProfileView extends StatelessWidget {
                                           .p12()
                                     ],
                                   )
-                                else
+                                else if (!model.listview)
                                   GridView.builder(
                                       padding: EdgeInsets.all(0),
                                       shrinkWrap: true,
@@ -591,6 +603,139 @@ class SellerProfileView extends StatelessWidget {
                                       }
                                       // },
                                       )
+                                else
+                                  ListView.builder(
+                                      padding: EdgeInsets.all(0),
+                                      shrinkWrap: true,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemCount: model.shop!.ownerId ==
+                                                  model.currentUser.id &&
+                                              viewingAsProfile == true
+                                          ? model.services.length
+                                          : model.services.length,
+                                      itemBuilder: (context, index) {
+                                        // if (index == model.services.length &&
+                                        //     model.shop!.ownerId ==
+                                        //         model.currentUser.id &&
+                                        //     viewingAsProfile == true) {
+                                        //   return Column(
+                                        //     mainAxisAlignment:
+                                        //         MainAxisAlignment.center,
+                                        //     children: [
+                                        //       const Icon(Icons.add),
+                                        //       Constants.addServiceLabel.text
+                                        //           .make(),
+                                        //     ],
+                                        //   ).mdClick(() {
+                                        //     model.navigateToCreateServiceView(
+                                        //         model.shop!);
+                                        //   }).make();
+                                        // } else {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  //color: Colors.red,
+                                                  //border: Border.all(color: Colors.white, width: 0.5)
+                                                  ),
+                                              //height: context.screenHeight / 7,
+                                              width: context.screenWidth,
+                                              child: Card(
+                                                elevation: 8.0,
+                                                margin:
+                                                    new EdgeInsets.symmetric(
+                                                        horizontal: 10.0,
+                                                        vertical: 6.0),
+                                                child: Container(
+                                                  decoration: BoxDecoration(),
+                                                  child: ListTile(
+                                                      contentPadding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 20.0,
+                                                              vertical: 10.0),
+                                                      leading: Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                right: 12.0),
+                                                        decoration: new BoxDecoration(
+                                                            border: new Border(
+                                                                right: new BorderSide(
+                                                                    width: 1.0,
+                                                                    color: Colors
+                                                                        .black))),
+                                                        child: Icon(
+                                                            Icons.local_offer,
+                                                            color:
+                                                                Colors.black),
+                                                      ),
+                                                      title: Text(
+                                                        model.services[index]
+                                                            .name,
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+
+                                                      subtitle: Row(
+                                                        children: <Widget>[
+                                                          Icon(
+                                                            Icons.description,
+                                                            color: Colors
+                                                                .blueAccent,
+                                                            size: 15.5,
+                                                          ),
+                                                          Flexible(
+                                                            child: Container(
+                                                              child: Text(
+                                                                  model
+                                                                      .services[
+                                                                          index]
+                                                                      .description!,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black)),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      trailing: Icon(
+                                                          Icons
+                                                              .keyboard_arrow_right,
+                                                          color: Colors.black,
+                                                          size: 30.0)),
+                                                ),
+                                              ),
+                                            ),
+                                            /*model.services[index].name.text
+                                                .maxLines(2)
+                                                .make()
+                                              .pSymmetric(h: 4, v: 2),*/
+
+                                            /*"£${model.services[index].price}"
+                                                .text
+                                                .xs
+                                                .make()
+                                                .px4(),*/
+                                          ],
+                                        ).mdClick(() {
+                                          model.navigateToServiceView(
+                                            model.services[index],
+                                            model.shop!.color,
+                                            model.shop!.fontStyle,
+                                          );
+                                        }).make();
+                                      }
+                                      // },
+                                      ),
                               ],
                             ) //.pSymmetric(h: 0)
                         ],
