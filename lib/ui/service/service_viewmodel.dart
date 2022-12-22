@@ -37,7 +37,7 @@ class ServiceViewModel extends BaseViewModel {
   int selectedSizeIndex = -1;
   bool isApiRunning = false;
   String? username;
- 
+
   double aspectRatio = 1;
   double imageRatio = 1;
   bool isMuted = false;
@@ -52,8 +52,6 @@ class ServiceViewModel extends BaseViewModel {
   }
 
   late AppUser user;
-
-
 
   Future<void> init(ShopService cService) async {
     setBusy(true);
@@ -91,14 +89,11 @@ class ServiceViewModel extends BaseViewModel {
     //   imagesCount.clear();
     // }
     notifyListeners();
-    
+
     setBusy(false);
   }
 
-  
-
   Future navigateToBuyServiceView() async {
-   
     if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
       await _navigationService.replaceWith(
         Routes.buyServiceView,
@@ -118,7 +113,9 @@ class ServiceViewModel extends BaseViewModel {
   }
 
   getshopservice(ShopService index) async {
-    await _databaseApi.getUser(index.ownerId).then((Shopdata) => shopowner = Shopdata);
+    await _databaseApi
+        .getUser(index.ownerId)
+        .then((Shopdata) => shopowner = Shopdata);
     notifyListeners();
   }
 
@@ -216,7 +213,8 @@ class ServiceViewModel extends BaseViewModel {
   Future bookService() async {
     final dialogResponse = await _dialogService.showConfirmationDialog(
       title: 'Have you arranged a date?',
-      description: 'By booking a visit you agree to the processing of your personal data',
+      description:
+          'By booking a visit you agree to the processing of your personal data',
       confirmationTitle: 'Arrange Date',
       cancelTitle: 'Close',
     );
@@ -285,6 +283,17 @@ class ServiceViewModel extends BaseViewModel {
     }
   }
 
+  Future<void> navigateToEditServiceView(ShopService service) async {
+    await _navigationService.navigateTo(
+      Routes.editServiceView,
+      arguments: EditServiceViewArguments(
+        user: user,
+        shop: shop,
+        service:service
+      ),
+    );
+  }
+
   Future<void> deleteService(ShopService service) async {
     final response = await _dialogService.showCustomDialog(
       variant: AlertType.error,
@@ -328,7 +337,6 @@ class ServiceViewModel extends BaseViewModel {
     });
   }
 
-
   Future<void> navigateToChatsView() async {
     _navigationService.back();
     await _navigationService.navigateTo(
@@ -339,6 +347,4 @@ class ServiceViewModel extends BaseViewModel {
       ),
     );
   }
-
-
 }

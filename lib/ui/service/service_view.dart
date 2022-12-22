@@ -427,6 +427,7 @@ class _ServiceViewState extends State<ServiceView> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     if (widget.service.ownerId == model.user.id) ...[
                       InkWell(
@@ -445,6 +446,26 @@ class _ServiceViewState extends State<ServiceView> {
                             children: [
                               10.widthBox,
                               'Delete'.text.bold.make(),
+                            ],
+                          ),
+                        ).px(2),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          model.navigateToEditServiceView(widget.service);
+                        },
+                        child: Container(
+                          height: size.height * 0.05,
+                          width: size.width * 0.15,
+                          decoration: BoxDecoration(
+                              /*border: Border(
+                                top: BorderSide(color: Colors.red, width: 1),
+                                bottom: BorderSide(color: Colors.red, width: 1))*/
+                              ),
+                          child: Row(
+                            children: [
+                              10.widthBox,
+                              'Edit'.text.bold.make(),
                             ],
                           ),
                         ).px(2),

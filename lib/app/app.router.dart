@@ -52,6 +52,7 @@ import '../ui/settings/settings_view.dart';
 import '../ui/settings/terms/terms_and_conditions_view.dart';
 import '../ui/shop/create_shop_view.dart';
 import '../ui/shop/editShop/edit_shop_view.dart';
+import '../ui/service/editService/edit_service_view.dart';
 import '../ui/startup/startup_view.dart';
 import '../ui/contact_us/contact_us_view.dart';
 import '../ui/availlability/availablity_view.dart';
@@ -74,6 +75,7 @@ class Routes {
   static const String createShopView = '/create-shop-view';
   static const String editShopView = '/edit-shop-view';
   static const String createServiceView = '/create-service-view';
+  static const String editServiceView = '/edit-service-view';
   static const String serviceView = '/service-view';
   static const String profileUpdate = '/profile-update';
   static const String buyServiceView = '/buy-service-view';
@@ -117,6 +119,7 @@ class Routes {
     createShopView,
     editShopView,
     createServiceView,
+    editServiceView,
     serviceView,
     profileUpdate,
     buyServiceView,
@@ -166,6 +169,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.createShopView, page: CreateShopView),
     RouteDef(Routes.editShopView, page: EditShopView),
     RouteDef(Routes.createServiceView, page: CreateServiceView),
+    RouteDef(Routes.editServiceView, page: EditServiceView),
     RouteDef(Routes.serviceView, page: ServiceView),
     RouteDef(Routes.profileUpdate, page: ProfileUpdate),
     RouteDef(Routes.buyServiceView, page: BuyServiceView),
@@ -279,7 +283,6 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
-
     SellerEditProfileView: (data) {
       var args = data.getArgs<SellerEditProfileViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
@@ -350,6 +353,14 @@ class StackedRouter extends RouterBase {
           user: args.user,
           shop: args.shop,
         ),
+        settings: data,
+      );
+    },
+    EditServiceView: (data) {
+      var args = data.getArgs<EditServiceViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => EditServiceView(
+            user: args.user, shop: args.shop, service: args.service),
         settings: data,
       );
     },
@@ -562,11 +573,8 @@ class StackedRouter extends RouterBase {
     AvailabilityView: (data) {
       var args = data.getArgs<AvailabilityViewArguments>(nullOk: false);
 
-       return MaterialPageRoute<dynamic>(
-        builder: (context) => AvailabilityView(
-          key: args.key,
-          shop: args.shop
-        ),
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => AvailabilityView(key: args.key, shop: args.shop),
         settings: data,
       );
     },
@@ -615,7 +623,8 @@ class BuyerProfileViewArguments {
   final Key? key;
   final AppUser user;
   final bool? viewingAsProfile;
-  BuyerProfileViewArguments({this.key, required this.user, this.viewingAsProfile});
+  BuyerProfileViewArguments(
+      {this.key, required this.user, this.viewingAsProfile});
 }
 
 class PaypalVerificationViewArguments {
@@ -668,6 +677,14 @@ class CreateServiceViewArguments {
   final Shop shop;
   CreateServiceViewArguments(
       {this.key, required this.user, required this.shop});
+}
+
+/// CreateServiceView arguments holder class
+class EditServiceViewArguments {
+  final AppUser user;
+  final Shop shop;
+  final ShopService service;
+  EditServiceViewArguments({required this.user, required this.shop, required this.service});
 }
 
 /// ServiceView arguments holder class

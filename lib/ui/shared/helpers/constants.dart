@@ -51,6 +51,7 @@ class Constants {
   static const String themeLabel = "Select Theme";
 
   static const String addServiceLabel = "Add Service/Product";
+  static const String editServiceLabel = "Edit Service/Product";
   static const String serviceNameLabel = "Service/Product Name";
   static const String descriptionLabel = 'Description';
   static const String typeLabel = "Type";

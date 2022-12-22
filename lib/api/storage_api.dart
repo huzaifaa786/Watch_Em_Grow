@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart' as storage;
 import 'package:flutter/services.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mipromo/exceptions/storage_api_exception.dart';
 import 'package:mipromo/ui/shared/helpers/data_models.dart';
 
@@ -12,13 +14,16 @@ class StorageApi {
   }) async {
     final imageFileName = "PI._$userId";
 
-    final storage.Reference storageReference =
-        storage.FirebaseStorage.instance.ref().child("profileImages/$userId/$imageFileName");
+    final storage.Reference storageReference = storage.FirebaseStorage.instance
+        .ref()
+        .child("profileImages/$userId/$imageFileName");
 
     try {
-      final storage.UploadTask uploadTask = storageReference.putFile(imageToUpload);
+      final storage.UploadTask uploadTask =
+          storageReference.putFile(imageToUpload);
 
-      final storage.TaskSnapshot storageTaskSnapshot = await Future.value(uploadTask);
+      final storage.TaskSnapshot storageTaskSnapshot =
+          await Future.value(uploadTask);
 
       final downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
 
@@ -48,8 +53,9 @@ class StorageApi {
   }) async {
     final imageFileName = "SI._$serviceId";
 
-    final storage.Reference storageReference =
-        storage.FirebaseStorage.instance.ref().child("serviceImages/$serviceId/$imageFileName");
+    final storage.Reference storageReference = storage.FirebaseStorage.instance
+        .ref()
+        .child("serviceImages/$serviceId/$imageFileName");
 
     try {
       // final storage.UploadTask uploadTask =
@@ -95,8 +101,9 @@ class StorageApi {
   }) async {
     final imageFileName = "SI._$serviceId";
 
-    final storage.Reference storageReference =
-        storage.FirebaseStorage.instance.ref().child("serviceImages/$serviceId/$imageNumber/$imageFileName");
+    final storage.Reference storageReference = storage.FirebaseStorage.instance
+        .ref()
+        .child("serviceImages/$serviceId/$imageNumber/$imageFileName");
 
     try {
       final result = await _uploadImage(
@@ -114,14 +121,52 @@ class StorageApi {
     }
   }
 
+  Future<CloudStorageResult> updateServiceImages({
+    required String serviceId,
+    required String imageNumber,
+    required File imageToUpload,
+    required String? imageUrl,
+  }) async {
+    final imageFileName = "SI._$serviceId";
+
+    if (imageUrl != null) {
+      log(imageUrl);
+      final storage.Reference storageReferencee =
+          storage.FirebaseStorage.instance.refFromURL(imageUrl);
+      storageReferencee.delete();
+    }
+
+    final storage.Reference storageReference = storage.FirebaseStorage.instance
+        .ref()
+        .child("serviceImages/$serviceId/$imageNumber/$imageFileName");
+
+    try {
+     
+        final result = await _uploadImage(
+          storageReference,
+          imageToUpload,
+          imageFileName,
+        );
+
+        return result;
+     
+    } on PlatformException catch (e) {
+      throw StorageApiException(
+        title: 'Failed to upload image',
+        message: e.message,
+      );
+    }
+  }
+
   Future<CloudStorageResult> uploadServiceVideo({
     required String serviceId,
     required File videoToUpload,
   }) async {
     final imageFileName = "SI._$serviceId";
 
-    final storage.Reference storageReference =
-        storage.FirebaseStorage.instance.ref().child("serviceVideos/$serviceId/1/$imageFileName");
+    final storage.Reference storageReference = storage.FirebaseStorage.instance
+        .ref()
+        .child("serviceVideos/$serviceId/1/$imageFileName");
 
     try {
       final result = await _uploadVideo(
@@ -144,15 +189,17 @@ class StorageApi {
     File imageToUpload,
     String imageFileName,
   ) async {
-    final storage.UploadTask uploadTask = storageReference.putFile(imageToUpload);
+    final storage.UploadTask uploadTask =
+        storageReference.putFile(imageToUpload);
 
-    final storage.TaskSnapshot storageTaskSnapshot = await Future.value(uploadTask);
+    final storage.TaskSnapshot storageTaskSnapshot =
+        await Future.value(uploadTask);
 
     final downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
 
     if (uploadTask.storage.bucket.isNotEmpty) {
       final url = downloadUrl.toString();
-    
+
       return CloudStorageResult(
         imageUrl: url,
         imageFileName: imageFileName,
@@ -170,9 +217,11 @@ class StorageApi {
     File imageToUpload,
     String imageFileName,
   ) async {
-    final storage.UploadTask uploadTask = storageReference.putFile(imageToUpload);
+    final storage.UploadTask uploadTask =
+        storageReference.putFile(imageToUpload);
 
-    final storage.TaskSnapshot storageTaskSnapshot = await Future.value(uploadTask);
+    final storage.TaskSnapshot storageTaskSnapshot =
+        await Future.value(uploadTask);
 
     final downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
 
@@ -194,8 +243,9 @@ class StorageApi {
     String serviceId,
     String imageFileName,
   ) async {
-    final storage.Reference storageReference =
-        storage.FirebaseStorage.instance.ref().child("profileImages/$serviceId/$imageFileName");
+    final storage.Reference storageReference = storage.FirebaseStorage.instance
+        .ref()
+        .child("profileImages/$serviceId/$imageFileName");
 
     try {
       bool result = false;
@@ -217,8 +267,9 @@ class StorageApi {
     String userId,
     String imageFileName,
   ) async {
-    final storage.Reference storageReference =
-        storage.FirebaseStorage.instance.ref().child("serviceImages/$userId/$imageFileName");
+    final storage.Reference storageReference = storage.FirebaseStorage.instance
+        .ref()
+        .child("serviceImages/$userId/$imageFileName");
 
     try {
       bool result = false;

@@ -31,6 +31,7 @@ import 'package:mipromo/ui/quick_settings/orders/orderdetail_view.dart';
 import 'package:mipromo/ui/service/buyservice_view.dart';
 import 'package:mipromo/ui/service/bookservice_view.dart';
 import 'package:mipromo/ui/service/create_service_view.dart';
+import 'package:mipromo/ui/service/editService/edit_service_view.dart';
 import 'package:mipromo/ui/service/order_success_view.dart';
 import 'package:mipromo/ui/service/service_view.dart';
 import 'package:mipromo/ui/service/inputaddress_view.dart';
@@ -63,6 +64,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: CreateShopView),
     MaterialRoute(page: EditShopView),
     MaterialRoute(page: CreateServiceView),
+    MaterialRoute(page: EditServiceView),
     MaterialRoute(page: ServiceView),
     MaterialRoute(page: ProfileUpdate),
     MaterialRoute(page: BuyServiceView),

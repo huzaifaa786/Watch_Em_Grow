@@ -157,6 +157,27 @@ class DatabaseApi {
     }
   }
 
+  Future<void> editService(ShopService service) async {
+    try {
+      await _servicesCollection.doc(service.id).update({
+        'name': service.name,
+        'description': service.description,
+        'price': service.price,
+        'depositAmount': service.depositAmount,
+        'aspectRatio': service.aspectRatio,
+        'type': service.type,
+        'duration': service.duration,
+        'sizes': service.sizes,
+        'bookingNote': service.bookingNote,
+      });
+    } on PlatformException catch (e) {
+      throw DatabaseApiException(
+        title: 'Failed to create Service',
+        message: e.message,
+      );
+    }
+  }
+
   Future<void> follow({
     required String currentUserId,
     required String userId,
@@ -322,7 +343,7 @@ class DatabaseApi {
         return null;
       }
       final userData = userDoc.data()! as Map<String, dynamic>;
-        return userData['stripeID'].toString();
+      return userData['stripeID'].toString();
     } on PlatformException catch (e) {
       throw DatabaseApiException(
         title: 'Failed to get User Data',
@@ -1574,7 +1595,8 @@ class DatabaseApi {
         .doc(userId)
         .update(availabilty);
   }
-    createAvailabilty(
+
+  createAvailabilty(
       {required String userId, required Map<String, dynamic> availabilty}) {
     _usersCollection
         .doc(userId)
@@ -1583,18 +1605,24 @@ class DatabaseApi {
         .set(availabilty);
   }
 
-  Future<bool> checkbooking({required String ServiceId, required DateTime start,required DateTime end,}) async {
+  Future<bool> checkbooking({
+    required String ServiceId,
+    required DateTime start,
+    required DateTime end,
+  }) async {
     print(start);
     print(end);
     print(Timestamp.fromDate(start));
     print(Timestamp.fromDate(end));
     bool result = false;
-   await _bookingsCollection
+    await _bookingsCollection
         .where('userId', isEqualTo: ServiceId)
-        .where('bookingStart', isGreaterThanOrEqualTo: Timestamp.fromDate(start))
-        .where('bookingStart', isLessThanOrEqualTo: Timestamp.fromDate(end)).get()
+        .where('bookingStart',
+            isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+        .where('bookingStart', isLessThanOrEqualTo: Timestamp.fromDate(end))
+        .get()
         .then((event) {
-        print(event.docs);
+      print(event.docs);
       if (event.docs.isNotEmpty) {
         result = true;
       } else {
@@ -1642,15 +1670,16 @@ class DatabaseApi {
 
   Future<List<BookkingService>> getUserBookingStreamFirebase(
       {required String userId}) async {
-    final result =
-        await _bookingsCollection.where('userId', isEqualTo: userId).where('approved',isEqualTo: true).get();
+    final result = await _bookingsCollection
+        .where('userId', isEqualTo: userId)
+        .where('approved', isEqualTo: true)
+        .get();
     print('hello');
     final _userBookings = result.docs
         .map(
           (e) => BookkingService.fromJson(e.data()! as Map<String, dynamic>),
         )
         .toList();
-
 
     return _userBookings;
   }

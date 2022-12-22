@@ -434,8 +434,8 @@ class SellerProfileView extends StatelessWidget {
                                         
                                       },
                                       icon: model.listview
-                                          ? Icon(Icons.grid_on)
-                                          : Icon(Icons.view_list)),
+                                          ? Icon(Icons.grid_on,size: 20,)
+                                          : Icon(Icons.view_list,size: 20,)),
                                 ),
                                 // model.shop!.name.text.xl2
                                 //     .fontFamily(model.shop!.fontStyle)
