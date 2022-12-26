@@ -6,7 +6,7 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:miypromo.com</string>
+		<string>applinks:bookmiypromo.page.link</string>
 	</array>
 </dict>
 </plist>

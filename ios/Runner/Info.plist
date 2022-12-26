@@ -31,7 +31,7 @@
 			<string>Bundle ID</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+				<string>com.sadje.mipromo</string>
 			</array>
 		</dict>
 	</array>

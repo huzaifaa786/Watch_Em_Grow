@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter/material.dart';
 import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/app/app.router.dart';
@@ -19,7 +20,17 @@ class MyFilter extends LogFilter {
     return true;
   }
 }
-class HomeViewModel extends BaseViewModel {
+class HomeViewModel extends BaseViewModel with WidgetsBindingObserver{
+  void initialise() {
+    WidgetsBinding.instance!.addObserver(this);
+  }
+      @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      print('resumed');
+        initDynamicLinks();
+    }
+  }
   final _navigationService = locator<NavigationService>();
   final _databaseApi = locator<DatabaseApi>();
 
@@ -34,20 +45,26 @@ class HomeViewModel extends BaseViewModel {
   List<String> allShopIds = [];
   List<ShopService> allServices = [];
     var logger = Logger(filter: MyFilter());
-
+ final initialLinkNotifier = ValueNotifier<String?>(null);
+ 
   initDynamicLinks() async {
-  logger.d('inside dynamic link');
-  await Future.delayed(Duration(seconds: 2));
+  log('inside dynamic link');
+  await Future.delayed(Duration(seconds: 1));
+  FirebaseDynamicLinks.instance.onLink(onSuccess: (PendingDynamicLinkData? dynamicLink) async {
+      log('dfgdfg');
+      log(dynamicLink.toString());
+      _handleDynamicLink(dynamicLink!);
+    },
+    onError: (OnLinkErrorException e) async {
+      log('onLinkError###################');
+      log(e.message.toString());
+    });
     final PendingDynamicLinkData? data = await FirebaseDynamicLinks.instance.getInitialLink();
+    print(data);
     if (data != null) {
       _handleDynamicLink(data);
     }
-    FirebaseDynamicLinks.instance.onLink(onSuccess: (PendingDynamicLinkData? dynamicLink) async {
-      _handleDynamicLink(dynamicLink!);
-    }, onError: (OnLinkErrorException e) async {
-      print('onLinkError');
-      print(e.message);
-    });
+     
   }
 
   _handleDynamicLink(PendingDynamicLinkData data) async {
@@ -71,6 +88,7 @@ class HomeViewModel extends BaseViewModel {
 
   void init() {
     setBusy(true);
+    initialise();
     _ownersSubscription = _databaseApi.listenShopOwners().listen(
       (sellers) async {
         allSellers = sellers;

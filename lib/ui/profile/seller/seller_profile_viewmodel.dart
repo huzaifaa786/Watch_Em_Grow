@@ -30,6 +30,7 @@ class SellerProfileViewModel extends BaseViewModel {
   String? StripeID;
   bool isApiLoading = false;
   bool listview = false;
+  late bool isDarkMode;
 
   late AppUser _currentUser;
   AppUser get currentUser => _currentUser;
@@ -58,9 +59,12 @@ class SellerProfileViewModel extends BaseViewModel {
     "Sale of illegal or regulated goods"
   ];
 
-  Future<void> init(String shopId, AppUser seller) async {
+  Future<void> init(String shopId, AppUser seller, bool isDark,) async {
+    
     setBusy(true);
+    isDarkMode = isDark;
     await _userService.syncUser();
+    notifyListeners();
     _currentUser = _userService.currentUser;
     notifyListeners();
 

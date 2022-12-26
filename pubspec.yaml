@@ -69,11 +69,6 @@ dependencies:
   
 dependency_overrides:
   ffmpeg_kit_flutter_min_gpl: ^4.5.1-LTS
-  firebase_dynamic_links_platform_interface:
-    git:
-      url: https://github.com/defiq-dev/flutterfire
-      ref: fix-type-cast-issue-in-dynamic-link-handling
-      path: packages/firebase_dynamic_links/firebase_dynamic_links_platform_interface
   
 
   

@@ -205,6 +205,10 @@ class CreateServiceViewModel extends BaseViewModel {
         Alerts.showErrorSnackbar('Please Select Type');
         return false;
       }
+       if (int.parse(price) > 999) {
+        Alerts.showErrorSnackbar('Price should be less than 1000');
+        return false;
+      }
       if (selectedType == 'Service') {
         if (Validators.emptyStringValidator(durationController.text, 'Duration') != null) {
           Alerts.showErrorSnackbar('Please Enter Duration');

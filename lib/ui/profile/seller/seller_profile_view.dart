@@ -15,6 +15,7 @@ import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
 import 'package:mipromo/ui/shared/widgets/profile_header.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SellerProfileView extends StatelessWidget {
@@ -31,7 +32,9 @@ class SellerProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SellerProfileViewModel>.reactive(
-      onModelReady: (model) => model.init(seller.shopId, seller),
+      onModelReady: (model) => model.init(seller.shopId, seller,
+      getThemeManager(context).selectedThemeMode == ThemeMode.dark,),
+      
       builder: (context, model, child) => model.isBusy
           ? const BasicLoader()
           : Scaffold(
@@ -116,7 +119,7 @@ class SellerProfileView extends StatelessWidget {
                                   MaterialPageRoute(
                                       builder: (context) => OrdersView()),
                                 ).then((val) =>
-                                    {model.init(seller.shopId, seller)});
+                                    {model.init(seller.shopId, seller,model.isDarkMode)});
                                 // model.navigateToOrdersView();
                               },
                             ),
@@ -216,7 +219,7 @@ class SellerProfileView extends StatelessWidget {
                                       builder: (context) =>
                                           FollowersView(sellerId: seller.id)),
                                 ).then((val) =>
-                                    {model.init(seller.shopId, seller)});
+                                    {model.init(seller.shopId, seller,model.isDarkMode)});
 
                                 // model.navigateToFollowersView(seller.id).then((value) {
                                 //   print("ab chal gya yha");
@@ -230,7 +233,7 @@ class SellerProfileView extends StatelessWidget {
                                       builder: (context) =>
                                           FollowingView(sellerId: seller.id)),
                                 ).then((val) =>
-                                    {model.init(seller.shopId, seller)});
+                                    {model.init(seller.shopId, seller,model.isDarkMode)});
                                 // model
                                 //     .navigateToFollowingView(seller.id)
                                 //     .then((value) => model.init(model.shop!.id, seller));
@@ -273,7 +276,7 @@ class SellerProfileView extends StatelessWidget {
                                                   ).then((val) => {
                                                         model.init(
                                                             seller.shopId,
-                                                            seller)
+                                                            seller,model.isDarkMode)
                                                       });
                                                 },
                                                 child: 'Calendar'.text.make(),
@@ -370,7 +373,7 @@ class SellerProfileView extends StatelessWidget {
                                                   ).then((val) => {
                                                         model.init(
                                                             seller.shopId,
-                                                            seller)
+                                                            seller,model.isDarkMode)
                                                       });
                                                 },
                                                 style: ButtonStyle(
@@ -424,7 +427,7 @@ class SellerProfileView extends StatelessWidget {
                             )
                           else
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center ,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
@@ -668,14 +671,14 @@ class SellerProfileView extends StatelessWidget {
                                                                         .black))),
                                                         child: Icon(
                                                             Icons.local_offer,
-                                                            color:
+                                                            color: model.isDarkMode ?Colors.white :
                                                                 Colors.black),
                                                       ),
                                                       title: Text(
                                                         model.services[index]
                                                             .name,
                                                         style: TextStyle(
-                                                            color: Colors.black,
+                                                            color: model.isDarkMode ?Colors.white : Colors.black,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .bold),
@@ -686,7 +689,7 @@ class SellerProfileView extends StatelessWidget {
                                                         children: <Widget>[
                                                           Icon(
                                                             Icons.description,
-                                                            color: Colors
+                                                            color: model.isDarkMode ?Colors.white : Colors
                                                                 .blueAccent,
                                                             size: 15.5,
                                                           ),
@@ -701,7 +704,7 @@ class SellerProfileView extends StatelessWidget {
                                                                       TextOverflow
                                                                           .ellipsis,
                                                                   style: TextStyle(
-                                                                      color: Colors
+                                                                      color: model.isDarkMode ?Colors.white : Colors
                                                                           .black)),
                                                             ),
                                                           )
@@ -710,7 +713,7 @@ class SellerProfileView extends StatelessWidget {
                                                       trailing: Icon(
                                                           Icons
                                                               .keyboard_arrow_right,
-                                                          color: Colors.black,
+                                                          color: model.isDarkMode ?Colors.white : Colors.black,
                                                           size: 30.0)),
                                                 ),
                                               ),

@@ -137,6 +137,15 @@ class DatabaseApi {
 
   Future<void> createShop(Shop shop) async {
     try {
+      var ava = [true, true, true, true, true, true, true];
+
+      Map<String, dynamic> postMap = {
+        for (var i = 0; i <= 6; i++) intDayToEnglish((i)): ava[i],
+        'duration': 30,
+        'startHour': 7,
+        'endHour': 20
+      };
+      createAvailabilty(userId: shop.ownerId, availabilty: postMap);
       await _shopsCollection.doc(shop.id).set(shop.toJson());
     } on PlatformException catch (e) {
       throw DatabaseApiException(
