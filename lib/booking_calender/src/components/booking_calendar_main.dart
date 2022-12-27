@@ -100,14 +100,19 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
   final now = DateTime.now();
   bool enableButton = false;
   bool enableslotbutton = false;
+  bool enablecopybutton = false;
+  bool enablepastebutton = false;
+
   @override
   void initState() {
     super.initState();
+    print(widget.unavailableSlots);
     controller = context.read<BookingController>();
     startOfDay = now.startOfDayService(controller.serviceOpening!);
     endOfDay = now.endOfDayService(controller.serviceClosing!);
     _focusedDay = now;
     _selectedDay = now;
+    copiedDay = now;
     controller.daytoAvail = now;
   }
 
@@ -117,6 +122,8 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
   late DateTime _focusedDay;
   late DateTime startOfDay;
   late DateTime endOfDay;
+  late DateTime copiedDay;
+  List<DateTimeRange>? pauseslots = [];
 
   void selectNewDateRange() {
     startOfDay = _selectedDay.startOfDayService(controller.serviceOpening!);
@@ -148,6 +155,34 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
     setState(() {
       enableslotbutton = false;
     });
+  }
+
+  enablecopy() {
+    pauseslots = controller.copyPauseSlots(_selectedDay);
+    if (pauseslots!.isNotEmpty) {
+      setState(() {
+        enablecopybutton = true;
+      });
+    } else {
+      setState(() {
+        enablecopybutton = false;
+      });
+    }
+  }
+
+  enablepaste() {
+    if (pauseslots!.isNotEmpty) {
+      setState(() {
+        copiedDay = _selectedDay;
+        enablepastebutton = true;
+        enablecopybutton = false;
+      });
+    }
+  }
+
+  pasteslots() async {
+    await controller.pastePauseSlots(pauseslots!, _selectedDay,
+        widget.unavailableSlots!, widget.bookingService.userId);
   }
 
   @override
@@ -189,6 +224,9 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                               _focusedDay = focusedDay;
                               enableButton = false;
                             });
+                            if (!enablepastebutton) {
+                              enablecopy();
+                            }
                             selectNewDateRange();
                           }
                         },
@@ -276,8 +314,15 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                       controller.generateBookedSlots(
                           widget.convertStreamResultToDateTimeRanges(
                               streamResult: data));
-                      List<DateTime> dataa = controller.allBookingSlots.where((element) =>  controller.isSlotInPauseTime(element) == false ).where((element) => controller.isSlotBooked(controller.allBookingSlots.indexOf(element)) == false).toList();
-                              print(dataa.length);
+                      List<DateTime> dataa = controller.allBookingSlots
+                          .where((element) =>
+                              controller.isSlotInPauseTime(element) == false)
+                          .where((element) =>
+                              controller.isSlotBooked(controller.allBookingSlots
+                                  .indexOf(element)) ==
+                              false)
+                          .toList();
+
                       return Container(
                         height: 80,
                         width: MediaQuery.of(context).size.width,
@@ -287,12 +332,16 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                               const BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
-                          itemCount: widget.showData == true ? dataa.length : controller.allBookingSlots.length,
+                          itemCount: widget.showData == true
+                              ? dataa.length
+                              : controller.allBookingSlots.length,
                           itemBuilder: (context, index) {
-                            final slot =  widget.showData == true ?  dataa.elementAt(index) : controller.allBookingSlots.elementAt(index) ;
+                            final slot = widget.showData == true
+                                ? dataa.elementAt(index)
+                                : controller.allBookingSlots.elementAt(index);
                             return widget.showData == true
                                 ? BookingSlot(
-                                    hidethisSlot:false,
+                                    hidethisSlot: false,
                                     hideBreakSlot: false,
                                     sellerPauseTime: false,
                                     pauseSlotColor: widget.pauseSlotColor,
@@ -422,6 +471,31 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                       buttonActiveColor: widget.bookingButtonColor,
                     ),
                   if (widget.showData == false) ...[
+                    !enablepastebutton
+                        ? CommonButton(
+                            text:
+                                enablecopybutton ? "Copy slots" : "Copy slots",
+                            onTap: () async {
+                              if (enablecopybutton == true) {
+                                enablepaste();
+                              }
+                            },
+                            isDisabled: !enablecopybutton,
+                            buttonActiveColor: widget.bookingButtonColor,
+                          )
+                        : CommonButton(
+                            text: "Paste slots",
+                            onTap: () async {
+                              if (copiedDay != _selectedDay) {
+                                pasteslots();
+                              }
+                            },
+                            isDisabled: copiedDay == _selectedDay,
+                            buttonActiveColor: widget.bookingButtonColor,
+                          ),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     CommonButton(
                       text: enableslotbutton
                           ? 'Mark this slot as available(' +

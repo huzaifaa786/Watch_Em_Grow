@@ -36,6 +36,7 @@ class BookingController extends ChangeNotifier {
 
   List<DateTimeRange> bookedSlots = [];
   List<DateTimeRange>? pauseSlots = [];
+  List<DateTimeRange>? copiedSlots = [];
 
   int _selectedSlot = (-1);
   bool _isUploading = false;
@@ -75,6 +76,49 @@ class BookingController extends ChangeNotifier {
       }
     }
     return result;
+  }
+
+  List<DateTimeRange>? copyPauseSlots(DateTime day) {
+    if (pauseSlots == null) {}
+    copiedSlots = [];
+    for (var pauseSlot in pauseSlots!) {
+      if (DateFormat.yMMMd().format(day) ==
+          DateFormat.yMMMd().format(pauseSlot.start)) {
+        copiedSlots!.add(pauseSlot);
+      }
+    }
+
+    if (copiedSlots != []) {
+      return copiedSlots;
+    } else {
+      return copiedSlots;
+    }
+  }
+
+  pastePauseSlots(List<DateTimeRange> slots, DateTime dayy,
+      List<dynamic> unavailble, ownerId) async {
+    List<DateTimeRange> list = [];
+  
+    for (var slot in slots) {
+      DateTime start = DateTime(dayy.year, dayy.month, dayy.day,
+          slot.start.hour, slot.start.minute, slot.start.second);
+      DateTime end = DateTime(dayy.year, dayy.month, dayy.day, slot.end.hour,
+          slot.end.minute, slot.end.second);
+
+      DateTimeRange x = DateTimeRange(start: start, end: end);
+      list.add(x);
+      pauseSlots!.add(x);
+    }
+
+    for (var item in list) {
+      unavailble.add(item.start);
+    }
+
+    Map<String, dynamic> postMap = {'unavailableSlots': unavailble};
+
+    await _databaseApi.changeAvailabilty(
+        userId: ownerId.toString(), availabilty: postMap);
+    Fluttertoast.showToast(msg: 'Done');
   }
 
   void selectSlot(int idx) {
@@ -145,11 +189,10 @@ class BookingController extends ChangeNotifier {
           day.microsecondsSinceEpoch as int);
       return isSameDay(daytoAvail, parsedDate);
     });
-    print(dayToMarkAvailable);
+
     unavailableDays.remove(dayToMarkAvailable);
 
     Map<String, dynamic> postMap = {'unavailableDays': unavailableDays};
-    print(unavailableDays);
 
     await _databaseApi.changeAvailabilty(
         userId: ownerId.toString(), availabilty: postMap);
@@ -158,7 +201,6 @@ class BookingController extends ChangeNotifier {
   }
 
   markSlotUnavailable(List unavailableSlots, ownerId) async {
-    print('availableSlots');
     final bookingDate = allBookingSlots.elementAt(selectedSlot);
 
     unavailableSlots.add(bookingDate);
@@ -173,10 +215,9 @@ class BookingController extends ChangeNotifier {
 
   markSlotavailable(List unavailableSlots, ownerId) async {
     final bookingDate = allBookingSlots.elementAt(selectedSlot);
-      
-      
+    print(bookingDate);
     unavailableSlots.remove(Timestamp.fromDate(bookingDate));
-  
+
     Map<String, dynamic> postMap = {'unavailableSlots': unavailableSlots};
 
     await _databaseApi.changeAvailabilty(
