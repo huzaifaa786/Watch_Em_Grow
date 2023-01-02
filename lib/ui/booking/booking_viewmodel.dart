@@ -46,6 +46,7 @@ class BookingViewModel extends BaseViewModel {
 
   List? unavailableDays = [];
   List? unavailableSlots = [];
+  List? extraService=[];
   late AppUser _currentUser;
   AppUser get currentUser => _currentUser;
   late bool isDarkMode;
@@ -83,6 +84,9 @@ class BookingViewModel extends BaseViewModel {
     });
     unavailableDays = availability.unavailableDays ?? [];
     unavailableSlots = availability.unavailableSlots ?? [];
+    var check = await _databaseApi.getExtraServices(shopId: service.shopId);
+    extraService = check;
+    print(extraService);
 
     setDays();
     await convertStreamResultMock();

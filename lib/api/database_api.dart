@@ -14,6 +14,7 @@ import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/models/availability.dart';
 import 'package:mipromo/models/book_service.dart';
 import 'package:mipromo/models/chat.dart';
+import 'package:mipromo/models/extra_services.dart';
 import 'package:mipromo/models/follow.dart';
 import 'package:mipromo/models/notification.dart';
 import 'package:mipromo/app/app.router.dart';
@@ -1605,6 +1606,15 @@ class DatabaseApi {
         .update(availabilty);
   }
 
+  createExtraServices(
+      {required String shopId, required Map<String, dynamic> extraService}) {
+    _shopsCollection
+        .doc(shopId)
+        .collection('extraServices')
+        .doc(shopId)
+        .set(extraService);
+  }
+
   createAvailabilty(
       {required String userId, required Map<String, dynamic> availabilty}) {
     _usersCollection
@@ -1639,6 +1649,18 @@ class DatabaseApi {
       }
     });
     return result;
+  }
+
+  Future<List<ExtraServices>> getExtraServices({required String shopId}) async {
+    final result =
+        await _shopsCollection.doc(shopId).collection('extraServices').get();
+    final extraServices = result.docs
+        .map(
+          (e) => ExtraServices.fromJson(e.data() as Map<String, dynamic>),
+        )
+        .toList();
+        print(extraServices[0].name);
+    return extraServices;
   }
 
   Future<Availability> getAvailabilty({required String userId}) async {

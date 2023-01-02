@@ -32,7 +32,9 @@ class EditShopView extends StatelessWidget {
             Scaffold(
               appBar: AppBar(
                 backgroundColor: Color(model.selectedTheme),
-                title: Constants.createShopLabel.text.fontFamily(model.selectedFontStyle).make(),
+                title: Constants.createShopLabel.text
+                    .fontFamily(model.selectedFontStyle)
+                    .make(),
                 centerTitle: true,
                 actions: [
                   IconButton(
@@ -125,6 +127,80 @@ class _EditShopForm extends HookViewModelWidget<EditShopViewModel> {
           },
           initialValue: model.policy,
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            "Add_ons".text.bold.make(),
+            Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                  color: Color(model.selectedTheme),
+                  borderRadius: BorderRadius.all(Radius.circular(40))),
+              child: IconButton(
+                onPressed: () {
+                  model.displayTextField();
+                },
+                icon: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Visibility(
+            visible: model.displayNewTextField,
+            child: Column(
+              children: [
+                InputField(
+                  hintText: 'Title',
+                  validate: model.autoValidate,
+                  validator: (serviceName) => Validators.emptyStringValidator(
+                    serviceName,
+                    'Service Name',
+                  ),
+                  onChanged: (name) {
+                    model.extraServiceName = name;
+                  },
+                ),
+                InputField(
+                  hintText: Constants.priceLabel,
+                  maxLength: 5,
+                  counter: "",
+                  textInputType: TextInputType.number,
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.only(left: 10.0, top: 12),
+                    child: '£'.text.lg.make(),
+                  ),
+                  validate: model.autoValidate,
+                  validator: (price) =>
+                      Validators.emptyStringValidator(price, 'Price'),
+                  onChanged: (price) {
+                    model.price = price;
+                  },
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                        color: Color(model.selectedTheme),
+                        borderRadius: BorderRadius.all(Radius.circular(40))),
+                    child: IconButton(
+                      onPressed: () {
+                        model.createExtraServicesShop();
+                      },
+                      icon: const Icon(
+                        Icons.done,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )),
         20.heightBox,
         "Choose your shop category".text.bold.make(),
         DropdownButton<String>(
@@ -148,7 +224,6 @@ class _EditShopForm extends HookViewModelWidget<EditShopViewModel> {
             ),
           ),
         ),
-
         15.heightBox,
         "Where is your shop located?".text.bold.make(),
         DropdownButton<String>(
@@ -291,7 +366,14 @@ class _EditShopForm extends HookViewModelWidget<EditShopViewModel> {
                     CircleAvatar(
                       radius: 30,
                       backgroundColor: Color(model.colors[index]),
-                    ).p4().card.white.elevation(12).withRounded(value: 100).make().centered(),
+                    )
+                        .p4()
+                        .card
+                        .white
+                        .elevation(12)
+                        .withRounded(value: 100)
+                        .make()
+                        .centered(),
                     if (model.selectedTheme == model.colors[index])
                       const Icon(
                         Icons.check,

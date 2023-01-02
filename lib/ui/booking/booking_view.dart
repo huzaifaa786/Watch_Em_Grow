@@ -57,6 +57,7 @@ class BookingView extends StatelessWidget {
                         bookedSlotColor: Color(4286745852).withOpacity(0.3),
                         selectedSlotColor: Color(4286745852),
                         bookingButtonColor: Color(4286745852),
+                        extraService: model.extraService,
                         // bookingButtonText: ,
                         uploadingWidget: Container(
                             alignment: Alignment.center,

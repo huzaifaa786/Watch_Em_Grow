@@ -14,6 +14,7 @@ class BookingCalendar extends StatelessWidget {
     required this.uploadBooking,
     required this.convertStreamResultToDateTimeRanges,
     this.service,
+    this.extraService,
     this.bookingExplanation,
     this.showData,
     this.docId,
@@ -79,6 +80,7 @@ class BookingCalendar extends StatelessWidget {
   final List<int>? excludedDays;
   final List? unavailableDays;
   final List? unavailableSlots;
+  final List? extraService;
   final bool? showData;
   final String? docId;
   ///For the Booking Calendar Grid System, the aspect ratio of the elements in the [GridView]
@@ -129,6 +131,7 @@ class BookingCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(extraService);
     return ChangeNotifierProvider(
       create: (_) => BookingController(bookingService: bookingService, pauseSlots: pauseSlots),
       child: BookingCalendarMain(
@@ -141,6 +144,7 @@ class BookingCalendar extends StatelessWidget {
         docId: docId,
         unavailableDays : unavailableDays,
     unavailableSlots : unavailableSlots,
+   extraService: extraService,
         bookingButtonColor: bookingButtonColor,
         bookingButtonText: bookingButtonText,
         bookingExplanation: bookingExplanation,

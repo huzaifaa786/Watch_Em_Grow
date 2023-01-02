@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/models/availability.dart';
 import 'package:mipromo/ui/shared/helpers/data_models.dart';
@@ -50,6 +51,8 @@ class EditShopViewModel extends BaseViewModel {
 
   String address = "";
   String policy = "";
+  String extraServiceName = "";
+  String price = "";
 
   String selectedFontStyle = "Default";
 
@@ -73,6 +76,12 @@ class EditShopViewModel extends BaseViewModel {
   void onColorChanged(int color, int index) {
     selectedTheme = color;
     // swiperIndex = index;
+    notifyListeners();
+  }
+
+  bool displayNewTextField = false;
+  displayTextField() {
+    displayNewTextField = !displayNewTextField;
     notifyListeners();
   }
 
@@ -110,7 +119,9 @@ class EditShopViewModel extends BaseViewModel {
     values[index] = !values[index];
     notifyListeners();
 
-    Map<String, dynamic> postMap = {for (var i = 0; i <= 6; i++) intDayToEnglish(i): values[i]};
+    Map<String, dynamic> postMap = {
+      for (var i = 0; i <= 6; i++) intDayToEnglish(i): values[i]
+    };
 
     _databaseApi.changeAvailabilty(userId: mshop.ownerId, availabilty: postMap);
   }
@@ -129,7 +140,8 @@ class EditShopViewModel extends BaseViewModel {
         if (selectedLocation == "London" && londonBorough == null) {
           Alerts.showErrorSnackbar('Please select your Location Borough');
           return false;
-        } else if (selectedLocation == "Hertfordshire" && hertfordshireBorough == null) {
+        } else if (selectedLocation == "Hertfordshire" &&
+            hertfordshireBorough == null) {
           Alerts.showErrorSnackbar('Please select your Location Borough');
 
           return false;
@@ -230,7 +242,9 @@ class EditShopViewModel extends BaseViewModel {
         address,
       );
     }
-  }  Future _updateShopPolicy(Shop shop) async {
+  }
+
+  Future _updateShopPolicy(Shop shop) async {
     if (policy != shop.policy) {
       await _databaseApi.updateShopPolicy(
         shop.id,
@@ -263,5 +277,45 @@ class EditShopViewModel extends BaseViewModel {
     } else {
       showErrors();
     }
+  }
+
+  void createExtraServicesShop() {
+    if (isFormValid()) {
+      addExtraServices();
+    } else {
+      showErrors();
+    }
+  }
+
+    bool isFormValid() {
+    if (Validators.emptyStringValidator(extraServiceName, 'extraServiceName') == null &&
+        Validators.emptyStringValidator(price, 'price') == null &&
+        shopName.length <= 30) {
+      if (extraServiceName == null) {
+        Alerts.showErrorSnackbar('Please enter service name');
+        return false;
+      } else if(price == null) {
+        Alerts.showErrorSnackbar('Please select price');
+        return false;
+      } else{
+        return true;
+      }
+    } else {
+      showErrors();
+      return false;
+    }
+  }
+
+  addExtraServices() async {
+    print(mshop.id);
+    Map<String, dynamic> postMap = {
+      'name': extraServiceName,
+      'price': price,
+    };
+
+    await _databaseApi.createExtraServices(
+        shopId: mshop.id, extraService: postMap);
+
+    Fluttertoast.showToast(msg: 'Updated');
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:intl/intl.dart';
 import 'package:mipromo/booking_calender/src/components/booking_dialog.dart';
 import 'package:mipromo/booking_calender/src/components/booking_slot.dart';
@@ -8,7 +10,9 @@ import 'package:mipromo/booking_calender/src/util/booking_util.dart';
 import 'package:flutter/material.dart';
 import 'package:mipromo/booking_calender/booking_calendar.dart';
 import 'package:mipromo/booking_calender/src/core/booking_controller.dart';
+import 'package:mipromo/models/extra_services.dart';
 import 'package:mipromo/models/shop_service.dart';
+import 'package:mipromo/ui/shared/helpers/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -21,6 +25,7 @@ class BookingCalendarMain extends StatefulWidget {
     required this.uploadBooking,
     required this.bookingService,
     this.service,
+    this.extraService,
     this.bookingExplanation,
     this.bookingGridCrossAxisCount,
     this.bookingGridChildAspectRatio,
@@ -64,6 +69,7 @@ class BookingCalendarMain extends StatefulWidget {
   final List<int>? excludedDays;
   final List? unavailableDays;
   final List? unavailableSlots;
+  final List? extraService;
 
   final double? bookingGridChildAspectRatio;
   final String Function(DateTime dt)? formatDateTime;
@@ -107,6 +113,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
   void initState() {
     super.initState();
     print(widget.unavailableSlots);
+    // log(widget.extraService!.price.toString());
     controller = context.read<BookingController>();
     startOfDay = now.startOfDayService(controller.serviceOpening!);
     endOfDay = now.endOfDayService(controller.serviceClosing!);
@@ -452,6 +459,35 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         ],
                       ),
                     ),
+                    if()
+                    DropdownButtonFormField(
+                      decoration: const InputDecoration.collapsed(
+                        hintText: 'add_ons',
+                      ),
+                      onChanged: (type) {
+                        
+                      },
+                      items:[
+                        for(int i=0;i<=widget.extraService!.length;i++){
+                          DropdownMenuItem(
+                          value: widget.extraService[i].name.toString(),
+                          child: Text(widget.extraService[i].name.toString()),
+                        ),
+                        }
+                        
+                      ],
+                    )
+                        .p12()
+                        .centered()
+                        .box
+                        .border(color: Colors.grey)
+                        .height(55)
+                        .withRounded(value: 12)
+                        //.color(Colors.grey.shade800)
+                        .make()
+                        .pSymmetric(
+                          v: 12,
+                        ),
                   ],
                   const SizedBox(
                     height: 8,
