@@ -1608,10 +1608,11 @@ class DatabaseApi {
 
   createExtraServices(
       {required String shopId, required Map<String, dynamic> extraService}) {
+      final String  extraServiceId = DateTime.now().microsecondsSinceEpoch.toString();
     _shopsCollection
         .doc(shopId)
         .collection('extraServices')
-        .doc(shopId)
+        .doc(extraServiceId)
         .set(extraService);
   }
 
