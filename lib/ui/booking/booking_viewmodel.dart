@@ -163,7 +163,9 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future<dynamic> uploadBookingMock(
-      {required BookingService newBooking}) async {
+      {required BookingService newBooking, required String selextraService}) async {
+        var ourService = extraService!.firstWhere((ser) => ser.name.toString().toLowerCase().contains(selextraService.toLowerCase()));
+
     Duration d = Duration(minutes: service.duration!);
 
     DateTimeRange time = DateTimeRange(
@@ -222,6 +224,8 @@ class BookingViewModel extends BaseViewModel {
                     depositAmount: service.depositAmount,
                     serviceName: newBooking.serviceName,
                     servicePrice: newBooking.servicePrice,
+                    extraServ: ourService!.name.toString(),
+                    extraServPrice: int.parse(ourService!.price.toString()),
                     serviceDuration: newBooking.serviceDuration)),
           );
         }
@@ -249,6 +253,8 @@ class BookingViewModel extends BaseViewModel {
                       serviceId: newBooking.serviceId,
                       serviceName: newBooking.serviceName,
                       servicePrice: newBooking.servicePrice,
+                                          extraServ: ourService!.name.toString(),
+                    extraServPrice: int.parse(ourService!.price.toString()),
                       serviceDuration: newBooking.serviceDuration)),
             );
           }
@@ -265,6 +271,8 @@ class BookingViewModel extends BaseViewModel {
                     serviceId: newBooking.serviceId,
                     serviceName: newBooking.serviceName,
                     servicePrice: newBooking.servicePrice,
+                                        extraServ: ourService!.name.toString(),
+                    extraServPrice: int.parse(ourService!.price.toString()),
                     serviceDuration: newBooking.serviceDuration);
                        await _databaseApi.uploadBookingFirebase(
                 newBooking:bookservice);

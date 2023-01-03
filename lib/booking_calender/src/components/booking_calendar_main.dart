@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:intl/intl.dart';
 import 'package:mipromo/booking_calender/src/components/booking_dialog.dart';
@@ -55,7 +56,7 @@ class BookingCalendarMain extends StatefulWidget {
 
   final Stream<dynamic>? Function(
       {required DateTime start, required DateTime end}) getBookingStream;
-  final Future<dynamic> Function({required BookingService newBooking})
+  final Future<dynamic> Function({required BookingService newBooking,required String selextraService})
       uploadBooking;
   final List<DateTimeRange> Function({required dynamic streamResult})
       convertStreamResultToDateTimeRanges;
@@ -70,7 +71,6 @@ class BookingCalendarMain extends StatefulWidget {
   final List? unavailableDays;
   final List? unavailableSlots;
   final List? extraService;
-
   final double? bookingGridChildAspectRatio;
   final String Function(DateTime dt)? formatDateTime;
   final String? bookingButtonText;
@@ -108,6 +108,8 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
   bool enableslotbutton = false;
   bool enablecopybutton = false;
   bool enablepastebutton = false;
+  var selectedExtraService;
+
 
   @override
   void initState() {
@@ -459,35 +461,53 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         ],
                       ),
                     ),
-                    if()
-                    DropdownButtonFormField(
-                      decoration: const InputDecoration.collapsed(
-                        hintText: 'add_ons',
+                    if(widget.extraService!.isNotEmpty) ...[
+                    Padding(
+                      padding: const EdgeInsets.only(left:12.0,right:12,top:8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text('Select Add on service',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(fontSize: 16),),
+                        ],
                       ),
-                      onChanged: (type) {
-                        
-                      },
-                      items:[
-                        for(int i=0;i<=widget.extraService!.length;i++){
-                          DropdownMenuItem(
-                          value: widget.extraService[i].name.toString(),
-                          child: Text(widget.extraService[i].name.toString()),
+                    ),
+                   Padding(
+                      padding: const EdgeInsets.only(left:12.0,right:12),
+                      child: DropdownButtonFormField<String>(
+                        decoration: const InputDecoration.collapsed(
+                          hintText: 'Select Add on service',
                         ),
-                        }
-                        
-                      ],
-                    )
-                        .p12()
-                        .centered()
-                        .box
-                        .border(color: Colors.grey)
-                        .height(55)
-                        .withRounded(value: 12)
-                        //.color(Colors.grey.shade800)
-                        .make()
-                        .pSymmetric(
-                          v: 12,
-                        ),
+                        onChanged: (type) {
+                          setState(() {
+                          selectedExtraService = type;
+                            
+                          });
+                        },
+                        items:
+                        List<DropdownMenuItem<String>>.generate(
+                                      widget.extraService!.length,
+                                      (index) => DropdownMenuItem<String>(
+                                        value: widget.extraService![index].name.toString(),
+                                        child:
+                                            Text( '£' + widget.extraService![index].price.toString()+ '- '+widget.extraService![index].name.toString()),
+                                      ),
+                                    ).toList(),
+                      )
+                          .p12()
+                          .centered()
+                          .box
+                          .border(color: Colors.grey)
+                          .height(55)
+                          .withRounded(value: 12)
+                          //.color(Colors.grey.shade800)
+                          .make()
+                          .pSymmetric(
+                            v: 12,
+                          ),
+                    ),
+                    ]
                   ],
                   const SizedBox(
                     height: 8,
@@ -499,7 +519,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         controller.toggleUploading();
                         await widget.uploadBooking(
                             newBooking:
-                                controller.generateNewBookingForUploading());
+                                controller.generateNewBookingForUploading(),selextraService : selectedExtraService.toString());
                         controller.toggleUploading();
                         controller.resetSelectedSlot();
                       },

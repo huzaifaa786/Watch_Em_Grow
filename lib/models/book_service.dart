@@ -17,6 +17,8 @@ class BookkingService {
   final String? serviceId;
   final int? serviceDuration;
   final int? servicePrice;
+  final String? extraServ;
+  final int? extraServPrice;
   final double?  depositAmount;
   @Default(false) bool? approved;
 
@@ -54,6 +56,8 @@ class BookkingService {
       this.userName,
       this.serviceName,
       this.approved,
+      this.extraServ,
+      this.extraServPrice,
       this.serviceDuration,
       this.servicePrice,
       this.depositAmount,

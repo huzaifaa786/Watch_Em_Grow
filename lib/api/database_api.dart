@@ -1659,7 +1659,6 @@ class DatabaseApi {
           (e) => ExtraServices.fromJson(e.data() as Map<String, dynamic>),
         )
         .toList();
-        print(extraServices[0].name);
     return extraServices;
   }
 

@@ -25,6 +25,8 @@ BookkingService _$BookkingServiceFromJson(Map<String, dynamic> json) {
     depositAmount: json['depositAmount'] as double?,
     approved: json['approved'] as bool? ?? false,
     serviceId: json['serviceId'] as String?,
+    extraServ : json['extraServ'] as String?,
+    extraServPrice : json['extraServPrice'] as int?,
   );
 }
 
@@ -39,6 +41,8 @@ Map<String, dynamic> _$BookkingServiceToJson(BookkingService instance) =>
       'serviceId': instance.serviceId,
       'serviceDuration': instance.serviceDuration,
       'servicePrice': instance.servicePrice,
+      'extraServ': instance.extraServ,
+      'extraServPrice': instance.extraServPrice,
       'depositAmount': instance.depositAmount,
       'bookingStart': BookingUtil.dateTimeToTimeStamp(instance.bookingStart),
       'bookingEnd': BookingUtil.dateTimeToTimeStamp(instance.bookingEnd),
