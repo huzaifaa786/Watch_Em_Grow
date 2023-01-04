@@ -13,6 +13,7 @@ import 'package:mipromo/booking_calender/booking_calendar.dart';
 import 'package:mipromo/booking_calender/src/core/booking_controller.dart';
 import 'package:mipromo/models/extra_services.dart';
 import 'package:mipromo/models/shop_service.dart';
+import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -56,8 +57,9 @@ class BookingCalendarMain extends StatefulWidget {
 
   final Stream<dynamic>? Function(
       {required DateTime start, required DateTime end}) getBookingStream;
-  final Future<dynamic> Function({required BookingService newBooking,required String selextraService})
-      uploadBooking;
+  final Future<dynamic> Function(
+      {required BookingService newBooking,
+      required String selextraService}) uploadBooking;
   final List<DateTimeRange> Function({required dynamic streamResult})
       convertStreamResultToDateTimeRanges;
 
@@ -109,7 +111,6 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
   bool enablecopybutton = false;
   bool enablepastebutton = false;
   var selectedExtraService;
-
 
   @override
   void initState() {
@@ -461,52 +462,85 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         ],
                       ),
                     ),
-                    if(widget.extraService!.isNotEmpty) ...[
-                    Padding(
-                      padding: const EdgeInsets.only(left:12.0,right:12,top:8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text('Select Add on service',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(fontSize: 16),),
+                    if (widget.extraService!.isNotEmpty) ...[
+                      // Padding(
+                      //   padding: const EdgeInsets.only(
+                      //       left: 12.0, right: 12, top: 8),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.start,
+                      //     children: [
+                      //       Text(
+                      //         'Select Add on service',
+                      //         textAlign: TextAlign.left,
+                      //         style: TextStyle(fontSize: 16),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      MultiSelectFormField(
+                        title: Text("Select Add on service"),
+                        validator: (value) {
+                          if (value == null || value.length == 0) {
+                            return '';
+                          }
+                          return null;
+                        },
+                        dataSource: [
+                          for (var i = 0; i <= widget.extraService!.length; i++)
+                            {
+                              {
+                                "display": widget.extraService![i].name,
+                                "value": widget.extraService![i].name,
+                              },
+                            }
                         ],
-                      ),
-                    ),
-                   Padding(
-                      padding: const EdgeInsets.only(left:12.0,right:12),
-                      child: DropdownButtonFormField<String>(
-                        decoration: const InputDecoration.collapsed(
-                          hintText: 'Select Add on service',
-                        ),
-                        onChanged: (type) {
+                        textField: 'display',
+                        valueField: 'value',
+                        okButtonLabel: 'OK',
+                        cancelButtonLabel: 'CANCEL',
+                        hintWidget: Text('Please choose one or more'),
+                        initialValue: null,
+                        onSaved: (value) {
+                          if (value == null) return;
                           setState(() {
-                          selectedExtraService = type;
-                            
+                            // _myActivities = value;
                           });
                         },
-                        items:
-                        List<DropdownMenuItem<String>>.generate(
-                                      widget.extraService!.length,
-                                      (index) => DropdownMenuItem<String>(
-                                        value: widget.extraService![index].name.toString(),
-                                        child:
-                                            Text( '£' + widget.extraService![index].price.toString()+ '- '+widget.extraService![index].name.toString()),
-                                      ),
-                                    ).toList(),
                       )
-                          .p12()
-                          .centered()
-                          .box
-                          .border(color: Colors.grey)
-                          .height(55)
-                          .withRounded(value: 12)
-                          //.color(Colors.grey.shade800)
-                          .make()
-                          .pSymmetric(
-                            v: 12,
-                          ),
-                    ),
+                      //   Padding(
+                      //   padding: const EdgeInsets.only(left:12.0,right:12),
+                      //   child: DropdownButtonFormField<String>(
+                      //     decoration: const InputDecoration.collapsed(
+                      //       hintText: 'Select Add on service',
+                      //     ),
+                      //     onChanged: (type) {
+                      //       setState(() {
+                      //       selectedExtraService = type;
+
+                      //       });
+                      //     },
+                      //     items:
+                      //     List<DropdownMenuItem<String>>.generate(
+                      //                   widget.extraService!.length,
+                      //                   (index) => DropdownMenuItem<String>(
+                      //                     value: widget.extraService![index].name.toString(),
+                      //                     child:
+                      //                         Text( '£' + widget.extraService![index].price.toString()+ '- '+widget.extraService![index].name.toString()),
+                      //                   ),
+                      //                 ).toList(),
+                      //   )
+                      //       .p12()
+                      //       .centered()
+                      //       .box
+                      //       .border(color: Colors.grey)
+                      //       .height(55)
+                      //       .withRounded(value: 12)
+                      //       //.color(Colors.grey.shade800)
+                      //       .make()
+                      //       .pSymmetric(
+                      //         v: 12,
+                      //       ),
+                      // ),
                     ]
                   ],
                   const SizedBox(
@@ -519,7 +553,8 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         controller.toggleUploading();
                         await widget.uploadBooking(
                             newBooking:
-                                controller.generateNewBookingForUploading(),selextraService : selectedExtraService.toString());
+                                controller.generateNewBookingForUploading(),
+                            selextraService: selectedExtraService.toString());
                         controller.toggleUploading();
                         controller.resetSelectedSlot();
                       },
