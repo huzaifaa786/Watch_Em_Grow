@@ -17,7 +17,7 @@ class BookkingService {
   final String? serviceId;
   final int? serviceDuration;
   final int? servicePrice;
-  final String? extraServ;
+  final List? extraServ;
   final int? extraServPrice;
   final double?  depositAmount;
   @Default(false) bool? approved;

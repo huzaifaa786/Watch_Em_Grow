@@ -59,7 +59,7 @@ class BookingCalendarMain extends StatefulWidget {
       {required DateTime start, required DateTime end}) getBookingStream;
   final Future<dynamic> Function(
       {required BookingService newBooking,
-      required String selextraService}) uploadBooking;
+      required List selextraService}) uploadBooking;
   final List<DateTimeRange> Function({required dynamic streamResult})
       convertStreamResultToDateTimeRanges;
 
@@ -110,7 +110,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
   bool enableslotbutton = false;
   bool enablecopybutton = false;
   bool enablepastebutton = false;
-  var selectedExtraService;
+  List? selectedExtraService;
 
   @override
   void initState() {
@@ -488,7 +488,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         dataSource: [
                           for (var i = 0; i < widget.extraService!.length; i++)
                             {
-                                "display": widget.extraService![i].name,
+                                "display":  widget.extraService![i].price + '' + widget.extraService![i].name,
                                 "value": widget.extraService![i].name,
                             }
                         ],
@@ -501,7 +501,8 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         onSaved: (value) {
                           if (value == null) return;
                           setState(() {
-                            // _myActivities = value;
+                            selectedExtraService = value as List;
+                            print(selectedExtraService);
                           });
                         },
                       )
@@ -552,7 +553,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         await widget.uploadBooking(
                             newBooking:
                                 controller.generateNewBookingForUploading(),
-                            selextraService: selectedExtraService.toString());
+                            selextraService: selectedExtraService!);
                         controller.toggleUploading();
                         controller.resetSelectedSlot();
                       },

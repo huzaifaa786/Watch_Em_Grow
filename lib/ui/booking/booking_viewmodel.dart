@@ -46,7 +46,7 @@ class BookingViewModel extends BaseViewModel {
 
   List? unavailableDays = [];
   List? unavailableSlots = [];
-  List? extraService=[];
+  List? extraService = [];
   late AppUser _currentUser;
   AppUser get currentUser => _currentUser;
   late bool isDarkMode;
@@ -163,8 +163,8 @@ class BookingViewModel extends BaseViewModel {
   }
 
   Future<dynamic> uploadBookingMock(
-      {required BookingService newBooking, required String selextraService}) async {
-        var ourService = extraService!.firstWhere((ser) => ser.name.toString().toLowerCase().contains(selextraService.toLowerCase()));
+      {required BookingService newBooking,
+      required List selextraService}) async {
 
     Duration d = Duration(minutes: service.duration!);
 
@@ -224,8 +224,8 @@ class BookingViewModel extends BaseViewModel {
                     depositAmount: service.depositAmount,
                     serviceName: newBooking.serviceName,
                     servicePrice: newBooking.servicePrice,
-                    extraServ: ourService!.name.toString(),
-                    extraServPrice: int.parse(ourService!.price.toString()),
+                    extraServ: extraService,
+                    // extraServPrice: int.parse(ourService!.price.toString()),
                     serviceDuration: newBooking.serviceDuration)),
           );
         }
@@ -253,8 +253,8 @@ class BookingViewModel extends BaseViewModel {
                       serviceId: newBooking.serviceId,
                       serviceName: newBooking.serviceName,
                       servicePrice: newBooking.servicePrice,
-                                          extraServ: ourService!.name.toString(),
-                    extraServPrice: int.parse(ourService!.price.toString()),
+                      extraServ: extraService,
+                      // extraServPrice: int.parse(extraService),
                       serviceDuration: newBooking.serviceDuration)),
             );
           }
@@ -262,22 +262,21 @@ class BookingViewModel extends BaseViewModel {
           await initPaymentSheet();
           if (await confirmPayment()) {
             final bookservice = BookkingService(
-                    id: bookingId,
-                    email: newBooking.userEmail,
-                    bookingStart: newBooking.bookingStart,
-                    bookingEnd: newBooking.bookingEnd,
-                    userId: newBooking.userId,
-                    userName: newBooking.userName,
-                    serviceId: newBooking.serviceId,
-                    serviceName: newBooking.serviceName,
-                    servicePrice: newBooking.servicePrice,
-                                        extraServ: ourService!.name.toString(),
-                    extraServPrice: int.parse(ourService!.price.toString()),
-                    serviceDuration: newBooking.serviceDuration);
-                       await _databaseApi.uploadBookingFirebase(
-                newBooking:bookservice);
-            await addOrder(newBooking.bookingStart, newBooking.bookingEnd,bookservice.id);
-         
+                id: bookingId,
+                email: newBooking.userEmail,
+                bookingStart: newBooking.bookingStart,
+                bookingEnd: newBooking.bookingEnd,
+                userId: newBooking.userId,
+                userName: newBooking.userName,
+                serviceId: newBooking.serviceId,
+                serviceName: newBooking.serviceName,
+                servicePrice: newBooking.servicePrice,
+                extraServ: extraService,
+                // extraServPrice: int.parse(ourService!.price.toString()),
+                serviceDuration: newBooking.serviceDuration);
+            await _databaseApi.uploadBookingFirebase(newBooking: bookservice);
+            await addOrder(
+                newBooking.bookingStart, newBooking.bookingEnd, bookservice.id);
           }
         }
       }
@@ -342,7 +341,7 @@ class BookingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  addOrder(DateTime start, DateTime end,String? id) {
+  addOrder(DateTime start, DateTime end, String? id) {
     final String timeString = DateTime.now().toString();
     final String orderId = DateTime.now().microsecondsSinceEpoch.toString();
     final order = Order(

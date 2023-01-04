@@ -44,7 +44,7 @@ class SetAvailabilityViewModel extends BaseViewModel {
   }
 
   Future<dynamic> uploadBookingMock(
-      {required BookingService newBooking,required String selextraService}) async {}
+      {required BookingService newBooking,required List selextraService}) async {}
 
   List<DateTimeRange> convertStreamResultMock({dynamic streamResult}) {
     return [];

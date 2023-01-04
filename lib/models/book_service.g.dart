@@ -25,8 +25,8 @@ BookkingService _$BookkingServiceFromJson(Map<String, dynamic> json) {
     depositAmount: json['depositAmount'] as double?,
     approved: json['approved'] as bool? ?? false,
     serviceId: json['serviceId'] as String?,
-    extraServ : json['extraServ'] as String?,
-    extraServPrice : json['extraServPrice'] as int?,
+    extraServ : json['extraServ'] as List?,
+    // extraServPrice : json['extraServPrice'] as int?,
   );
 }
 
