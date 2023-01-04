@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/booking_calender/booking_calendar.dart';
 import 'package:mipromo/api/database_api.dart';
+import 'package:intl/intl.dart';
 
 import 'package:mipromo/booking_calender/src/util/booking_util.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -98,7 +99,17 @@ class BookingController extends ChangeNotifier {
   pastePauseSlots(List<DateTimeRange> slots, DateTime dayy,
       List<dynamic> unavailble, ownerId) async {
     List<DateTimeRange> list = [];
-  
+    List prevslot = unavailble
+        .where((o) =>
+            DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
+                int.parse(o.seconds.toString()) * 1000)) ==
+            DateFormat.yMMMd().format(dayy))
+        .toList();
+
+    for (var slot in prevslot) {
+      unavailble.remove(slot);
+    }
+
     for (var slot in slots) {
       DateTime start = DateTime(dayy.year, dayy.month, dayy.day,
           slot.start.hour, slot.start.minute, slot.start.second);
