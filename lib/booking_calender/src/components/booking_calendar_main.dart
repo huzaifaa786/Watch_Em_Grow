@@ -486,19 +486,17 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                           return null;
                         },
                         dataSource: [
-                          for (var i = 0; i <= widget.extraService!.length; i++)
+                          for (var i = 0; i < widget.extraService!.length; i++)
                             {
-                              {
                                 "display": widget.extraService![i].name,
                                 "value": widget.extraService![i].name,
-                              },
                             }
                         ],
                         textField: 'display',
                         valueField: 'value',
                         okButtonLabel: 'OK',
                         cancelButtonLabel: 'CANCEL',
-                        hintWidget: Text('Please choose one or more'),
+                        hintWidget: Text('Choose one or more add-ons'),
                         initialValue: null,
                         onSaved: (value) {
                           if (value == null) return;
