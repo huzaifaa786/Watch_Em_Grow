@@ -139,9 +139,27 @@ class AvailabilityView extends StatelessWidget {
                         ],
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ElevatedButton(
+                            onPressed: () {
+                              currentFocus.unfocus();
+                              model.init(
+                                  mshop: shop,
+                                  isDark: getThemeManager(context)
+                                          .selectedThemeMode ==
+                                      ThemeMode.dark,
+                                  context: context);
+                            },
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                            child: Text('Refresh'),
+                          ),ElevatedButton(
                             onPressed: () {
                               model.updateTime();
                               currentFocus.unfocus();
@@ -164,6 +182,7 @@ class AvailabilityView extends StatelessWidget {
                         ],
                       ),
                       BookingCalendar(
+                        
                         bookingGridCrossAxisCount: 1,
                         bookingGridChildAspectRatio: 0.75,
                         bookingService: model.mockBookingService,

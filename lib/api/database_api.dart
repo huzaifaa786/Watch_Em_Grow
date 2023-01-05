@@ -1607,13 +1607,30 @@ class DatabaseApi {
   }
 
   createExtraServices(
-      {required String shopId, required Map<String, dynamic> extraService}) {
-      final String  extraServiceId = DateTime.now().microsecondsSinceEpoch.toString();
+      {required String shopId, required Map<String, dynamic> extraService,required String id}) {
     _shopsCollection
         .doc(shopId)
         .collection('extraServices')
-        .doc(extraServiceId)
+        .doc(id)
         .set(extraService);
+  }
+    Future<bool> deleteExtraService(String shopId,String exserviceId) async {
+    try {
+      bool result = false;
+
+      _shopsCollection.doc(shopId)
+        .collection('extraServices')
+          .doc(exserviceId)
+          .delete()
+          .whenComplete(() => result = true);
+
+      return result;
+    } on PlatformException catch (e) {
+      throw DatabaseApiException(
+        title: 'Failed to delete service',
+        message: e.message,
+      );
+    }
   }
 
   createAvailabilty(

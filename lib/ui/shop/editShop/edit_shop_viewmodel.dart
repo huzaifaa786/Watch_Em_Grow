@@ -2,8 +2,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/models/availability.dart';
 import 'package:mipromo/ui/shared/helpers/data_models.dart';
+import 'package:mipromo/ui/shared/helpers/enums.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../api/database_api.dart';
 import '../../../app/app.locator.dart';
@@ -14,8 +16,12 @@ import '../../shared/helpers/validators.dart';
 class EditShopViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _databaseApi = locator<DatabaseApi>();
+  final _dialogService = locator<DialogService>();
+
   var values = List.filled(7, true);
   late Shop mshop;
+  List? extraService = [];
+
   late Availability availability;
   void init(Shop shop) async {
     setBusy(true);
@@ -37,6 +43,8 @@ class EditShopViewModel extends BaseViewModel {
       availability = value;
     });
     values = converToArray(availability);
+    var check = await _databaseApi.getExtraServices(shopId: shop.id);
+    extraService = check;
     setBusy(false);
   }
 
@@ -280,8 +288,11 @@ class EditShopViewModel extends BaseViewModel {
   }
 
   void createExtraServicesShop() {
+
     if (isFormValid()) {
       addExtraServices();
+      displayNewTextField =false;
+      notifyListeners();
     } else {
       showErrors();
     }
@@ -308,14 +319,39 @@ class EditShopViewModel extends BaseViewModel {
 
   addExtraServices() async {
     print(mshop.id);
+     final extraServiceId = const Uuid().v4();
     Map<String, dynamic> postMap = {
+      'id': extraServiceId,
       'name': extraServiceName,
       'price': price,
     };
 
     await _databaseApi.createExtraServices(
-        shopId: mshop.id, extraService: postMap);
+        shopId: mshop.id, extraService: postMap,id:extraServiceId);
 
     Fluttertoast.showToast(msg: 'Updated');
   }
+  deleteExtraService(exserviceID) async {
+final response = await _dialogService.showCustomDialog(
+      variant: AlertType.error,
+      title: 'Delete Service?',
+      description: 'Are you sure, you want to delete this Additional Service.',
+      customData: CustomDialogData(
+        isConfirmationDialog: true,
+      ),
+    );
+
+    if (response != null && response.confirmed) {
+      setBusy(true);
+      await Future.wait(
+        [
+          _databaseApi.deleteExtraService(mshop.id, exserviceID.toString()),
+        ],
+      ).whenComplete(() {
+        setBusy(false);
+        init(mshop);
+      });
+    }
+  }
+  
 }

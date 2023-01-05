@@ -59,7 +59,7 @@ class BookingCalendarMain extends StatefulWidget {
       {required DateTime start, required DateTime end}) getBookingStream;
   final Future<dynamic> Function(
       {required BookingService newBooking,
-      required List selextraService}) uploadBooking;
+      required List selextraService,required int total}) uploadBooking;
   final List<DateTimeRange> Function({required dynamic streamResult})
       convertStreamResultToDateTimeRanges;
 
@@ -110,12 +110,11 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
   bool enableslotbutton = false;
   bool enablecopybutton = false;
   bool enablepastebutton = false;
-  List? selectedExtraService;
+  List<ExtraServices> selectedExtraService = [];
 
   @override
   void initState() {
     super.initState();
-    print(widget.unavailableSlots);
     // log(widget.extraService!.price.toString());
     controller = context.read<BookingController>();
     startOfDay = now.startOfDayService(controller.serviceOpening!);
@@ -123,11 +122,12 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
     _focusedDay = now;
     _selectedDay = now;
     copiedDay = now;
+    totalAmount = widget.bookingService.servicePrice!;
     controller.daytoAvail = now;
   }
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
-
+  var totalAmount = 0;
   late DateTime _selectedDay;
   late DateTime _focusedDay;
   late DateTime startOfDay;
@@ -428,7 +428,8 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         children: [
                           Text(widget.bookingService.serviceName),
                           Text('£' +
-                              widget.bookingService.servicePrice.toString()),
+                              widget.bookingService.servicePrice!
+                                  .toStringAsFixed(2)),
                         ],
                       ),
                     ),
@@ -445,6 +446,18 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                               : Text("£" +
                                   widget.bookingService.depositAmount!
                                       .toStringAsFixed(2)),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Total"),
+                          Text("£" + totalAmount.toStringAsFixed(2).toString()),
                         ],
                       ),
                     ),
@@ -477,8 +490,11 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                       //     ],
                       //   ),
                       // ),
+                      SizedBox(
+                        height: 7,
+                      ),
                       MultiSelectFormField(
-                        title: Text("Select Add on service"),
+                        title: Text("Add to your appointment"),
                         validator: (value) {
                           if (value == null || value.length == 0) {
                             return '';
@@ -488,21 +504,43 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         dataSource: [
                           for (var i = 0; i < widget.extraService!.length; i++)
                             {
-                                "display":  widget.extraService![i].price + '' + widget.extraService![i].name,
-                                "value": widget.extraService![i].name,
+                              "display": '£' +
+                                  widget.extraService![i].price.toString() +
+                                  '-' +
+                                  widget.extraService![i].name.toString(),
+                              "value": widget.extraService![i].name,
                             }
                         ],
+                        chipBackGroundColor: Colors.blue,
+                        chipLabelStyle: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                        dialogTextStyle: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                        checkBoxActiveColor: Colors.blue,
+                        checkBoxCheckColor: Colors.white,
+                        dialogShapeBorder: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12.0))),
                         textField: 'display',
                         valueField: 'value',
                         okButtonLabel: 'OK',
                         cancelButtonLabel: 'CANCEL',
-                        hintWidget: Text('Choose one or more add-ons'),
+                        hintWidget: Text('choose services'),
                         initialValue: null,
                         onSaved: (value) {
                           if (value == null) return;
                           setState(() {
-                            selectedExtraService = value as List;
-                            print(selectedExtraService);
+                                  List Hello = value as List;
+                              totalAmount = widget.bookingService.servicePrice as int;
+                            for (var i = 0;
+                                i < Hello.length;
+                                i++) {
+                              ExtraServices temp =  widget
+                                  .extraService!.singleWhere((item) => item.name.toString().toLowerCase() == Hello[i].toString().toLowerCase()) as ExtraServices;
+                                  print(temp);
+                              selectedExtraService.add(temp);
+                              totalAmount += int.parse(temp.price.toString());
+                            }
                           });
                         },
                       )
@@ -553,7 +591,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         await widget.uploadBooking(
                             newBooking:
                                 controller.generateNewBookingForUploading(),
-                            selextraService: selectedExtraService!);
+                            selextraService: selectedExtraService, total : totalAmount);
                         controller.toggleUploading();
                         controller.resetSelectedSlot();
                       },

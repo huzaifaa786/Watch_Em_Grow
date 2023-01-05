@@ -164,8 +164,8 @@ class BookingViewModel extends BaseViewModel {
 
   Future<dynamic> uploadBookingMock(
       {required BookingService newBooking,
-      required List selextraService}) async {
-
+      required List selextraService,
+      required int total}) async {
     Duration d = Duration(minutes: service.duration!);
 
     DateTimeRange time = DateTimeRange(
@@ -224,8 +224,8 @@ class BookingViewModel extends BaseViewModel {
                     depositAmount: service.depositAmount,
                     serviceName: newBooking.serviceName,
                     servicePrice: newBooking.servicePrice,
-                    extraServ: extraService,
-                    // extraServPrice: int.parse(ourService!.price.toString()),
+                    extraServ: selextraService,
+                    totalAmount: double.parse(total.toString()),
                     serviceDuration: newBooking.serviceDuration)),
           );
         }
@@ -254,6 +254,8 @@ class BookingViewModel extends BaseViewModel {
                       serviceName: newBooking.serviceName,
                       servicePrice: newBooking.servicePrice,
                       extraServ: extraService,
+                      totalAmount: double.parse(total.toString()),
+
                       // extraServPrice: int.parse(extraService),
                       serviceDuration: newBooking.serviceDuration)),
             );
@@ -272,6 +274,8 @@ class BookingViewModel extends BaseViewModel {
                 serviceName: newBooking.serviceName,
                 servicePrice: newBooking.servicePrice,
                 extraServ: extraService,
+                totalAmount: double.parse(total.toString()),
+
                 // extraServPrice: int.parse(ourService!.price.toString()),
                 serviceDuration: newBooking.serviceDuration);
             await _databaseApi.uploadBookingFirebase(newBooking: bookservice);
@@ -282,19 +286,6 @@ class BookingViewModel extends BaseViewModel {
       }
     }
 
-    // await Future.delayed(const Duration(seconds: 1));
-    // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
-    //   await _navigationService.navigateTo(
-    //     Routes.bookServiceView,
-    //     arguments: BookServiceViewArguments(
-    //       user: user,
-    //       service: service,
-    //     ),
-    //   );
-    // }
-    // await Future.delayed(const Duration(seconds: 1));
-    // converted.add(DateTimeRange(
-    //     start: newBooking.bookingStart, end: newBooking.bookingEnd));
     notifyListeners();
     print('${newBooking.toJson()} has been uploaded');
   }

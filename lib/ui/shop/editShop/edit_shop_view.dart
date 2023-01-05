@@ -130,7 +130,7 @@ class _EditShopForm extends HookViewModelWidget<EditShopViewModel> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            "Add_ons".text.bold.make(),
+            "Additional appointment add-ons".text.bold.make(),
             Container(
               height: 40,
               width: 40,
@@ -149,6 +149,7 @@ class _EditShopForm extends HookViewModelWidget<EditShopViewModel> {
             ),
           ],
         ),
+ 
         Visibility(
             visible: model.displayNewTextField,
             child: Column(
@@ -191,6 +192,7 @@ class _EditShopForm extends HookViewModelWidget<EditShopViewModel> {
                     child: IconButton(
                       onPressed: () {
                         model.createExtraServicesShop();
+                        model.init(model.mshop);
                       },
                       icon: const Icon(
                         Icons.done,
@@ -201,6 +203,82 @@ class _EditShopForm extends HookViewModelWidget<EditShopViewModel> {
                 ),
               ],
             )),
+        20.heightBox,
+               ListView.builder(
+            padding: EdgeInsets.all(0),
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
+            itemCount: model.extraService!.length,
+            itemBuilder: (context, index) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        //color: Colors.red,
+                        //border: Border.all(color: Colors.white, width: 0.5)
+                        ),
+                    //height: context.screenHeight / 7,
+                    width: context.screenWidth,
+                    child: Card(
+                      elevation: 6.0,
+                      margin: new EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 8.0),
+                      child: Container(
+                        decoration: BoxDecoration(),
+                        child: ListTile(
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 5.0),
+                            title: Text(
+                              model.extraService![index].name.toString(),
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+
+                            subtitle: Row(
+                              children: <Widget>[
+                              
+                                Flexible(
+                                  child: Container(
+                                    child: Text(
+                                        'price: £' +
+                                            model.extraService![index].price
+                                                .toString(),
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(color: Colors.black)),
+                                  ),
+                                )
+                              ],
+                            ),
+                            trailing: GestureDetector(
+                              onTap: () {
+                                model.deleteExtraService(
+                                    model.extraService![index].id);
+                              },
+                              child: Icon(Icons.delete,
+                                  color: Colors.black, size: 30.0),
+                            )),
+                      ),
+                    ),
+                  ),
+                  /*model.services[index].name.text
+                                                .maxLines(2)
+                                                .make()
+                                              .pSymmetric(h: 4, v: 2),*/
+
+                  /*"£${model.services[index].price}"
+                                                .text
+                                                .xs
+                                                .make()
+                                                .px4(),*/
+                ],
+              ).mdClick(() {}).make();
+            }
+            // },
+            ),
         20.heightBox,
         "Choose your shop category".text.bold.make(),
         DropdownButton<String>(
