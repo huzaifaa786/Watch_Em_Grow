@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:math';
 
 import 'package:intl/intl.dart';
+import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/booking_calender/src/components/booking_dialog.dart';
 import 'package:mipromo/booking_calender/src/components/booking_slot.dart';
 import 'package:mipromo/booking_calender/src/components/common_button.dart';
@@ -13,6 +14,7 @@ import 'package:mipromo/booking_calender/booking_calendar.dart';
 import 'package:mipromo/booking_calender/src/core/booking_controller.dart';
 import 'package:mipromo/models/extra_services.dart';
 import 'package:mipromo/models/shop_service.dart';
+import 'package:mipromo/services/date_service.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
 import 'package:provider/provider.dart';
@@ -53,13 +55,15 @@ class BookingCalendarMain extends StatefulWidget {
     this.pauseSlotText,
     this.hideBreakTime = false,
     this.locale,
+    this.passingDate,
   }) : super(key: key);
 
   final Stream<dynamic>? Function(
       {required DateTime start, required DateTime end}) getBookingStream;
   final Future<dynamic> Function(
       {required BookingService newBooking,
-      required List selextraService,required int total}) uploadBooking;
+      required List selextraService,
+      required int total}) uploadBooking;
   final List<DateTimeRange> Function({required dynamic streamResult})
       convertStreamResultToDateTimeRanges;
 
@@ -93,6 +97,7 @@ class BookingCalendarMain extends StatefulWidget {
   final Widget? loadingWidget;
   final Widget? errorWidget;
   final Widget? uploadingWidget;
+  final DateTime? passingDate;
 
   final bool? hideBreakTime;
 
@@ -105,6 +110,7 @@ class BookingCalendarMain extends StatefulWidget {
 
 class _BookingCalendarMainState extends State<BookingCalendarMain> {
   late BookingController controller;
+  final _dateService = locator<DateService>();
   final now = DateTime.now();
   bool enableButton = false;
   bool enableslotbutton = false;
@@ -117,19 +123,25 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
     super.initState();
     // log(widget.extraService!.price.toString());
     controller = context.read<BookingController>();
-    startOfDay = now.startOfDayService(controller.serviceOpening!);
-    endOfDay = now.endOfDayService(controller.serviceClosing!);
-    _focusedDay = now;
-    _selectedDay = now;
-    copiedDay = now;
+    startOfDay =
+        _dateService.ourDate.startOfDayService(controller.serviceOpening!);
+    endOfDay = _dateService.ourDate.endOfDayService(controller.serviceClosing!);
+    setState(() {
+      _focusedDay = _dateService.ourDate;
+      _selectedDay = _dateService.ourDate;
+    });
+    copiedDay = _dateService.ourDate;
     totalAmount = widget.bookingService.servicePrice!;
-    controller.daytoAvail = now;
+    controller.daytoAvail = _dateService.ourDate;
+    Future.delayed(const Duration(seconds: 1), () {
+      selectNewDateRange();
+    });
   }
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
   var totalAmount = 0;
-  late DateTime _selectedDay;
-  late DateTime _focusedDay;
+  late DateTime _selectedDay = _dateService.ourDate;
+  late DateTime _focusedDay = _dateService.ourDate;
   late DateTime startOfDay;
   late DateTime endOfDay;
   late DateTime copiedDay;
@@ -143,6 +155,13 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
 
     controller.base = startOfDay;
     controller.resetSelectedSlot();
+  }
+
+  passingDay(DateTime date) {
+    setState(() {
+      _selectedDay = date;
+      _focusedDay = date;
+    });
   }
 
   enableDay(DateTime date) {
@@ -230,6 +249,8 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         onDaySelected: (selectedDay, focusedDay) {
                           if (!isSameDay(_selectedDay, selectedDay)) {
                             setState(() {
+                              _dateService.setDate(selectedDay);
+
                               _selectedDay = selectedDay;
                               _focusedDay = focusedDay;
                               enableButton = false;
@@ -530,14 +551,16 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         onSaved: (value) {
                           if (value == null) return;
                           setState(() {
-                                  List Hello = value as List;
-                              totalAmount = widget.bookingService.servicePrice as int;
-                            for (var i = 0;
-                                i < Hello.length;
-                                i++) {
-                              ExtraServices temp =  widget
-                                  .extraService!.singleWhere((item) => item.name.toString().toLowerCase() == Hello[i].toString().toLowerCase()) as ExtraServices;
-                                  print(temp);
+                            List Hello = value as List;
+                            totalAmount =
+                                widget.bookingService.servicePrice as int;
+                            for (var i = 0; i < Hello.length; i++) {
+                              ExtraServices temp = widget.extraService!
+                                      .singleWhere((item) =>
+                                          item.name.toString().toLowerCase() ==
+                                          Hello[i].toString().toLowerCase())
+                                  as ExtraServices;
+                              print(temp);
                               selectedExtraService.add(temp);
                               totalAmount += int.parse(temp.price.toString());
                             }
@@ -591,7 +614,8 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         await widget.uploadBooking(
                             newBooking:
                                 controller.generateNewBookingForUploading(),
-                            selextraService: selectedExtraService, total : totalAmount);
+                            selextraService: selectedExtraService,
+                            total: totalAmount);
                         controller.toggleUploading();
                         controller.resetSelectedSlot();
                       },
