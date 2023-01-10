@@ -18,6 +18,7 @@ import 'package:mipromo/services/date_service.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
 import 'package:provider/provider.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -30,6 +31,7 @@ class BookingCalendarMain extends StatefulWidget {
     required this.bookingService,
     this.service,
     this.extraService,
+    this.isDark,
     this.bookingExplanation,
     this.bookingGridCrossAxisCount,
     this.bookingGridChildAspectRatio,
@@ -87,6 +89,7 @@ class BookingCalendarMain extends StatefulWidget {
   final Color? availableSlotColor;
   final Color? pauseSlotColor;
   final bool? showData;
+  final bool? isDark;
 
   final String? bookedSlotText;
   final String? selectedSlotText;
@@ -146,7 +149,6 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
   late DateTime endOfDay;
   late DateTime copiedDay;
   List<DateTimeRange>? pauseslots = [];
-
   void selectNewDateRange() {
     startOfDay = _selectedDay.startOfDayService(controller.serviceOpening!);
     endOfDay = _selectedDay
@@ -239,7 +241,8 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         },
                         onDisabledDayTapped: enableDay,
                         calendarFormat: _calendarFormat,
-                        calendarStyle: const CalendarStyle(
+                        calendarStyle:  CalendarStyle(
+                          weekendTextStyle: TextStyle(color: widget.isDark! ?Colors.white: Colors.black),
                           isTodayHighlighted: true,
                           outsideDaysVisible: false,
                         ),

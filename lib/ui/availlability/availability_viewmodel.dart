@@ -10,10 +10,15 @@ import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/services/user_service.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
+import '../../../app/app.router.dart';
+
 
 class SetAvailabilityViewModel extends BaseViewModel {
   final _userService = locator<UserService>();
   final _databaseApi = locator<DatabaseApi>();
+  final _navigationService = locator<NavigationService>();
+
   late List<int> excludedDays = [];
   List<DateTimeRange> userReservedBookings = [];
   late bool isDarkMode;
@@ -48,6 +53,15 @@ class SetAvailabilityViewModel extends BaseViewModel {
 
   List<DateTimeRange> convertStreamResultMock({dynamic streamResult}) {
     return [];
+  }
+
+  refresh(){
+        _navigationService.replaceWith(
+      Routes.availabilityView,
+      arguments: AvailabilityViewArguments(
+        shop: shop,
+      ),
+    );
   }
 
   List<DateTimeRange> generatePauseSlots() {

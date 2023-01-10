@@ -17,6 +17,7 @@ class BookingCalendar extends StatelessWidget {
     this.extraService,
     this.bookingExplanation,
     this.showData,
+    this.isDark,
     this.docId,
     this.bookingGridCrossAxisCount,
     this.bookingGridChildAspectRatio,
@@ -124,6 +125,7 @@ class BookingCalendar extends StatelessWidget {
 
   ///True if you want to hide your break time from the calendar, and the explanation text as well
   final bool? hideBreakTime;
+  final bool? isDark;
 
   ///for localizing the calendar, String code to locale property. (intl format) See: [https://pub.dev/packages/table_calendar#locale]
   final String? locale;
@@ -141,6 +143,7 @@ class BookingCalendar extends StatelessWidget {
         uploadBooking: uploadBooking,
         excludedDays: excludedDays,
         docId: docId,
+        isDark: isDark,
         unavailableDays : unavailableDays,
     unavailableSlots : unavailableSlots,
    extraService: extraService,

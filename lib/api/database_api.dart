@@ -1722,7 +1722,6 @@ class DatabaseApi {
         .where('userId', isEqualTo: userId)
         .where('approved', isEqualTo: true)
         .get();
-    print('hello');
     final _userBookings = result.docs
         .map(
           (e) => BookkingService.fromJson(e.data()! as Map<String, dynamic>),

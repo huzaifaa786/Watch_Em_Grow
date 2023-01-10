@@ -143,13 +143,8 @@ class AvailabilityView extends StatelessWidget {
                         children: [
                           ElevatedButton(
                             onPressed: () {
-                              currentFocus.unfocus();
-                              model.init(
-                                  mshop: shop,
-                                  isDark: getThemeManager(context)
-                                          .selectedThemeMode ==
-                                      ThemeMode.dark,
-                                  context: context);
+                              model.refresh();
+                              
                             },
                             style: ButtonStyle(
                               shape: MaterialStateProperty.all<OutlinedBorder>(
@@ -182,7 +177,6 @@ class AvailabilityView extends StatelessWidget {
                         ],
                       ),
                       BookingCalendar(
-                        
                         bookingGridCrossAxisCount: 1,
                         bookingGridChildAspectRatio: 0.75,
                         bookingService: model.mockBookingService,
@@ -196,6 +190,7 @@ class AvailabilityView extends StatelessWidget {
                         pauseSlots: model.generatePauseSlots(),
                         pauseSlotText: 'LUNCH',
                         showData: false,
+                        isDark: model.isDarkMode,
                         availableSlotColor:
                             model.isDarkMode ? Colors.black : Colors.white,
                         hideBreakTime: model.isDarkMode ? true : false,
