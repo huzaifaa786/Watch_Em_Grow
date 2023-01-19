@@ -212,6 +212,15 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
   }
 
   pasteslots() async {
+    print('hjhkjhgkjghjg');
+    print('hhkjhgkjghjg');
+    print('jhkjhgkjghjg');
+    print(widget.unavailableSlots);
+    print('hjhkjhgkjghjg');
+    print('jhkjhgkjghjg');
+    print('hkjhgkjghjg');
+    print(pauseslots);
+
     await controller.pastePauseSlots(pauseslots!, _selectedDay,
         widget.unavailableSlots!, widget.bookingService.userId);
   }
@@ -241,8 +250,10 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                         },
                         onDisabledDayTapped: enableDay,
                         calendarFormat: _calendarFormat,
-                        calendarStyle:  CalendarStyle(
-                          weekendTextStyle: TextStyle(color: widget.isDark! ?Colors.white: Colors.black),
+                        calendarStyle: CalendarStyle(
+                          weekendTextStyle: TextStyle(
+                              color:
+                                  widget.isDark! ? Colors.white : Colors.black),
                           isTodayHighlighted: true,
                           outsideDaysVisible: false,
                         ),

@@ -117,6 +117,13 @@ class BookingController extends ChangeNotifier {
           slot.end.minute, slot.end.second);
 
       DateTimeRange x = DateTimeRange(start: start, end: end);
+      // DateTimeRange dateTimeRange = DateTimeRange(
+      //     start: DateTime.now(), end: DateTime.now().add(Duration(days: 1)));
+      // int startTimestamp = dateTimeRange.start.millisecondsSinceEpoch;
+      // int endTimestamp = dateTimeRange.end.millisecondsSinceEpoch;
+      // int timestamp = endTimestamp - startTimestamp;
+      // int x = timestamp / 1000;
+
       list.add(x);
       pauseSlots!.add(x);
     }
@@ -124,6 +131,8 @@ class BookingController extends ChangeNotifier {
     for (var item in list) {
       unavailble.add(item.start);
     }
+    print(slots);
+    print(unavailble);
 
     Map<String, dynamic> postMap = {'unavailableSlots': unavailble};
 
