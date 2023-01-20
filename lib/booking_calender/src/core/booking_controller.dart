@@ -99,15 +99,16 @@ class BookingController extends ChangeNotifier {
   pastePauseSlots(List<DateTimeRange> slots, DateTime dayy,
       List<dynamic> unavailble, ownerId) async {
     List<DateTimeRange> list = [];
-    List prevslot = unavailble
+    List<dynamic> unavailable = unavailble;
+    List prevslot = unavailable
         .where((o) =>
-            DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
-                int.parse(o.seconds.toString()) * 1000)) ==
+            DateFormat.yMMMd()
+                .format(DateTime.fromMillisecondsSinceEpoch(int.parse(o.seconds.toString()) * 1000)) ==
             DateFormat.yMMMd().format(dayy))
         .toList();
 
     for (var slot in prevslot) {
-      unavailble.remove(slot);
+      unavailable.remove(slot);
     }
 
     for (var slot in slots) {
@@ -129,12 +130,10 @@ class BookingController extends ChangeNotifier {
     }
 
     for (var item in list) {
-      unavailble.add(item.start);
+      unavailable.add(Timestamp.fromDate(item.start));
     }
-    print(slots);
-    print(unavailble);
 
-    Map<String, dynamic> postMap = {'unavailableSlots': unavailble};
+    Map<String, dynamic> postMap = {'unavailableSlots': unavailable};
 
     await _databaseApi.changeAvailabilty(
         userId: ownerId.toString(), availabilty: postMap);
@@ -235,7 +234,7 @@ class BookingController extends ChangeNotifier {
 
   markSlotavailable(List unavailableSlots, ownerId) async {
     final bookingDate = allBookingSlots.elementAt(selectedSlot);
-    print(bookingDate);
+
     unavailableSlots.remove(Timestamp.fromDate(bookingDate));
 
     Map<String, dynamic> postMap = {'unavailableSlots': unavailableSlots};

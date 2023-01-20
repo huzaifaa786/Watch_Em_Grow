@@ -212,15 +212,6 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
   }
 
   pasteslots() async {
-    print('hjhkjhgkjghjg');
-    print('hhkjhgkjghjg');
-    print('jhkjhgkjghjg');
-    print(widget.unavailableSlots);
-    print('hjhkjhgkjghjg');
-    print('jhkjhgkjghjg');
-    print('hkjhgkjghjg');
-    print(pauseslots);
-
     await controller.pastePauseSlots(pauseslots!, _selectedDay,
         widget.unavailableSlots!, widget.bookingService.userId);
   }
