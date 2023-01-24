@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:mipromo/api/stripe_api.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/app/app.router.dart';
 import 'package:mipromo/models/app_user.dart';
+import 'package:mipromo/models/book_service.dart';
 import 'package:mipromo/models/order.dart';
 import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/models/shop_service.dart';
@@ -37,6 +37,7 @@ class OrderDetailViewModel extends BaseViewModel {
   late AppUser shopOwner;
   late AppUser buyer;
   late Shop shopDetails;
+  late BookkingService bookkingService;
   String shopImage =
       'https://firebasestorage.googleapis.com/v0/b/mipromo-03.appspot.com/o/profileImages%2FiBrUYThY0WcbsJNMCkVHIb7Et3I3%2FPI._iBrUYThY0WcbsJNMCkVHIb7Et3I3?alt=media&token=680bd701-405e-428e-879b-efbd7fecb970';
 
@@ -71,6 +72,8 @@ class OrderDetailViewModel extends BaseViewModel {
     shopDetails = await _databaseApi.getShop(order.shopId);
     buyer = await _databaseApi.getUser(order.userId);
     processingFee = await _databaseApi.getProcessingFee();
+    if (order.bookkingId != null)
+      bookkingService = await _databaseApi.getBooking(order.bookkingId!);
     notifyListeners();
     setBusy(false);
   }
@@ -175,8 +178,8 @@ class OrderDetailViewModel extends BaseViewModel {
       final accessToken = await _paypalApi.getAccessToken();
       final response;
       if (order.paymentMethod == MPaymentMethod.paypal) {
-          response = await _paypalApi.refundPayment(order, accessToken!);
-      }else{
+        response = await _paypalApi.refundPayment(order, accessToken!);
+      } else {
         response = await _stripeApi.refundPayment(order);
       }
       if (response['statusCode'] == 201 || response['id'] != null) {
@@ -473,12 +476,12 @@ class OrderDetailViewModel extends BaseViewModel {
         isApiLoading = true;
         notifyListeners();
         final accessToken = await _paypalApi.getAccessToken();
-         final response;
-      if (order.paymentMethod == MPaymentMethod.paypal) {
+        final response;
+        if (order.paymentMethod == MPaymentMethod.paypal) {
           response = await _paypalApi.refundPayment(order, accessToken!);
-      }else{
-        response = await _stripeApi.refundPayment(order);
-      }
+        } else {
+          response = await _stripeApi.refundPayment(order);
+        }
         if (response['statusCode'] == 201 || response['id'] != null) {
           isApiLoading = false;
           notifyListeners();
@@ -542,12 +545,12 @@ class OrderDetailViewModel extends BaseViewModel {
         isApiLoading = true;
         notifyListeners();
         final accessToken = await _paypalApi.getAccessToken();
-         final response;
-      if (order.paymentMethod == MPaymentMethod.paypal) {
+        final response;
+        if (order.paymentMethod == MPaymentMethod.paypal) {
           response = await _paypalApi.refundPayment(order, accessToken!);
-      }else{
-        response = await _stripeApi.refundPayment(order);
-      }
+        } else {
+          response = await _stripeApi.refundPayment(order);
+        }
         if (response['statusCode'] == 201 || response['id'] != null) {
           isApiLoading = false;
           notifyListeners();
@@ -782,10 +785,10 @@ class OrderDetailViewModel extends BaseViewModel {
       isApiLoading = true;
       notifyListeners();
       final accessToken = await _paypalApi.getAccessToken();
-       final response;
+      final response;
       if (order.paymentMethod == MPaymentMethod.paypal) {
-          response = await _paypalApi.refundPayment(order, accessToken!);
-      }else{
+        response = await _paypalApi.refundPayment(order, accessToken!);
+      } else {
         response = await _stripeApi.refundPayment(order);
       }
       if (response['statusCode'] == 201 || response['id'] != null) {
@@ -931,12 +934,11 @@ class OrderDetailViewModel extends BaseViewModel {
       response = await _paypalApi.paySellerPayment(
           paypalEmail.toString(), order, processingFee, accessToken!);
     } else {
-   
       final account = await _databaseApi.getSellerStripe(order.service.ownerId);
       response =
           await _stripeApi.paySellerPayment(order, processingFee, account);
     }
-  
+
     if (response['statusCode'] == 201 || response['id'] != null) {
       return _databaseApi
           .approveAppointment(order, DateTime.now().microsecondsSinceEpoch)

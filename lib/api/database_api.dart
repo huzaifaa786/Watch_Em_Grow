@@ -254,6 +254,20 @@ class DatabaseApi {
       );
     }
   }
+  Future<BookkingService> getBooking(String bookingId) async {
+    try {
+      final bookingDoc = await _bookingsCollection.doc(bookingId).get();
+
+      if (!bookingDoc.exists) {}
+      final bookingData = bookingDoc.data()! as Map<String, dynamic>;
+      return BookkingService.fromJson(bookingData);
+    } on PlatformException catch (e) {
+      throw DatabaseApiException(
+        title: 'Failed to get Booking Data',
+        message: e.message,
+      );
+    }
+  }
 
   Future<AppUser> getUserLogin(String userId) async {
     try {
