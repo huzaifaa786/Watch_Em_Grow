@@ -254,12 +254,13 @@ class DatabaseApi {
       );
     }
   }
+
   Future<BookkingService> getBooking(String bookingId) async {
     try {
       final bookingDoc = await _bookingsCollection.doc(bookingId).get();
 
       if (!bookingDoc.exists) {}
-      final bookingData = bookingDoc.data() as Map<String, dynamic>;
+      final bookingData = bookingDoc.data()! as Map<String, dynamic>;
       return BookkingService.fromJson(bookingData);
     } on PlatformException catch (e) {
       throw DatabaseApiException(
@@ -1621,19 +1622,23 @@ class DatabaseApi {
   }
 
   createExtraServices(
-      {required String shopId, required Map<String, dynamic> extraService,required String id}) {
+      {required String shopId,
+      required Map<String, dynamic> extraService,
+      required String id}) {
     _shopsCollection
         .doc(shopId)
         .collection('extraServices')
         .doc(id)
         .set(extraService);
   }
-    Future<bool> deleteExtraService(String shopId,String exserviceId) async {
+
+  Future<bool> deleteExtraService(String shopId, String exserviceId) async {
     try {
       bool result = false;
 
-      _shopsCollection.doc(shopId)
-        .collection('extraServices')
+      _shopsCollection
+          .doc(shopId)
+          .collection('extraServices')
           .doc(exserviceId)
           .delete()
           .whenComplete(() => result = true);
@@ -1801,6 +1806,7 @@ class DatabaseApi {
 
   Future<dynamic> uploadBookingFirebase(
       {required BookkingService newBooking}) async {
+    print(newBooking);
     await _bookingsCollection
         .doc(newBooking.id)
         .set(newBooking.toJson())

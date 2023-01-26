@@ -52,13 +52,14 @@ class OrderDetailViewModel extends BaseViewModel {
   }
 
   late AppUser user;
-
-  Future<void> init(ShopService cService, Order cOrder) async {
+  late bool isDarkMode;
+  Future<void> init(ShopService cService, bool isDark, Order cOrder) async {
     setBusy(true);
     await _userService.syncUser();
     user = _userService.currentUser;
     order = cOrder;
     service = cService;
+    isDarkMode = isDark;
     getShopOwner();
   }
 
@@ -72,12 +73,9 @@ class OrderDetailViewModel extends BaseViewModel {
     shopDetails = await _databaseApi.getShop(order.shopId);
     buyer = await _databaseApi.getUser(order.userId);
     processingFee = await _databaseApi.getProcessingFee();
-    if (order.bookkingId != null)
-    {
-      print('#######order.bookkingId');
-      print(order.bookkingId);
+    if (order.bookkingId != null) {
       bookkingService = await _databaseApi.getBooking(order.bookkingId!);
-      
+      print(bookkingService.extraServ.toString());
     }
     notifyListeners();
     setBusy(false);
@@ -126,7 +124,7 @@ class OrderDetailViewModel extends BaseViewModel {
     )
         .whenComplete(
       () async {
-        init(service, order).whenComplete(
+        init(service, isDarkMode, order).whenComplete(
           () async {
             await _navigationService.navigateTo(
               Routes.chatsView,

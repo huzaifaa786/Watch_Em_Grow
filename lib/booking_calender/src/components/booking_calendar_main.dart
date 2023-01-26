@@ -519,58 +519,65 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                       SizedBox(
                         height: 7,
                       ),
-                      MultiSelectFormField(
-                        title: Text("Add to your appointment"),
-                        validator: (value) {
-                          if (value == null || value.length == 0) {
-                            return '';
-                          }
-                          return null;
-                        },
-                        dataSource: [
-                          for (var i = 0; i < widget.extraService!.length; i++)
-                            {
-                              "display": '£' +
-                                  widget.extraService![i].price.toString() +
-                                  '-' +
-                                  widget.extraService![i].name.toString(),
-                              "value": widget.extraService![i].name,
+                      Flexible(
+                        child: MultiSelectFormField(
+                          title: Text("Add to your appointment"),
+                          validator: (value) {
+                            if (value == null || value.length == 0) {
+                              return '';
                             }
-                        ],
-                        chipBackGroundColor: Colors.blue,
-                        chipLabelStyle: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
-                        dialogTextStyle: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                        checkBoxActiveColor: Colors.blue,
-                        checkBoxCheckColor: Colors.white,
-                        dialogShapeBorder: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12.0))),
-                        textField: 'display',
-                        valueField: 'value',
-                        okButtonLabel: 'OK',
-                        cancelButtonLabel: 'CANCEL',
-                        hintWidget: Text('choose services'),
-                        initialValue: null,
-                        onSaved: (value) {
-                          if (value == null) return;
-                          setState(() {
-                            List Hello = value as List;
-                            totalAmount =
-                                widget.bookingService.servicePrice as int;
-                            for (var i = 0; i < Hello.length; i++) {
-                              ExtraServices temp = widget.extraService!
-                                      .singleWhere((item) =>
-                                          item.name.toString().toLowerCase() ==
-                                          Hello[i].toString().toLowerCase())
-                                  as ExtraServices;
-                 
-                              selectedExtraService.add(temp);
-                              totalAmount += int.parse(temp.price.toString());
-                            }
-                          });
-                        },
+                            return null;
+                          },
+                          dataSource: [
+                            for (var i = 0;
+                                i < widget.extraService!.length;
+                                i++)
+                              {
+                                "display": '£' +
+                                    widget.extraService![i].price.toString() +
+                                    '-' +
+                                    widget.extraService![i].name.toString(),
+                                "value": widget.extraService![i].name,
+                              }
+                          ],
+                          chipBackGroundColor: Colors.blue,
+                          chipLabelStyle: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                          dialogTextStyle: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                          checkBoxActiveColor: Colors.blue,
+                          checkBoxCheckColor: Colors.white,
+                          dialogShapeBorder: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12.0))),
+                          textField: 'display',
+                          valueField: 'value',
+                          okButtonLabel: 'OK',
+                          cancelButtonLabel: 'CANCEL',
+                          hintWidget: Text('choose services'),
+                          initialValue: null,
+                          onSaved: (value) {
+                            if (value == null) return;
+                            setState(() {
+                              List Hello = value as List;
+                              selectedExtraService = [];
+                              totalAmount =
+                                  widget.bookingService.servicePrice as int;
+                              for (var i = 0; i < Hello.length; i++) {
+                                ExtraServices temp = widget.extraService!
+                                    .singleWhere((item) =>
+                                        item.name.toString().toLowerCase() ==
+                                        Hello[i]
+                                            .toString()
+                                            .toLowerCase()) as ExtraServices;
+
+                                selectedExtraService.add(temp);
+                                totalAmount += int.parse(temp.price.toString());
+                                print(selectedExtraService);
+                              }
+                            });
+                          },
+                        ),
                       )
                       //   Padding(
                       //   padding: const EdgeInsets.only(left:12.0,right:12),

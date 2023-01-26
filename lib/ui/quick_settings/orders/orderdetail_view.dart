@@ -11,6 +11,7 @@ import 'package:mipromo/ui/shared/helpers/enums.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class OrderDetailView extends StatelessWidget {
@@ -31,15 +32,14 @@ class OrderDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return ViewModelBuilder<OrderDetailViewModel>.reactive(
-      onModelReady: (model) => model.init(order.service, order),
+      onModelReady: (model) => model.init(order.service,getThemeManager(context).selectedThemeMode == ThemeMode.dark,order),
       builder: (context, model, child) => model.isBusy
           ? const BasicLoader()
           : Scaffold(
               appBar: AppBar(
                 title: order.service.name.text.make(),
               ),
-              body: 
-              Stack(
+              body: Stack(
                 children: [
                   SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -130,13 +130,15 @@ class OrderDetailView extends StatelessWidget {
                                       .fontWeight(FontWeight.w600)
                                       .make(),
                                   (size.height * 0.004).heightBox,
-                               order.service.type == "Service" ?   "£${ order.service.depositAmount!.toStringAsFixed(2)}"
-                                      .text
-                                      .size(13)
-                                      .make() : "£${ order.service.price.toStringAsFixed(2)}"
-                                      .text
-                                      .size(13)
-                                      .make(),
+                                  order.service.type == "Service"
+                                      ? "£${model.bookkingService.totalAmount!.toStringAsFixed(2)}"
+                                          .text
+                                          .size(13)
+                                          .make()
+                                      : "£${order.service.price.toStringAsFixed(2)}"
+                                          .text
+                                          .size(13)
+                                          .make(),
                                 ],
                               ).pOnly(right: size.width * 0.02),
                             ],
@@ -415,19 +417,19 @@ class OrderDetailView extends StatelessWidget {
                                   ),
                                   5.heightBox,
                                   if (order.type == OrderType.service) ...[
-                                       if (order.service.sizes != null)
-                                    Row(
-                                      children: [
-                                        'Size:'.text.make(),
-                                        10.widthBox,
-                                        order.service
-                                            .sizes![order.selectedSize!].text
-                                            .make(),
-                                      ],
-                                    ),
-                                  if (order.service.sizes != null) 5.heightBox,
+                                    if (order.service.sizes != null)
+                                      Row(
+                                        children: [
+                                          'Size:'.text.make(),
+                                          10.widthBox,
+                                          order.service
+                                              .sizes![order.selectedSize!].text
+                                              .make(),
+                                        ],
+                                      ),
+                                    if (order.service.sizes != null)
+                                      5.heightBox,
                                   ],
-                               
                                   if (order.shopId == currentUser.shopId)
                                     Row(
                                       children: [
@@ -440,8 +442,8 @@ class OrderDetailView extends StatelessWidget {
                                         '%'.text.make(),
                                       ],
                                     ),
-                                  if (order.type == OrderType.service)...[
-                                  5.heightBox,
+                                  if (order.type == OrderType.service) ...[
+                                    5.heightBox,
                                     Row(
                                       children: [
                                         'Appointment time:'.text.make(),
@@ -572,6 +574,90 @@ class OrderDetailView extends StatelessWidget {
                                 ]),
                           ),
 
+                          Divider(color: Colors.grey),
+                          
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 5),
+                                child: Row(
+                                  children: [
+                                    'Add-ons'.text.minFontSize(18).make(),
+                                  ],
+                                ),
+                              ),
+                              10.heightBox,
+                              model.order.bookkingId != null
+                                  ? ListView.builder(
+                                      padding: EdgeInsets.all(0),
+                                      shrinkWrap: true,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemCount: model
+                                          .bookkingService.extraServ!.length,
+                                      itemBuilder: (context, index) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  //color: Colors.red,
+                                                  //border: Border.all(color: Colors.white, width: 0.5)
+                                                  ),
+                                              //height: context.screenHeight / 7,
+                                              width: context.screenWidth,
+                                              child: Card(
+                                                elevation: 6.0,
+                                                margin:
+                                                    new EdgeInsets.symmetric(
+                                                        horizontal: 10.0,
+                                                        vertical: 8.0),
+                                                child: Container(
+                                                  decoration: BoxDecoration(),
+                                                  child: ListTile(
+                                                    contentPadding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 20.0,
+                                                            vertical: 5.0),
+                                                    title: Text(
+                                                      model
+                                                          .bookkingService
+                                                          .extraServ![index]
+                                                              ['name']
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          color: model.isDarkMode ? Colors.white: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+                                                    trailing: Text(
+                                                        'price: £' +
+                                                            model
+                                                                .bookkingService
+                                                                .extraServ![
+                                                                    index]
+                                                                    ['price']
+                                                                .toString(),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                            color:
+                                                                model.isDarkMode ? Colors.white: Colors.black)),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ).mdClick(() {}).make();
+                                      }
+                                      // },
+                                      )
+                                  : Text(''),
+                            ],
+                          ),
                           Divider(color: Colors.grey),
 
                           ///Product Received card
@@ -1168,10 +1254,22 @@ class OrderDetailView extends StatelessWidget {
 
             ///order received
             if (order.shopId == currentUser.shopId)
-              renderCheckIcon(height, false, order.type == OrderType.service ?  "Service Delivered" : "Product Delivered",
-                order.type == OrderType.service ?   "You have delivered the service": "You have delivered the product" )
+              renderCheckIcon(
+                  height,
+                  false,
+                  order.type == OrderType.service
+                      ? "Service Delivered"
+                      : "Product Delivered",
+                  order.type == OrderType.service
+                      ? "You have delivered the service"
+                      : "You have delivered the product")
             else
-              renderCheckIcon(height, false, order.type == OrderType.service ?  "Received Service": "Received Product",
+              renderCheckIcon(
+                  height,
+                  false,
+                  order.type == OrderType.service
+                      ? "Received Service"
+                      : "Received Product",
                   "You have received your service"),
             renderCheckDivider(height, false),
 
@@ -1281,7 +1379,8 @@ class OrderDetailView extends StatelessWidget {
             renderCheckDivider(height, false),
 
             ///order accepted
-            renderCheckIcon(height, false, "Completed", "Your payment has now been processed"),
+            renderCheckIcon(height, false, "Completed",
+                "Your payment has now been processed"),
           ],
         );
       case 'CANCELLED':
@@ -1316,7 +1415,8 @@ class OrderDetailView extends StatelessWidget {
             renderCheckDivider(height, false),
 
             ///order accepted
-            renderCheckIcon(height, false, "Completed", "Your payment has now been processed"),
+            renderCheckIcon(height, false, "Completed",
+                "Your payment has now been processed"),
           ],
         );
       case 'BOOK APPROVED':
@@ -1351,7 +1451,8 @@ class OrderDetailView extends StatelessWidget {
             renderCheckDivider(height, false),
 
             ///order accepted
-            renderCheckIcon(height, false, "Completed", "Your payment has now been processed"),
+            renderCheckIcon(height, false, "Completed",
+                "Your payment has now been processed"),
           ],
         );
       case 'REFUND REQUESTED':
