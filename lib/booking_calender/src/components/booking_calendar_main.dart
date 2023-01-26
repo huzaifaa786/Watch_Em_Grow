@@ -565,7 +565,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                                           item.name.toString().toLowerCase() ==
                                           Hello[i].toString().toLowerCase())
                                   as ExtraServices;
-                              print(temp);
+                 
                               selectedExtraService.add(temp);
                               totalAmount += int.parse(temp.price.toString());
                             }

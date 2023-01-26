@@ -73,7 +73,12 @@ class OrderDetailViewModel extends BaseViewModel {
     buyer = await _databaseApi.getUser(order.userId);
     processingFee = await _databaseApi.getProcessingFee();
     if (order.bookkingId != null)
+    {
+      print('#######order.bookkingId');
+      print(order.bookkingId);
       bookkingService = await _databaseApi.getBooking(order.bookkingId!);
+      
+    }
     notifyListeners();
     setBusy(false);
   }

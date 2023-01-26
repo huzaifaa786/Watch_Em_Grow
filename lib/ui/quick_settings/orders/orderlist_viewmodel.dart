@@ -97,8 +97,7 @@ class SoldOrderListViewModel extends BaseViewModel {
   List<Order> getEventsfromDay(DateTime date) {
     // print('date hamari type ki huwi');
     // print(selectedEvents);
-    print(date.runtimeType);
-    print(selectedEvents);
+
     return selectedEvents[date] ?? [];
   }
 

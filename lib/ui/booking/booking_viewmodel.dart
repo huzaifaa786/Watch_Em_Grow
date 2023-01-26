@@ -253,7 +253,7 @@ class BookingViewModel extends BaseViewModel {
                       serviceId: newBooking.serviceId,
                       serviceName: newBooking.serviceName,
                       servicePrice: newBooking.servicePrice,
-                      extraServ: extraService,
+                      extraServ: selextraService,
                       totalAmount: double.parse(total.toString()),
 
                       // extraServPrice: int.parse(extraService),
@@ -273,7 +273,7 @@ class BookingViewModel extends BaseViewModel {
                 serviceId: newBooking.serviceId,
                 serviceName: newBooking.serviceName,
                 servicePrice: newBooking.servicePrice,
-                extraServ: extraService,
+                extraServ: selextraService,
                 totalAmount: double.parse(total.toString()),
 
                 // extraServPrice: int.parse(ourService!.price.toString()),
