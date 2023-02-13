@@ -89,7 +89,7 @@ class connectStripeViewModel extends BaseViewModel {
           _dialogService.showCustomDialog(
               variant: AlertType.success,
               title: 'Success',
-              description: 'Stripe account Cannected Succesfully!');
+              description: 'Stripe account connected Succesfully!');
         } else {
           _navigationService.back(result: true);
           _dialogService.showCustomDialog(

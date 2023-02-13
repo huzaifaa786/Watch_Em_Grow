@@ -351,7 +351,7 @@ class BookingViewModel extends BaseViewModel {
       status: OrderStatus.bookRequested,
       rate: 0,
       name: user.fullName,
-      paymentIntent: 'paymentIntent',
+      paymentIntent: paymentIntent,
       address: user.address,
       postCode: user.postCode,
       time: DateTime.now().microsecondsSinceEpoch,

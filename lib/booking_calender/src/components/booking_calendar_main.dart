@@ -518,9 +518,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                       // ),
                       SizedBox(
                         height: 7,
-                      ),
-                      Flexible(
-                        child: MultiSelectFormField(
+                      ),MultiSelectFormField(
                           title: Text("Add to your appointment"),
                           validator: (value) {
                             if (value == null || value.length == 0) {
@@ -577,8 +575,7 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                               }
                             });
                           },
-                        ),
-                      )
+                        )
                       //   Padding(
                       //   padding: const EdgeInsets.only(left:12.0,right:12),
                       //   child: DropdownButtonFormField<String>(

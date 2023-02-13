@@ -34,7 +34,7 @@ class BookingView extends StatelessWidget {
                 child: Stack(
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.height *1.02,
+                      height: MediaQuery.of(context).size.height,
                       decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30))),
                       width: MediaQuery.of(context).size.width,
                       child: BookingCalendar(  
