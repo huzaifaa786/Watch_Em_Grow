@@ -29,24 +29,33 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainViewModel>.reactive(
       onModelReady: (model) => model.init(widget.selectedIndex),
-      builder: (context, model, child) => viewSelector(model, widget.selectedIndex),
+      builder: (context, model, child) =>
+          viewSelector(model, widget.selectedIndex),
       viewModelBuilder: () => MainViewModel(),
     );
   }
 
   /// Selects a View according to User Data
-  Widget viewSelector(MainViewModel model, int index) {   
+  Widget viewSelector(MainViewModel model, int index) {
     if (model.isBusy) {
       return const BasicLoader();
     } else {
+      if (model.status != null) {
+        return model.newversion.showUpdateDialog(
+          context: context,
+          versionStatus: model.status!,
+          dialogTitle: 'Update',
+          dialogText: 'update your app to latest version',
+        ) as Widget;
+      }
       if (model.currentUser.username.isEmpty) {
         return const CreateUsernameView();
-      } else if (model.currentUser.imageUrl.isEmpty && model.currentUser.skip == 0) {
+      } else if (model.currentUser.imageUrl.isEmpty &&
+          model.currentUser.skip == 0) {
         return ProfileUpdate(user: model.currentUser);
       } else {
         return _MainView();
@@ -66,21 +75,18 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
     model.pageController = pageController;
 
     changePage(int index) {
-      
       model.onNavigationIconTap(index);
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
+        pageController.animateToPage(index,
+            duration: Duration(milliseconds: 500), curve: Curves.ease);
       });
     }
-
-   
 
     return Scaffold(
       body: PageView(
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
         onPageChanged: (index) {
-         
           model.onNavigationIconTap(index);
         },
         children: [
@@ -116,11 +122,15 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
               ),
               BottomNavigationBarItem(
                 icon: model.badgeCnt == 0
-                    ? Icon(model.currentIndex == 2 ? Icons.mail : Icons.mail_outlined)
+                    ? Icon(model.currentIndex == 2
+                        ? Icons.mail
+                        : Icons.mail_outlined)
                     : Badge(
                         badgeContent: Text('${model.badgeCnt}'),
                         child: Icon(
-                          model.currentIndex == 2 ? Icons.mail : Icons.mail_outlined,
+                          model.currentIndex == 2
+                              ? Icons.mail
+                              : Icons.mail_outlined,
                         ),
                       ),
                 label: 'Inbox',
