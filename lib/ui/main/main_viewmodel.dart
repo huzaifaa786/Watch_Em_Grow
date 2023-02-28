@@ -26,9 +26,8 @@ class MainViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   List<Notification> notifications = [];
   final _firebaseAuth = FirebaseAuth.instance;
-  final newversion =
-      NewVersion();
- VersionStatus? status = null;
+  final newversion = NewVersion();
+  VersionStatus? status = null;
   late final StreamSubscription<List<Notification>> _notificationsSubscription;
   late PageController pageController;
   late AppUser _currentUser;
@@ -256,11 +255,21 @@ class MainViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> init(int index) async {
+  Future<void> init(int index, BuildContext context) async {
     setBusy(true);
     notificationInit();
     status = await newversion.getVersionStatus();
-    
+    if (status!.canUpdate) {
+      return newversion.showUpdateDialog(
+        context: context,
+        versionStatus: status!,
+        dialogTitle: 'Update Required',
+        allowDismissal: false,
+        dialogText:
+            'A new version of Miypromo is available. Please update to continue',
+      );
+      ;
+    }
     await _userService.updateToken();
     final result = await _userService.syncUser();
     if (!result) {

@@ -32,7 +32,7 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainViewModel>.reactive(
-      onModelReady: (model) => model.init(widget.selectedIndex),
+      onModelReady: (model) => model.init(widget.selectedIndex,context),
       builder: (context, model, child) =>
           viewSelector(model, widget.selectedIndex),
       viewModelBuilder: () => MainViewModel(),
@@ -44,14 +44,7 @@ class _MainViewState extends State<MainView> {
     if (model.isBusy) {
       return const BasicLoader();
     } else {
-      if (model.status != null) {
-        return model.newversion.showUpdateDialog(
-          context: context,
-          versionStatus: model.status!,
-          dialogTitle: 'Update',
-          dialogText: 'update your app to latest version',
-        ) as Widget;
-      }
+      
       if (model.currentUser.username.isEmpty) {
         return const CreateUsernameView();
       } else if (model.currentUser.imageUrl.isEmpty &&
