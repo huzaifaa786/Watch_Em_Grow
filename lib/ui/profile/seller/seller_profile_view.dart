@@ -167,7 +167,6 @@ class SellerProfileView extends StatelessWidget {
                                 model.navigateToEditProfile();
                               },
                             ),
-                            
                             model.StripeID == ''
                                 ? ListTile(
                                     leading: const Icon(Icons.money),
@@ -177,7 +176,15 @@ class SellerProfileView extends StatelessWidget {
                                     },
                                   )
                                 : Text(''),
-                           
+                            !model.currentUser.isPremium
+                                ? ListTile(
+                                    leading: const Icon(Icons.card_giftcard),
+                                    title: const Text('Get Premium'),
+                                    onTap: () {
+                                      model.navigateToSubscription();
+                                    },
+                                  )
+                                : Text(''),
                           ],
                         ),
                       ),
