@@ -28,6 +28,7 @@ class AppUser with _$AppUser {
     @Default(0.0) double earnBySell,
     @Default('') String address,
     @Default('') String postCode,
+    @Default(false) bool isPremium,
     List<String>? chatIds,
   }) = _AppUser;
 

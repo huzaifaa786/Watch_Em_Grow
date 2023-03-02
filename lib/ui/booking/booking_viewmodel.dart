@@ -67,6 +67,13 @@ class BookingViewModel extends BaseViewModel {
   List<DateTimeRange> userReservedBookings = [];
   List<DateTime> unavailableBookings = [];
 
+  final client = http.Client();
+  static Map<String, String> headers = {
+    'Authorization':
+        'Bearer sk_test_51IVZcBDoZl8DJ0XN2B6ryI8a1tssqoDcso3P1IDP7GxJ1qtmPnCGh9Ywap5fBwmQkGB5LIX4luKiWLlg202VvuJU00KKpdAkHt',
+    'Content-Type': 'application/x-www-form-urlencoded'
+  };
+
   late StreamSubscription<List<BookkingService>> _bookings;
   AppUser user;
   final ShopService service;
@@ -503,6 +510,56 @@ class BookingViewModel extends BaseViewModel {
         return false;
       }
     }
+  }
+
+  Future<dynamic> _createCustomer() async {
+    final String url = 'https://api.stripe.com/v1/customers';
+    var response = await client.post(
+      Uri.parse(url),
+      headers: headers,
+      body: {'email': _currentUser.email},
+    );
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      print(json.decode(response.body));
+      throw 'Failed to register as a customer.';
+    }
+  }
+
+  createSubscription() async {
+    try {
+// Create a Stripe customer object for the user
+      // var customer;
+      // var customerData = createCustomer(_currentUser.email!,
+      //     'sk_test_51IVZcBDoZl8DJ0XN2B6ryI8a1tssqoDcso3P1IDP7GxJ1qtmPnCGh9Ywap5fBwmQkGB5LIX4luKiWLlg202VvuJU00KKpdAkHt');
+
+// Collect the user's payment information using Stripe Elements or Checkout
+      PaymentMethod paymentMethod = await Stripe.instance.createPaymentMethod(
+        PaymentMethodParams.card(
+          billingDetails: BillingDetails(
+            name: 'John Doe',
+            email: 'user@example.com',
+          ),
+        ),
+      );
+
+// Use the PaymentMethod to create a subscription for the user
+      // Subscription subscription = await Stripe.instance.createSubscription(
+      //   SubscriptionParams.customer(customer.id),
+      //   paymentMethodId: paymentMethod.id,
+      //   price: 'price_12345',
+      // );
+
+// Save the subscription data in your Firebase database or Firestore
+      // Firestore.instance.collection('subscriptions').add({
+      //   'userId': 'user123',
+      //   'subscriptionId': subscription.id,
+      //   'priceId': 'price_12345',
+      //   'status': subscription.status,
+      //   'createdAt': DateTime.now(),
+      // });
+    } catch (e) {}
   }
 }
 

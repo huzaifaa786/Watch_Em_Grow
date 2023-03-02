@@ -13,7 +13,8 @@ import 'package:velocity_x/velocity_x.dart';
 class BookingView extends StatelessWidget {
   final AppUser user;
   final ShopService service;
-  const BookingView({Key? key, required this.user, required this.service}) : super(key: key);
+  const BookingView({Key? key, required this.user, required this.service})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,38 +22,40 @@ class BookingView extends StatelessWidget {
     // var size = MediaQuery.of(context).size;
     return ViewModelBuilder<BookingViewModel>.reactive(
       onModelReady: (model) => model.init(
-        isDark: getThemeManager(context).selectedThemeMode == ThemeMode.dark,
-        context: context
-      ),
+          isDark: getThemeManager(context).selectedThemeMode == ThemeMode.dark,
+          context: context),
       builder: (context, model, child) => model.isBusy
           ? const BasicLoader()
           : Scaffold(
-              appBar: AppBar(   
+              appBar: AppBar(
                 title: "Your Appointment".text.make(),
               ),
               body: SingleChildScrollView(
                 child: Stack(
                   children: [
+                   
                     Container(
                       height: MediaQuery.of(context).size.height,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30))),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
                       width: MediaQuery.of(context).size.width,
-                      child: BookingCalendar(  
-                         
-                        service: service, 
+                      child: BookingCalendar(
+                        service: service,
                         bookingGridCrossAxisCount: 1,
-                        bookingGridChildAspectRatio:0.75,
+                        bookingGridChildAspectRatio: 0.75,
                         bookingService: model.mockBookingService,
-                         unavailableDays : model.unavailableDays,
-                    unavailableSlots : model.unavailableSlots,
+                        unavailableDays: model.unavailableDays,
+                        unavailableSlots: model.unavailableSlots,
                         getBookingStream: model.getBookingStreamMock,
                         uploadBooking: model.uploadBookingMock,
-                        convertStreamResultToDateTimeRanges: model.convertStreamResultMock,
-                        excludedDays : model.excludedDays,
+                        convertStreamResultToDateTimeRanges:
+                            model.convertStreamResultMock,
+                        excludedDays: model.excludedDays,
                         pauseSlots: model.generatePauseSlots(),
                         pauseSlotText: 'LUNCH',
                         showData: true,
-                        availableSlotColor: model.isDarkMode ? Colors.black : Colors.white,
+                        availableSlotColor:
+                            model.isDarkMode ? Colors.black : Colors.white,
                         hideBreakTime: model.isDarkMode ? true : false,
                         bookedSlotColor: Color(4286745852).withOpacity(0.3),
                         selectedSlotColor: Color(4286745852),
@@ -70,6 +73,7 @@ class BookingView extends StatelessWidget {
                             )),
                       ),
                     ),
+                     
                     if (model.isSending) const BusyLoader(busy: true)
                   ],
                 ),
@@ -81,4 +85,3 @@ class BookingView extends StatelessWidget {
     );
   }
 }
-

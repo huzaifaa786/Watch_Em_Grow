@@ -13,6 +13,7 @@ import 'package:mipromo/services/user_service.dart';
 import 'package:mipromo/ui/booking/booking_view.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
+import 'package:mipromo/ui/subscription/subscription_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -59,8 +60,11 @@ class SellerProfileViewModel extends BaseViewModel {
     "Sale of illegal or regulated goods"
   ];
 
-  Future<void> init(String shopId, AppUser seller, bool isDark,) async {
-    
+  Future<void> init(
+    String shopId,
+    AppUser seller,
+    bool isDark,
+  ) async {
     setBusy(true);
     isDarkMode = isDark;
     await _userService.syncUser();
@@ -115,6 +119,24 @@ class SellerProfileViewModel extends BaseViewModel {
     if (await _navigationService.navigateTo(
           Routes.sellerEditProfileView,
           arguments: SellerEditProfileViewArguments(user: currentUser),
+        ) ==
+        true) {
+      setBusy(true);
+      await _userService.syncUser();
+      _currentUser = _userService.currentUser;
+      notifyListeners();
+      setBusy(false);
+    }
+    /*await _navigationService.navigateTo(
+      Routes.sellerEditProfileView,
+      arguments: SellerEditProfileViewArguments(user: currentUser),
+    );*/
+  }
+
+  Future<void> navigateToSubscription() async {
+    if (await _navigationService.navigateTo(
+          Routes.subscriptionView,
+          arguments: SubscriptionViewArguments(user: currentUser),
         ) ==
         true) {
       setBusy(true);

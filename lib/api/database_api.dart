@@ -135,6 +135,25 @@ class DatabaseApi {
       );
     }
   }
+  Future<void> updateUserStatus(String uid) async {
+    try {
+      await _usersCollection
+          .doc(uid)
+          .update({'isPremium': true}).catchError((error) async {
+        await _navigationService.navigateTo(
+          Routes.landingView,
+        );
+      });
+    } on PlatformException catch (e) {
+      await _navigationService.navigateTo(
+        Routes.landingView,
+      );
+      throw DatabaseApiException(
+        title: 'Failed to update User token',
+        message: e.message,
+      );
+    }
+  }
 
   Future<void> createShop(Shop shop) async {
     try {

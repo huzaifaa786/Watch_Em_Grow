@@ -259,17 +259,17 @@ class MainViewModel extends BaseViewModel {
     setBusy(true);
     notificationInit();
     status = await newversion.getVersionStatus();
-    if (status!.canUpdate) {
-      return newversion.showUpdateDialog(
-        context: context,
-        versionStatus: status!,
-        dialogTitle: 'Update Required',
-        allowDismissal: false,
-        dialogText:
-            'A new version of Miypromo is available. Please update to continue',
-      );
-      ;
-    }
+    // if (status!.canUpdate) {
+    //   return newversion.showUpdateDialog(
+    //     context: context,
+    //     versionStatus: status!,
+    //     dialogTitle: 'Update Required',
+    //     allowDismissal: false,
+    //     dialogText:
+    //         'A new version of Miypromo is available. Please update to continue',
+    //   );
+      
+    // }
     await _userService.updateToken();
     final result = await _userService.syncUser();
     if (!result) {

@@ -56,6 +56,7 @@ import '../ui/service/editService/edit_service_view.dart';
 import '../ui/startup/startup_view.dart';
 import '../ui/contact_us/contact_us_view.dart';
 import '../ui/availlability/availablity_view.dart';
+import '../ui/subscription/subscription_view.dart';
 
 class Routes {
   static const String startUpView = '/';
@@ -101,6 +102,7 @@ class Routes {
   static const String bookingView = '/booking-view';
   static const String availabilityView = '/availability-view';
   static const String connectStripeView = '/connect-stripe-view';
+  static const String subscriptionView = '/subscription-view';
   static const all = <String>{
     startUpView,
     landingView,
@@ -145,6 +147,7 @@ class Routes {
     bookingView,
     availabilityView,
     connectStripeView,
+    subscriptionView,
   };
 }
 
@@ -195,6 +198,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.bookingView, page: BookingView),
     RouteDef(Routes.availabilityView, page: AvailabilityView),
     RouteDef(Routes.connectStripeView, page: ConnectStripeView),
+    RouteDef(Routes.subscriptionView, page: SubscriptionView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -584,6 +588,14 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    SubscriptionView: (data) {
+      var args = data.getArgs<SubscriptionViewArguments>(nullOk: false);
+
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => SubscriptionView(key: args.key, user: args.user),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -684,7 +696,8 @@ class EditServiceViewArguments {
   final AppUser user;
   final Shop shop;
   final ShopService service;
-  EditServiceViewArguments({required this.user, required this.shop, required this.service});
+  EditServiceViewArguments(
+      {required this.user, required this.shop, required this.service});
 }
 
 /// ServiceView arguments holder class
@@ -827,4 +840,10 @@ class AvailabilityViewArguments {
   final Key? key;
   final Shop shop;
   AvailabilityViewArguments({this.key, required this.shop});
+}
+
+class SubscriptionViewArguments {
+  final Key? key;
+  final AppUser user;
+  SubscriptionViewArguments({this.key, required this.user});
 }

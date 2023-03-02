@@ -30,6 +30,7 @@ _$_AppUser _$_$_AppUserFromJson(Map<String, dynamic> json) {
     earnBySell: (json['earnBySell'] as num?)?.toDouble() ?? 0.0,
     address: json['address'] as String? ?? '',
     postCode: json['postCode'] as String? ?? '',
+    isPremium: json['isPremium'] as bool? ?? false,
     chatIds:
         (json['chatIds'] as List<dynamic>?)?.map((e) => e as String).toList(),
   );
@@ -59,5 +60,6 @@ Map<String, dynamic> _$_$_AppUserToJson(_$_AppUser instance) =>
       'earnBySell': instance.earnBySell,
       'address': instance.address,
       'postCode': instance.postCode,
+      'isPremium': instance.isPremium,
       'chatIds': instance.chatIds,
     };

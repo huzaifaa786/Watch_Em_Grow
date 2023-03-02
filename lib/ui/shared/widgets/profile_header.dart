@@ -75,8 +75,15 @@ class ProfileHeader extends StatelessWidget {
               Row(
                 children: [
                   shop!.name.text.xl2.fontFamily(shop!.fontStyle).make(),
-                  30.widthBox,
+                  5.widthBox,
 
+                  user.isPremium
+                      ? Icon(
+                        Icons.verified,
+                          size: 30,
+                          color: Colors.blue,
+                        )
+                      : Text(''),
                   // '(${shop!.ratingCount})'.text.make(),
                 ],
               ),
@@ -99,13 +106,14 @@ class ProfileHeader extends StatelessWidget {
                     Icons.location_on_outlined,
                     size: 15,
                   ),
-                  
                   shop!.location.text.make(),
-                  if (shop!.borough.isNotEmpty) ', ${shop!.borough}'.text.make() else const SizedBox.shrink(),
+                  if (shop!.borough.isNotEmpty)
+                    ', ${shop!.borough}'.text.make()
+                  else
+                    const SizedBox.shrink(),
                 ],
               ),
               7.heightBox,
-
               Row(children: [
                 Container(
                   padding: EdgeInsets.only(left: 5),

@@ -43,6 +43,7 @@ class _$AppUserTearOff {
       double earnBySell = 0.0,
       String address = '',
       String postCode = '',
+      bool isPremium = false,
       List<String>? chatIds}) {
     return _AppUser(
       id: id,
@@ -67,6 +68,7 @@ class _$AppUserTearOff {
       earnBySell: earnBySell,
       address: address,
       postCode: postCode,
+      isPremium:isPremium,
       chatIds: chatIds,
     );
   }
@@ -103,6 +105,7 @@ mixin _$AppUser {
   double get earnBySell => throw _privateConstructorUsedError;
   String get address => throw _privateConstructorUsedError;
   String get postCode => throw _privateConstructorUsedError;
+  bool get isPremium => throw _privateConstructorUsedError;
   List<String>? get chatIds => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -137,6 +140,7 @@ abstract class $AppUserCopyWith<$Res> {
       double earnBySell,
       String address,
       String postCode,
+      bool isPremium,
       List<String>? chatIds});
 }
 
@@ -172,6 +176,7 @@ class _$AppUserCopyWithImpl<$Res> implements $AppUserCopyWith<$Res> {
     Object? earnBySell = freezed,
     Object? address = freezed,
     Object? postCode = freezed,
+    Object? isPremium = freezed,
     Object? chatIds = freezed,
   }) {
     return _then(_value.copyWith(
@@ -263,6 +268,10 @@ class _$AppUserCopyWithImpl<$Res> implements $AppUserCopyWith<$Res> {
           ? _value.postCode
           : postCode // ignore: cast_nullable_to_non_nullable
               as String,
+      isPremium: isPremium == freezed
+          ? _value.isPremium
+          : isPremium // ignore: cast_nullable_to_non_nullable
+              as bool,
       chatIds: chatIds == freezed
           ? _value.chatIds
           : chatIds // ignore: cast_nullable_to_non_nullable
@@ -299,6 +308,7 @@ abstract class _$AppUserCopyWith<$Res> implements $AppUserCopyWith<$Res> {
       double earnBySell,
       String address,
       String postCode,
+      bool isPremium,
       List<String>? chatIds});
 }
 
@@ -335,6 +345,7 @@ class __$AppUserCopyWithImpl<$Res> extends _$AppUserCopyWithImpl<$Res>
     Object? earnBySell = freezed,
     Object? address = freezed,
     Object? postCode = freezed,
+    Object? isPremium = freezed,
     Object? chatIds = freezed,
   }) {
     return _then(_AppUser(
@@ -426,6 +437,10 @@ class __$AppUserCopyWithImpl<$Res> extends _$AppUserCopyWithImpl<$Res>
           ? _value.postCode
           : postCode // ignore: cast_nullable_to_non_nullable
               as String,
+      isPremium: isPremium == freezed
+          ? _value.isPremium
+          : isPremium // ignore: cast_nullable_to_non_nullable
+              as bool,
       chatIds: chatIds == freezed
           ? _value.chatIds
           : chatIds // ignore: cast_nullable_to_non_nullable
@@ -460,6 +475,7 @@ class _$_AppUser implements _AppUser {
       this.earnBySell = 0.0,
       this.address = '',
       this.postCode = '',
+      this.isPremium = false,
       this.chatIds});
 
   factory _$_AppUser.fromJson(Map<String, dynamic> json) =>
@@ -528,11 +544,14 @@ class _$_AppUser implements _AppUser {
   @override
   final String postCode;
   @override
+  final bool isPremium;
+  @JsonKey(defaultValue: false)
+  @override
   final List<String>? chatIds;
 
   @override
   String toString() {
-    return 'AppUser(id: $id, email: $email, token: $token, userType: $userType, shopId: $shopId, referCode: $referCode, username: $username, fullName: $fullName, phoneNumber: $phoneNumber, gender: $gender, dateOfBirth: $dateOfBirth, followers: $followers, following: $following, imageId: $imageId, imageUrl: $imageUrl, skip: $skip, purchases: $purchases, referrals: $referrals, earnByRef: $earnByRef, earnBySell: $earnBySell, address: $address, postCode: $postCode, chatIds: $chatIds)';
+    return 'AppUser(id: $id, email: $email, token: $token, userType: $userType, shopId: $shopId, referCode: $referCode, username: $username, fullName: $fullName, phoneNumber: $phoneNumber, gender: $gender, dateOfBirth: $dateOfBirth, followers: $followers, following: $following, imageId: $imageId, imageUrl: $imageUrl, skip: $skip, purchases: $purchases, referrals: $referrals, earnByRef: $earnByRef, earnBySell: $earnBySell, address: $address, postCode: $postCode, isPremium: $isPremium, chatIds: $chatIds)';
   }
 
   @override
@@ -599,6 +618,9 @@ class _$_AppUser implements _AppUser {
             (identical(other.postCode, postCode) ||
                 const DeepCollectionEquality()
                     .equals(other.postCode, postCode)) &&
+            (identical(other.isPremium, isPremium) ||
+                const DeepCollectionEquality()
+                    .equals(other.isPremium, isPremium)) &&
             (identical(other.chatIds, chatIds) ||
                 const DeepCollectionEquality().equals(other.chatIds, chatIds)));
   }
@@ -628,6 +650,7 @@ class _$_AppUser implements _AppUser {
       const DeepCollectionEquality().hash(earnBySell) ^
       const DeepCollectionEquality().hash(address) ^
       const DeepCollectionEquality().hash(postCode) ^
+      const DeepCollectionEquality().hash(isPremium) ^
       const DeepCollectionEquality().hash(chatIds);
 
   @JsonKey(ignore: true)
@@ -665,6 +688,7 @@ abstract class _AppUser implements AppUser {
       double earnBySell,
       String address,
       String postCode,
+      bool isPremium,
       List<String>? chatIds}) = _$_AppUser;
 
   factory _AppUser.fromJson(Map<String, dynamic> json) = _$_AppUser.fromJson;
@@ -713,6 +737,8 @@ abstract class _AppUser implements AppUser {
   String get address => throw _privateConstructorUsedError;
   @override
   String get postCode => throw _privateConstructorUsedError;
+  @override
+  bool get isPremium => throw _privateConstructorUsedError;
   @override
   List<String>? get chatIds => throw _privateConstructorUsedError;
   @override

@@ -43,6 +43,7 @@ import 'package:mipromo/ui/settings/terms/terms_and_conditions_view.dart';
 import 'package:mipromo/ui/shop/create_shop_view.dart';
 import 'package:mipromo/ui/shop/editShop/edit_shop_view.dart';
 import 'package:mipromo/ui/startup/startup_view.dart';
+import 'package:mipromo/ui/subscription/subscription_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -88,6 +89,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: BookingView),
     MaterialRoute(page: AvailabilityView),
     MaterialRoute(page: ConnectStripeView),
+    MaterialRoute(page: SubscriptionView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
