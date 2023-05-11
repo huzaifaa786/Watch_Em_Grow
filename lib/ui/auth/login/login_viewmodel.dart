@@ -219,7 +219,9 @@ class LoginViewModel extends BaseViewModel {
     if (_currentUser.username.isEmpty) {
       await _navigationService.replaceWith(Routes.mainView);
     } else {
-      await _navigationService.replaceWith(Routes.discoverPage);
+      // await _navigationService.replaceWith(Routes.discoverPage);
+      await _navigationService.replaceWith(Routes.mainView);
+
     }
   }
 

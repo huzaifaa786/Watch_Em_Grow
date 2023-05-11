@@ -85,6 +85,8 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
         children: [
           const HomeView(),
           const SearchView(),
+          const HomeView(),
+          
           InboxView(currentUser: model.currentUser),
           ProfileView(
             user: model.currentUser,
@@ -116,9 +118,12 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
                   label: '',
                 ),
                 const BottomNavigationBarItem(
-                  icon: Icon(
-                    FontAwesomeIcons.shirt,
-                    size: 90,
+                  icon: Padding(
+                    padding: EdgeInsets.only(right:8.0),
+                    child: Icon(
+                      FontAwesomeIcons.shirt,
+                      size: 50,
+                    ),
                   ),
                   label: 'SELL',
                 ),
