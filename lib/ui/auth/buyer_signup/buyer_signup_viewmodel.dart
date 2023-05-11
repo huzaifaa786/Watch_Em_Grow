@@ -145,10 +145,6 @@ class BuyerSignupViewModel extends BaseViewModel {
 
   Future verifiedemail(email) async {
     setBusy(true);
-
-   
-
-    
    
         Dio dio = Dio();
 
@@ -157,11 +153,6 @@ class BuyerSignupViewModel extends BaseViewModel {
 
         var result = await dio.post(url, data: data);
         var response = jsonDecode(result.toString());
-  
-      
-
-
- 
 
     setBusy(false);
   }

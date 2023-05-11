@@ -151,30 +151,30 @@ class LoginViewModel extends BaseViewModel {
         () async {
           await setCurrentUser(user.uid);
           Future.delayed(Duration(milliseconds: 400), () async {
-            if (await verifiedemail(loginEmail) == true) {
+            // if (await verifiedemail(loginEmail) == true) {
               await _navigateToMainView();
-            } else {
-              final DialogResponse? dialogResponse = await _dialogService.showCustomDialog(
-                variant: AlertType.error,
-                title: 'Email Not Verified',
-                description: 'Please verify your Email to Login.',
-                mainButtonTitle: 'Resend',
-                customData: CustomDialogData(
-                  isConfirmationDialog: true,
-                ),
-              );
+            // } else {
+            //   final DialogResponse? dialogResponse = await _dialogService.showCustomDialog(
+            //     variant: AlertType.error,
+            //     title: 'Email Not Verified',
+            //     description: 'Please verify your Email to Login.',
+            //     mainButtonTitle: 'Resend',
+            //     customData: CustomDialogData(
+            //       isConfirmationDialog: true,
+            //     ),
+            //   );
 
-              if (dialogResponse != null && dialogResponse.confirmed) {
-                try {
-                  await Sendverification();
-                } on AuthApiException catch (e) {
-                  await Alerts.showBasicFailureDialog(
-                    e.title,
-                    e.message,
-                  );
-                }
-              }
-            }
+            //   if (dialogResponse != null && dialogResponse.confirmed) {
+            //     try {
+            //       await Sendverification();
+            //     } on AuthApiException catch (e) {
+            //       await Alerts.showBasicFailureDialog(
+            //         e.title,
+            //         e.message,
+            //       );
+            //     }
+            //   }
+            // }
           });
         },
       );

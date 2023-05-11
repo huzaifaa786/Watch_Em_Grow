@@ -27,10 +27,10 @@ class LandingView extends StatelessWidget {
               children: <Widget>[
                 const Spacer(flex: 1),
                 // Logo
-                Image.asset(
-                  "assets/images/logo_new.png",
-                  height: context.screenWidth / 5,
-                ).centered(),
+                // Image.asset(
+                //   "assets/images/logo_new.png",
+                //   height: context.screenWidth / 5,
+                // ).centered(),
 
                 const Spacer(flex: 4),
 
@@ -43,7 +43,7 @@ class LandingView extends StatelessWidget {
                 MaterialButton(
                   minWidth: context.screenWidth,
                   padding: const EdgeInsets.all(16),
-                  color: const Color(0xff828CFC),
+                  color: const Color(0xFFD09A4E),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100),
                   ),
@@ -68,7 +68,7 @@ class LandingView extends StatelessWidget {
                             model.navigateToLoginView();
                           },
                         )
-                        .color(Theme.of(context).primaryColor)
+                        .color(Colors.brown)
                         .make(),
                   ],
                 ).make(),

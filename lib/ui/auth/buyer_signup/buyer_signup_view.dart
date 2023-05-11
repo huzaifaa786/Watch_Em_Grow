@@ -35,7 +35,7 @@ class BuyerSignupView extends HookWidget {
               children: [
                 // Heading
                 const AuthHeader(
-                  label: Constants.signupLabel,
+                  label: Constants.signupTitle,
                 ),
 
                 const Spacer(),

@@ -73,6 +73,8 @@ class InputField extends StatelessWidget {
       maxLines: maxLines,
       readOnly: readOnly,
       inputFormatters: inputFormatters,
+      cursorColor:Color(0xFFD09A4E),
+      
       decoration: InputDecoration(
         labelText: labelText,
         helperMaxLines: 2,
@@ -82,6 +84,8 @@ class InputField extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         counterText: counter,
+            hintStyle: TextStyle(color: Colors.grey),
+        border: OutlineInputBorder(),
       ),
     ).pSymmetric(v: 12);
   }

@@ -26,6 +26,7 @@ class Constants {
   static const String privacyPolicyLabel = "Privacy Policy";
 
   static const String signupLabel = 'Sign Up';
+  static const String signupTitle = 'Create a customer acccount';
   static const String createUsernameLabel = 'Create a Username';
   static const String editProfileLabel = 'Edit Profile';
   static const String changeProfileImageLabel = 'Change Profile Image';

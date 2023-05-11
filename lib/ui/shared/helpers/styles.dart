@@ -5,8 +5,8 @@ class Styles {
   Styles._();
 
   // Colors
-  static const Color kcPrimaryColor = Color(0xff828CFC);
-  static const Color kcAppBarColor = Color(0xFF424242);
+  static const Color kcPrimaryColor = Color(0xFFD09A4E);
+  static const Color kcAppBarColor = Color(0xFFD09A4E);
 
   // Themes
 

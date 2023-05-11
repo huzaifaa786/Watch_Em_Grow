@@ -19,7 +19,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
 import 'package:badges/badges.dart';
 import 'package:uni_links/uni_links.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class MainView extends StatefulWidget {
   const MainView({Key? key, this.selectedIndex = 0}) : super(key: key);
   final int selectedIndex;
@@ -95,50 +95,60 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Divider(),
-          BottomNavigationBar(
-            key: mkey,
-            type: BottomNavigationBarType.fixed,
-            currentIndex: model.currentIndex,
-            selectedItemColor: Styles.kcPrimaryColor,
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(
-                  model.currentIndex == 0 ? Icons.home : Icons.home_outlined,
+          Stack(
+            children: [
+             BottomNavigationBar(
+              key: mkey,
+              type: BottomNavigationBarType.fixed,
+              currentIndex: model.currentIndex,
+              selectedItemColor: Styles.kcPrimaryColor,
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    model.currentIndex == 0 ? Icons.home : Icons.home_outlined,
+                  ),
+                  label: '',
                 ),
-                label: 'Discover',
-              ),
-              const BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.search,
+                const BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.search,
+                  ),
+                  label: '',
                 ),
-                label: 'Search',
-              ),
-              BottomNavigationBarItem(
-                icon: model.badgeCnt == 0
-                    ? Icon(model.currentIndex == 2
-                        ? Icons.mail
-                        : Icons.mail_outlined)
-                    : Badge(
-                        badgeContent: Text('${model.badgeCnt}'),
-                        child: Icon(
-                          model.currentIndex == 2
-                              ? Icons.mail
-                              : Icons.mail_outlined,
+                const BottomNavigationBarItem(
+                  icon: Icon(
+                    FontAwesomeIcons.shirt,
+                    size: 90,
+                  ),
+                  label: 'SELL',
+                ),
+                BottomNavigationBarItem(
+                  icon: model.badgeCnt == 0
+                      ? Icon(model.currentIndex == 2
+                          ? Icons.mail
+                          : Icons.mail_outlined)
+                      : Badge(
+                          badgeContent: Text('${model.badgeCnt}'),
+                          child: Icon(
+                            model.currentIndex == 2
+                                ? Icons.mail
+                                : Icons.mail_outlined,
+                          ),
                         ),
-                      ),
-                label: 'Inbox',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  model.currentIndex == 3 ? Icons.person : Icons.person_outline,
+                  label: '',
                 ),
-                label: 'Profile',
-              ),
-            ],
-            onTap: (index) {
-              changePage(index);
-            },
-          ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    model.currentIndex == 3 ? Icons.person : Icons.person_outline,
+                  ),
+                  label: '',
+                ),
+              ],
+              onTap: (index) {
+                changePage(index);
+              },
+            ),
+         ], ),
         ],
       ),
     );

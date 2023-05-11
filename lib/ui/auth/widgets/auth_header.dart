@@ -11,6 +11,6 @@ class AuthHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return label.text.bold.xl2.make().py12();
+    return label.text.bold.xl2.make().p0();
   }
 }
