@@ -23,7 +23,7 @@ class SellerSignupView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        Brightness brightness = Theme.of(context).brightness;
+    Brightness brightness = Theme.of(context).brightness;
     bool darkModeOn = brightness == Brightness.dark;
     return ViewModelBuilder<SellerSignupViewModel>.reactive(
       onModelReady: (model) => model.init(user),
@@ -37,28 +37,30 @@ class SellerSignupView extends StatelessWidget {
             body: ScrollableBody(
               children: [
                 // Heading
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(
-                          Icons.arrow_back_rounded,
-                          size: 33,
-                          color: darkModeOn ? Colors.white : Colors.black,
-                        )),
-                    AuthHeader(
-                      label: Constants.createSellerLabel,
-                    ),
-                    Icon(
-                      Icons.arrow_back,
-                    color: darkModeOn ? Colors.white : Colors.black,
-                    ),
-                  ],
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     GestureDetector(
+                //         onTap: () {
+                //           Navigator.pop(context);
+                //         },
+                //         child: Icon(
+                //           Icons.arrow_back_rounded,
+                //           size: 33,
+                //           color: darkModeOn ? Colors.white : Colors.black,
+                //         )),
+                //     AuthHeader(
+                //       label: Constants.createSellerLabel,
+                //     ),
+                //     // Icon(
+                //     //   Icons.arrow_back,
+                //     // color: darkModeOn ? Colors.white : Colors.black,
+                //     // ),
+                //   ],
+                // ),
+                AuthHeader(
+                  label: Constants.createSellerLabel,
                 ),
-
                 const Spacer(),
 
                 // Form
@@ -148,19 +150,22 @@ class _SignUpForm extends HookViewModelWidget<SellerSignupViewModel> {
               await model.selectDate(pickedDate);
 
               if (model.selectedDate != null) {
-                dobController.text = DateFormat.yMMMd().format(model.selectedDate!).toString();
+                dobController.text =
+                    DateFormat.yMMMd().format(model.selectedDate!).toString();
               }
             },
           ),
           validator: (dob) => Validators.dobValidator(
             dob: dob,
-            age: model.selectedDate == null ? 17 : DateTime.now().year - model.selectedDate!.year,
+            age: model.selectedDate == null
+                ? 17
+                : DateTime.now().year - model.selectedDate!.year,
           ),
         ),
         InputField(
           focusNode: phoneNumberFocusNode,
           validate: model.validateForm,
-          hintText: Constants.phoneNumberLabel,
+          hintText: Constants.mobileNumberLabel,
           textInputType: TextInputType.number,
           onChanged: (phoneNumber) {
             model.phoneNumber = phoneNumber;
@@ -174,8 +179,9 @@ class _SignUpForm extends HookViewModelWidget<SellerSignupViewModel> {
           focusNode: mailFocusNode,
           validate: model.validateForm,
           hintText: 'Mail Id (PayPal)',
-          helperText:
-              mailFocusNode.hasFocus ? 'Please provide your PayPal registered Mail Id to recieve payments.' : null,
+          helperText: mailFocusNode.hasFocus
+              ? 'Please provide your PayPal registered Mail Id to recieve payments.'
+              : null,
           textInputType: TextInputType.emailAddress,
           onChanged: (mail) {
             model.paypalMail = mail;

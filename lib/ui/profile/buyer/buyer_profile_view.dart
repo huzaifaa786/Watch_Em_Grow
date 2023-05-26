@@ -6,7 +6,6 @@ import 'package:mipromo/ui/shared/helpers/styles.dart';
 import 'package:mipromo/ui/shared/widgets/avatar.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
-import 'package:mipromo/ui/shared/widgets/profile_header.dart';
 import 'package:stacked/stacked.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -148,6 +147,7 @@ class BuyerProfileView extends StatelessWidget {
                             ? CircleAvatar(
                                 backgroundImage: AssetImage('assets/images/default.png'),
                                 radius: 55,
+                                
                               )
                             : Avatar(
                                 radius: context.screenWidth / 7,
@@ -233,11 +233,12 @@ class BuyerProfileView extends StatelessWidget {
                         SizedBox(
                           height: 60,
                         ),
-                        Image(
-                          image: AssetImage('assets/icon/bag.png'),
-                          height: 160,
-                          width: 160,
-                        ),
+                        // Image(
+                        //   image: AssetImage('assets/icon/bag.png',),
+                        //   height: 160,
+                        //   width: 160,
+                          
+                        // ),
                         Container(
                           // color: Colors.green,
                           child: Column(

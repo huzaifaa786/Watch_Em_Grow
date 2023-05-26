@@ -15,10 +15,12 @@ import 'package:mipromo/ui/profile/profile_view.dart';
 import 'package:mipromo/ui/search/search_view.dart';
 import 'package:mipromo/ui/shared/helpers/styles.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
+import 'package:mipromo/ui/shop/create_shop_view.dart';
+import 'package:mipromo/user_interface/product/top_product.dart';
+import 'package:mipromo/user_interface/store/store_product.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
 import 'package:badges/badges.dart';
-import 'package:uni_links/uni_links.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class MainView extends StatefulWidget {
   const MainView({Key? key, this.selectedIndex = 0}) : super(key: key);
@@ -85,12 +87,13 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
         children: [
           const HomeView(),
           const SearchView(),
-          const HomeView(),
-          
+          const StoreProductScreen(),
           InboxView(currentUser: model.currentUser),
           ProfileView(
             user: model.currentUser,
           ),
+          // CreateShopView( user: model.currentUser,)
+          // TopProductScreen()
         ],
       ),
       bottomNavigationBar: Column(

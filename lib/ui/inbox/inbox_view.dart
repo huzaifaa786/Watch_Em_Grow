@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/ui/chats/chats_view.dart';
 import 'package:mipromo/ui/chats/chats_viewmodel.dart';
-import 'package:mipromo/ui/inbox/inbox_viewmodel.dart';
 import 'package:mipromo/ui/notifications/notifications_view.dart';
 import 'package:stacked/stacked.dart';
 
@@ -53,6 +52,7 @@ class InboxView extends StatelessWidget {
               ],
             ),
           ),
+        
           body: TabBarView(
             physics: const BouncingScrollPhysics(),
             children: [

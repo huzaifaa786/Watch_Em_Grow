@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mipromo/api/auth_api.dart';
-import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/models/app_user.dart';
-import 'package:mipromo/ui/main/main_view.dart';
-import 'package:mipromo/ui/main/main_viewmodel.dart';
-import 'package:mipromo/ui/profile/buyer/buyer_profile_view.dart';
-import 'package:mipromo/ui/shared/helpers/styles.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:mipromo/app/app.router.dart';
-import 'package:get/get.dart';
 
 class DiscoverPage extends StatefulWidget {
-  DiscoverPage({Key? key}) : super(key: key);
+  const DiscoverPage({Key? key}) : super(key: key);
 
   @override
   State<DiscoverPage> createState() => _DiscoverPageState();

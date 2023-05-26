@@ -47,29 +47,15 @@ class LoginView extends HookWidget {
                   emailFocusNode: emailFocusNode,
                   passwordFocusNode: passwordFocusNode,
                 ),
-
+                const SizedBox(height:10),
                 // Buttons
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    "${Constants.forgotPasswordLabel} ?"
-                        .text
-                        .color(Theme.of(context).primaryColor)
-                        .make()
-                        .click(
-                      () {
-                        model.navigateToForgotPasswordView();
-                      },
-                    ).make(),
-                    AuthButton(
-                      label: Constants.loginLabel,
-                      onPressed: () {
-                        emailFocusNode.unfocus();
-                        passwordFocusNode.unfocus();
-                        model.login();
-                      },
-                    ),
-                  ],
+                AuthButton(
+                  label: Constants.loginLabel,
+                  onPressed: () {
+                    emailFocusNode.unfocus();
+                    passwordFocusNode.unfocus();
+                    model.login();
+                  },
                 ),
                 const Spacer(flex: 3),
               ],

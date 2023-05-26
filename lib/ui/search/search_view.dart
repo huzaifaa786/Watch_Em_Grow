@@ -119,7 +119,7 @@ class SearchWidget extends HookViewModelWidget<SearchViewModel> {
                             height: context.screenHeight / 4,
                           ),
                           12.heightBox,
-                          'Search for Shops'.text.make(),
+                          'Search for Vendors'.text.make(),
                         ],
                       ),
                     ),

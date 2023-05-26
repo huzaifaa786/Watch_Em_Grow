@@ -18,7 +18,7 @@ class ScrollableBody extends StatelessWidget {
         height: context.screenHeight,
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: context.screenWidth / 10,
+            horizontal: context.screenWidth / 18,
           ),
           child: Column(
             children: children,

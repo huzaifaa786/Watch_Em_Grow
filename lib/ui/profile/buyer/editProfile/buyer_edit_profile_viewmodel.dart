@@ -181,6 +181,8 @@ class BuyerEditProfileViewModel extends BaseViewModel {
         setBusy(false);
         if (discoverpge) {
           _navigationService.replaceWith(Routes.discoverPage);
+          // _navigationService.back();
+
         } else {
           _navigationService.back();
         }

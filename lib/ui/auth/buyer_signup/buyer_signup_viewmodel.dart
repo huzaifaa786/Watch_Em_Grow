@@ -73,7 +73,7 @@ class BuyerSignupViewModel extends BaseViewModel {
   Future verify(code,email) async {
   
     if (code.toString() == code1) {
-      await verifiedemail(email);
+      // await verifiedemail(email);
       _navigateToLoginView();
     } else {
       await Alerts.showServerErrorDialog(
@@ -99,15 +99,15 @@ class BuyerSignupViewModel extends BaseViewModel {
         String? email = user.email;
         Dio dio = Dio();
 
-        var url = 'http://tritec.store/mipromo/public/api/account/verify';
-        var data = {'email': email,'code':number};
+        // var url = 'http://tritec.store/mipromo/public/api/account/verify';
+        // var data = {'email': email,'code':number};
 
-        var result = await dio.post(url, data: data);
-        var response = jsonDecode(result.toString());
+        // var result = await dio.post(url, data: data);
+        // var response = jsonDecode(result.toString());
        
-        if (response['error'] == false) {
-          _navigateToEmailverifyView(number,user.email);
-        }
+        // if (response['error'] == false) {
+        //   _navigateToEmailverifyView(number,user.email);
+        // }
 
         // if (result) {
         //   final DialogResponse? dialogResponse =

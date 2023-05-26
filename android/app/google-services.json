@@ -1,34 +1,33 @@
 {
   "project_info": {
-    "project_number": "762769547790",
-    "firebase_url": "https://mipromo-03.firebaseio.com",
-    "project_id": "mipromo-03",
-    "storage_bucket": "mipromo-03.appspot.com"
+    "project_number": "522158558424",
+    "project_id": "watch-em-grow",
+    "storage_bucket": "watch-em-grow.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:762769547790:android:14f8ca4e9fe8b7c84c925f",
+        "mobilesdk_app_id": "1:522158558424:android:c0957380d94f0f3b6d5bad",
         "android_client_info": {
-          "package_name": "com.sadje.mipromo"
+          "package_name": "com.sadje.watch_em_grow"
         }
       },
       "oauth_client": [
         {
-          "client_id": "762769547790-l549s0dtgbikf5jvv30015rvoh0k6jbb.apps.googleusercontent.com",
+          "client_id": "522158558424-kjrlr7er4keasm8ip6bbbt2ojfp57c6r.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC-URgA374YhSFvBFsU2ltA6YqSfaux990"
+          "current_key": "AIzaSyDiG88Fz41WHuuQqG-LPUIThhNeN7N23Os"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "762769547790-l549s0dtgbikf5jvv30015rvoh0k6jbb.apps.googleusercontent.com",
+              "client_id": "522158558424-kjrlr7er4keasm8ip6bbbt2ojfp57c6r.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mipromo/api/database_api.dart';
-import 'package:mipromo/api/paypal_api.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/models/app_user.dart';
-import 'package:mipromo/ui/profile/buyer/paypal_verification_view.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
 import 'package:mipromo/ui/shared/helpers/validators.dart';
 import 'package:mipromo/app/app.router.dart';

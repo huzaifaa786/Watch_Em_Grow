@@ -74,7 +74,7 @@ class OrderSuccessView extends StatelessWidget {
                     height: 40,
                     width: 180,
                     decoration: BoxDecoration(
-                        color: Color(4286745852),
+                        color: Color(4291861070),
                         borderRadius: BorderRadius.circular(55)),
                     child: Center(
                       child: const Text(

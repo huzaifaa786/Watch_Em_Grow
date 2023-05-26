@@ -68,7 +68,7 @@ class LandingView extends StatelessWidget {
                             model.navigateToLoginView();
                           },
                         )
-                        .color(Colors.brown)
+                        .color(Color(0xFFD09A4E))
                         .make(),
                   ],
                 ).make(),

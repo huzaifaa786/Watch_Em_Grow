@@ -118,7 +118,7 @@ class ContactUsView extends StatelessWidget {
                       children: [
                         Expanded(
                           child: MaterialButton(
-                            color: Color(4286745852),
+                            color: Color(4291861070),
                             onPressed: (){
                               FocusScope.of(context).unfocus();
                               if(model.messageController.text.isNotEmpty){

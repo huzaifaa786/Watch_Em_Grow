@@ -364,7 +364,9 @@ class StackedRouter extends RouterBase {
       var args = data.getArgs<EditServiceViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
         builder: (context) => EditServiceView(
-            user: args.user, shop: args.shop, service: args.service),
+
+            // user: args.user, shop: args.shop, service: args.service
+            ),
         settings: data,
       );
     },

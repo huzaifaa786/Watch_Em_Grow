@@ -57,9 +57,9 @@ class BookingView extends StatelessWidget {
                         availableSlotColor:
                             model.isDarkMode ? Colors.black : Colors.white,
                         hideBreakTime: model.isDarkMode ? true : false,
-                        bookedSlotColor: Color(4286745852).withOpacity(0.3),
-                        selectedSlotColor: Color(4286745852),
-                        bookingButtonColor: Color(4286745852),
+                        bookedSlotColor: Color(4291861070).withOpacity(0.3),
+                        selectedSlotColor: Color(4291861070),
+                        bookingButtonColor: Color(4291861070),
                         extraService: model.extraService,
                         isDark: model.isDarkMode,
                         // bookingButtonText: ,
@@ -68,7 +68,7 @@ class BookingView extends StatelessWidget {
                             margin: EdgeInsets.only(top: 20),
                             child: CircularProgressIndicator(
                               backgroundColor: Colors.grey,
-                              color: Color(4286745852),
+                              color: Color(4291861070),
                               strokeWidth: 10,
                             )),
                       ),

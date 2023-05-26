@@ -1674,7 +1674,7 @@ class RatingSheet extends StatelessWidget {
                             height: height * 0.045,
                             width: width * 0.95,
                             decoration: BoxDecoration(
-                              color: Color(4286745852),
+                              color: Color(4291861070),
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: MaterialButton(

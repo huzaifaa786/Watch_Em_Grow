@@ -84,10 +84,11 @@ class InputField extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         counterText: counter,
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
             hintStyle: TextStyle(color: Colors.grey),
         border: OutlineInputBorder(),
       ),
-    ).pSymmetric(v: 12);
+    ).pSymmetric(v: 10);
   }
 }
 

@@ -14,8 +14,13 @@ class Constants {
   static const String alreadyHaveAnAccountLabel = 'Already have an account? ';
 
   static const String loginLabel = 'Login';
+  static const String firstName = 'First name';
+  static const String hintFirstName = 'Enter your first name';
+  static const String lastName = 'Last name';
+  static const String hintLastName = 'Enter your last name';
   static const String emailLabel = 'Email';
   static const String passwordLabel = 'Password';
+  static const String hintPasswordLabel = 'Enter a Password';
   static const String forgotPasswordLabel = 'Forgot Password';
   static const String nextLabel = 'Next';
   static const String backLabel = 'Back';
@@ -25,8 +30,9 @@ class Constants {
   static const String andLabel = " and ";
   static const String privacyPolicyLabel = "Privacy Policy";
 
-  static const String signupLabel = 'Sign Up';
+  static const String signupLabel = 'Create account';
   static const String signupTitle = 'Create a customer acccount';
+  static const String signupSubTitle = "You're almost there!Create your new account for Sadje.entertainment1@gmail.com by completing these detail";
   static const String createUsernameLabel = 'Create a Username';
   static const String editProfileLabel = 'Edit Profile';
   static const String changeProfileImageLabel = 'Change Profile Image';
@@ -41,7 +47,8 @@ class Constants {
   static const String dobLabel = "Date of Birth";
   static const String dobHelperTextLabel = "You must be over 16 to create a seller account";
   static const String fullNameLabel = "Full name";
-  static const String phoneNumberLabel = "Phone Number";
+  static const String mobileNumberLabel = "Mobile number";
+  static const String hintMobileNumberLabel = "Enter your mobile number";
   static const String createShopLabel = "Create Shop";
   static const String createShopInfoLabel = "Create a new Shop and showcase your services to new customers";
 

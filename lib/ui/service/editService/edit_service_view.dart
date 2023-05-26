@@ -15,6 +15,7 @@ import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/ui/service/create_service_viewmodel.dart';
 import 'package:mipromo/ui/service/editService/edit_service_viewmodel.dart';
+import 'package:mipromo/ui/service/inputaddress_view.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
 import 'package:mipromo/ui/shared/helpers/styles.dart';
 import 'package:mipromo/ui/shared/helpers/validators.dart';
@@ -36,14 +37,14 @@ import 'package:video_player/video_player.dart';
 class EditServiceView extends StatefulWidget {
   const EditServiceView({
     Key? key,
-    required this.user,
-    required this.shop,
-    required this.service,
+    // required this.user,
+    // required this.shop,
+    // required this.service,
   }) : super(key: key);
 
-  final AppUser user;
-  final Shop shop;
-  final ShopService service;
+  // final AppUser user;
+  // final Shop shop;
+  // final ShopService service;
 
   @override
   _EditServiceViewState createState() => _EditServiceViewState();
@@ -61,8 +62,8 @@ class _EditServiceViewState extends State<EditServiceView> {
   Widget build(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
     return ViewModelBuilder<EditServiceViewModel>.reactive(
-      onModelReady: (model) =>
-          model.init(widget.user, widget.shop, widget.service),
+      // onModelReady: (model) =>
+      //     model.init(widget.user, widget.shop, widget.service),
       builder: (context, model, child) => model.isBusy
           ? const BasicLoader()
           : Scaffold(
@@ -143,13 +144,16 @@ class _EditServiceViewState extends State<EditServiceView> {
                           await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => VideoEditor(
-                                file: File(file.path),
-                                user: widget.user,
-                                shop: widget.shop,
-                                service: widget.service,
-                              ),
-                            ),
+                              builder: (context) =>
+       InputAddressView()
+
+                              //  VideoEditor(
+                              //   file: File(file.path),
+                              //   user: widget.user,
+                              //   shop: widget.shop,
+                              //   service: widget.service,
+                              // ),
+                            )
                           ).then((val) {
                             model.selectedVideo1 = parseToFile(val.finalFile);
                             model.videoName =
@@ -262,8 +266,8 @@ class _EditServiceViewState extends State<EditServiceView> {
                           v: 12,
                         ),
                     if (model.selectedType == Constants.productLabel)
-                      if (widget.shop.category == 'Footwear & Resellers' ||
-                          widget.shop.category == 'Clothing Brands')
+                      // if (widget.shop.category == 'Footwear & Resellers' ||
+                      //     widget.shop.category == 'Clothing Brands')
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -572,8 +576,8 @@ class _EditServiceViewState extends State<EditServiceView> {
                               ],
                             ),
                           ],
-                        )
-                    else
+                        ),
+                    // else
                       const SizedBox.shrink(),
                     InputField(
                       hintText: Constants.priceLabel,
