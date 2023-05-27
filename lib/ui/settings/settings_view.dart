@@ -42,11 +42,11 @@ class SettingsView extends StatelessWidget {
                                   value: false,
                                   groupValue: model.isDarkMode,
                                   onChanged: (value) {
-                                    model.toggleTheme(isDark: value!);
-                                    getThemeManager(context)
-                                        .toggleDarkLightTheme();
-                                    getThemeManager(context)
-                                        .setThemeMode(ThemeMode.light);
+                                    // model.toggleTheme(isDark: value!);
+                                    // getThemeManager(context)
+                                    //     .toggleDarkLightTheme();
+                                    // getThemeManager(context)
+                                    //     .setThemeMode(ThemeMode.light);
                                   },
                                 ),
                               ),
@@ -56,11 +56,11 @@ class SettingsView extends StatelessWidget {
                                   value: true,
                                   groupValue: model.isDarkMode,
                                   onChanged: (value) {
-                                    model.toggleTheme(isDark: value!);
-                                    getThemeManager(context)
-                                        .toggleDarkLightTheme();
-                                    getThemeManager(context)
-                                        .setThemeMode(ThemeMode.dark);
+                                    // model.toggleTheme(isDark: value!);
+                                    // getThemeManager(context)
+                                    //     .toggleDarkLightTheme();
+                                    // getThemeManager(context)
+                                    //     .setThemeMode(ThemeMode.dark);
                                   },
                                 ),
                               ),
@@ -77,7 +77,7 @@ class SettingsView extends StatelessWidget {
                     ),
                     title: "Terms & Conditions".text.make(),
                     onTap: () {
-                      model.launchTermsUrl();
+                      // model.launchTermsUrl();
                     },
                   ),
                   ListTile(
@@ -88,7 +88,7 @@ class SettingsView extends StatelessWidget {
                     title: "Privacy Policy".text.make(),
                     onTap: () {
                       //model.navigateToPolicyView();
-                      model.launchPrivacyUrl();
+                      // model.launchPrivacyUrl();
                     },
                   ),
                   ListTile(
@@ -99,7 +99,7 @@ class SettingsView extends StatelessWidget {
                     title: "About".text.make(),
                     onTap: () {
                       //model.navigateToAboutView();
-                      model.launchAboutUsUrl();
+                      // model.launchAboutUsUrl();
                     },
                   ),
                   /*ListTile(
@@ -127,7 +127,7 @@ class SettingsView extends StatelessWidget {
                     title: Row(children: [Text("Request account deactivation",style: TextStyle(color:Vx.red500,fontWeight: FontWeight.bold),),SizedBox(width: 5,), Icon(Icons.info_rounded)],),
                     onTap: () {
                       
-                      model.deactivate();
+                      // model.deactivate();
                     },
                   ),
                 ],

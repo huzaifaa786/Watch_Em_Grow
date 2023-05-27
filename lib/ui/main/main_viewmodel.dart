@@ -273,7 +273,7 @@ class MainViewModel extends BaseViewModel {
     await _userService.updateToken();
     final result = await _userService.syncUser();
     if (!result) {
-      _navigationService.replaceWith(Routes.landingView);
+      _navigationService.replaceWith(Routes.loginView);
       return;
     }
     _databaseApi.listenUser(_userService.currentUser.id).listen(

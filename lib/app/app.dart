@@ -50,10 +50,10 @@ import 'package:stacked_services/stacked_services.dart';
 /// Application setup for Routing and Service Locator
 @StackedApp(
   routes: [
-    MaterialRoute(page: StartUpView, initial: true),
+    MaterialRoute(page: LoginView, initial: true),
     MaterialRoute(page: LandingView),
     MaterialRoute(page: BuyerSignupView),
-    MaterialRoute(page: LoginView),
+    // MaterialRoute(page: LoginView),
     MaterialRoute(page: ForgotPasswordView),
     MaterialRoute(page: EmailVerify),
     MaterialRoute(page: MainView),

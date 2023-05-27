@@ -8,6 +8,7 @@ import 'package:mipromo/ui/static_widget/top_bar.dart';
 import 'package:mipromo/ui/value/colors.dart';
 import 'package:mipromo/user_interface/order/current_screen.dart';
 import 'package:mipromo/user_interface/product/product_detail.dart';
+import 'package:mipromo/user_interface/product/top_product.dart';
 
 class StoreProductScreen extends StatefulWidget {
   const StoreProductScreen({Key? key}) : super(key: key);
@@ -26,19 +27,27 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
   //   });
   // }
   bool tap = false;
-    void didChangeDependencies() {
+  void didChangeDependencies() {
     precacheImage(AssetImage("assets/images/product2.jpg"), context);
     super.didChangeDependencies();
     const BasicLoader();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
             child: SingleChildScrollView(
       child: Column(children: [
-        TopBar(title:'Store Products', onPressed:(){}),
-      
+        TopBar(
+            title: 'Store Products',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TopProductScreen()),
+              );
+            }),
         ShopReviewCard(),
         Container(
           width: MediaQuery.of(context).size.width,
@@ -54,7 +63,8 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Filter by Size',
-                    style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'Default')),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontFamily: 'Default')),
                 SizedBox(
                   height: 10,
                 ),
@@ -67,7 +77,11 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
                       decoration: BoxDecoration(
                           border: Border.all(color: textGrey),
                           borderRadius: BorderRadius.circular(20)),
-                      child: Center(child: Text('XXL',style: TextStyle(fontFamily: 'Default'),)),
+                      child: Center(
+                          child: Text(
+                        'XXL',
+                        style: TextStyle(fontFamily: 'Default'),
+                      )),
                     ),
                     Container(
                       width: 50,
@@ -75,15 +89,9 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
                       decoration: BoxDecoration(
                           border: Border.all(color: textGrey),
                           borderRadius: BorderRadius.circular(20)),
-                      child: Center(child: Text('XL',style: TextStyle(fontFamily: 'Default'))),
-                    ),
-                     Container(
-                      width: 50,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: textGrey),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Center(child: Text('L',style: TextStyle(fontFamily: 'Default'))),
+                      child: Center(
+                          child: Text('XL',
+                              style: TextStyle(fontFamily: 'Default'))),
                     ),
                     Container(
                       width: 50,
@@ -91,7 +99,9 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
                       decoration: BoxDecoration(
                           border: Border.all(color: textGrey),
                           borderRadius: BorderRadius.circular(20)),
-                      child: Center(child: Text('M',style: TextStyle(fontFamily: 'Default'))),
+                      child: Center(
+                          child: Text('L',
+                              style: TextStyle(fontFamily: 'Default'))),
                     ),
                     Container(
                       width: 50,
@@ -99,23 +109,35 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
                       decoration: BoxDecoration(
                           border: Border.all(color: textGrey),
                           borderRadius: BorderRadius.circular(20)),
-                      child: Center(child: Text('S',style: TextStyle(fontFamily: 'Default'))),
+                      child: Center(
+                          child: Text('M',
+                              style: TextStyle(fontFamily: 'Default'))),
                     ),
-                     Container(
+                    Container(
                       width: 50,
                       height: 40,
                       decoration: BoxDecoration(
                           border: Border.all(color: textGrey),
                           borderRadius: BorderRadius.circular(20)),
-                      child: Center(child: Text('XS',style: TextStyle(fontFamily: 'Default'))),
+                      child: Center(
+                          child: Text('S',
+                              style: TextStyle(fontFamily: 'Default'))),
+                    ),
+                    Container(
+                      width: 50,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: textGrey),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                          child: Text('XS',
+                              style: TextStyle(fontFamily: 'Default'))),
                     ),
                   ],
                 )
-             
               ],
             ),
           ),
-      
         ),
         Row(
           children: [
@@ -126,13 +148,13 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
                   currency: '£.',
                   price: '1500',
                   image: 'assets/images/product2.jpg',
-                   onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProductDetailScreen()),
-                        );
-                      },
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProductDetailScreen()),
+                    );
+                  },
                 )
               ],
             ),
@@ -143,13 +165,13 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
                   currency: '£.',
                   price: "1500",
                   image: 'assets/images/product2.jpg',
-                   onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProductDetailScreen()),
-                        );
-                      },
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProductDetailScreen()),
+                    );
+                  },
                 )
               ],
             ),
@@ -164,13 +186,13 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
                   currency: '£.',
                   price: '1500',
                   image: 'assets/images/product2.jpg',
-                   onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const CurrentOrderScreen()),
-                        );
-                      },
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProductDetailScreen()),
+                    );
+                  },
                 )
               ],
             ),
@@ -181,13 +203,13 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
                   currency: '£.',
                   price: "1500",
                   image: 'assets/images/product2.jpg',
-                   onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProductDetailScreen()),
-                        );
-                      },
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProductDetailScreen()),
+                    );
+                  },
                 )
               ],
             ),
@@ -202,13 +224,13 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
                   currency: '£.',
                   price: '1500',
                   image: 'assets/images/product2.jpg',
-                    onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProductDetailScreen()),
-                        );
-                      },
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProductDetailScreen()),
+                    );
+                  },
                 )
               ],
             ),
@@ -219,13 +241,13 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
                   currency: '£.',
                   price: "1500",
                   image: 'assets/images/product2.jpg',
-                    onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProductDetailScreen()),
-                        );
-                      },
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProductDetailScreen()),
+                    );
+                  },
                 )
               ],
             ),

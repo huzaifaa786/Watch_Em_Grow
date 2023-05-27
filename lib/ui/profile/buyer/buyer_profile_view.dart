@@ -6,6 +6,7 @@ import 'package:mipromo/ui/shared/helpers/styles.dart';
 import 'package:mipromo/ui/shared/widgets/avatar.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
+import 'package:mipromo/user_interface/order/order_index.dart';
 import 'package:stacked/stacked.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -94,7 +95,11 @@ class BuyerProfileView extends StatelessWidget {
                                 ),
                                 title: 'Orders'.text.make(),
                                 onTap: () {
-                                  model.navigateToOrders();
+                                   Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const OrderInboxView()),
+                    );
                                 },
                               ),
                                 ListTile(

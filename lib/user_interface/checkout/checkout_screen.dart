@@ -5,6 +5,7 @@ import 'package:mipromo/ui/static_widget/order_summery_card.dart';
 import 'package:mipromo/ui/static_widget/payment_method_card.dart';
 import 'package:mipromo/ui/static_widget/top_bar.dart';
 import 'package:mipromo/ui/value/colors.dart';
+import 'package:mipromo/user_interface/cart/cart_screen.dart';
 import 'package:mipromo/user_interface/success/success_screen.dart';
 
 class CheckoutScreen extends StatelessWidget {
@@ -22,6 +23,11 @@ class CheckoutScreen extends StatelessWidget {
             TopBar(
               title: 'Checkout',
               onPressed: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CartScreen()),
+                    );
               },
             ),
             const SizedBox(height: 20,),

@@ -5,6 +5,7 @@ import 'package:mipromo/ui/static_widget/subtotal_card.dart';
 import 'package:mipromo/ui/static_widget/top_bar.dart';
 import 'package:mipromo/ui/value/colors.dart';
 import 'package:mipromo/user_interface/checkout/checkout_screen.dart';
+import 'package:mipromo/user_interface/product/product_detail.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -18,7 +19,13 @@ class CartScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TopBar(title: 'Cart', onPressed: (){}),
+            TopBar(title: 'Cart', onPressed: (){
+                Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProductDetailScreen()),
+                    );
+            }),
             // EmptyScreenCard(),
            ShopReviewCard(),
             const SizedBox(

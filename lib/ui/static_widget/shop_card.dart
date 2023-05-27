@@ -75,7 +75,7 @@ class ShopeCard extends StatelessWidget {
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width * 0.3,
-                  height: 130,
+                  height: 110,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.amber,
@@ -87,7 +87,7 @@ class ShopeCard extends StatelessWidget {
                 ),
                  Container(
                   width: MediaQuery.of(context).size.width * 0.3,
-                  height: 130,
+                  height: 110,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.amber,
@@ -99,7 +99,7 @@ class ShopeCard extends StatelessWidget {
                 ),
                  Container(
                   width: MediaQuery.of(context).size.width * 0.3,
-                  height: 130,
+                  height: 110,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.amber,

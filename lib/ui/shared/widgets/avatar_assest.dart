@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class Avatar extends StatelessWidget {
+class AvatarAssets extends StatelessWidget {
   final double border;
   final double radius;
   final String imageUrl;
 
-  const Avatar({
+  const AvatarAssets({
     Key? key,
     this.border = 0,
     required this.radius,
@@ -28,9 +28,8 @@ class Avatar extends StatelessWidget {
           child: SizedBox.expand(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(100),
-              child:  CachedNetworkImage(
-                imageUrl: imageUrl,
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+              child:  Image.asset(imageUrl,fit: BoxFit.cover
+                // errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
           ),

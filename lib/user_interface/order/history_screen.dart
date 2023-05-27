@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mipromo/ui/static_widget/order_card.dart';
+import 'package:mipromo/user_interface/order/order_detail.dart';
 
 class OrderHistoryScreen extends StatelessWidget {
   const OrderHistoryScreen({Key? key}) : super(key: key);
@@ -16,11 +17,29 @@ class OrderHistoryScreen extends StatelessWidget {
                 
                     children: [
               SizedBox(height: 20.0,),
-              OrderCard(onPressed:(){}),
+              OrderCard(onPressed:(){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const OrderDetailScreen()),
+                  );
+              }),
               SizedBox(height:20.0,),
-              OrderCard(onPressed:(){}),
+              OrderCard(onPressed:(){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const OrderDetailScreen()),
+                  );
+              }),
               SizedBox(height:20.0,),
-              OrderCard(onPressed:(){}),
+              OrderCard(onPressed:(){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const OrderDetailScreen()),
+                  );
+              }),
                     ],
                   ),
             ),

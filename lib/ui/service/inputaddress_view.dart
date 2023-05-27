@@ -90,7 +90,7 @@ class InputAddressView extends StatelessWidget {
                       150.heightBox,
                       Container(
                           height: 70,
-                          child: Image.asset('assets/images/logo_new.png')),
+                          child: Image.asset('assets/icon/app.png')),
                       Container(
                           height: 30,
                           child: Image.asset('assets/icon/shield.png')),

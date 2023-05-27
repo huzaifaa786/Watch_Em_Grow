@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
-import 'package:mipromo/ui/value/colors.dart';
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard(
@@ -29,14 +28,14 @@ class CategoryCard extends StatelessWidget {
            height:130,
            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
-         image: AssetImage("assets/images/category/clothing.jpeg"),
+         image: AssetImage(image),
          fit: BoxFit.fill,
         ),
            ),
            
          ),
         ),
-        Text("outerwear",style:TextStyle(fontFamily: 'Default',fontSize:15,fontWeight: FontWeight.bold),),
+        Text(title,style:TextStyle(fontFamily: 'Default',fontSize:15,fontWeight: FontWeight.bold),),
         ],),
       ),
     );

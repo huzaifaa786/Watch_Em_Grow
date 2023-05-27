@@ -3,6 +3,7 @@ import 'package:mipromo/ui/static_widget/product_review.dart';
 import 'package:mipromo/ui/static_widget/top_bar.dart';
 import 'package:mipromo/ui/value/colors.dart';
 import 'package:mipromo/user_interface/cart/cart_screen.dart';
+import 'package:mipromo/user_interface/store/store_product.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({Key? key}) : super(key: key);
@@ -29,7 +30,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   children: [
           TopBar(
             title: "Women's",
-            onPressed: (){},
+            onPressed: (){
+                Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const StoreProductScreen()),
+                    );
+            },
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

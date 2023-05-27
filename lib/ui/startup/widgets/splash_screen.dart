@@ -11,7 +11,7 @@ class SplashScreen extends StatelessWidget {
       color: Styles.kcPrimaryColor,
       child: Center(
         child: Image.asset(
-          "assets/images/logo_new.png", color: Colors.white,
+          "assets/icon/app.png", color: Colors.white,
           //"assets/images/splash_logo.png",
           height: MediaQuery.of(context).size.height / 7,
         ),

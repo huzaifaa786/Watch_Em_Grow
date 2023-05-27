@@ -1,8 +1,10 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:mipromo/ui/main/main_view.dart';
 import 'package:mipromo/ui/static_widget/top_bar.dart';
 import 'package:mipromo/ui/value/colors.dart';
+import 'package:mipromo/user_interface/order/order_index.dart';
 import 'package:mipromo/user_interface/product/top_product.dart';
 
 class OrderDetailScreen extends StatelessWidget {
@@ -23,7 +25,7 @@ class OrderDetailScreen extends StatelessWidget {
                 Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const TopProductScreen()),
+                              builder: (context) => const OrderInboxView()),
                         );
               },
             ),
@@ -274,7 +276,7 @@ SizedBox(height: 20,),
                                 Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const TopProductScreen()),
+                              builder: (context) => const MainView()),
                         );
                             }
                           ),
