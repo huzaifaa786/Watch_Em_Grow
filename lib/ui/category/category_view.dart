@@ -171,10 +171,10 @@ class CategoryView extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                    height: MediaQuery.of(context).size.height / 19,
-                                    child: Image.asset('assets/images/logo_new_sub.png'
-                                    )),
+                                // Container(
+                                //     height: MediaQuery.of(context).size.height / 19,
+                                //     child: Image.asset('assets/images/logo_new_sub.png'
+                                //     )),
                               ],
                             ),
                             SizedBox(
@@ -241,71 +241,11 @@ class CategoryView extends StatelessWidget {
                                 },
                               ),
                             ),
-                            const Divider(
-                              thickness: 1,
-                            ),
-                            "You may also like".text.xl.bold.make().p8(),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: allOtherShops.length,
-                                itemBuilder: (context, index) {
-                                  final AppUser owner = allSellers.singleWhere(
-                                      (e) => e.shopId == allOtherShops[index].id);
-
-                                  return ShopCard(
-                                    owner: owner,
-                                    shop: allOtherShops[index],
-                                    services: allServices
-                                        .where((s) =>
-                                            s.shopId == allOtherShops[index].id)
-                                        .toList(),
-                                  );
-                                },
-                              ),
-                            )
+                            
+                         
                           ],
                         ),
                       ),
-                /*bottomNavigationBar: Builder(
-                  builder: (context) => BottomAppBar(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextButton.icon(
-                            onPressed: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                            label: "Sort".text.color(Colors.grey).make(),
-                            icon: const Icon(
-                              Icons.swap_vert,
-                              size: 18,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                        const VerticalDivider(
-                          thickness: 1.5,
-                        ).h(25),
-                        Expanded(
-                          child: TextButton.icon(
-                            onPressed: () {
-                              Scaffold.of(context).openEndDrawer();
-                            },
-                            label: "Filter".text.color(Colors.grey).make(),
-                            icon: const Icon(
-                              Icons.filter_alt_outlined,
-                              size: 18,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),*/
               );
       },
       viewModelBuilder: () => CategoryViewModel(),

@@ -102,17 +102,17 @@ class Constants {
 
   // Shop Categories
   static const List<String> categories = [
-    "Nails",
-    "Hair Salons",
-    "Makeup Services",
-    "EyeLash Extensions",
-    "Clothing Brands",
-    "Footwear & Resellers",
+    "Outware",
+    "Tops",
+    "Bottom",
+    "Footwear",
     "Accessories",
-    "Photography & Videography",
-    "Aesthetics",
-    "Barber Shop",
-    "Piercings",
+    // "Clothing Brand",
+    // "Accessories",
+    // "Photography & Videography",
+    // "Aesthetics",
+    // "Barber Shop",
+    // "Piercings",
     "Other",
   ];
 

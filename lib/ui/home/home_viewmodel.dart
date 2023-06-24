@@ -185,49 +185,46 @@ class HomeViewModel extends BaseViewModel with WidgetsBindingObserver{
 
   List<CategoryItem> categories = [
     CategoryItem(
-      name: "Nails",
-      imageUrl: "assets/images/category/nails.jpeg",
+      name: "Outware",
+      imageUrl: "assets/images/category/outware.jpg",
     ),
     CategoryItem(
-      name: "Hair\nSalons",
-      imageUrl: "assets/images/category/hair.jpg",
+      name: "Tops",
+      imageUrl: "assets/images/category/top.jpg",
     ),
     CategoryItem(
-      name: "Makeup Services",
-      imageUrl: "assets/images/category/makeup.jpg",
+      name: "Bottom",
+      imageUrl: "assets/images/category/bottom.jpg",
     ),
+    
+    // CategoryItem(
+    //   name: "Clothing Brands",
+    //   imageUrl: "assets/images/category/clothing.jpeg",
+    // ),
     CategoryItem(
-      name: "Eyelash Extensions",
-      imageUrl: "assets/images/category/lashes.jpg",
-    ),
-    CategoryItem(
-      name: "Clothing Brands",
-      imageUrl: "assets/images/category/clothing.jpeg",
-    ),
-    CategoryItem(
-      name: "Footwear & Resellers",
-      imageUrl: "assets/images/category/trainers.jpeg",
+      name: "Footwear",
+      imageUrl: "assets/images/category/bottom.jpeg",
     ),
     CategoryItem(
       name: "Accessories",
       imageUrl: "assets/images/category/accessories.jpeg",
     ),
-    CategoryItem(
-      name: "Photography & Videography",
-      imageUrl: "assets/images/category/photography.jpeg",
-    ),
-    CategoryItem(
-      name: "Aesthetics",
-      imageUrl: "assets/images/category/aesthetic.jpeg",
-    ),
-    CategoryItem(
-      name: "Barber Shop",
-      imageUrl: "assets/images/category/barber.jpeg",
-    ),
-    CategoryItem(
-      name: "Piercings",
-      imageUrl: "assets/images/category/Piercing.jpeg",
-    ),
+    // CategoryItem(
+    //   name: "Photography & Videography",
+    //   imageUrl: "assets/images/category/photography.jpeg",
+    // ),
+    // CategoryItem(
+    //   name: "Aesthetics",
+    //   imageUrl: "assets/images/category/aesthetic.jpeg",
+    // ),
+    // CategoryItem(
+    //   name: "Barber Shop",
+    //   imageUrl: "assets/images/category/barber.jpeg",
+    // ),
+    // CategoryItem(
+    //   name: "Piercings",
+    //   imageUrl: "assets/images/category/Piercing.jpeg",
+    // ),
     CategoryItem(
       name: "Other",
       imageUrl: "assets/images/category/other.png",

@@ -127,28 +127,28 @@ class _EditShopForm extends HookViewModelWidget<EditShopViewModel> {
           },
           initialValue: model.policy,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            "Additional appointment add-ons".text.bold.make(),
-            Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  color: Color(model.selectedTheme),
-                  borderRadius: BorderRadius.all(Radius.circular(40))),
-              child: IconButton(
-                onPressed: () {
-                  model.displayTextField();
-                },
-                icon: const Icon(
-                  Icons.add,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: [
+        //     "Additional appointment add-ons".text.bold.make(),
+        //     Container(
+        //       height: 40,
+        //       width: 40,
+        //       decoration: BoxDecoration(
+        //           color: Color(model.selectedTheme),
+        //           borderRadius: BorderRadius.all(Radius.circular(40))),
+        //       child: IconButton(
+        //         onPressed: () {
+        //           model.displayTextField();
+        //         },
+        //         icon: const Icon(
+        //           Icons.add,
+        //           color: Colors.white,
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
  
         Visibility(
             visible: model.displayNewTextField,
