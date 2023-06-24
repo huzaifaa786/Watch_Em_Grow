@@ -50,9 +50,9 @@ class SellerSignupViewModel extends BaseViewModel {
     final bool isFormValid = _isFormValid();
 
     if (isFormValid) {
-      //_createSellerAccount();
+      _createSellerAccount();
       // createConnectedAccount();
-      _verifyPaypalAccount();
+      // _verifyPaypalAccount();
     } else {
       showErrors();
     }
@@ -89,11 +89,12 @@ class SellerSignupViewModel extends BaseViewModel {
   // }
 
   bool _isFormValid() {
-    final bool isFormEmpty = name.isEmpty && phoneNumber.isEmpty && paypalMail.isEmpty;
+    // final bool isFormEmpty = name.isEmpty && phoneNumber.isEmpty && paypalMail.isEmpty;
+    final bool isFormEmpty = name.isEmpty && phoneNumber.isEmpty ;
 
     final bool isFieldsValid = Validators.emptyStringValidator(name, 'Name') == null &&
         Validators.emptyStringValidator(phoneNumber, 'Phone Number') == null &&
-        Validators.emptyStringValidator(paypalMail, 'Mail Id') == null &&
+        // Validators.emptyStringValidator(paypalMail, 'Mail Id') == null &&
         Validators.dobValidator(
               dob: selectedDate.toString(),
               age: DateTime.now().year - selectedDate!.year,

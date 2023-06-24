@@ -175,22 +175,24 @@ class _SignUpForm extends HookViewModelWidget<SellerSignupViewModel> {
             'Phone Number',
           ),
         ),
-        InputField(
-          focusNode: mailFocusNode,
-          validate: model.validateForm,
-          hintText: 'Mail Id (PayPal)',
-          helperText: mailFocusNode.hasFocus
-              ? 'Please provide your PayPal registered Mail Id to recieve payments.'
-              : null,
-          textInputType: TextInputType.emailAddress,
-          onChanged: (mail) {
-            model.paypalMail = mail;
-          },
-          validator: (mail) => Validators.emptyStringValidator(
-            mail,
-            'Mail Id',
-          ),
-        ),
+        // InputField(
+        //   focusNode: mailFocusNode,
+        //   validate: model.validateForm,
+        //   hintText: 'Mail Id (PayPal)',
+        //   helperText: mailFocusNode.hasFocus
+        //       ? 'Please provide your PayPal registered Mail Id to recieve payments.'
+        //       : null,
+        //   textInputType: TextInputType.emailAddress,
+        //   onChanged: (mail) {
+        //     model.paypalMail = mail;
+        //   },
+        //   validator: (mail) => Validators.emptyStringValidator(
+        //     mail,
+        //     'Mail Id',
+        //   ),
+        // ),
+     
+     
       ],
     );
   }
