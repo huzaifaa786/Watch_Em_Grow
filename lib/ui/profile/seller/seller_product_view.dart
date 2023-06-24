@@ -18,8 +18,8 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class SellerProfileView extends StatelessWidget {
-  const SellerProfileView({
+class SellerProductView extends StatelessWidget {
+  const SellerProductView({
     Key? key,
     required this.seller,
     this.viewingAsProfile = false,
