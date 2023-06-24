@@ -5,8 +5,6 @@ import 'package:mipromo/ui/auth/widgets/auth_button.dart';
 import 'package:mipromo/ui/auth/widgets/auth_header.dart';
 import 'package:mipromo/ui/auth/widgets/auth_sub_header.dart';
 import 'package:mipromo/ui/auth/widgets/auth_terms_footer.dart';
-import 'package:mipromo/ui/auth/widgets/input_lable_mobile.dart';
-import 'package:mipromo/ui/auth/widgets/lnput_lable.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
 import 'package:mipromo/ui/shared/helpers/validators.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
@@ -38,18 +36,21 @@ class BuyerSignupView extends HookWidget {
               children: [
                 // Heading
                 const AuthHeader(
-                  label: Constants.signupTitle,
+                  label: Constants.signupLabel,
                 ),
-               const AuthSubHeader(
+
+                const AuthSubHeader(
                   label: Constants.signupSubTitle,
                 ),
-                const SizedBox(height:20,),
+                // const SizedBox(height:20,),
+                const Spacer(),
+
                 // Form
                 _SignUpForm(
                   emailFocusNode: emailFocusNode,
                   passwordFocusNode: passwordFocusNode,
                 ),
-                const SizedBox(height: 20,),
+
                 AuthButton(
                   label: Constants.signupLabel,
                   onPressed: () {
@@ -59,7 +60,7 @@ class BuyerSignupView extends HookWidget {
                   },
                 ),
 
-                // const Spacer(flex: 3),
+                const Spacer(flex: 3),
               ],
             ),
             bottomNavigationBar: AuthTermsFooter(
@@ -68,7 +69,6 @@ class BuyerSignupView extends HookWidget {
                 model.toggleTermsCheckBoxValue(value: v!);
               },
             ),
-            
           ),
 
           // Loading Widget
@@ -98,49 +98,24 @@ class _SignUpForm extends ViewModelWidget<BuyerSignupViewModel> {
       mainAxisSize: MainAxisSize.min,
       children: [
         // Email Field
-        // InputField(
-        //   focusNode: emailFocusNode,
-        //   hintText: Constants.emailLabel,
-        //   validate: model.validateForm,
-        //   textInputType: TextInputType.emailAddress,
-        //   onChanged: (email) {
-        //     model.email = email;
-        //   },
-        //   validator: (email) => Validators.emailValidator(email),
-        //   onEditingComplete: () => emailFocusNode.nextFocus(),
-        // ),
-     const  InputLable(label:Constants.firstName ),
- InputField(
-          // focusNode: emailFocusNode,
-          hintText: Constants.hintFirstName,
-          validate: model.validateForm,
-          textInputType: TextInputType.name,
-          // onChanged: (email) {
-          //   model.email = email;
-          // },
-          // validator: (email) => Validators.emailValidator(email),
-          // onEditingComplete: () => emailFocusNode.nextFocus(),
-        ),
-     const  InputLable(label:Constants.lastName ),
-
         InputField(
-          // focusNode: emailFocusNode,
-          hintText: Constants.hintLastName,
+          focusNode: emailFocusNode,
+          hintText: Constants.emailLabel,
           validate: model.validateForm,
-          textInputType: TextInputType.name,
-          // onChanged: (email) {
-          //   model.email = email;
-          // },
-          // validator: (email) => Validators.emailValidator(email),
-          // onEditingComplete: () => emailFocusNode.nextFocus(),
+          textInputType: TextInputType.emailAddress,
+          onChanged: (email) {
+            model.email = email;
+          },
+          validator: (email) => Validators.emailValidator(email),
+          onEditingComplete: () => emailFocusNode.nextFocus(),
         ),
+
         // Password Field
-     const  InputLable(label:Constants.passwordLabel ),
 
         InputField(
           focusNode: passwordFocusNode,
           validate: model.validateForm,
-          hintText: Constants.hintPasswordLabel,
+          hintText: Constants.passwordLabel,
           onChanged: (password) {
             model.password = password;
           },
@@ -160,20 +135,6 @@ class _SignUpForm extends ViewModelWidget<BuyerSignupViewModel> {
               model.togglePasswordVisibility();
             },
           ),
-        ),
-     const  InputLableMobile(label:Constants.mobileNumberLabel),
-         InputField(
-          // focusNode: phoneNumberFocusNode,
-          validate: model.validateForm,
-          hintText: Constants.hintMobileNumberLabel,
-          textInputType: TextInputType.number,
-          // onChanged: (phoneNumber) {
-          //   model.phoneNumber = phoneNumber;
-          // },
-          // validator: (phoneNumber) => Validators.emptyStringValidator(
-          //   phoneNumber,
-          //   'Phone Number',
-          // ),
         ),
       ],
     );

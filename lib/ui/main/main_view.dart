@@ -49,10 +49,11 @@ class _MainViewState extends State<MainView> {
       
       if (model.currentUser.username.isEmpty) {
         return const CreateUsernameView();
-      } else if (model.currentUser.imageUrl.isEmpty &&
-          model.currentUser.skip == 0) {
-        return ProfileUpdate(user: model.currentUser);
-      } else {
+      // } else if (model.currentUser.imageUrl.isEmpty &&
+      //     model.currentUser.skip == 0) {
+      //   return ProfileUpdate(user: model.currentUser);
+      // } 
+      }else {
         return _MainView();
       }
     }
