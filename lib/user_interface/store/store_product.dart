@@ -48,7 +48,7 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
                     builder: (context) => const TopProductScreen()),
               );
             }),
-        ShopReviewCard(),
+        // ShopReviewCard(),
         Container(
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
@@ -139,6 +139,7 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
             ),
           ),
         ),
+      
         Row(
           children: [
             Row(
@@ -156,6 +157,7 @@ class _StoreProductScreenState extends State<StoreProductScreen> {
                     );
                   },
                 )
+            
               ],
             ),
             Row(

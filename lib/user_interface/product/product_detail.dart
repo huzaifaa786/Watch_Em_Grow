@@ -142,6 +142,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             child: Icon(Icons.favorite_border_outlined,color: hintText,),
           )
           ],),
+          
               Padding(
             padding: const EdgeInsets.only(
                 left: 10.0, right: 10.0, bottom: 20.0, top: 20.0),

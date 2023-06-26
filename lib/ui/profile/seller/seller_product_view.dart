@@ -14,6 +14,8 @@ import 'package:mipromo/ui/shared/helpers/styles.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
 import 'package:mipromo/ui/shared/widgets/profile_header.dart';
+import 'package:mipromo/ui/static_widget/shope_review_card.dart';
+import 'package:mipromo/ui/value/colors.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -92,126 +94,6 @@ class SellerProductView extends StatelessWidget {
                     const SizedBox.shrink(),
                 ],
               ),
-              endDrawer: SafeArea(
-                child: Drawer(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListView(
-                          physics: const BouncingScrollPhysics(),
-                          children: [
-                            ListTile(
-                              leading: const Icon(
-                                Icons.account_balance_wallet_outlined,
-                              ),
-                              title: 'Earnings'.text.make(),
-                              onTap: () {
-                                model.navigateToEarningsView(seller);
-                              },
-                            ),
-                            ListTile(
-                              leading: const Icon(
-                                Icons.list_alt,
-                              ),
-                              title: 'Orders'.text.make(),
-                              onTap: () {
-                                Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => OrdersView()),
-                                ).then((val) => {
-                                      model.init(seller.shopId, seller,
-                                          model.isDarkMode)
-                                    });
-                                // model.navigateToOrdersView();
-                              },
-                            ),
-                            ExpansionTile(
-                              title: 'Referral Code'.text.make(),
-                              leading: const Icon(Icons.copyright_rounded),
-                              children: [
-                                ListTile(
-                                  title: model.currentUser.referCode
-                                      .toString()
-                                      .text
-                                      .make(),
-                                  trailing: IconButton(
-                                    icon: const Icon(
-                                      Icons.copy,
-                                      color: Colors.grey,
-                                    ),
-                                    onPressed: () {
-                                      Clipboard.setData(
-                                        ClipboardData(
-                                          text: model.currentUser.referCode
-                                              .toString(),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                )
-                              ],
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.edit_outlined),
-                              title: const Text('Edit Shop'),
-                              onTap: () {
-                                model.navigateToEditShopView();
-                              },
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.calendar_today),
-                              title: const Text('Edit Profile'),
-                              onTap: () {
-                                model.navigateToEditProfile();
-                              },
-                            ),
-                            model.StripeID == ''
-                                ? ListTile(
-                                    leading: const Icon(Icons.money),
-                                    title: const Text('Connect Stripe'),
-                                    onTap: () {
-                                      model.navigateToConnectedAccount();
-                                    },
-                                  )
-                                : Text(''),
-                            !model.currentUser.isPremium
-                                ? ListTile(
-                                    leading: const Icon(Icons.card_giftcard),
-                                    title: const Text('Get Premium'),
-                                    onTap: () {
-                                      model.navigateToSubscription();
-                                    },
-                                  )
-                                : Text(''),
-                          ],
-                        ),
-                      ),
-                      ListTile(
-                        dense: true,
-                        leading: const Icon(Icons.mail_outline),
-                        title: "Contact us".text.make(),
-                        onTap: () {
-                          model.navigateToContactUsView();
-                        },
-                      ),
-                      const Divider(
-                        height: 1,
-                        thickness: 1,
-                      ),
-                      ListTile(
-                        dense: true,
-                        leading: const Icon(Icons.settings_outlined),
-                        title: "Settings".text.make(),
-                        onTap: () {
-                          model.navigateToSellerSettingsView();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               body: Stack(
                 children: [
                   RefreshIndicator(
@@ -222,204 +104,102 @@ class SellerProductView extends StatelessWidget {
                       physics: const BouncingScrollPhysics(),
                       child: Column(
                         children: [
-                          ProfileHeader(
-                              user: seller,
-                              shop: model.shop,
-                              onFollowersTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          FollowersView(sellerId: seller.id)),
-                                ).then((val) => {
-                                      model.init(seller.shopId, seller,
-                                          model.isDarkMode)
-                                    });
-
-                                // model.navigateToFollowersView(seller.id).then((value) {
-                                //   print("ab chal gya yha");
-                                //   model.init(model.shop!.id, seller);
-                                // });
-                              },
-                              onFollowingTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          FollowingView(sellerId: seller.id)),
-                                ).then((val) => {
-                                      model.init(seller.shopId, seller,
-                                          model.isDarkMode)
-                                    });
-                                // model
-                                //     .navigateToFollowingView(seller.id)
-                                //     .then((value) => model.init(model.shop!.id, seller));
-                              },
-                              headerButton: model.shop != null
-                                  ? model.shop!.ownerId == model.currentUser.id
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            // SizedBox(
-                                            //   width: MediaQuery.of(context)
-                                            //           .size
-                                            //           .width *
-                                            //       0.46,
-                                            //   child: OutlinedButton(
-                                            //     onPressed: () {
-                                            //       model
-                                            //           .navigateToSetAvailability();
-                                            //     },
-                                            //     child: 'Set Availability'
-                                            //         .text
-                                            //         .make(),
-                                            //   ),
-                                            // ),
-                                            
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.46,
-                                              child: OutlinedButton(
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            OrdersView(
-                                                              index: 1,
-                                                            )),
-                                                  ).then((val) => {
-                                                        model.init(
-                                                            seller.shopId,
-                                                            seller,
-                                                            model.isDarkMode)
-                                                      });
-                                                },
-                                                child: 'Calendar'.text.make(),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      : Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            model.currentfollowingIds
-                                                    .contains(seller.id)
-                                                ? SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.46,
-                                                    child: OutlinedButton(
-                                                      onPressed: model
-                                                              .unfollowed
-                                                          ? null
-                                                          : () {
-                                                              //model.unfollowed = true;
-                                                              //model.notifyListeners();
-                                                              model
-                                                                  .unfollow(
-                                                                      seller.id)
-                                                                  .whenComplete(
-                                                                      () {
-                                                                model.unfollowed =
-                                                                    false;
-                                                                model
-                                                                    .notifyListeners();
-                                                              });
-                                                            },
-                                                      child: const Text(
-                                                          'Following'),
-                                                    ),
-                                                  )
-                                                : SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.46,
-                                                    child: ElevatedButton(
-                                                      onPressed: () {
-                                                        model.follow(seller.id);
-                                                      },
-                                                      style: ButtonStyle(
-                                                        shape: MaterialStateProperty
-                                                            .all<
-                                                                RoundedRectangleBorder>(
-                                                          RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        6),
-                                                          ),
-                                                        ),
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all<Color>(
-                                                          Color(model
-                                                              .shop!.color),
-                                                        ),
-                                                      ),
-                                                      child: const Text(
-                                                          'Follow',
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .white)),
-                                                    ),
-                                                  ),
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.46,
-                                              child: ElevatedButton(
-                                                onPressed: () {
-                                                  print(model
-                                                      .shop!.policy.length);
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            PolicyScreen(
-                                                                policy: model
-                                                                    .shop!
-                                                                    .policy)),
-                                                  ).then((val) => {
-                                                        model.init(
-                                                            seller.shopId,
-                                                            seller,
-                                                            model.isDarkMode)
-                                                      });
-                                                },
-                                                style: ButtonStyle(
-                                                  shape:
-                                                      MaterialStateProperty.all<
-                                                          RoundedRectangleBorder>(
-                                                    RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              6),
-                                                    ),
-                                                  ),
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all<
-                                                          Color>(
-                                                    Color(model.shop!.color),
-                                                  ),
-                                                ),
-                                                child: const Text('Policy',
-                                                    style: TextStyle(
-                                                        color: Colors.white)),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                  : Container()),
+                          ShopReviewCard(
+                            user: seller,
+                            shop: model.shop,
+                          ),
+ Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(width: 1.5, color: textGrey),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(
+                left: 10.0, right: 10.0, bottom: 20.0, top: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Filter by Size',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontFamily: 'Default')),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: textGrey),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                          child: Text(
+                        'XXL',
+                        style: TextStyle(fontFamily: 'Default'),
+                      )),
+                    ),
+                    Container(
+                      width: 50,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: textGrey),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                          child: Text('XL',
+                              style: TextStyle(fontFamily: 'Default'))),
+                    ),
+                    Container(
+                      width: 50,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: textGrey),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                          child: Text('L',
+                              style: TextStyle(fontFamily: 'Default'))),
+                    ),
+                    Container(
+                      width: 50,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: textGrey),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                          child: Text('M',
+                              style: TextStyle(fontFamily: 'Default'))),
+                    ),
+                    Container(
+                      width: 50,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: textGrey),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                          child: Text('S',
+                              style: TextStyle(fontFamily: 'Default'))),
+                    ),
+                    Container(
+                      width: 50,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: textGrey),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                          child: Text('XS',
+                              style: TextStyle(fontFamily: 'Default'))),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      
+                          
                           if (seller.shopId.isEmpty)
                             Column(
                               children: [
@@ -447,40 +227,7 @@ class SellerProductView extends StatelessWidget {
                             )
                           else
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: IconButton(
-                                      onPressed: () {
-                                        model.toggleGridView();
-                                      },
-                                      icon: model.listview
-                                          ? Icon(
-                                              Icons.grid_on,
-                                              size: 20,
-                                            )
-                                          : Icon(
-                                              Icons.view_list,
-                                              size: 20,
-                                            )),
-                                ),
-                                // model.shop!.name.text.xl2
-                                //     .fontFamily(model.shop!.fontStyle)
-                                //     .color(Color(model.shop!.color))
-                                //     .make(),
-                                // 10.heightBox,
-                                // RatingStars(
-                                //   value: model.shop!.rating,
-                                //   starSize: 16,
-                                //   valueLabelVisibility: false,
-                                // ),
-                                // 10.heightBox,
-                                // 10.heightBox,
-                                // model.shop!.description.text.center.make(),
-                                // const Divider(
-                                //   thickness: 1,
-                                // ),
+                            children: [
                                 if (model.services.isEmpty &&
                                     model.shop!.ownerId == model.currentUser.id)
                                   Column(
@@ -524,7 +271,7 @@ class SellerProductView extends StatelessWidget {
                                   )
                                 else if (!model.listview)
                                   GridView.builder(
-                                      padding: EdgeInsets.all(10),
+                                      padding: EdgeInsets.only(left:10.0, right:10.0, top:10.0),
                                       shrinkWrap: true,
                                       physics: const BouncingScrollPhysics(),
                                       gridDelegate:
@@ -560,66 +307,121 @@ class SellerProductView extends StatelessWidget {
                                           }
                                         }
 
-                                        // if (index == model.services.length &&
-                                        //     model.shop!.ownerId ==
-                                        //         model.currentUser.id &&
-                                        //     viewingAsProfile == true) {
-                                        //   return Column(
-                                        //     mainAxisAlignment:
-                                        //         MainAxisAlignment.center,
-                                        //     children: [
-                                        //       const Icon(Icons.add),
-                                        //       Constants.addServiceLabel.text
-                                        //           .make(),
-                                        //     ],
-                                        //   ).mdClick(() {
-                                        //     model.navigateToCreateServiceView(
-                                        //         model.shop!);
-                                        //   }).make();
-                                        // } else {
                                         return Column(
-                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisSize: MainAxisSize.max,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             Container(
                                               decoration: BoxDecoration(
                                                   //color: Colors.red,
-                                                  //border: Border.all(color: Colors.white, width: 0.5)
+                                                  // border: Border.all(color: Colors.white, width: 0.5),
+                                                  // borderRadius: BorderRadius.circular(10)
                                                   ),
-                                              //height: context.screenHeight / 7,
-                                              //width: context.screenHeight / 2.5,
-                                              child: AspectRatio(
-                                                aspectRatio: 1,
-                                                child: ClipRRect(
-                                                  //borderRadius: BorderRadius.circular(2),
-                                                  child: CachedNetworkImage(
-                                                    imageUrl: imageUrl(
-                                                      model.services[index]
-                                                          .imageUrl1,
-                                                      model.services[index]
-                                                          .imageUrl2,
-                                                      model.services[index]
-                                                          .imageUrl3,
+                                              height: context.screenHeight / 6,
+                                              width: context.screenHeight / 4.5,
+                                              child: Stack(
+                                                children: [
+                                                  Positioned.fill(
+                                                    child: AspectRatio(
+                                                      aspectRatio: 1,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          imageUrl: imageUrl(
+                                                            model
+                                                                .services[index]
+                                                                .imageUrl1,
+                                                            model
+                                                                .services[index]
+                                                                .imageUrl2,
+                                                            model
+                                                                .services[index]
+                                                                .imageUrl3,
+                                                          ),
+                                                          fit: BoxFit.cover,
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              const Icon(
+                                                                  Icons.error),
+                                                        ),
+                                                      ),
                                                     ),
-                                                    fit: BoxFit.cover,
-                                                    errorWidget: (context, url,
-                                                            error) =>
-                                                        const Icon(Icons.error),
                                                   ),
-                                                ),
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.bottomRight,
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  top: 10.0,
+                                                                  right: 10.0),
+                                                          child: Container(
+                                                            height: 30,
+                                                            width: 30,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              color: white,
+                                                            ),
+                                                            child: Icon(
+                                                              Icons
+                                                                  .favorite_border,
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  bottom: 10.0,
+                                                                  right: 10.0),
+                                                          child: Container(
+                                                            height: 30,
+                                                            width: 30,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              color: white,
+                                                            ),
+                                                            child: Icon(
+                                                                Icons
+                                                                    .card_travel,
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            /*model.services[index].name.text
+                                            model.services[index].name.text.bold
                                                 .maxLines(2)
                                                 .make()
-                                              .pSymmetric(h: 4, v: 2),*/
-
-                                            /*"£${model.services[index].price}"
+                                                .pSymmetric(h: 4, v: 2),
+                                            "£${model.services[index].price}"
                                                 .text
                                                 .xs
                                                 .make()
-                                                .px4(),*/
+                                                .px4(),
                                           ],
                                         ).mdClick(() {
                                           model.navigateToServiceView(
@@ -776,7 +578,7 @@ class SellerProductView extends StatelessWidget {
                                           );
                                         }).make();
                                       }
-                                      // },
+                                     
                                       ),
                               ],
                             ) //.pSymmetric(h: 0)
@@ -787,18 +589,6 @@ class SellerProductView extends StatelessWidget {
                   BusyLoader(busy: model.isApiLoading),
                 ],
               ),
-              floatingActionButton:
-                  (model.shop!.ownerId == model.currentUser.id &&
-                          viewingAsProfile == true)
-                      ? FloatingActionButton(
-                          onPressed: () {
-                            model.navigateToCreateServiceView(model.shop!);
-                          },
-                          child: Icon(Icons.add),
-                          backgroundColor: Styles.kcPrimaryColor,
-                          foregroundColor: Colors.white,
-                        )
-                      : null,
             ),
       viewModelBuilder: () => SellerProfileViewModel(),
     );

@@ -105,8 +105,8 @@ class _ShopCardViewModel extends BaseViewModel {
     AppUser owner,
   ) async {
     await _navigationService.navigateTo(
-      Routes.sellerProfileView,
-      arguments: SellerProfileViewArguments(
+      Routes.sellerProductView,
+      arguments: SellerProductViewArguments(
         seller: owner,
       ),
     );

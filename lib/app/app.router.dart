@@ -36,6 +36,7 @@ import '../ui/profile/buyer/buyer_profile_view.dart';
 import '../ui/profile/buyer/paypal_verification_view.dart';
 import '../ui/profile/seller/editProfile/seller_edit_profile.view.dart';
 import '../ui/profile/seller/seller_profile_view.dart';
+import '../ui/profile/seller/seller_product_view.dart';
 import '../ui/quick_settings/earnings/earnings_view.dart';
 import '../ui/quick_settings/orders/orderdetail_view.dart';
 import '../ui/quick_settings/orders/orders_view.dart';
@@ -72,6 +73,7 @@ class Routes {
   static const String paypalVerificationView = '/paypal-verification-view';
   static const String sellerEditProfileView = '/seller-edit-profile-view';
   static const String sellerProfileView = '/seller-profile-view';
+  static const String sellerProductView = '/seller-product-view';
   static const String sellerSignupView = '/seller-signup-view';
   static const String createShopView = '/create-shop-view';
   static const String editShopView = '/edit-shop-view';
@@ -117,6 +119,7 @@ class Routes {
     paypalVerificationView,
     sellerEditProfileView,
     sellerProfileView,
+    sellerProductView,
     sellerSignupView,
     createShopView,
     editShopView,
@@ -168,6 +171,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.paypalVerificationView, page: PaypalVerificationView),
     RouteDef(Routes.sellerEditProfileView, page: SellerEditProfileView),
     RouteDef(Routes.sellerProfileView, page: SellerProfileView),
+    RouteDef(Routes.sellerProductView, page: SellerProductView),
     RouteDef(Routes.sellerSignupView, page: SellerSignupView),
     RouteDef(Routes.createShopView, page: CreateShopView),
     RouteDef(Routes.editShopView, page: EditShopView),
@@ -308,6 +312,18 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    SellerProductView: (data) {
+      var args = data.getArgs<SellerProductViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => SellerProductView(
+          key: args.key,
+          seller: args.seller,
+          viewingAsProfile: args.viewingAsProfile,
+        ),
+        settings: data,
+      );
+    },
+     
     BuyerProfileView: (data) {
       var args = data.getArgs<BuyerProfileViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
@@ -662,7 +678,14 @@ class SellerProfileViewArguments {
   SellerProfileViewArguments(
       {this.key, required this.seller, this.viewingAsProfile});
 }
-
+/// SellerProductView arguments holder class
+class SellerProductViewArguments {
+  final Key? key;
+  final AppUser seller;
+  final bool? viewingAsProfile;
+  SellerProductViewArguments(
+      {this.key, required this.seller, this.viewingAsProfile});
+}
 /// SellerSignupView arguments holder class
 class SellerSignupViewArguments {
   final Key? key;

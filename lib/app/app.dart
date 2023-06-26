@@ -24,6 +24,7 @@ import 'package:mipromo/ui/landing/landing_view.dart';
 import 'package:mipromo/ui/main/main_view.dart';
 import 'package:mipromo/ui/profile/buyer/editProfile/buyer_edit_profile.view.dart';
 import 'package:mipromo/ui/profile/seller/editProfile/seller_edit_profile.view.dart';
+import 'package:mipromo/ui/profile/seller/seller_product_view.dart';
 import 'package:mipromo/ui/profile/seller/seller_profile_view.dart';
 import 'package:mipromo/ui/quick_settings/earnings/earnings_view.dart';
 import 'package:mipromo/ui/quick_settings/orders/orders_view.dart';
@@ -61,6 +62,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: BuyerEditProfileView),
     MaterialRoute(page: SellerEditProfileView),
     MaterialRoute(page: SellerProfileView),
+    MaterialRoute(page: SellerProductView),
     MaterialRoute(page: SellerSignupView),
     MaterialRoute(page: CreateShopView),
     MaterialRoute(page: EditShopView),

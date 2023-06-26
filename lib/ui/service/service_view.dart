@@ -14,6 +14,7 @@ import 'package:mipromo/ui/shared/helpers/enums.dart';
 import 'package:mipromo/ui/shared/widgets/avatar.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
+import 'package:mipromo/ui/value/colors.dart';
 import 'package:stacked/stacked.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:video_player/video_player.dart';
@@ -78,10 +79,11 @@ class _ServiceViewState extends State<ServiceView> {
     );
     // videoPlayerController!.addListener(checkVideo);
 
-    _initializeVideoPlayerFuture = videoPlayerController!.initialize().then((value) => {
-      videoPlayerController!.setLooping(true),
-      videoPlayerController!.play()
-    });
+    _initializeVideoPlayerFuture = videoPlayerController!.initialize().then(
+        (value) => {
+              videoPlayerController!.setLooping(true),
+              videoPlayerController!.play()
+            });
   }
 
   // checkVideo() {
@@ -129,16 +131,44 @@ class _ServiceViewState extends State<ServiceView> {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                Avatar(
-                                  radius: context.screenWidth / 22,
-                                  imageUrl: model.shopowner.imageUrl,
+                                Container(
+                                  height: 55,
+                                  width: 55,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            model.shopowner.imageUrl),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      border: Border.all(color: hintText),
+                                      borderRadius: BorderRadius.circular(10)),
                                 ),
-                                Text(
-                                  ' ' + model.shop.name,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                ),
+                                Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        ' ' + model.shop.name,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.location_on_outlined,
+                                            size: 15,
+                                          ),
+                                          model.shop.location.text.make(),
+                                          if (model.shop.borough.isNotEmpty)
+                                            ', ${model.shop.borough}'
+                                                .text
+                                                .make()
+                                          else
+                                            const SizedBox.shrink(),
+                                        ],
+                                      ),
+                                    ]),
                               ],
                             ),
                           ),
@@ -210,14 +240,14 @@ class _ServiceViewState extends State<ServiceView> {
                               ],
                             ),
                           ),
-                          4.heightBox,
+                          3.heightBox,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: List.generate(model.imagesCount.length,
                                 (index) {
                               return Container(
-                                height: 8,
-                                width: 8,
+                                height: 4,
+                                width: 10,
                                 margin: EdgeInsets.only(left: 4),
                                 decoration: BoxDecoration(
                                     color: model.selectedIndex == index
@@ -228,22 +258,65 @@ class _ServiceViewState extends State<ServiceView> {
                             }),
                           ).px(20),
                           5.heightBox,
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              widget.service.name.text.xl.bold
-                                  //.fontFamily(fontStyle)
-                                  .maxLines(2)
-                                  .make()
-                                  .box
-                                  .width(context.screenWidth / 1.5)
-                                  .make(),
-                              "£${widget.service.price.toStringAsFixed(2)}"
-                                  .text
-                                  .lg
-                                  .make(),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 15.0, top: 15.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    widget.service.name.text.xl.bold
+                                        //.fontFamily(fontStyle)
+                                        .maxLines(2)
+                                        .xl2
+                                        .make(),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    "£${widget.service.price.toStringAsFixed(2)}"
+                                        .text
+                                        .lg
+                                        .make(),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Container(
+                                      width: 70,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      child: Center(
+                                          child: Text(
+                                        'New',
+                                        style: TextStyle(
+                                            color: white,
+                                            fontFamily: 'Default'),
+                                      )),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 15.0, bottom: 25.0),
+                                child: Icon(
+                                  Icons.favorite_border_outlined,
+                                  color: hintText,
+                                ),
+                              )
                             ],
-                          ).pOnly(top: 12, left: 20, right: 20),
+                          ),
+                          20.heightBox,
+                          Container(
+                            height: 1,
+                            width: double.infinity,
+                            color: Colors.grey.withOpacity(0.30),
+                          ),
                           if (widget.service.type == "Product")
                             if (widget.service.sizes == null ||
                                 widget.service.sizes!.isEmpty)
@@ -252,7 +325,7 @@ class _ServiceViewState extends State<ServiceView> {
                               Column(
                                 children: [
                                   20.heightBox,
-                                  "Available Sizes"
+                                  "Select Sizes"
                                       .text
                                       .size(15)
                                       .fontWeight(FontWeight.w600)
@@ -338,37 +411,7 @@ class _ServiceViewState extends State<ServiceView> {
                                   .px4()
                             ],
                           ).px(20),
-                          /*Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            "${Constants.typeLabel} : ${service.type}"
-                                .text
-                                .make(),
-                            if (service.type == "Product")
-                              if (service.sizes == null ||
-                                  service.sizes!.isEmpty)
-                                const SizedBox.shrink()
-                              else
-                                DropdownButton<int>(
-                                  hint: Constants.sizeLabel.text.make(),
-                                  underline: const SizedBox.shrink(),
-                                  value: model.selectedSize,
-                                  items: List<DropdownMenuItem<int>>.generate(
-                                    service.sizes!.length,
-                                    (index) => DropdownMenuItem(
-                                      value: index,
-                                      child:
-                                          service.sizes![index].text.make(),
-                                    ),
-                                  ).toList(),
-                                  onChanged: (size) {
-                                    model.getSelectedSize(size!);
-                                  },
-                                )
-                            else
-                              const SizedBox.shrink(),
-                          ],
-                        ),*/
+                        
                           20.heightBox,
                           Container(
                             height: 1,
@@ -470,8 +513,7 @@ class _ServiceViewState extends State<ServiceView> {
                           ),
                         ).px(2),
                       )
-                    ]
-                    else
+                    ] else
                       Container(
                         width: context.screenWidth * 0.95,
                         padding: EdgeInsets.only(bottom: 12),

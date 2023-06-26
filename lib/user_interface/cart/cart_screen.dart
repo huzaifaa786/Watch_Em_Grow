@@ -27,7 +27,7 @@ class CartScreen extends StatelessWidget {
                     );
             }),
             // EmptyScreenCard(),
-           ShopReviewCard(),
+          //  ShopReviewCard(),
             const SizedBox(
               height: 5,
             ),
