@@ -450,26 +450,27 @@ class BookingViewModel extends BaseViewModel {
     final data = await _createTestPaymentSheet();
 
     // create some billingdetails
-    // final billingDetails = BillingDetails(
-    //   name: 'Flutter Stripe',
-    //   email: 'email@stripe.com',
-    //   phone: '+48888000888',
-    //   address: Address(
-    //     city: 'Houston',
-    //     country: 'US',
-    //     line1: '1459  Circle Drive',
-    //     line2: '',
-    //     state: 'Texas',
-    //     postalCode: '77063',
-    //   ),
-    // ); // mocked data for tests
+    final billingDetails = BillingDetails(
+      name: 'Flutter Stripe',
+      email: 'email@stripe.com',
+      phone: '+48888000888',
+      address: Address(
+        city: 'Houston',
+        country: 'US',
+        line1: '1459  Circle Drive',
+        line2: '',
+        state: 'Texas',
+        postalCode: '77063',
+      ),
+    ); // mocked data for tests
 
     // 2. initialize the payment sheet
     await Stripe.instance.initPaymentSheet(
       paymentSheetParameters: SetupPaymentSheetParameters(
         // Main params
         paymentIntentClientSecret: data['paymentIntent'].toString(),
-        merchantDisplayName: 'Miypromo',
+
+        merchantDisplayName: 'Watch_Em_Grow',
         // Customer params
         customerId: data['customer'].toString(),
         customerEphemeralKeySecret: data['ephemeralKey'].toString(),

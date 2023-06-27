@@ -94,7 +94,7 @@ class ServiceViewModel extends BaseViewModel {
   }
 
   Future navigateToBuyServiceView() async {
-    if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
+    // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
       await _navigationService.replaceWith(
         Routes.buyServiceView,
         arguments: BuyServiceViewArguments(
@@ -103,7 +103,7 @@ class ServiceViewModel extends BaseViewModel {
           selectedSize: selectedSize,
         ),
       );
-    }
+    // }
   }
 
   onSizeSelected(int index) {
