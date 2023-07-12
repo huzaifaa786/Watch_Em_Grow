@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mipromo/ui/value/colors.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class BannerCard extends StatelessWidget {
   const BannerCard(
@@ -17,7 +18,7 @@ class BannerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         GestureDetector(
           onTap: onPressed,
@@ -25,24 +26,36 @@ class BannerCard extends StatelessWidget {
              children: [
             Stack(
               // // overflow: Overflow.visible,
-              alignment: AlignmentDirectional.centerEnd,
+              alignment: AlignmentDirectional.bottomStart,
               fit: StackFit.loose,
               children: <Widget>[
                 Container(
                   decoration: const BoxDecoration(),
-                  height:80,
-                  width: MediaQuery.of(context).size.width* 0.9,
+                  height:MediaQuery.of(context).size.height *0.3,
+                  width: MediaQuery.of(context).size.width,
                    
-                  child: Image.asset("assets/images/poster.jpg", fit: BoxFit.cover,)),
+                  child: Image.asset("assets/images/splash/splash.jpg", fit: BoxFit.cover,)),
                 Positioned(
-                    child: Row(
+                    child: Padding(
+                       padding: EdgeInsets.only(left:25.0,bottom:25),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right:30.0),
-                      child: Text('Shop by age',style: TextStyle(color: primaryColor,fontSize: 23,fontWeight: FontWeight.w900,fontFamily: 'Default'),),
-                    ),
+                      Text('This Months Flash Deals',style: TextStyle(color: white,fontSize: 23,fontWeight: FontWeight.w900,fontFamily: 'Default'),),
+                    SizedBox(height: 10,),
+                     Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                      color: white
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left:20.0,right:20,top: 15,bottom:15),
+                        child: Text('View Collection',style: TextStyle(color: Vx.black,fontSize: 15,fontWeight: FontWeight.w700,fontFamily: 'Default'),
+                     ),
+                      ))
+                  
                   ],
-                ))
+                ),
+                    ))
               ],
             )
           ]),

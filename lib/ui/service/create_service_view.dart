@@ -216,44 +216,44 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                         model.description = description;
                       },
                     ),
-                    DropdownButtonFormField<String>(
-                      autovalidateMode: model.autoValidate
-                          ? AutovalidateMode.always
-                          : AutovalidateMode.onUserInteraction,
-                      decoration: const InputDecoration.collapsed(
-                        hintText: 'Type',
-                      ),
-                      validator: (value) => Validators.emptyStringValidator(
-                        value,
-                        'Service Type',
-                      ),
-                      value: model.selectedType,
-                      onChanged: (type) {
-                        model.getSelectedType(type!);
-                      },
-                      items: <DropdownMenuItem<String>>[
-                        // DropdownMenuItem(
-                        //   value: Constants.serviceLabel,
-                        //   child: Constants.serviceLabel.text.make(),
-                        // ),
-                        DropdownMenuItem(
-                          value: Constants.productLabel,
-                          child: Constants.productLabel.text.make(),
-                        ),
-                      ],
-                    )
-                        .p12()
-                        .centered()
-                        .box
-                        .border(color: Colors.grey)
-                        .height(55)
-                        .withRounded(value: 12)
-                        //.color(Colors.grey.shade800)
-                        .make()
-                        .pSymmetric(
-                          v: 12,
-                        ),
-                    if (model.selectedType == Constants.productLabel)
+                    // DropdownButtonFormField<String>(
+                    //   autovalidateMode: model.autoValidate
+                    //       ? AutovalidateMode.always
+                    //       : AutovalidateMode.onUserInteraction,
+                    //   decoration: const InputDecoration.collapsed(
+                    //     hintText: 'Type',
+                    //   ),
+                    //   validator: (value) => Validators.emptyStringValidator(
+                    //     value,
+                    //     'Service Type',
+                    //   ),
+                    //   value: model.selectedType,
+                    //   onChanged: (type) {
+                    //     model.getSelectedType(type!);
+                    //   },
+                    //   items: <DropdownMenuItem<String>>[
+                    //     // DropdownMenuItem(
+                    //     //   value: Constants.serviceLabel,
+                    //     //   child: Constants.serviceLabel.text.make(),
+                    //     // ),
+                    //     DropdownMenuItem(
+                    //       value: Constants.productLabel,
+                    //       child: Constants.productLabel.text.make(),
+                    //     ),
+                    //   ],
+                    // )
+                    //     .p12()
+                    //     .centered()
+                    //     .box
+                    //     .border(color: Colors.grey)
+                    //     .height(55)
+                    //     .withRounded(value: 12)
+                    //     //.color(Colors.grey.shade800)
+                    //     .make()
+                    //     .pSymmetric(
+                    //       v: 12,
+                    //     ),
+                    // if (model.selectedType == Constants.productLabel)
                       // if (widget.shop.category == 'Footwear & Resellers' ||
                       //     widget.shop.category == 'Clothing Brands')
                         Column(
@@ -268,129 +268,76 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                                 FilterChip(
                                   selectedColor: Colors.lightBlue.shade100,
                                   selected: model.oneSize,
-                                  label: '1'.text.sm.make(),
+                                  label: '1-2'.text.sm.make(),
                                   onSelected: (value) {
                                     model.oneSize = value;
-                                    model.selectedSizes('1');
+                                    model.selectedSizes('1-2');
                                   },
                                 ),
                                 FilterChip(
                                   selectedColor: Colors.lightBlue.shade100,
                                   selected: model.twoSize,
-                                  label: '2'.text.sm.make(),
+                                  label: '2-3'.text.sm.make(),
                                   onSelected: (value) {
                                     model.twoSize = value;
-                                    model.selectedSizes('2');
+                                    model.selectedSizes('2-3');
                                   },
                                 ),
                                 FilterChip(
                                   selectedColor: Colors.lightBlue.shade100,
                                   selected: model.threeSize,
-                                  label: '3'.text.sm.make(),
+                                  label: '4-5'.text.sm.make(),
                                   onSelected: (value) {
                                     model.threeSize = value;
-                                    model.selectedSizes('3');
+                                    model.selectedSizes('4-5');
                                   },
                                 ),
                                 FilterChip(
                                   selectedColor: Colors.lightBlue.shade100,
                                   selected: model.fourSize,
-                                  label: '4'.text.sm.make(),
+                                  label: '5-6'.text.sm.make(),
                                   onSelected: (value) {
                                     model.fourSize = value;
-                                    model.selectedSizes('4');
+                                    model.selectedSizes('5-6');
                                   },
                                 ),
                                 FilterChip(
                                   selectedColor: Colors.lightBlue.shade100,
                                   selected: model.fiveSize,
-                                  label: '5'.text.sm.make(),
+                                  label: '7-8'.text.sm.make(),
                                   onSelected: (value) {
                                     model.fiveSize = value;
-                                    model.selectedSizes('5');
+                                    model.selectedSizes('7-8');
                                   },
                                 ),
                                 FilterChip(
                                   selectedColor: Colors.lightBlue.shade100,
                                   selected: model.sixSize,
-                                  label: '6'.text.sm.make(),
+                                  label: '9-10'.text.sm.make(),
                                   onSelected: (value) {
                                     model.sixSize = value;
-                                    model.selectedSizes('6');
+                                    model.selectedSizes('9-10');
                                   },
                                 ),
                                 FilterChip(
                                   selectedColor: Colors.lightBlue.shade100,
                                   selected: model.sevenSize,
-                                  label: '7'.text.sm.make(),
+                                  label: '11-12'.text.sm.make(),
                                   onSelected: (value) {
                                     model.sevenSize = value;
-                                    model.selectedSizes('7');
+                                    model.selectedSizes('11-12');
                                   },
                                 ),
                                 FilterChip(
                                   selectedColor: Colors.lightBlue.shade100,
                                   selected: model.eightSize,
-                                  label: '8'.text.sm.make(),
+                                  label: '13-14'.text.sm.make(),
                                   onSelected: (value) {
                                     model.eightSize = value;
-                                    model.selectedSizes('8');
+                                    model.selectedSizes('13-14');
                                   },
                                 ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.nineSize,
-                                  label: '9'.text.sm.make(),
-                                  onSelected: (value) {
-                                    model.nineSize = value;
-                                    model.selectedSizes('9');
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.tenSize,
-                                  label: '10'.text.sm.make(),
-                                  onSelected: (value) {
-                                    model.tenSize = value;
-                                    model.selectedSizes('10');
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.elevenSize,
-                                  label: '11'.text.sm.make(),
-                                  onSelected: (value) {
-                                    model.elevenSize = value;
-                                    model.selectedSizes('11');
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.twelveSize,
-                                  label: '12'.text.sm.make(),
-                                  onSelected: (value) {
-                                    model.twelveSize = value;
-                                    model.selectedSizes('12');
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.thirteenSize,
-                                  label: '13'.text.sm.make(),
-                                  onSelected: (value) {
-                                    model.thirteenSize = value;
-                                    model.selectedSizes('13');
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.fourteenSize,
-                                  label: '14'.text.sm.make(),
-                                  onSelected: (value) {
-                                    model.fourteenSize = value;
-                                    model.selectedSizes('14');
-                                  },
-                                ),
+                             
                               ],
                             ),
                             Wrap(
@@ -453,111 +400,6 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                                     } else {
                                       model.xlValue = value;
                                       model.selectedSizes(Constants.xlLabel);
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                      else
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Constants.selectSizesLabel.text.gray600
-                                .make()
-                                .py4(),
-                            Wrap(
-                              spacing: 10,
-                              children: [
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.onesizeValue,
-                                  label: Constants.onesizeLabel.text.sm.make(),
-                                  onSelected: (value) {
-                                    if (model.xsValue ||
-                                        model.sValue ||
-                                        model.mValue ||
-                                        model.lValue ||
-                                        model.xlValue ||
-                                        model.xxlValue) {
-                                    } else {
-                                      model.onesizeValue = value;
-                                      model.selectedSizes(
-                                        Constants.onesizeLabel,
-                                      );
-                                    }
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.xsValue,
-                                  label: Constants.xsLabel.text.sm.make(),
-                                  onSelected: (value) {
-                                    if (model.onesizeValue) {
-                                    } else {
-                                      model.xsValue = value;
-                                      model.selectedSizes(Constants.xsLabel);
-                                    }
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.sValue,
-                                  label: Constants.sLabel.text.sm.make(),
-                                  onSelected: (value) {
-                                    if (model.onesizeValue) {
-                                    } else {
-                                      model.sValue = value;
-                                      model.selectedSizes(Constants.sLabel);
-                                    }
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.mValue,
-                                  label: Constants.mLabel.text.sm.make(),
-                                  onSelected: (value) {
-                                    if (model.onesizeValue) {
-                                    } else {
-                                      model.mValue = value;
-                                      model.selectedSizes(Constants.mLabel);
-                                    }
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.lValue,
-                                  label: Constants.lLabel.text.sm.make(),
-                                  onSelected: (value) {
-                                    if (model.onesizeValue) {
-                                    } else {
-                                      model.lValue = value;
-                                      model.selectedSizes(Constants.lLabel);
-                                    }
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.xlValue,
-                                  label: Constants.xlLabel.text.sm.make(),
-                                  onSelected: (value) {
-                                    if (model.onesizeValue) {
-                                    } else {
-                                      model.xlValue = value;
-                                      model.selectedSizes(Constants.xlLabel);
-                                    }
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.xxlValue,
-                                  label: Constants.xxlLabel.text.sm.make(),
-                                  onSelected: (value) {
-                                    if (model.onesizeValue) {
-                                    } else {
-                                      model.xxlValue = value;
-                                      model.selectedSizes(Constants.xxlLabel);
                                     }
                                   },
                                 ),
@@ -565,6 +407,111 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                             ),
                           ],
                         ),
+                      // else
+                        // Column(
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   children: [
+                        //     Constants.selectSizesLabel.text.gray600
+                        //         .make()
+                        //         .py4(),
+                        //     Wrap(
+                        //       spacing: 10,
+                        //       children: [
+                        //         FilterChip(
+                        //           selectedColor: Colors.lightBlue.shade100,
+                        //           selected: model.onesizeValue,
+                        //           label: Constants.onesizeLabel.text.sm.make(),
+                        //           onSelected: (value) {
+                        //             if (model.xsValue ||
+                        //                 model.sValue ||
+                        //                 model.mValue ||
+                        //                 model.lValue ||
+                        //                 model.xlValue ||
+                        //                 model.xxlValue) {
+                        //             } else {
+                        //               model.onesizeValue = value;
+                        //               model.selectedSizes(
+                        //                 Constants.onesizeLabel,
+                        //               );
+                        //             }
+                        //           },
+                        //         ),
+                        //         FilterChip(
+                        //           selectedColor: Colors.lightBlue.shade100,
+                        //           selected: model.xsValue,
+                        //           label: Constants.xsLabel.text.sm.make(),
+                        //           onSelected: (value) {
+                        //             if (model.onesizeValue) {
+                        //             } else {
+                        //               model.xsValue = value;
+                        //               model.selectedSizes(Constants.xsLabel);
+                        //             }
+                        //           },
+                        //         ),
+                        //         FilterChip(
+                        //           selectedColor: Colors.lightBlue.shade100,
+                        //           selected: model.sValue,
+                        //           label: Constants.sLabel.text.sm.make(),
+                        //           onSelected: (value) {
+                        //             if (model.onesizeValue) {
+                        //             } else {
+                        //               model.sValue = value;
+                        //               model.selectedSizes(Constants.sLabel);
+                        //             }
+                        //           },
+                        //         ),
+                        //         FilterChip(
+                        //           selectedColor: Colors.lightBlue.shade100,
+                        //           selected: model.mValue,
+                        //           label: Constants.mLabel.text.sm.make(),
+                        //           onSelected: (value) {
+                        //             if (model.onesizeValue) {
+                        //             } else {
+                        //               model.mValue = value;
+                        //               model.selectedSizes(Constants.mLabel);
+                        //             }
+                        //           },
+                        //         ),
+                        //         FilterChip(
+                        //           selectedColor: Colors.lightBlue.shade100,
+                        //           selected: model.lValue,
+                        //           label: Constants.lLabel.text.sm.make(),
+                        //           onSelected: (value) {
+                        //             if (model.onesizeValue) {
+                        //             } else {
+                        //               model.lValue = value;
+                        //               model.selectedSizes(Constants.lLabel);
+                        //             }
+                        //           },
+                        //         ),
+                        //         FilterChip(
+                        //           selectedColor: Colors.lightBlue.shade100,
+                        //           selected: model.xlValue,
+                        //           label: Constants.xlLabel.text.sm.make(),
+                        //           onSelected: (value) {
+                        //             if (model.onesizeValue) {
+                        //             } else {
+                        //               model.xlValue = value;
+                        //               model.selectedSizes(Constants.xlLabel);
+                        //             }
+                        //           },
+                        //         ),
+                        //         FilterChip(
+                        //           selectedColor: Colors.lightBlue.shade100,
+                        //           selected: model.xxlValue,
+                        //           label: Constants.xxlLabel.text.sm.make(),
+                        //           onSelected: (value) {
+                        //             if (model.onesizeValue) {
+                        //             } else {
+                        //               model.xxlValue = value;
+                        //               model.selectedSizes(Constants.xxlLabel);
+                        //             }
+                        //           },
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ],
+                        // ),
                   
                     //   const SizedBox.shrink(),
                     InputField(

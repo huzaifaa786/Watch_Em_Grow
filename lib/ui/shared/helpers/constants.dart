@@ -74,7 +74,7 @@ class Constants {
   static const String lLabel = "L";
   static const String xlLabel = "XL";
   static const String xxlLabel = "XXL";
-  static const String priceLabel = "Price";
+  static const String priceLabel = "Add Price Per Month";
   static const String bookLabel = "Book";
   static const String buyLabel = "Buy";
   static const String paymentMethodLabel = "Payment Method";

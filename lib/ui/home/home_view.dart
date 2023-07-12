@@ -8,6 +8,7 @@ import 'package:mipromo/ui/search/widgets/search_bar.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/featured_shop_card.dart';
 import 'package:mipromo/ui/shared/widgets/shop_card.dart';
+import 'package:mipromo/ui/static_widget/banner_card.dart';
 import 'package:stacked/stacked.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -45,64 +46,64 @@ class _HomeViewState extends State<HomeView> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                     Card(
-                          child: ListTile(
-                            title: TextField(
-                              // controller: controller,
-                              decoration: const InputDecoration(
-                                hintText: 'Search',
-                                border: InputBorder.none,
-                              ),
-                              // onChanged: onChanged,
-                            ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.search),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const SearchView()),
-                                );
-                              },
-                            ),
-                          ),
-                        ).p8(),
-                        SizedBox(
-                          height: 10,
-                        ),
-                                  Container(
-                                    height: 160,
-                                    child: Swiper(
-                                      physics: const BouncingScrollPhysics(),
-                                      itemCount: model.featuredShops
-                                          .length /* <= 3
-                                          ? model.allShops.length
-                                          : 3*/
-                                      ,
-                                      autoplay: true,
-                                      loop: false,
-                                      curve: Curves.easeInOutQuart,
-                                      duration: 800,
-                                      itemBuilder: (context, index) =>
-                                          FeaturedShopCard(
-                                        shop: model.featuredShops[index],
-                                        shopOwner: model.allSellers.singleWhere(
-                                          (owner) =>
-                                              owner.shopId ==
-                                              model.featuredShops[index].id,
-                                        ),
-                                      ).mdClick(() {
-                                        model.navigateToShopView(
-                                          shop: model.featuredShops[index],
-                                          owner: model.allSellers.singleWhere(
-                                            (owner) =>
-                                                owner.shopId ==
-                                                model.featuredShops[index].id,
-                                          ),
-                                        );
-                                      }).make(),
-                                    ),
-                                  ),
+
+                                  BannerCard(onPressed: (){})
+                        //              Card(
+                        //   child: ListTile(
+                        //     title: TextField(
+                        //       // controller: controller,
+                        //       decoration: const InputDecoration(
+                        //         hintText: 'Search',
+                        //         border: InputBorder.none,
+                        //       ),
+                        //       // onChanged: onChanged,
+                        //     ),
+                        //     trailing: IconButton(
+                        //       icon: const Icon(Icons.search),
+                        //       onPressed: () {
+                        //         Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //               builder: (context) => const SearchView()),
+                        //         );
+                        //       },
+                        //     ),
+                        //   ),
+                        // ).p8(),
+                        
+                                  // Container(
+                                  //   height: 160,
+                                  //   child: Swiper(
+                                  //     physics: const BouncingScrollPhysics(),
+                                  //     itemCount: model.featuredShops
+                                  //         .length /* <= 3
+                                  //         ? model.allShops.length
+                                  //         : 3*/
+                                  //     ,
+                                  //     autoplay: true,
+                                  //     loop: false,
+                                  //     curve: Curves.easeInOutQuart,
+                                  //     duration: 800,
+                                  //     itemBuilder: (context, index) =>
+                                  //         FeaturedShopCard(
+                                  //       shop: model.featuredShops[index],
+                                  //       shopOwner: model.allSellers.singleWhere(
+                                  //         (owner) =>
+                                  //             owner.shopId ==
+                                  //             model.featuredShops[index].id,
+                                  //       ),
+                                  //     ).mdClick(() {
+                                  //       model.navigateToShopView(
+                                  //         shop: model.featuredShops[index],
+                                  //         owner: model.allSellers.singleWhere(
+                                  //           (owner) =>
+                                  //               owner.shopId ==
+                                  //               model.featuredShops[index].id,
+                                  //         ),
+                                  //       );
+                                  //     }).make(),
+                                  //   ),
+                                  // ),
                               
                                 ],
                               ),
@@ -116,8 +117,9 @@ class _HomeViewState extends State<HomeView> {
                                       .make()
                                       .pLTRB(22, 12, 0, 12),
                                   SizedBox(
-                                    height: context.screenWidth / 2.7,
-                                    child: ListView.builder(
+                                    height:275,
+                                    child: GridView.builder(
+                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                                       physics: const BouncingScrollPhysics(),
                                       itemCount: model.categories.length,
                                       scrollDirection: Axis.horizontal,
@@ -126,20 +128,16 @@ class _HomeViewState extends State<HomeView> {
                                           model.categories[index].imageUrl,
                                         );
                                         precacheImage(assetImage, context);
-
                                         return Column(
                                           children: [
-                                            CircleAvatar(
+                                            Row(children: [
+                                              CircleAvatar(
                                               radius: context.screenWidth/9 ,
                                               backgroundColor: Colors.grey[300],
                                               child: ClipOval(
-                                                child: SizedBox(
-                                                  width: double.infinity,
-                                                  height: double.infinity,
-                                                  child: Image(
-                                                    image: assetImage,
-                                                    fit: BoxFit.cover,
-                                                  ),
+                                                child: Image(
+                                                  image: assetImage,
+                                                  fit: BoxFit.cover,
                                                 ),
                                               ),
                                             )
@@ -155,13 +153,19 @@ class _HomeViewState extends State<HomeView> {
                                                 );
                                               },
                                             ).make(),
-                                            SizedBox(
+                                            ],),
+                                           Row(
+                                            children: [
+                                                SizedBox(
                                                 width: 110,
                                                 child: Text(
                                                     model
                                                         .categories[index].name,
                                                     textAlign:
                                                         TextAlign.center)),
+                                            ],
+                                           )
+                                          
                                           ],
                                         );
                                       },
@@ -169,13 +173,13 @@ class _HomeViewState extends State<HomeView> {
                                   ),
                                 ],
                               ),
-                              // if (model.bestSellers.isNotEmpty)
+                              if (model.bestSellers.isNotEmpty)
                                 "Sellers to Watch"
                                     .text
                                     .xl
                                     .bold
                                     .make()
-                                    .pLTRB(22, 12, 0, 0),
+                                    .pLTRB(22, 12, 0, 0),    
                               ListView.builder(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12),
@@ -198,7 +202,14 @@ class _HomeViewState extends State<HomeView> {
                                       shop: model.bestSellers[index],
                                       services: mservices,
                                     ).p8();
-                                  })
+                                  }),
+                                  if(model.bestSellers.isEmpty)
+                                  "Not Yet Available Bestseller"
+                                    .text
+                                    .xl
+                                    .bold
+                                    .make()
+                                    .pLTRB(22, 12, 0, 0),
                             ],
                           ),
                         ),

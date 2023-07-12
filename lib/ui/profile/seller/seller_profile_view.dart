@@ -14,6 +14,7 @@ import 'package:mipromo/ui/shared/helpers/styles.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/busy_loader.dart';
 import 'package:mipromo/ui/shared/widgets/profile_header.dart';
+import 'package:mipromo/ui/value/colors.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -532,49 +533,117 @@ class SellerProfileView extends StatelessWidget {
                                         //         model.shop!);
                                         //   }).make();
                                         // } else {
-                                        return Column(
-                                          mainAxisSize: MainAxisSize.min,
+                                       return Column(
+                                          mainAxisSize: MainAxisSize.max,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             Container(
-                                              decoration: BoxDecoration(
-                                                  //color: Colors.red,
-                                                  //border: Border.all(color: Colors.white, width: 0.5)
-                                                  ),
-                                              //height: context.screenHeight / 7,
-                                              //width: context.screenHeight / 2.5,
-                                              child: AspectRatio(
-                                                aspectRatio: 1,
-                                                child: ClipRRect(
-                                                  //borderRadius: BorderRadius.circular(2),
-                                                  child: CachedNetworkImage(
-                                                    imageUrl: imageUrl(
-                                                      model.services[index]
-                                                          .imageUrl1,
-                                                      model.services[index]
-                                                          .imageUrl2,
-                                                      model.services[index]
-                                                          .imageUrl3,
+                                              height: context.screenHeight / 7,
+                                              width: context.screenHeight / 4.5,
+                                              child: Stack(
+                                                children: [
+                                                  Positioned.fill(
+                                                    child: AspectRatio(
+                                                      aspectRatio: 1,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          imageUrl: imageUrl(
+                                                            model
+                                                                .services[index]
+                                                                .imageUrl1,
+                                                            model
+                                                                .services[index]
+                                                                .imageUrl2,
+                                                            model
+                                                                .services[index]
+                                                                .imageUrl3,
+                                                          ),
+                                                          fit: BoxFit.cover,
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              const Icon(
+                                                                  Icons.error),
+                                                        ),
+                                                      ),
                                                     ),
-                                                    fit: BoxFit.cover,
-                                                    errorWidget: (context, url,
-                                                            error) =>
-                                                        const Icon(Icons.error),
                                                   ),
-                                                ),
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 10.0,bottom: 10),
+                                                          child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                                  borderRadius: BorderRadius.circular(5),
+                                                              shape: BoxShape
+                                                                  .rectangle,
+                                                              color: Vx.black,
+                                                            ),
+                                                           child: Padding(
+                                                             padding: const EdgeInsets.all(8.0),
+                                                             child: Text('New',style: TextStyle(color: white),),
+                                                           ),
+                                                          ),
+                                                        ),
+                                                     
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            /*model.services[index].name.text
+                                            Row(
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      width:MediaQuery.of(context).size.width*0.35,
+                                                      child:model.services[index].name.text.bold
                                                 .maxLines(2)
                                                 .make()
-                                              .pSymmetric(h: 4, v: 2),*/
-
-                                            /*"£${model.services[index].price}"
+                                                .pSymmetric(h: 4, v: 2),),
+                                            "£${model.services[index].price}"
                                                 .text
                                                 .xs
                                                 .make()
-                                                .px4(),*/
+                                                .px4(),
+                                            ],),
+                                            Padding(
+                                              padding: const EdgeInsets.only(top:8.0),
+                                              child: Container(
+                                                              height: 30,
+                                                              width: 30,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: white,
+                                                              ),
+                                                              child: Icon(
+                                                                Icons
+                                                                    .favorite_border,
+                                                                color:
+                                                                    Colors.black,
+                                                              ),
+                                                            ),
+                                            ),
+                                            ],),
+                                           
                                           ],
                                         ).mdClick(() {
                                           model.navigateToServiceView(

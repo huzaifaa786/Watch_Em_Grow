@@ -56,7 +56,7 @@ class CreateServiceViewModel extends BaseViewModel {
   TextEditingController startController = new TextEditingController();
   TextEditingController endController = new TextEditingController();
   // late VideoEditorController _controller;
-  String? selectedType;
+  String? selectedType="Product";
 
   bool onesizeValue = false;
   bool xsValue = false;

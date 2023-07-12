@@ -51,16 +51,7 @@ class ShopView extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // Container(
-                                //     height: MediaQuery.of(context).size.height / 19,
-                                //     child: Image.asset('assets/images/logo_new_sub.png'
-                                //     )),
-                              ],
-                            ),
-                           
+                            
                             Padding(
                               padding: const EdgeInsets.all(8),
                              child:ListView.builder(
