@@ -257,53 +257,8 @@ class SellerProfileView extends StatelessWidget {
                               },
                               headerButton: model.shop != null
                                   ? model.shop!.ownerId == model.currentUser.id
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            // SizedBox(
-                                            //   width: MediaQuery.of(context)
-                                            //           .size
-                                            //           .width *
-                                            //       0.46,
-                                            //   child: OutlinedButton(
-                                            //     onPressed: () {
-                                            //       model
-                                            //           .navigateToSetAvailability();
-                                            //     },
-                                            //     child: 'Set Availability'
-                                            //         .text
-                                            //         .make(),
-                                            //   ),
-                                            // ),
-                                            
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.46,
-                                              child: OutlinedButton(
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            OrdersView(
-                                                              index: 1,
-                                                            )),
-                                                  ).then((val) => {
-                                                        model.init(
-                                                            seller.shopId,
-                                                            seller,
-                                                            model.isDarkMode)
-                                                      });
-                                                },
-                                                child: 'Calendar'.text.make(),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      : Row(
+                                      ? Container(): 
+                                      Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
                                           children: [

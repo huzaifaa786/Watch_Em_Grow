@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:mipromo/api/api.dart';
 import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/api/storage_api.dart';
 import 'package:mipromo/app/app.locator.dart';
@@ -16,6 +19,7 @@ import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/services/user_service.dart';
 import 'package:mipromo/ui/availlability/availablity_view.dart';
+import 'package:mipromo/ui/connect_stripe/stripe_viewmodel.dart';
 import 'package:mipromo/ui/shared/helpers/data_models.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
 import 'package:stacked/stacked.dart';
@@ -94,16 +98,60 @@ class ServiceViewModel extends BaseViewModel {
   }
 
   Future navigateToBuyServiceView() async {
+    
+      await  confirmPayment();
     // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
-      await _navigationService.replaceWith(
-        Routes.buyServiceView,
-        arguments: BuyServiceViewArguments(
-          user: user,
-          service: service,
-          selectedSize: selectedSize,
+    //   await _navigationService.replaceWith(
+    //     Routes.buyServiceView,
+    //     arguments: BuyServiceViewArguments(
+    //       user: user,
+    //       service: service,
+    //       selectedSize: selectedSize,
+    //     ),
+    //   );
+    // }
+  }
+
+
+ paymentIntent() async {
+    var url = 'https://watchemgrow.klickwash.net/api/create/payment';
+    var data = {'price': service.price.toString()};// add service price
+    var responses = await Api.execute(url: url, data: data);
+    if (responses['error']==false){
+    return responses['intent'];
+    }
+  }
+
+    Future<bool> confirmPayment() async {
+      try {
+        await paymentFunction();
+        // 3. display the payment sheet.
+        await Stripe.instance.presentPaymentSheet();
+        return true;
+      } catch (e) {
+      print(e.toString());
+      rethrow;
+      }
+    }
+
+  paymentFunction() async {
+   
+    try {
+      var response = await paymentIntent();
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret:response['paymentIntent'].toString(),
+          merchantDisplayName: 'Watch Em Grow',
+          style: ThemeMode.dark,
+           merchantCountryCode: "Uk",
         ),
       );
-    // }
+    } on Exception catch (e) {
+      if (e is StripeException) {
+     print( e.toString());
+        return false;
+      }
+    }
   }
 
   onSizeSelected(int index) {

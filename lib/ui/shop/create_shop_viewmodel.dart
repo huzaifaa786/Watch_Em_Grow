@@ -112,7 +112,6 @@ class CreateShopViewModel extends BaseViewModel {
 
   Future _createShop() async {
     setBusy(true);
-
     await _databaseApi.createShop(
       Shop(
           id: _shopId,

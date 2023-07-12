@@ -108,98 +108,114 @@ class SellerProductView extends StatelessWidget {
                             user: seller,
                             shop: model.shop,
                           ),
- Container(
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(width: 1.5, color: textGrey),
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(
-                left: 10.0, right: 10.0, bottom: 20.0, top: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Filter by Size',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontFamily: 'Default')),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: textGrey),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Center(
-                          child: Text(
-                        'XXL',
-                        style: TextStyle(fontFamily: 'Default'),
-                      )),
-                    ),
-                    Container(
-                      width: 50,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: textGrey),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Center(
-                          child: Text('XL',
-                              style: TextStyle(fontFamily: 'Default'))),
-                    ),
-                    Container(
-                      width: 50,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: textGrey),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Center(
-                          child: Text('L',
-                              style: TextStyle(fontFamily: 'Default'))),
-                    ),
-                    Container(
-                      width: 50,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: textGrey),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Center(
-                          child: Text('M',
-                              style: TextStyle(fontFamily: 'Default'))),
-                    ),
-                    Container(
-                      width: 50,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: textGrey),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Center(
-                          child: Text('S',
-                              style: TextStyle(fontFamily: 'Default'))),
-                    ),
-                    Container(
-                      width: 50,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: textGrey),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Center(
-                          child: Text('XS',
-                              style: TextStyle(fontFamily: 'Default'))),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
-      
-                          
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(width: 1.5, color: textGrey),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
+                                  bottom: 20.0,
+                                  top: 20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Filter by Size',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Default')),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                        width: 50,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(color: textGrey),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Center(
+                                            child: Text(
+                                          'XXL',
+                                          style:
+                                              TextStyle(fontFamily: 'Default'),
+                                        )),
+                                      ),
+                                      Container(
+                                        width: 50,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(color: textGrey),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Center(
+                                            child: Text('XL',
+                                                style: TextStyle(
+                                                    fontFamily: 'Default'))),
+                                      ),
+                                      Container(
+                                        width: 50,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(color: textGrey),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Center(
+                                            child: Text('L',
+                                                style: TextStyle(
+                                                    fontFamily: 'Default'))),
+                                      ),
+                                      Container(
+                                        width: 50,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(color: textGrey),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Center(
+                                            child: Text('M',
+                                                style: TextStyle(
+                                                    fontFamily: 'Default'))),
+                                      ),
+                                      Container(
+                                        width: 50,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(color: textGrey),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Center(
+                                            child: Text('S',
+                                                style: TextStyle(
+                                                    fontFamily: 'Default'))),
+                                      ),
+                                      Container(
+                                        width: 50,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(color: textGrey),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Center(
+                                            child: Text('XS',
+                                                style: TextStyle(
+                                                    fontFamily: 'Default'))),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+
                           if (seller.shopId.isEmpty)
                             Column(
                               children: [
@@ -227,7 +243,7 @@ class SellerProductView extends StatelessWidget {
                             )
                           else
                             Column(
-                            children: [
+                              children: [
                                 if (model.services.isEmpty &&
                                     model.shop!.ownerId == model.currentUser.id)
                                   Column(
@@ -271,7 +287,8 @@ class SellerProductView extends StatelessWidget {
                                   )
                                 else if (!model.listview)
                                   GridView.builder(
-                                      padding: EdgeInsets.only(left:10.0, right:10.0, top:10.0),
+                                      padding: EdgeInsets.only(
+                                          left: 10.0, right: 10.0, top: 10.0),
                                       shrinkWrap: true,
                                       physics: const BouncingScrollPhysics(),
                                       gridDelegate:
@@ -577,9 +594,7 @@ class SellerProductView extends StatelessWidget {
                                             model.shop!.fontStyle,
                                           );
                                         }).make();
-                                      }
-                                     
-                                      ),
+                                      }),
                               ],
                             ) //.pSymmetric(h: 0)
                         ],

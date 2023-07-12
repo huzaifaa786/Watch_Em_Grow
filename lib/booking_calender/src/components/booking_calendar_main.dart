@@ -626,88 +626,89 @@ class _BookingCalendarMainState extends State<BookingCalendarMain> {
                             selextraService: selectedExtraService,
                             total: totalAmount);
                         controller.toggleUploading();
-                        controller.resetSelectedSlot();
+                        // controller.resetSelectedSlot();
                       },
-                      isDisabled: controller.selectedSlot == -1,
+                      // isDisabled: controller.selectedSlot == -1,
                       buttonActiveColor: widget.bookingButtonColor,
                     ),
-                  if (widget.showData == false) ...[
-                    !enablepastebutton
-                        ? CommonButton(
-                            text:
-                                enablecopybutton ? "Copy slots" : "Copy slots",
-                            onTap: () async {
-                              if (enablecopybutton == true) {
-                                enablepaste();
-                              }
-                            },
-                            isDisabled: !enablecopybutton,
-                            buttonActiveColor: widget.bookingButtonColor,
-                          )
-                        : CommonButton(
-                            text: "Paste slots",
-                            onTap: () async {
-                              if (copiedDay != _selectedDay) {
-                                pasteslots();
-                              }
-                            },
-                            isDisabled: copiedDay == _selectedDay,
-                            buttonActiveColor: widget.bookingButtonColor,
-                          ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    CommonButton(
-                      text: enableslotbutton
-                          ? 'Mark this slot as available(' +
-                              BookingUtil.formatDateTime(
-                                  controller.slottoAvail!) +
-                              ') '
-                          : "Remove time slot",
-                      onTap: () async {
-                        if (enableslotbutton == true) {
-                          controller.markSlotavailable(widget.unavailableSlots!,
-                              widget.bookingService.userId);
-                        } else {
-                          controller.markSlotUnavailable(
-                              widget.unavailableSlots!,
-                              widget.bookingService.userId);
-                        }
-                      },
-                      isDisabled: controller.selectedSlot == -1,
-                      buttonActiveColor: widget.bookingButtonColor,
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    CommonButton(
-                      text: enableButton
-                          ? 'Mark this day as "Available" (' +
-                              DateFormat('dd-MM-yyyy')
-                                  .format(controller.daytoAvail!) +
-                              ')'
-                          : 'Mark this day as "Unavailable"',
-                      onTap: () async {
-                        if (!enableButton) {
-                          controller.markDayUnavailable(widget.unavailableDays!,
-                              widget.bookingService.userId);
-                          setState(() {
-                            enableButton = true;
-                          });
-                        } else {
-                          controller.markDayAvailable(widget.unavailableDays!,
-                              widget.bookingService.userId);
-                          setState(() {
-                            enableButton = false;
-                          });
-                        }
+                  // if (widget.showData == false) ...[
+                  //   !enablepastebutton
+                  //       ? CommonButton(
+                  //           text:
+                  //               enablecopybutton ? "Copy slots" : "Copy slots",
+                  //           onTap: () async {
+                  //             if (enablecopybutton == true) {
+                  //               enablepaste();
+                  //             }
+                  //           },
+                  //           isDisabled: !enablecopybutton,
+                  //           buttonActiveColor: widget.bookingButtonColor,
+                  //         )
+                  //       : CommonButton(
+                  //           text: "Paste slots",
+                  //           onTap: () async {
+                  //             if (copiedDay != _selectedDay) {
+                  //               pasteslots();
+                  //             }
+                  //           },
+                  //           isDisabled: copiedDay == _selectedDay,
+                  //           buttonActiveColor: widget.bookingButtonColor,
+                  //         ),
+                  //   const SizedBox(
+                  //     height: 8,
+                  //   ),
+                  //   CommonButton(
+                  //     text: enableslotbutton
+                  //         ? 'Mark this slot as available(' +
+                  //             BookingUtil.formatDateTime(
+                  //                 controller.slottoAvail!) +
+                  //             ') '
+                  //         : "Remove time slot",
+                  //     onTap: () async {
+                  //       if (enableslotbutton == true) {
+                  //         controller.markSlotavailable(widget.unavailableSlots!,
+                  //             widget.bookingService.userId);
+                  //       } else {
+                  //         controller.markSlotUnavailable(
+                  //             widget.unavailableSlots!,
+                  //             widget.bookingService.userId);
+                  //       }
+                  //     },
+                  //     isDisabled: controller.selectedSlot == -1,
+                  //     buttonActiveColor: widget.bookingButtonColor,
+                  //   ),
+                  //   const SizedBox(
+                  //     height: 8,
+                  //   ),
+                  //   CommonButton(
+                  //     text: enableButton
+                  //         ? 'Mark this day as "Available" (' +
+                  //             DateFormat('dd-MM-yyyy')
+                  //                 .format(controller.daytoAvail!) +
+                  //             ')'
+                  //         : 'Mark this day as "Unavailable"',
+                  //     onTap: () async {
+                  //       if (!enableButton) {
+                  //         controller.markDayUnavailable(widget.unavailableDays!,
+                  //             widget.bookingService.userId);
+                  //         setState(() {
+                  //           enableButton = true;
+                  //         });
+                  //       } else {
+                  //         controller.markDayAvailable(widget.unavailableDays!,
+                  //             widget.bookingService.userId);
+                  //         setState(() {
+                  //           enableButton = false;
+                  //         });
+                  //       }
 
-                        controller.resetSelectedSlot();
-                      },
-                      isDisabled: false,
-                      buttonActiveColor: widget.bookingButtonColor,
-                    ),
-                  ]
+                  //       controller.resetSelectedSlot();
+                  //     },
+                  //     isDisabled: false,
+                  //     buttonActiveColor: widget.bookingButtonColor,
+                  //   ),
+                  // ]
+               
                 ],
               ),
       ),

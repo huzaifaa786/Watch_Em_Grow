@@ -102,18 +102,14 @@ class Constants {
 
   // Shop Categories
   static const List<String> categories = [
-    "Outware",
-    "Tops",
-    "Bottom",
-    "Footwear",
-    "Accessories",
-    // "Clothing Brand",
-    // "Accessories",
-    // "Photography & Videography",
-    // "Aesthetics",
-    // "Barber Shop",
-    // "Piercings",
-    "Other",
+    "1-2 Years",
+    "2-3 Years",
+    "4-5 Years",
+    "5-6 Years",
+    "7-8 Years",
+    "9-10 Years",
+    "11-12 Years",
+    "13-14 Years",
   ];
 
   // City

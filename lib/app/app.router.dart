@@ -434,6 +434,8 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+   
+   
     CategoryFilterView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const CategoryFilterView(),
@@ -771,6 +773,7 @@ class CategoryViewArguments {
       required this.allSellers,
       required this.allServices});
 }
+
 
 /// ChatsView arguments holder class
 class ChatsViewArguments {

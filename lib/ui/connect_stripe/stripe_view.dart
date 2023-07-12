@@ -28,24 +28,26 @@ class ConnectStripeView extends StatelessWidget {
             : Stack(
                 children: [
                   
-                  // WebView(
-                  //   initialUrl: model.connectUrl,
-                  //   javascriptMode: JavascriptMode.unrestricted,
-                  //   navigationDelegate: (request) {
-                  //     return model.handleWebViewVerification(request);
-                  //   },
-                  //   onWebViewCreated: (WebViewController webViewController) {
-                  //     _controller.complete(webViewController);
-                  //   },
-                  //   onProgress: (_) {
-                  //     model.setIsWebviewLoading(loading: true);
-                  //   },
-                  //   onPageFinished: (_) {
-                  //     // model.pageFinished();
-                  //     model.setIsWebviewLoading(loading: false);
+                  WebView(
+                    initialUrl: model.connectUrl,
+                    javascriptMode: JavascriptMode.unrestricted,
+                    navigationDelegate: (request) {
+                      return model.handleWebViewVerification(request);
+                      // handleWebViewUrlProduct
+                    },
+                    onWebViewCreated: (WebViewController webViewController) {
+                      _controller.complete(webViewController);
+                    },
+                    onProgress: (_) {
+                      model.setIsWebviewLoading(loading: true);
+                    },
+                    onPageFinished: (_) {
+                      // model.pageFinished();
+                      model.setIsWebviewLoading(loading: false);
                       
-                  //   },
-                  // ),
+                    },
+                  ),
+                  
                   if (model.isWebviewLoading) const BasicLoader(),
                 ],
               ),

@@ -43,6 +43,7 @@ import 'package:mipromo/ui/settings/settings_view.dart';
 import 'package:mipromo/ui/settings/terms/terms_and_conditions_view.dart';
 import 'package:mipromo/ui/shop/create_shop_view.dart';
 import 'package:mipromo/ui/shop/editShop/edit_shop_view.dart';
+import 'package:mipromo/ui/shop/shop_view.dart';
 import 'package:mipromo/ui/startup/startup_view.dart';
 import 'package:mipromo/ui/subscription/subscription_view.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -72,6 +73,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: ProfileUpdate),
     MaterialRoute(page: BuyServiceView),
     MaterialRoute(page: CategoryView),
+    MaterialRoute(page: ShopView),
     MaterialRoute(page: CategoryFilterView),
     MaterialRoute(page: SettingsView),
     MaterialRoute(page: ChatsView),

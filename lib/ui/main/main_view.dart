@@ -7,6 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mipromo/ui/auth/buyer_signup/profile_update.dart';
 import 'package:mipromo/ui/auth/login/discover_page.dart';
+import 'package:mipromo/ui/category/category_view.dart';
 import 'package:mipromo/ui/home/home_view.dart';
 import 'package:mipromo/ui/inbox/inbox_view.dart';
 import 'package:mipromo/ui/main/create_username/create_username_view.dart';
@@ -16,8 +17,7 @@ import 'package:mipromo/ui/search/search_view.dart';
 import 'package:mipromo/ui/shared/helpers/styles.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shop/create_shop_view.dart';
-import 'package:mipromo/user_interface/product/top_product.dart';
-import 'package:mipromo/user_interface/store/store_product.dart';
+import 'package:mipromo/ui/shop/shop_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
 import 'package:badges/badges.dart';
@@ -88,7 +88,8 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
         children: [
           const HomeView(),
           const SearchView(),
-          const StoreProductScreen(),
+          const ShopView(),
+          // const CategoryView(category: category, categoryShops: categoryShops, allOtherShops: allOtherShops, allSellers: allSellers, allServices: allServices),
           InboxView(currentUser: model.currentUser),
           ProfileView(
             user: model.currentUser,

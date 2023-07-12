@@ -132,6 +132,7 @@ class _CustomDialog extends StatelessWidget {
                       ],
                     ),
                   )
+              
                 else
                   Text(
                     request.description ?? '',
@@ -139,6 +140,7 @@ class _CustomDialog extends StatelessWidget {
                       color: Colors.grey,
                     ),
                   ),
+             
               ],
             ),
           ),

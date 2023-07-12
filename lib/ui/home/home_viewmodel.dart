@@ -27,7 +27,6 @@ class HomeViewModel extends BaseViewModel with WidgetsBindingObserver{
       @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      print('resumed');
         initDynamicLinks();
     }
   }
@@ -48,15 +47,12 @@ class HomeViewModel extends BaseViewModel with WidgetsBindingObserver{
  final initialLinkNotifier = ValueNotifier<String?>(null);
  
   initDynamicLinks() async {
-  log('inside dynamic link');
   await Future.delayed(Duration(seconds: 1));
   FirebaseDynamicLinks.instance.onLink(onSuccess: (PendingDynamicLinkData? dynamicLink) async {
-      log('dfgdfg');
       log(dynamicLink.toString());
       _handleDynamicLink(dynamicLink!);
     },
     onError: (OnLinkErrorException e) async {
-      log('onLinkError###################');
       log(e.message.toString());
     });
     final PendingDynamicLinkData? data = await FirebaseDynamicLinks.instance.getInitialLink();
@@ -68,7 +64,7 @@ class HomeViewModel extends BaseViewModel with WidgetsBindingObserver{
   }
 
   _handleDynamicLink(PendingDynamicLinkData data) async {
-    log("handling ************");
+    
     final Uri deepLink = data.link;
     var shopId = deepLink.pathSegments[0];
     logger.d(shopId.toString());
@@ -170,6 +166,22 @@ class HomeViewModel extends BaseViewModel with WidgetsBindingObserver{
       ),
     );
   }
+  Future navigateToShopAllView(
+    String category,   
+  ) async {
+    await _navigationService.navigateTo(
+      Routes.categoryView,
+      arguments: CategoryViewArguments(
+        category: category,
+        categoryShops: allShops.where((shop) => shop.category.toLowerCase() == category.replaceAll('\n', ' ').toLowerCase()).toList(),
+        allOtherShops: allShops.where((shop) => shop.category.toLowerCase() != category.replaceAll('\n', ' ').toLowerCase()).toList(),
+        allSellers: allSellers,
+        allServices: allServices,
+      ),
+    );
+  }
+
+
 
   Future navigateToShopView({
     required Shop shop,
@@ -185,50 +197,38 @@ class HomeViewModel extends BaseViewModel with WidgetsBindingObserver{
 
   List<CategoryItem> categories = [
     CategoryItem(
-      name: "Outware",
-      imageUrl: "assets/images/category/outware.jpg",
+      name: "1-2 Years",
+      imageUrl: "assets/images/category/1-2year.png",
     ),
     CategoryItem(
-      name: "Tops",
-      imageUrl: "assets/images/category/top.jpg",
+      name: "2-3 Years",
+      imageUrl: "assets/images/category/2-3year.png",
     ),
     CategoryItem(
-      name: "Bottom",
-      imageUrl: "assets/images/category/bottom.jpg",
+      name: "4-5 Years",
+      imageUrl: "assets/images/category/4-5year.png",
     ),
-    
-    // CategoryItem(
-    //   name: "Clothing Brands",
-    //   imageUrl: "assets/images/category/clothing.jpeg",
-    // ),
-    CategoryItem(
-      name: "Footwear",
-      imageUrl: "assets/images/category/bottom.jpeg",
+     CategoryItem(
+      name: "5-6 Years",
+      imageUrl: "assets/images/category/5-6year.png",
     ),
     CategoryItem(
-      name: "Accessories",
-      imageUrl: "assets/images/category/accessories.jpeg",
+      name: "7-8 Years",
+      imageUrl: "assets/images/category/7-8year.png",
     ),
-    // CategoryItem(
-    //   name: "Photography & Videography",
-    //   imageUrl: "assets/images/category/photography.jpeg",
-    // ),
-    // CategoryItem(
-    //   name: "Aesthetics",
-    //   imageUrl: "assets/images/category/aesthetic.jpeg",
-    // ),
-    // CategoryItem(
-    //   name: "Barber Shop",
-    //   imageUrl: "assets/images/category/barber.jpeg",
-    // ),
-    // CategoryItem(
-    //   name: "Piercings",
-    //   imageUrl: "assets/images/category/Piercing.jpeg",
-    // ),
     CategoryItem(
-      name: "Other",
-      imageUrl: "assets/images/category/other.png",
+      name: "9-10 Years",
+      imageUrl: "assets/images/category/9-10year.png",
     ),
+    CategoryItem(
+      name: "11-12 Years",
+      imageUrl: "assets/images/category/11-12year.png",
+    ),
+    CategoryItem(
+      name: "13-14 Years",
+      imageUrl: "assets/images/category/13-14year.png",
+    ),
+   
   ];
 
   @override

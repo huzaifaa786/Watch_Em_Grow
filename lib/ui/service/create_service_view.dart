@@ -232,10 +232,10 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                         model.getSelectedType(type!);
                       },
                       items: <DropdownMenuItem<String>>[
-                        DropdownMenuItem(
-                          value: Constants.serviceLabel,
-                          child: Constants.serviceLabel.text.make(),
-                        ),
+                        // DropdownMenuItem(
+                        //   value: Constants.serviceLabel,
+                        //   child: Constants.serviceLabel.text.make(),
+                        // ),
                         DropdownMenuItem(
                           value: Constants.productLabel,
                           child: Constants.productLabel.text.make(),
@@ -254,8 +254,8 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                           v: 12,
                         ),
                     if (model.selectedType == Constants.productLabel)
-                      if (widget.shop.category == 'Footwear & Resellers' ||
-                          widget.shop.category == 'Clothing Brands')
+                      // if (widget.shop.category == 'Footwear & Resellers' ||
+                      //     widget.shop.category == 'Clothing Brands')
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -564,9 +564,9 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                               ],
                             ),
                           ],
-                        )
-                    else
-                      const SizedBox.shrink(),
+                        ),
+                  
+                    //   const SizedBox.shrink(),
                     InputField(
                       hintText: Constants.priceLabel,
                       maxLength: 5,
@@ -583,49 +583,50 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                         model.price = price;
                       },
                     ),
-                    if (model.selectedType == Constants.serviceLabel)
-                      InputField(
-                        hintText: "Duration/min",
-                        maxLength: 3,
-                        counter: "",
-                        controller: model.durationController,
-                        textInputType: TextInputType.number,
-                        validate: model.autoValidate,
-                        validator: (duration) => Validators.emptyStringValidator(
-                          duration,
-                          'Duration',
-                        ),
-                      ),
-                    if (model.selectedType == Constants.serviceLabel) ...[
-                      InputField(
-                        hintText: "Deposit Amount",
-                        maxLength: 5,
-                        counter: "",
-                        textInputType: TextInputType.number,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 10.0, top: 12),
-                          child: '£'.text.lg.make(),
-                        ),
-                        validate: model.autoValidate,
-                        validator: (depositAmount) =>
-                            Validators.depositAmountValidator(
-                                depositAmount, 'Deposit Amount'),
-                        onChanged: (depositAmount) {
-                          model.depositAmount = depositAmount;
-                        },
-                      ),
+                   
+                    // if (model.selectedType == Constants.serviceLabel)
+                    //   InputField(
+                    //     hintText: "Duration/min",
+                    //     maxLength: 3,
+                    //     counter: "",
+                    //     controller: model.durationController,
+                    //     textInputType: TextInputType.number,
+                    //     validate: model.autoValidate,
+                    //     validator: (duration) => Validators.emptyStringValidator(
+                    //       duration,
+                    //       'Duration',
+                    //     ),
+                    //   ),
+                    // if (model.selectedType == Constants.serviceLabel) ...[
+                    //   InputField(
+                    //     hintText: "Deposit Amount",
+                    //     maxLength: 5,
+                    //     counter: "",
+                    //     textInputType: TextInputType.number,
+                    //     prefixIcon: Padding(
+                    //       padding: const EdgeInsets.only(left: 10.0, top: 12),
+                    //       child: '£'.text.lg.make(),
+                    //     ),
+                    //     validate: model.autoValidate,
+                    //     validator: (depositAmount) =>
+                    //         Validators.depositAmountValidator(
+                    //             depositAmount, 'Deposit Amount'),
+                    //     onChanged: (depositAmount) {
+                    //       model.depositAmount = depositAmount;
+                    //     },
+                    //   ),
                      
-                    ],
+                    // ],
                     
                     
-                    InputField(
-                      hintText: "Appointment address",
-                      //maxLength: 5,
-                      counter: "",
-                      controller: model.noteController,
-                      textInputType: TextInputType.text,
-                      validate: false,
-                    ),
+                    // InputField(
+                    //   hintText: "Appointment address",
+                    //   //maxLength: 5,
+                    //   counter: "",
+                    //   controller: model.noteController,
+                    //   textInputType: TextInputType.text,
+                    //   validate: false,
+                    // ),
                     BusyButton(
                       busy: model.isBusy,
                       icon: Icons.done,

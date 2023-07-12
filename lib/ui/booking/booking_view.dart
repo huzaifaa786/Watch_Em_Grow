@@ -72,6 +72,7 @@ class BookingView extends StatelessWidget {
                               strokeWidth: 10,
                             )),
                       ),
+                 
                     ),
                      
                     if (model.isSending) const BusyLoader(busy: true)

@@ -1,10 +1,6 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:http/http.dart' as http;
-import 'package:http_auth/http_auth.dart';
-import 'package:mipromo/models/app_user.dart';
 import 'package:mipromo/models/order.dart';
-import 'package:sprintf/sprintf.dart';
 
 class StripeApi {
   // static const String domain = "https://api.sandbox.paypal.com"; // for sandbox mode
@@ -90,5 +86,4 @@ class StripeApi {
     }
   }
 
-  
 }
