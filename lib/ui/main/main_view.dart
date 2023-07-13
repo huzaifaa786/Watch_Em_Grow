@@ -88,7 +88,9 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
         children: [
           const HomeView(),
           const SearchView(),
-          const ShopView(),
+          ProfileView(
+            user: model.currentUser,
+          ),
           // const CategoryView(category: category, categoryShops: categoryShops, allOtherShops: allOtherShops, allSellers: allSellers, allServices: allServices),
           InboxView(currentUser: model.currentUser),
           ProfileView(
