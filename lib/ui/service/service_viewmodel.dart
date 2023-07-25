@@ -98,57 +98,53 @@ class ServiceViewModel extends BaseViewModel {
   }
 
   Future navigateToBuyServiceView() async {
-    
-      await  confirmPayment();
-    // if (await _navigationService.navigateTo(Routes.inputAddressView) == true) {
-    //   await _navigationService.replaceWith(
-    //     Routes.buyServiceView,
-    //     arguments: BuyServiceViewArguments(
-    //       user: user,
-    //       service: service,
-    //       selectedSize: selectedSize,
-    //     ),
-    //   );
-    // }
+    // await  confirmPayment();
+
+    await _navigationService.replaceWith(
+      Routes.inputAddressView,
+      arguments: BuyServiceViewArguments(
+        user: user,
+        service: service,
+        selectedSize: selectedSize,
+      ),
+    );
   }
 
-
- paymentIntent() async {
+  paymentIntent() async {
     var url = 'https://watchemgrow.klickwash.net/api/create/payment';
-    var data = {'price': service.price.toString()};// add service price
+    var data = {'price': service.price.toString()}; // add service price
     var responses = await Api.execute(url: url, data: data);
-    if (responses['error']==false){
-    return responses['intent'];
+    if (responses['error'] == false) {
+      return responses['intent'];
     }
   }
 
-    Future<bool> confirmPayment() async {
-      try {
-        await paymentFunction();
-        // 3. display the payment sheet.
-        await Stripe.instance.presentPaymentSheet();
-        return true;
-      } catch (e) {
+  Future<bool> confirmPayment() async {
+    try {
+      await paymentFunction();
+      // 3. display the payment sheet.
+      await Stripe.instance.presentPaymentSheet();
+      return true;
+    } catch (e) {
       print(e.toString());
       rethrow;
-      }
     }
+  }
 
   paymentFunction() async {
-   
     try {
       var response = await paymentIntent();
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
-          paymentIntentClientSecret:response['paymentIntent'].toString(),
+          paymentIntentClientSecret: response['paymentIntent'].toString(),
           merchantDisplayName: 'Watch Em Grow',
           style: ThemeMode.dark,
-           merchantCountryCode: "Uk",
+          merchantCountryCode: "Uk",
         ),
       );
     } on Exception catch (e) {
       if (e is StripeException) {
-     print( e.toString());
+        print(e.toString());
         return false;
       }
     }
@@ -334,11 +330,8 @@ class ServiceViewModel extends BaseViewModel {
   Future<void> navigateToEditServiceView(ShopService service) async {
     await _navigationService.navigateTo(
       Routes.editServiceView,
-      arguments: EditServiceViewArguments(
-        user: user,
-        shop: shop,
-        service:service
-      ),
+      arguments:
+          EditServiceViewArguments(user: user, shop: shop, service: service),
     );
   }
 

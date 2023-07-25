@@ -62,7 +62,8 @@ class InputAddressView extends StatelessWidget {
                         onChanged: (postCode) {
                           model.setPostCode(postCode);
                         },
-                        validator: (postCode) => Validators.emptyStringValidator(
+                        validator: (postCode) =>
+                            Validators.emptyStringValidator(
                           postCode,
                           'Postcode',
                         ),
@@ -78,25 +79,26 @@ class InputAddressView extends StatelessWidget {
                         child: const Text(
                           'Confirm',
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white
-                          ),
+                              fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                       ),
                       20.heightBox,
                       Container(
-                        height: 50,
-                          child: Image.asset('assets/images/paypal_logo.png')),
+                          height: 50,
+                          child: Image.asset('assets/images/stripe_logo.png')),
                       150.heightBox,
                       Container(
                           height: 70,
-                          child: Image.asset('assets/icon/app.png')),
+                          child: Image.asset('assets/icon/app_icon.png')),
                       Container(
                           height: 30,
                           child: Image.asset('assets/icon/shield.png')),
                       10.heightBox,
-                      "We'll keep your funds safe until you confirm that you've received the service".text.center.color(Colors.grey).make()
-
+                      "We'll keep your funds safe until you confirm that you've received the service"
+                          .text
+                          .center
+                          .color(Colors.grey)
+                          .make()
                     ],
                   ),
                 ),

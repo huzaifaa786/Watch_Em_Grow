@@ -396,11 +396,14 @@ class CategoryView extends StatelessWidget {
                                       ),
                                     ],
                                   ).mdClick(() {
-                                    // model.navigateToServiceView(
-                                    //   model.services[index],
-                                    //   model.services[index]shop!.color,
-                                    //   model.shop!.fontStyle,
-                                    // );
+                                    Shop shop = categoryShops.firstWhere(
+                                        (element) =>
+                                            element.id ==
+                                            model.services[index].shopId);
+                                    model.navigateToServiceView(
+                                        model.services[index],
+                                        shop.color,
+                                        shop.fontStyle);
                                   }).make();
                                 }
                                 // },
