@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mipromo/models/app_user.dart';
@@ -6,6 +7,7 @@ import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/ui/category/category_viewmodel.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/shop_card.dart';
+import 'package:mipromo/ui/value/colors.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -13,6 +15,7 @@ import 'package:velocity_x/velocity_x.dart';
 class CategoryView extends StatelessWidget {
   final String category;
   final List<Shop> categoryShops;
+  final List<ShopService> categoryShopServices;
   final List<Shop> allOtherShops;
   final List<AppUser> allSellers;
   final List<ShopService> allServices;
@@ -21,6 +24,7 @@ class CategoryView extends StatelessWidget {
     Key? key,
     required this.category,
     required this.categoryShops,
+    required this.categoryShopServices,
     required this.allOtherShops,
     required this.allSellers,
     required this.allServices,
@@ -29,7 +33,7 @@ class CategoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<CategoryViewModel>.reactive(
-      onModelReady: (model) => model.init(categoryShops),
+      onModelReady: (model) => model.init(categoryShops, categoryShopServices),
       builder: (context, model, child) {
         return model.isBusy
             ? const BasicLoader()
@@ -126,7 +130,9 @@ class CategoryView extends StatelessWidget {
                                 if (model.filteredLocation.isNotEmpty) {
                                   model.shops = model.shops
                                       .where((s) =>
-                                          s.location == model.filteredLocation || s.borough == model.filteredLocation)
+                                          s.location ==
+                                              model.filteredLocation ||
+                                          s.borough == model.filteredLocation)
                                       .toList();
                                   model.notifyListeners();
                                   Navigator.pop(context);
@@ -162,8 +168,8 @@ class CategoryView extends StatelessWidget {
                     ),
                   ),
                 ),
-                body: model.shops.isEmpty
-                    ? "No Shops in this Category".text.makeCentered()
+                body: model.services.isEmpty
+                    ? "No Services in this Category".text.makeCentered()
                     : SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,7 +195,10 @@ class CategoryView extends StatelessWidget {
                                         onPressed: () {
                                           Scaffold.of(context).openDrawer();
                                         },
-                                        label: "Sort".text.color(Colors.grey).make(),
+                                        label: "Sort"
+                                            .text
+                                            .color(Colors.grey)
+                                            .make(),
                                         icon: const Icon(
                                           Icons.swap_vert,
                                           size: 18,
@@ -205,7 +214,10 @@ class CategoryView extends StatelessWidget {
                                         onPressed: () {
                                           Scaffold.of(context).openEndDrawer();
                                         },
-                                        label: "Filter".text.color(Colors.grey).make(),
+                                        label: "Filter"
+                                            .text
+                                            .color(Colors.grey)
+                                            .make(),
                                         icon: const Icon(
                                           Icons.filter_alt_outlined,
                                           size: 18,
@@ -217,32 +229,182 @@ class CategoryView extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
+                            GridView.builder(
+                                padding: EdgeInsets.only(left: 10, right: 10),
                                 shrinkWrap: true,
-                                itemCount: model.shops.length,
+                                physics: const BouncingScrollPhysics(),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 3.0,
+                                  mainAxisSpacing: 3.0,
+                                  childAspectRatio: 1,
+                                ),
+                                itemCount: model.services.length,
                                 itemBuilder: (context, index) {
-                                  final AppUser owner = allSellers.singleWhere(
-                                    (seller) =>
-                                        seller.shopId == model.shops[index].id,
-                                  );
+                                  String imageUrl(
+                                    String? image1,
+                                    String? image2,
+                                    String? image3,
+                                  ) {
+                                    if (image1 == null) {
+                                      if (image2 == null) {
+                                        if (image3 == null) {
+                                          return 'https://via.placeholder.com/600x600.jpg?text=No+image';
+                                        } else {
+                                          return image3;
+                                        }
+                                      } else {
+                                        return image2;
+                                      }
+                                    } else {
+                                      return image1;
+                                    }
+                                  }
 
-                                  return ShopCard(
-                                    owner: owner,
-                                    shop: model.shops[index],
-                                    services: allServices
-                                        .where((service) =>
-                                            service.shopId ==
-                                            model.shops[index].id)
-                                        .toList(),
-                                  );
-                                },
-                              ),
-                            ),
-                            
-                         
+                                  // if (index == model.services.length &&
+                                  //     model.shop!.ownerId ==
+                                  //         model.currentUser.id &&
+                                  //     viewingAsProfile == true) {
+                                  //   return Column(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.center,
+                                  //     children: [
+                                  //       const Icon(Icons.add),
+                                  //       Constants.addServiceLabel.text
+                                  //           .make(),
+                                  //     ],
+                                  //   ).mdClick(() {
+                                  //     model.navigateToCreateServiceView(
+                                  //         model.shop!);
+                                  //   }).make();
+                                  // } else {
+                                  return Column(
+                                    // mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: context.screenHeight / 6.5,
+                                        width: context.screenHeight / 5.2,
+                                        child: Stack(
+                                          children: [
+                                            Positioned.fill(
+                                              child: AspectRatio(
+                                                aspectRatio: 1,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: imageUrl(
+                                                      model.services[index]
+                                                          .imageUrl1,
+                                                      model.services[index]
+                                                          .imageUrl2,
+                                                      model.services[index]
+                                                          .imageUrl3,
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        const Icon(Icons.error),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.bottomLeft,
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10.0,
+                                                            bottom: 10),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        shape:
+                                                            BoxShape.rectangle,
+                                                        color: Vx.black,
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Text(
+                                                          'New',
+                                                          style: TextStyle(
+                                                              color: white),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.35,
+                                                child: model.services[index]
+                                                    .name.text.bold
+                                                    .maxLines(2)
+                                                    .make()
+                                                    .pSymmetric(h: 4, v: 2),
+                                              ),
+                                              "£${model.services[index].price}"
+                                                  .text
+                                                  .xs
+                                                  .make()
+                                                  .px4(),
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8.0),
+                                            child: Container(
+                                              height: 30,
+                                              width: 30,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: white,
+                                              ),
+                                              child: Icon(
+                                                Icons.favorite_border,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ).mdClick(() {
+                                    // model.navigateToServiceView(
+                                    //   model.services[index],
+                                    //   model.services[index]shop!.color,
+                                    //   model.shop!.fontStyle,
+                                    // );
+                                  }).make();
+                                }
+                                // },
+                                )
                           ],
                         ),
                       ),

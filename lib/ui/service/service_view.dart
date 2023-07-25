@@ -86,11 +86,11 @@ class _ServiceViewState extends State<ServiceView> {
             });
   }
 
-  // checkVideo() {
-  //   if (videoPlayerController!.value.isInitialized) {
-  //     videoPlaying = true;
-  //   }
-  // }
+  checkVideo() {
+    if (videoPlayerController!.value.isInitialized) {
+      videoPlaying = true;
+    }
+  }
 
   void dispose() {
     videoPlayerController!.dispose();
@@ -276,10 +276,18 @@ class _ServiceViewState extends State<ServiceView> {
                                     SizedBox(
                                       height: 5,
                                     ),
-                                    "£${widget.service.price.toStringAsFixed(2)}"
-                                        .text
-                                        .lg
-                                        .make(),
+                                    Row(
+                                      children: [
+                                        "£${widget.service.price.toStringAsFixed(2)}"
+                                            .text
+                                            .lg
+                                            .make(),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Constants.priceLabel.text.sm.make(),
+                                      ],
+                                    ),
                                     SizedBox(
                                       height: 5,
                                     ),
@@ -411,7 +419,7 @@ class _ServiceViewState extends State<ServiceView> {
                                   .px4()
                             ],
                           ).px(20),
-                        
+
                           20.heightBox,
                           Container(
                             height: 1,

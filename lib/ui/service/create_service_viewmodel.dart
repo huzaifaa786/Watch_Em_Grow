@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mipromo/api/database_api.dart';
@@ -56,7 +57,8 @@ class CreateServiceViewModel extends BaseViewModel {
   TextEditingController startController = new TextEditingController();
   TextEditingController endController = new TextEditingController();
   // late VideoEditorController _controller;
-  String? selectedType="Product";
+  String? selectedType = "Product";
+  String? selectedCategory = "Category";
 
   bool onesizeValue = false;
   bool xsValue = false;
@@ -82,7 +84,6 @@ class CreateServiceViewModel extends BaseViewModel {
   bool fourteenSize = false;
 
   bool autoValidate = false;
-
   List<String> sizes = [];
 
   void showErrors() {
@@ -103,6 +104,11 @@ class CreateServiceViewModel extends BaseViewModel {
         sizes.add(value);
       }
     }
+    notifyListeners();
+  }
+
+  void getSelectedCategory(String category) {
+    selectedCategory = category;
     notifyListeners();
   }
 
@@ -144,12 +150,15 @@ class CreateServiceViewModel extends BaseViewModel {
             time: DateTime.now().microsecondsSinceEpoch,
             ownerId: shop.ownerId,
             name: serviceName,
+            category: shop.category,
             description: description.trimRight(),
             price: double.parse(price),
             depositAmount: double.parse(depositAmount),
             aspectRatio: serviceAspectRatio,
             type: selectedType!,
-             duration: selectedType != "Product" ? int.parse(durationController.text) : null,
+            duration: selectedType != "Product"
+                ? int.parse(durationController.text)
+                : null,
             sizes: selectedType == "Product" ? sizes : null,
             bookingNote: selectedType != "Product"
                 ? noteController.text.toString()
@@ -205,17 +214,19 @@ class CreateServiceViewModel extends BaseViewModel {
         Alerts.showErrorSnackbar('Please Select Type');
         return false;
       }
-       if (int.parse(price) > 999) {
+      if (int.parse(price) > 999) {
         Alerts.showErrorSnackbar('Price should be less than 1000');
         return false;
       }
       if (selectedType == 'Service') {
-        if (Validators.emptyStringValidator(durationController.text, 'Duration') != null) {
+        if (Validators.emptyStringValidator(
+                durationController.text, 'Duration') !=
+            null) {
           Alerts.showErrorSnackbar('Please Enter Duration');
           return false;
-        } 
+        }
       }
-    
+
       if (_selectedImage1 != null) {
         return true;
       } else {

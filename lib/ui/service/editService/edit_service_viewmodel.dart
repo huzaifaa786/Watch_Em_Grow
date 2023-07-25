@@ -199,6 +199,7 @@ class EditServiceViewModel extends BaseViewModel {
             time: DateTime.now().microsecondsSinceEpoch,
             ownerId: shop.ownerId,
             name: serviceName,
+            category: shop.category,
             description: description.trimRight(),
             price: double.parse(price),
             depositAmount: double.parse(depositAmount),
@@ -474,7 +475,7 @@ class EditServiceViewModel extends BaseViewModel {
         serviceId: servicee.id,
         imageNumber: '1',
         imageToUpload: _finalImage1!,
-        imageUrl:  servicee.imageUrl1 != null ? servicee.imageUrl1 : null,
+        imageUrl: servicee.imageUrl1 != null ? servicee.imageUrl1 : null,
       );
 
       await _databaseApi.updateServiceImage1Data(
@@ -506,7 +507,7 @@ class EditServiceViewModel extends BaseViewModel {
         serviceId: servicee.id,
         imageNumber: '3',
         imageToUpload: _finalImage3!,
-        imageUrl:  servicee.imageUrl3 != null ? servicee.imageUrl3 : null,
+        imageUrl: servicee.imageUrl3 != null ? servicee.imageUrl3 : null,
       );
 
       await _databaseApi.updateServiceImage3Data(

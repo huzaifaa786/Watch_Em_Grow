@@ -323,7 +323,6 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
-     
     BuyerProfileView: (data) {
       var args = data.getArgs<BuyerProfileViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
@@ -427,6 +426,7 @@ class StackedRouter extends RouterBase {
           key: args.key,
           category: args.category,
           categoryShops: args.categoryShops,
+          categoryShopServices: args.categoryShopServices,
           allOtherShops: args.allOtherShops,
           allSellers: args.allSellers,
           allServices: args.allServices,
@@ -434,8 +434,6 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
-   
-   
     CategoryFilterView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const CategoryFilterView(),
@@ -680,6 +678,7 @@ class SellerProfileViewArguments {
   SellerProfileViewArguments(
       {this.key, required this.seller, this.viewingAsProfile});
 }
+
 /// SellerProductView arguments holder class
 class SellerProductViewArguments {
   final Key? key;
@@ -688,6 +687,7 @@ class SellerProductViewArguments {
   SellerProductViewArguments(
       {this.key, required this.seller, this.viewingAsProfile});
 }
+
 /// SellerSignupView arguments holder class
 class SellerSignupViewArguments {
   final Key? key;
@@ -740,6 +740,15 @@ class ServiceViewArguments {
       required this.fontStyle});
 }
 
+class ServiceViewsArguments {
+  final Key? key;
+  final ShopService service;
+  ServiceViewsArguments({
+    this.key,
+    required this.service,
+  });
+}
+
 /// ProfileUpdate arguments holder class
 class ProfileUpdateArguments {
   final Key? key;
@@ -762,6 +771,7 @@ class CategoryViewArguments {
   final Key? key;
   final String category;
   final List<Shop> categoryShops;
+  final List<ShopService> categoryShopServices;
   final List<Shop> allOtherShops;
   final List<AppUser> allSellers;
   final List<ShopService> allServices;
@@ -769,11 +779,11 @@ class CategoryViewArguments {
       {this.key,
       required this.category,
       required this.categoryShops,
+      required this.categoryShopServices,
       required this.allOtherShops,
       required this.allSellers,
       required this.allServices});
 }
-
 
 /// ChatsView arguments holder class
 class ChatsViewArguments {

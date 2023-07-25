@@ -325,7 +325,7 @@ class SellerProductView extends StatelessWidget {
                                         }
 
                                         return Column(
-                                          mainAxisSize: MainAxisSize.max,
+                                          // mainAxisSize: MainAxisSize.max,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
@@ -335,8 +335,9 @@ class SellerProductView extends StatelessWidget {
                                                   // border: Border.all(color: Colors.white, width: 0.5),
                                                   // borderRadius: BorderRadius.circular(10)
                                                   ),
-                                              height: context.screenHeight / 6,
-                                              width: context.screenHeight / 4.5,
+                                              height:
+                                                  context.screenHeight / 6.5,
+                                              width: context.screenHeight / 5.2,
                                               child: Stack(
                                                 children: [
                                                   Positioned.fill(

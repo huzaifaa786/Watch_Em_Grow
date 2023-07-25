@@ -33,106 +33,107 @@ class _HomeViewState extends State<HomeView> {
       onModelReady: (model) => model.init(),
       builder: (context, model, child) => model.isBusy
           ? const BasicLoader()
-          :  Scaffold(
-                  body: SafeArea(
-                    child: RefreshIndicator(
-                      onRefresh: model.reload,
-                      child: SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        child: Container(
-                          child: Column(
+          : Scaffold(
+              body: SafeArea(
+                child: RefreshIndicator(
+                  onRefresh: model.reload,
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                              BannerCard(onPressed: () {})
+                              //              Card(
+                              //   child: ListTile(
+                              //     title: TextField(
+                              //       // controller: controller,
+                              //       decoration: const InputDecoration(
+                              //         hintText: 'Search',
+                              //         border: InputBorder.none,
+                              //       ),
+                              //       // onChanged: onChanged,
+                              //     ),
+                              //     trailing: IconButton(
+                              //       icon: const Icon(Icons.search),
+                              //       onPressed: () {
+                              //         Navigator.push(
+                              //           context,
+                              //           MaterialPageRoute(
+                              //               builder: (context) => const SearchView()),
+                              //         );
+                              //       },
+                              //     ),
+                              //   ),
+                              // ).p8(),
 
-                                  BannerCard(onPressed: (){})
-                        //              Card(
-                        //   child: ListTile(
-                        //     title: TextField(
-                        //       // controller: controller,
-                        //       decoration: const InputDecoration(
-                        //         hintText: 'Search',
-                        //         border: InputBorder.none,
-                        //       ),
-                        //       // onChanged: onChanged,
-                        //     ),
-                        //     trailing: IconButton(
-                        //       icon: const Icon(Icons.search),
-                        //       onPressed: () {
-                        //         Navigator.push(
-                        //           context,
-                        //           MaterialPageRoute(
-                        //               builder: (context) => const SearchView()),
-                        //         );
-                        //       },
-                        //     ),
-                        //   ),
-                        // ).p8(),
-                        
-                                  // Container(
-                                  //   height: 160,
-                                  //   child: Swiper(
-                                  //     physics: const BouncingScrollPhysics(),
-                                  //     itemCount: model.featuredShops
-                                  //         .length /* <= 3
-                                  //         ? model.allShops.length
-                                  //         : 3*/
-                                  //     ,
-                                  //     autoplay: true,
-                                  //     loop: false,
-                                  //     curve: Curves.easeInOutQuart,
-                                  //     duration: 800,
-                                  //     itemBuilder: (context, index) =>
-                                  //         FeaturedShopCard(
-                                  //       shop: model.featuredShops[index],
-                                  //       shopOwner: model.allSellers.singleWhere(
-                                  //         (owner) =>
-                                  //             owner.shopId ==
-                                  //             model.featuredShops[index].id,
-                                  //       ),
-                                  //     ).mdClick(() {
-                                  //       model.navigateToShopView(
-                                  //         shop: model.featuredShops[index],
-                                  //         owner: model.allSellers.singleWhere(
-                                  //           (owner) =>
-                                  //               owner.shopId ==
-                                  //               model.featuredShops[index].id,
-                                  //         ),
-                                  //       );
-                                  //     }).make(),
-                                  //   ),
-                                  // ),
-                              
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  "Shop by Age"
-                                      .text
-                                      .xl
-                                      .bold
-                                      .make()
-                                      .pLTRB(22, 12, 0, 12),
-                                  SizedBox(
-                                    height:275,
-                                    child: GridView.builder(
-                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                                      physics: const BouncingScrollPhysics(),
-                                      itemCount: model.categories.length,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, index) {
-                                        final assetImage = AssetImage(
-                                          model.categories[index].imageUrl,
-                                        );
-                                        precacheImage(assetImage, context);
-                                        return Column(
+                              // Container(
+                              //   height: 160,
+                              //   child: Swiper(
+                              //     physics: const BouncingScrollPhysics(),
+                              //     itemCount: model.featuredShops
+                              //         .length /* <= 3
+                              //         ? model.allShops.length
+                              //         : 3*/
+                              //     ,
+                              //     autoplay: true,
+                              //     loop: false,
+                              //     curve: Curves.easeInOutQuart,
+                              //     duration: 800,
+                              //     itemBuilder: (context, index) =>
+                              //         FeaturedShopCard(
+                              //       shop: model.featuredShops[index],
+                              //       shopOwner: model.allSellers.singleWhere(
+                              //         (owner) =>
+                              //             owner.shopId ==
+                              //             model.featuredShops[index].id,
+                              //       ),
+                              //     ).mdClick(() {
+                              //       model.navigateToShopView(
+                              //         shop: model.featuredShops[index],
+                              //         owner: model.allSellers.singleWhere(
+                              //           (owner) =>
+                              //               owner.shopId ==
+                              //               model.featuredShops[index].id,
+                              //         ),
+                              //       );
+                              //     }).make(),
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              "Shop by Age"
+                                  .text
+                                  .xl
+                                  .bold
+                                  .make()
+                                  .pLTRB(22, 12, 0, 12),
+                              SizedBox(
+                                height: 275,
+                                child: GridView.builder(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2),
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: model.categories.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    final assetImage = AssetImage(
+                                      model.categories[index].imageUrl,
+                                    );
+                                    precacheImage(assetImage, context);
+                                    return Column(
+                                      children: [
+                                        Row(
                                           children: [
-                                            Row(children: [
-                                              CircleAvatar(
-                                              radius: context.screenWidth/9 ,
+                                            CircleAvatar(
+                                              radius: context.screenWidth / 8,
                                               backgroundColor: Colors.grey[300],
                                               child: ClipOval(
                                                 child: Image(
@@ -153,72 +154,69 @@ class _HomeViewState extends State<HomeView> {
                                                 );
                                               },
                                             ).make(),
-                                            ],),
-                                           Row(
-                                            children: [
-                                                SizedBox(
-                                                width: 110,
-                                                child: Text(
-                                                    model
-                                                        .categories[index].name,
-                                                    textAlign:
-                                                        TextAlign.center)),
-                                            ],
-                                           )
-                                          
                                           ],
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
+                                        ),
+                                        // Row(
+                                        //   children: [
+                                        //     SizedBox(
+                                        //         width: 110,
+                                        //         child: Text(
+                                        //             model
+                                        //                 .categories[index].name,
+                                        //             textAlign:
+                                        //                 TextAlign.center)),
+                                        //   ],
+                                        // )
+                                      ],
+                                    );
+                                  },
+                                ),
                               ),
-                              if (model.bestSellers.isNotEmpty)
-                                "Sellers to Watch"
-                                    .text
-                                    .xl
-                                    .bold
-                                    .make()
-                                    .pLTRB(22, 12, 0, 0),    
-                              ListView.builder(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12),
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: model.bestSellers.length,
-                                  itemBuilder: (context, index) {
-                                    final owner = model.allSellers.singleWhere(
-                                        (owner) =>
-                                            owner.id ==
-                                            model.bestSellers[index].ownerId);
-
-                                    final mservices = model.allServices
-                                        .where((s) =>
-                                            s.shopId ==
-                                            model.bestSellers[index].id)
-                                        .toList();
-                                    return ShopCard(
-                                      owner: owner,
-                                      shop: model.bestSellers[index],
-                                      services: mservices,
-                                    ).p8();
-                                  }),
-                                  if(model.bestSellers.isEmpty)
-                                  "Not Yet Available Bestseller"
-                                    .text
-                                    .xl
-                                    .bold
-                                    .make()
-                                    .pLTRB(22, 12, 0, 0),
                             ],
                           ),
-                        ),
+                          if (model.bestSellers.isNotEmpty)
+                            "Sellers to Watch"
+                                .text
+                                .xl
+                                .bold
+                                .make()
+                                .pLTRB(22, 12, 0, 0),
+                          ListView.builder(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: model.bestSellers.length,
+                              itemBuilder: (context, index) {
+                                final owner = model.allSellers.singleWhere(
+                                    (owner) =>
+                                        owner.id ==
+                                        model.bestSellers[index].ownerId);
+
+                                final mservices = model.allServices
+                                    .where((s) =>
+                                        s.shopId == model.bestSellers[index].id)
+                                    .toList();
+                                return ShopCard(
+                                  owner: owner,
+                                  shop: model.bestSellers[index],
+                                  services: mservices,
+                                ).p8();
+                              }),
+                          if (model.bestSellers.isEmpty)
+                            "Not Yet Available Bestseller"
+                                .text
+                                .xl
+                                .bold
+                                .make()
+                                .pLTRB(22, 12, 0, 0),
+                        ],
                       ),
                     ),
                   ),
                 ),
-     
-     
+              ),
+            ),
       viewModelBuilder: () => HomeViewModel(),
     );
   }

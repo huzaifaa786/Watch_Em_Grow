@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:helpers/helpers/misc.dart';
 import 'package:helpers/helpers/widgets/text.dart';
@@ -15,6 +16,7 @@ import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/ui/service/create_service_viewmodel.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
 import 'package:mipromo/ui/shared/helpers/styles.dart';
+import 'package:mipromo/ui/shared/helpers/swiper_controller_hook.dart';
 import 'package:mipromo/ui/shared/helpers/validators.dart';
 import 'package:mipromo/ui/shared/widgets/basic_loader.dart';
 import 'package:mipromo/ui/shared/widgets/busy_button.dart';
@@ -191,6 +193,7 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                     InputField(
                       hintText: Constants.serviceNameLabel,
                       validate: model.autoValidate,
+                      maxLength: 15,
                       validator: (serviceName) =>
                           Validators.emptyStringValidator(
                         serviceName,
@@ -205,7 +208,7 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                       validate: model.autoValidate,
                       maxLines: null,
                       maxLength: 1000,
-                      counter: '',
+                      // counter: '',
                       textInputType: TextInputType.multiline,
                       validator: (description) =>
                           Validators.emptyStringValidator(
@@ -216,6 +219,7 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                         model.description = description;
                       },
                     ),
+
                     // DropdownButtonFormField<String>(
                     //   autovalidateMode: model.autoValidate
                     //       ? AutovalidateMode.always
@@ -254,265 +258,263 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                     //       v: 12,
                     //     ),
                     // if (model.selectedType == Constants.productLabel)
-                      // if (widget.shop.category == 'Footwear & Resellers' ||
-                      //     widget.shop.category == 'Clothing Brands')
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                    // if (widget.shop.category == 'Footwear & Resellers' ||
+                    //     widget.shop.category == 'Clothing Brands')
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Constants.selectSizesLabel.text.gray600.make().py4(),
+                        Wrap(
+                          spacing: 10,
                           children: [
-                            Constants.selectSizesLabel.text.gray600
-                                .make()
-                                .py4(),
-                            Wrap(
-                              spacing: 10,
-                              children: [
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.oneSize,
-                                  label: '1-2'.text.sm.make(),
-                                  onSelected: (value) {
-                                    model.oneSize = value;
-                                    model.selectedSizes('1-2');
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.twoSize,
-                                  label: '2-3'.text.sm.make(),
-                                  onSelected: (value) {
-                                    model.twoSize = value;
-                                    model.selectedSizes('2-3');
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.threeSize,
-                                  label: '4-5'.text.sm.make(),
-                                  onSelected: (value) {
-                                    model.threeSize = value;
-                                    model.selectedSizes('4-5');
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.fourSize,
-                                  label: '5-6'.text.sm.make(),
-                                  onSelected: (value) {
-                                    model.fourSize = value;
-                                    model.selectedSizes('5-6');
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.fiveSize,
-                                  label: '7-8'.text.sm.make(),
-                                  onSelected: (value) {
-                                    model.fiveSize = value;
-                                    model.selectedSizes('7-8');
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.sixSize,
-                                  label: '9-10'.text.sm.make(),
-                                  onSelected: (value) {
-                                    model.sixSize = value;
-                                    model.selectedSizes('9-10');
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.sevenSize,
-                                  label: '11-12'.text.sm.make(),
-                                  onSelected: (value) {
-                                    model.sevenSize = value;
-                                    model.selectedSizes('11-12');
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.eightSize,
-                                  label: '13-14'.text.sm.make(),
-                                  onSelected: (value) {
-                                    model.eightSize = value;
-                                    model.selectedSizes('13-14');
-                                  },
-                                ),
-                             
-                              ],
+                            FilterChip(
+                              selectedColor: Colors.lightBlue.shade100,
+                              selected: model.oneSize,
+                              label: '1-2'.text.sm.make(),
+                              onSelected: (value) {
+                                model.oneSize = value;
+                                model.selectedSizes('1-2');
+                              },
                             ),
-                            Wrap(
-                              spacing: 10,
-                              children: [
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.xsValue,
-                                  label: Constants.xsLabel.text.sm.make(),
-                                  onSelected: (value) {
-                                    if (model.onesizeValue) {
-                                    } else {
-                                      model.xsValue = value;
-                                      model.selectedSizes(Constants.xsLabel);
-                                    }
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.sValue,
-                                  label: Constants.sLabel.text.sm.make(),
-                                  onSelected: (value) {
-                                    if (model.onesizeValue) {
-                                    } else {
-                                      model.sValue = value;
-                                      model.selectedSizes(Constants.sLabel);
-                                    }
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.mValue,
-                                  label: Constants.mLabel.text.sm.make(),
-                                  onSelected: (value) {
-                                    if (model.onesizeValue) {
-                                    } else {
-                                      model.mValue = value;
-                                      model.selectedSizes(Constants.mLabel);
-                                    }
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.lValue,
-                                  label: Constants.lLabel.text.sm.make(),
-                                  onSelected: (value) {
-                                    if (model.onesizeValue) {
-                                    } else {
-                                      model.lValue = value;
-                                      model.selectedSizes(Constants.lLabel);
-                                    }
-                                  },
-                                ),
-                                FilterChip(
-                                  selectedColor: Colors.lightBlue.shade100,
-                                  selected: model.xlValue,
-                                  label: Constants.xlLabel.text.sm.make(),
-                                  onSelected: (value) {
-                                    if (model.onesizeValue) {
-                                    } else {
-                                      model.xlValue = value;
-                                      model.selectedSizes(Constants.xlLabel);
-                                    }
-                                  },
-                                ),
-                              ],
+                            FilterChip(
+                              selectedColor: Colors.lightBlue.shade100,
+                              selected: model.twoSize,
+                              label: '2-3'.text.sm.make(),
+                              onSelected: (value) {
+                                model.twoSize = value;
+                                model.selectedSizes('2-3');
+                              },
+                            ),
+                            FilterChip(
+                              selectedColor: Colors.lightBlue.shade100,
+                              selected: model.threeSize,
+                              label: '4-5'.text.sm.make(),
+                              onSelected: (value) {
+                                model.threeSize = value;
+                                model.selectedSizes('4-5');
+                              },
+                            ),
+                            FilterChip(
+                              selectedColor: Colors.lightBlue.shade100,
+                              selected: model.fourSize,
+                              label: '5-6'.text.sm.make(),
+                              onSelected: (value) {
+                                model.fourSize = value;
+                                model.selectedSizes('5-6');
+                              },
+                            ),
+                            FilterChip(
+                              selectedColor: Colors.lightBlue.shade100,
+                              selected: model.fiveSize,
+                              label: '7-8'.text.sm.make(),
+                              onSelected: (value) {
+                                model.fiveSize = value;
+                                model.selectedSizes('7-8');
+                              },
+                            ),
+                            FilterChip(
+                              selectedColor: Colors.lightBlue.shade100,
+                              selected: model.sixSize,
+                              label: '9-10'.text.sm.make(),
+                              onSelected: (value) {
+                                model.sixSize = value;
+                                model.selectedSizes('9-10');
+                              },
+                            ),
+                            FilterChip(
+                              selectedColor: Colors.lightBlue.shade100,
+                              selected: model.sevenSize,
+                              label: '11-12'.text.sm.make(),
+                              onSelected: (value) {
+                                model.sevenSize = value;
+                                model.selectedSizes('11-12');
+                              },
+                            ),
+                            FilterChip(
+                              selectedColor: Colors.lightBlue.shade100,
+                              selected: model.eightSize,
+                              label: '13-14'.text.sm.make(),
+                              onSelected: (value) {
+                                model.eightSize = value;
+                                model.selectedSizes('13-14');
+                              },
                             ),
                           ],
                         ),
-                      // else
-                        // Column(
-                        //   crossAxisAlignment: CrossAxisAlignment.start,
-                        //   children: [
-                        //     Constants.selectSizesLabel.text.gray600
-                        //         .make()
-                        //         .py4(),
-                        //     Wrap(
-                        //       spacing: 10,
-                        //       children: [
-                        //         FilterChip(
-                        //           selectedColor: Colors.lightBlue.shade100,
-                        //           selected: model.onesizeValue,
-                        //           label: Constants.onesizeLabel.text.sm.make(),
-                        //           onSelected: (value) {
-                        //             if (model.xsValue ||
-                        //                 model.sValue ||
-                        //                 model.mValue ||
-                        //                 model.lValue ||
-                        //                 model.xlValue ||
-                        //                 model.xxlValue) {
-                        //             } else {
-                        //               model.onesizeValue = value;
-                        //               model.selectedSizes(
-                        //                 Constants.onesizeLabel,
-                        //               );
-                        //             }
-                        //           },
-                        //         ),
-                        //         FilterChip(
-                        //           selectedColor: Colors.lightBlue.shade100,
-                        //           selected: model.xsValue,
-                        //           label: Constants.xsLabel.text.sm.make(),
-                        //           onSelected: (value) {
-                        //             if (model.onesizeValue) {
-                        //             } else {
-                        //               model.xsValue = value;
-                        //               model.selectedSizes(Constants.xsLabel);
-                        //             }
-                        //           },
-                        //         ),
-                        //         FilterChip(
-                        //           selectedColor: Colors.lightBlue.shade100,
-                        //           selected: model.sValue,
-                        //           label: Constants.sLabel.text.sm.make(),
-                        //           onSelected: (value) {
-                        //             if (model.onesizeValue) {
-                        //             } else {
-                        //               model.sValue = value;
-                        //               model.selectedSizes(Constants.sLabel);
-                        //             }
-                        //           },
-                        //         ),
-                        //         FilterChip(
-                        //           selectedColor: Colors.lightBlue.shade100,
-                        //           selected: model.mValue,
-                        //           label: Constants.mLabel.text.sm.make(),
-                        //           onSelected: (value) {
-                        //             if (model.onesizeValue) {
-                        //             } else {
-                        //               model.mValue = value;
-                        //               model.selectedSizes(Constants.mLabel);
-                        //             }
-                        //           },
-                        //         ),
-                        //         FilterChip(
-                        //           selectedColor: Colors.lightBlue.shade100,
-                        //           selected: model.lValue,
-                        //           label: Constants.lLabel.text.sm.make(),
-                        //           onSelected: (value) {
-                        //             if (model.onesizeValue) {
-                        //             } else {
-                        //               model.lValue = value;
-                        //               model.selectedSizes(Constants.lLabel);
-                        //             }
-                        //           },
-                        //         ),
-                        //         FilterChip(
-                        //           selectedColor: Colors.lightBlue.shade100,
-                        //           selected: model.xlValue,
-                        //           label: Constants.xlLabel.text.sm.make(),
-                        //           onSelected: (value) {
-                        //             if (model.onesizeValue) {
-                        //             } else {
-                        //               model.xlValue = value;
-                        //               model.selectedSizes(Constants.xlLabel);
-                        //             }
-                        //           },
-                        //         ),
-                        //         FilterChip(
-                        //           selectedColor: Colors.lightBlue.shade100,
-                        //           selected: model.xxlValue,
-                        //           label: Constants.xxlLabel.text.sm.make(),
-                        //           onSelected: (value) {
-                        //             if (model.onesizeValue) {
-                        //             } else {
-                        //               model.xxlValue = value;
-                        //               model.selectedSizes(Constants.xxlLabel);
-                        //             }
-                        //           },
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ],
-                        // ),
-                  
+                        Wrap(
+                          spacing: 10,
+                          children: [
+                            FilterChip(
+                              selectedColor: Colors.lightBlue.shade100,
+                              selected: model.xsValue,
+                              label: Constants.xsLabel.text.sm.make(),
+                              onSelected: (value) {
+                                if (model.onesizeValue) {
+                                } else {
+                                  model.xsValue = value;
+                                  model.selectedSizes(Constants.xsLabel);
+                                }
+                              },
+                            ),
+                            FilterChip(
+                              selectedColor: Colors.lightBlue.shade100,
+                              selected: model.sValue,
+                              label: Constants.sLabel.text.sm.make(),
+                              onSelected: (value) {
+                                if (model.onesizeValue) {
+                                } else {
+                                  model.sValue = value;
+                                  model.selectedSizes(Constants.sLabel);
+                                }
+                              },
+                            ),
+                            FilterChip(
+                              selectedColor: Colors.lightBlue.shade100,
+                              selected: model.mValue,
+                              label: Constants.mLabel.text.sm.make(),
+                              onSelected: (value) {
+                                if (model.onesizeValue) {
+                                } else {
+                                  model.mValue = value;
+                                  model.selectedSizes(Constants.mLabel);
+                                }
+                              },
+                            ),
+                            FilterChip(
+                              selectedColor: Colors.lightBlue.shade100,
+                              selected: model.lValue,
+                              label: Constants.lLabel.text.sm.make(),
+                              onSelected: (value) {
+                                if (model.onesizeValue) {
+                                } else {
+                                  model.lValue = value;
+                                  model.selectedSizes(Constants.lLabel);
+                                }
+                              },
+                            ),
+                            FilterChip(
+                              selectedColor: Colors.lightBlue.shade100,
+                              selected: model.xlValue,
+                              label: Constants.xlLabel.text.sm.make(),
+                              onSelected: (value) {
+                                if (model.onesizeValue) {
+                                } else {
+                                  model.xlValue = value;
+                                  model.selectedSizes(Constants.xlLabel);
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    // else
+                    // Column(
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: [
+                    //     Constants.selectSizesLabel.text.gray600
+                    //         .make()
+                    //         .py4(),
+                    //     Wrap(
+                    //       spacing: 10,
+                    //       children: [
+                    //         FilterChip(
+                    //           selectedColor: Colors.lightBlue.shade100,
+                    //           selected: model.onesizeValue,
+                    //           label: Constants.onesizeLabel.text.sm.make(),
+                    //           onSelected: (value) {
+                    //             if (model.xsValue ||
+                    //                 model.sValue ||
+                    //                 model.mValue ||
+                    //                 model.lValue ||
+                    //                 model.xlValue ||
+                    //                 model.xxlValue) {
+                    //             } else {
+                    //               model.onesizeValue = value;
+                    //               model.selectedSizes(
+                    //                 Constants.onesizeLabel,
+                    //               );
+                    //             }
+                    //           },
+                    //         ),
+                    //         FilterChip(
+                    //           selectedColor: Colors.lightBlue.shade100,
+                    //           selected: model.xsValue,
+                    //           label: Constants.xsLabel.text.sm.make(),
+                    //           onSelected: (value) {
+                    //             if (model.onesizeValue) {
+                    //             } else {
+                    //               model.xsValue = value;
+                    //               model.selectedSizes(Constants.xsLabel);
+                    //             }
+                    //           },
+                    //         ),
+                    //         FilterChip(
+                    //           selectedColor: Colors.lightBlue.shade100,
+                    //           selected: model.sValue,
+                    //           label: Constants.sLabel.text.sm.make(),
+                    //           onSelected: (value) {
+                    //             if (model.onesizeValue) {
+                    //             } else {
+                    //               model.sValue = value;
+                    //               model.selectedSizes(Constants.sLabel);
+                    //             }
+                    //           },
+                    //         ),
+                    //         FilterChip(
+                    //           selectedColor: Colors.lightBlue.shade100,
+                    //           selected: model.mValue,
+                    //           label: Constants.mLabel.text.sm.make(),
+                    //           onSelected: (value) {
+                    //             if (model.onesizeValue) {
+                    //             } else {
+                    //               model.mValue = value;
+                    //               model.selectedSizes(Constants.mLabel);
+                    //             }
+                    //           },
+                    //         ),
+                    //         FilterChip(
+                    //           selectedColor: Colors.lightBlue.shade100,
+                    //           selected: model.lValue,
+                    //           label: Constants.lLabel.text.sm.make(),
+                    //           onSelected: (value) {
+                    //             if (model.onesizeValue) {
+                    //             } else {
+                    //               model.lValue = value;
+                    //               model.selectedSizes(Constants.lLabel);
+                    //             }
+                    //           },
+                    //         ),
+                    //         FilterChip(
+                    //           selectedColor: Colors.lightBlue.shade100,
+                    //           selected: model.xlValue,
+                    //           label: Constants.xlLabel.text.sm.make(),
+                    //           onSelected: (value) {
+                    //             if (model.onesizeValue) {
+                    //             } else {
+                    //               model.xlValue = value;
+                    //               model.selectedSizes(Constants.xlLabel);
+                    //             }
+                    //           },
+                    //         ),
+                    //         FilterChip(
+                    //           selectedColor: Colors.lightBlue.shade100,
+                    //           selected: model.xxlValue,
+                    //           label: Constants.xxlLabel.text.sm.make(),
+                    //           onSelected: (value) {
+                    //             if (model.onesizeValue) {
+                    //             } else {
+                    //               model.xxlValue = value;
+                    //               model.selectedSizes(Constants.xxlLabel);
+                    //             }
+                    //           },
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ],
+                    // ),
+
                     //   const SizedBox.shrink(),
                     InputField(
                       hintText: Constants.priceLabel,
@@ -530,7 +532,7 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                         model.price = price;
                       },
                     ),
-                   
+
                     // if (model.selectedType == Constants.serviceLabel)
                     //   InputField(
                     //     hintText: "Duration/min",
@@ -562,10 +564,9 @@ class _CreateServiceViewState extends State<CreateServiceView> {
                     //       model.depositAmount = depositAmount;
                     //     },
                     //   ),
-                     
+
                     // ],
-                    
-                    
+
                     // InputField(
                     //   hintText: "Appointment address",
                     //   //maxLength: 5,

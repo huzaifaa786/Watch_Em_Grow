@@ -258,8 +258,8 @@ class SellerProfileView extends StatelessWidget {
                               },
                               headerButton: model.shop != null
                                   ? model.shop!.ownerId == model.currentUser.id
-                                      ? Container(): 
-                                      Row(
+                                      ? Container()
+                                      : Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
                                           children: [
@@ -480,14 +480,15 @@ class SellerProfileView extends StatelessWidget {
                                   )
                                 else if (!model.listview)
                                   GridView.builder(
-                                      padding: EdgeInsets.all(10),
+                                      padding:
+                                          EdgeInsets.only(left: 10, right: 10),
                                       shrinkWrap: true,
                                       physics: const BouncingScrollPhysics(),
                                       gridDelegate:
                                           const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
-                                        crossAxisSpacing: 10.0,
-                                        mainAxisSpacing: 10.0,
+                                        crossAxisSpacing: 3.0,
+                                        mainAxisSpacing: 3.0,
                                         childAspectRatio: 1,
                                       ),
                                       itemCount: model.shop!.ownerId ==
@@ -533,14 +534,15 @@ class SellerProfileView extends StatelessWidget {
                                         //         model.shop!);
                                         //   }).make();
                                         // } else {
-                                       return Column(
-                                          mainAxisSize: MainAxisSize.max,
+                                        return Column(
+                                          // mainAxisSize: MainAxisSize.max,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Container(
-                                              height: context.screenHeight / 7,
-                                              width: context.screenHeight / 4.5,
+                                              height:
+                                                  context.screenHeight / 6.5,
+                                              width: context.screenHeight / 5.2,
                                               child: Stack(
                                                 children: [
                                                   Positioned.fill(
@@ -584,22 +586,32 @@ class SellerProfileView extends StatelessWidget {
                                                           padding:
                                                               const EdgeInsets
                                                                       .only(
-                                                                  left: 10.0,bottom: 10),
+                                                                  left: 10.0,
+                                                                  bottom: 10),
                                                           child: Container(
                                                             decoration:
                                                                 BoxDecoration(
-                                                                  borderRadius: BorderRadius.circular(5),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5),
                                                               shape: BoxShape
                                                                   .rectangle,
                                                               color: Vx.black,
                                                             ),
-                                                           child: Padding(
-                                                             padding: const EdgeInsets.all(8.0),
-                                                             child: Text('New',style: TextStyle(color: white),),
-                                                           ),
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Text(
+                                                                'New',
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        white),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
-                                                     
                                                       ],
                                                     ),
                                                   ),
@@ -607,43 +619,55 @@ class SellerProfileView extends StatelessWidget {
                                               ),
                                             ),
                                             Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     SizedBox(
-                                                      width:MediaQuery.of(context).size.width*0.35,
-                                                      child:model.services[index].name.text.bold
-                                                .maxLines(2)
-                                                .make()
-                                                .pSymmetric(h: 4, v: 2),),
-                                            "£${model.services[index].price}"
-                                                .text
-                                                .xs
-                                                .make()
-                                                .px4(),
-                                            ],),
-                                            Padding(
-                                              padding: const EdgeInsets.only(top:8.0),
-                                              child: Container(
-                                                              height: 30,
-                                                              width: 30,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                shape: BoxShape
-                                                                    .circle,
-                                                                color: white,
-                                                              ),
-                                                              child: Icon(
-                                                                Icons
-                                                                    .favorite_border,
-                                                                color:
-                                                                    Colors.black,
-                                                              ),
-                                                            ),
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.35,
+                                                      child: model
+                                                          .services[index]
+                                                          .name
+                                                          .text
+                                                          .bold
+                                                          .maxLines(2)
+                                                          .make()
+                                                          .pSymmetric(
+                                                              h: 4, v: 2),
+                                                    ),
+                                                    "£${model.services[index].price}"
+                                                        .text
+                                                        .xs
+                                                        .make()
+                                                        .px4(),
+                                                  ],
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8.0),
+                                                  child: Container(
+                                                    height: 30,
+                                                    width: 30,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: white,
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.favorite_border,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            ],),
-                                           
                                           ],
                                         ).mdClick(() {
                                           model.navigateToServiceView(

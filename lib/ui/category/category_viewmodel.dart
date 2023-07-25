@@ -10,7 +10,10 @@ class CategoryViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
 
   List<Shop> shops = [];
+  List<ShopService> services = [];
+
   List<Shop> chachedShops = [];
+  List<ShopService> chachedShopServices = [];
 
   List<String> searchedLocations = [];
 
@@ -18,11 +21,12 @@ class CategoryViewModel extends BaseViewModel {
 
   String filteredLocation = '';
 
-
-  void init(List<Shop> categoryShops) {
+  void init(List<Shop> categoryShops, List<ShopService> categoryShopServices) {
     setBusy(true);
     shops = categoryShops;
+    services = categoryShopServices;
     chachedShops = categoryShops;
+    chachedShopServices = categoryShopServices;
     notifyListeners();
     setBusy(false);
   }
@@ -54,6 +58,15 @@ class CategoryViewModel extends BaseViewModel {
         service: service,
         color: color,
         fontStyle: font,
+      ),
+    );
+  }
+
+  Future navigateToServiceViews(ShopService service) async {
+    await _navigationService.navigateTo(
+      Routes.serviceView,
+      arguments: ServiceViewsArguments(
+        service: service,
       ),
     );
   }

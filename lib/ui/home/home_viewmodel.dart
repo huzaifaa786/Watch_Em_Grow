@@ -13,23 +13,25 @@ import 'package:stacked/stacked.dart';
 import 'dart:developer';
 import 'package:stacked_services/stacked_services.dart';
 
-
 class MyFilter extends LogFilter {
   @override
   bool shouldLog(LogEvent event) {
     return true;
   }
 }
-class HomeViewModel extends BaseViewModel with WidgetsBindingObserver{
+
+class HomeViewModel extends BaseViewModel with WidgetsBindingObserver {
   void initialise() {
     WidgetsBinding.instance!.addObserver(this);
   }
-      @override
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-        initDynamicLinks();
+      initDynamicLinks();
     }
   }
+
   final _navigationService = locator<NavigationService>();
   final _databaseApi = locator<DatabaseApi>();
 
@@ -43,28 +45,27 @@ class HomeViewModel extends BaseViewModel with WidgetsBindingObserver{
   List<Shop> bestSellers = [];
   List<String> allShopIds = [];
   List<ShopService> allServices = [];
-    var logger = Logger(filter: MyFilter());
- final initialLinkNotifier = ValueNotifier<String?>(null);
- 
+  var logger = Logger(filter: MyFilter());
+  final initialLinkNotifier = ValueNotifier<String?>(null);
+
   initDynamicLinks() async {
-  await Future.delayed(Duration(seconds: 1));
-  FirebaseDynamicLinks.instance.onLink(onSuccess: (PendingDynamicLinkData? dynamicLink) async {
+    await Future.delayed(Duration(seconds: 1));
+    FirebaseDynamicLinks.instance.onLink(
+        onSuccess: (PendingDynamicLinkData? dynamicLink) async {
       log(dynamicLink.toString());
       _handleDynamicLink(dynamicLink!);
-    },
-    onError: (OnLinkErrorException e) async {
+    }, onError: (OnLinkErrorException e) async {
       log(e.message.toString());
     });
-    final PendingDynamicLinkData? data = await FirebaseDynamicLinks.instance.getInitialLink();
+    final PendingDynamicLinkData? data =
+        await FirebaseDynamicLinks.instance.getInitialLink();
     print(data);
     if (data != null) {
       _handleDynamicLink(data);
     }
-     
   }
 
   _handleDynamicLink(PendingDynamicLinkData data) async {
-    
     final Uri deepLink = data.link;
     var shopId = deepLink.pathSegments[0];
     logger.d(shopId.toString());
@@ -72,7 +73,7 @@ class HomeViewModel extends BaseViewModel with WidgetsBindingObserver{
     if (deepLink == null) {
       return;
     }
-    
+
     var mshop = allShops.singleWhere((shop) => shop.id.contains(shopId));
     var mowner = allSellers.singleWhere(
       (owner) => owner.shopId.contains(mshop.id),
@@ -153,35 +154,60 @@ class HomeViewModel extends BaseViewModel with WidgetsBindingObserver{
   }
 
   Future navigateToCategoryView(
-    String category,   
+    String category,
   ) async {
     await _navigationService.navigateTo(
       Routes.categoryView,
       arguments: CategoryViewArguments(
         category: category,
-        categoryShops: allShops.where((shop) => shop.category.toLowerCase() == category.replaceAll('\n', ' ').toLowerCase()).toList(),
-        allOtherShops: allShops.where((shop) => shop.category.toLowerCase() != category.replaceAll('\n', ' ').toLowerCase()).toList(),
+        categoryShops: allShops
+            .where((shop) =>
+                shop.category.toLowerCase() ==
+                category.replaceAll('\n', ' ').toLowerCase())
+            .toList(),
+        categoryShopServices: allServices
+            .where((shop) =>
+                shop.category.toLowerCase() ==
+                category.replaceAll('\n', ' ').toLowerCase())
+            .toList(),
+        allOtherShops: allShops
+            .where((shop) =>
+                shop.category.toLowerCase() !=
+                category.replaceAll('\n', ' ').toLowerCase())
+            .toList(),
         allSellers: allSellers,
         allServices: allServices,
       ),
     );
   }
+
   Future navigateToShopAllView(
-    String category,   
+    String category,
   ) async {
     await _navigationService.navigateTo(
       Routes.categoryView,
       arguments: CategoryViewArguments(
         category: category,
-        categoryShops: allShops.where((shop) => shop.category.toLowerCase() == category.replaceAll('\n', ' ').toLowerCase()).toList(),
-        allOtherShops: allShops.where((shop) => shop.category.toLowerCase() != category.replaceAll('\n', ' ').toLowerCase()).toList(),
+        categoryShops: allShops
+            .where((shop) =>
+                shop.category.toLowerCase() ==
+                category.replaceAll('\n', ' ').toLowerCase())
+            .toList(),
+        categoryShopServices: allServices
+            .where((shop) =>
+                shop.category.toLowerCase() ==
+                category.replaceAll('\n', ' ').toLowerCase())
+            .toList(),
+        allOtherShops: allShops
+            .where((shop) =>
+                shop.category.toLowerCase() !=
+                category.replaceAll('\n', ' ').toLowerCase())
+            .toList(),
         allSellers: allSellers,
         allServices: allServices,
       ),
     );
   }
-
-
 
   Future navigateToShopView({
     required Shop shop,
@@ -208,7 +234,7 @@ class HomeViewModel extends BaseViewModel with WidgetsBindingObserver{
       name: "4-5 Years",
       imageUrl: "assets/images/category/4-5year.png",
     ),
-     CategoryItem(
+    CategoryItem(
       name: "5-6 Years",
       imageUrl: "assets/images/category/5-6year.png",
     ),
@@ -228,7 +254,6 @@ class HomeViewModel extends BaseViewModel with WidgetsBindingObserver{
       name: "13-14 Years",
       imageUrl: "assets/images/category/13-14year.png",
     ),
-   
   ];
 
   @override

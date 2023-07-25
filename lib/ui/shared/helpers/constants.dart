@@ -7,7 +7,8 @@ class Constants {
   static const Color disabledColor = Color(0xffEFEFEF);
 
   // Strings
-  static const String landingLabel = 'Promote your business\nDiscover local services';
+  static const String landingLabel =
+      'Promote your business\nDiscover local services';
 
   static const String createAccountLabel = 'Create Account';
 
@@ -32,7 +33,8 @@ class Constants {
 
   static const String signupLabel = 'Create account';
   static const String signupTitle = 'Create a customer acccount';
-  static const String signupSubTitle = "You're almost there!Create your new account for Sadje.entertainment1@gmail.com by completing these detail";
+  static const String signupSubTitle =
+      "You're almost there!Create your new account for Sadje.entertainment1@gmail.com by completing these detail";
   static const String createUsernameLabel = 'Create a Username';
   static const String editProfileLabel = 'Edit Profile';
   static const String changeProfileImageLabel = 'Change Profile Image';
@@ -45,12 +47,14 @@ class Constants {
   static const String createSellerLabel = "Create Seller";
   static const String createLabel = "Create";
   static const String dobLabel = "Date of Birth";
-  static const String dobHelperTextLabel = "You must be over 16 to create a seller account";
+  static const String dobHelperTextLabel =
+      "You must be over 16 to create a seller account";
   static const String fullNameLabel = "Full name";
   static const String mobileNumberLabel = "Mobile number";
   static const String hintMobileNumberLabel = "Enter your mobile number";
   static const String createShopLabel = "Create Shop";
-  static const String createShopInfoLabel = "Create a new Shop and showcase your services to new customers";
+  static const String createShopInfoLabel =
+      "Create a new Shop and showcase your services to new customers";
 
   static const String categoryLabel = 'Category';
   static const String locationLabel = 'Location';
@@ -74,7 +78,7 @@ class Constants {
   static const String lLabel = "L";
   static const String xlLabel = "XL";
   static const String xxlLabel = "XXL";
-  static const String priceLabel = "Add Price Per Month";
+  static const String priceLabel = "Price Per Month";
   static const String bookLabel = "Book";
   static const String buyLabel = "Buy";
   static const String paymentMethodLabel = "Payment Method";
@@ -244,7 +248,6 @@ class Constants {
     "Waltham Forest",
     "Wandsworth",
     "Westminster",
-    
   ];
 
   // Hertfordshire boroughs
@@ -262,7 +265,8 @@ class Constants {
   ];
 
   // All locations
-  static final List<String> allLocations = cities + londonBoroughs + hertfordshireBoroughs;
+  static final List<String> allLocations =
+      cities + londonBoroughs + hertfordshireBoroughs;
   static const String addressLabel = 'Address';
   static const String postCodeLabel = 'Postcode';
 }
