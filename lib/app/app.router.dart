@@ -379,9 +379,7 @@ class StackedRouter extends RouterBase {
       var args = data.getArgs<EditServiceViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
         builder: (context) => EditServiceView(
-
-            // user: args.user, shop: args.shop, service: args.service
-            ),
+            user: args.user, shop: args.shop, service: args.service),
         settings: data,
       );
     },
@@ -556,10 +554,16 @@ class StackedRouter extends RouterBase {
       );
     },
     InputAddressView: (data) {
+      var args = data.getArgs<BuyServiceViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => InputAddressView(),
+        builder: (context) =>
+            InputAddressView(key: args.key, service: args.service),
         settings: data,
       );
+      // return MaterialPageRoute<dynamic>(
+      //   builder: (context) => InputAddressView(),
+      //   settings: data,
+      // );
     },
     OrderSuccessView: (data) {
       return MaterialPageRoute<dynamic>(

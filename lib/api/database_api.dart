@@ -135,6 +135,7 @@ class DatabaseApi {
       );
     }
   }
+
   Future<void> updateUserStatus(String uid) async {
     try {
       await _usersCollection
@@ -559,6 +560,23 @@ class DatabaseApi {
     try {
       await _usersCollection.doc(userId).update(
           {"fullName": fullName, "address": address, 'postCode': postCode});
+    } on PlatformException catch (e) {
+      throw DatabaseApiException(
+        title: 'Failed to update address.',
+        message: e.message,
+      );
+    }
+  }
+
+  Future<void> updateStripeId({
+    required String userId,
+    required String stripeCustomerId,
+  }) async {
+    log('i here chan');
+    try {
+      await _usersCollection.doc(userId).update({
+        "stripCustomerId": stripeCustomerId,
+      });
     } on PlatformException catch (e) {
       throw DatabaseApiException(
         title: 'Failed to update address.',

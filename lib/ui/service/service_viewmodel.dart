@@ -99,7 +99,6 @@ class ServiceViewModel extends BaseViewModel {
 
   Future navigateToBuyServiceView() async {
     // await  confirmPayment();
-
     await _navigationService.replaceWith(
       Routes.inputAddressView,
       arguments: BuyServiceViewArguments(

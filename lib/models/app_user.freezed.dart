@@ -23,6 +23,7 @@ class _$AppUserTearOff {
   _AppUser call(
       {required String id,
       String? email,
+      String? stripCustomerId,
       required String? token,
       String userType = 'buyer',
       String shopId = '',
@@ -48,6 +49,7 @@ class _$AppUserTearOff {
     return _AppUser(
       id: id,
       email: email,
+      stripCustomerId: stripCustomerId,
       token: token,
       userType: userType,
       shopId: shopId,
@@ -68,7 +70,7 @@ class _$AppUserTearOff {
       earnBySell: earnBySell,
       address: address,
       postCode: postCode,
-      isPremium:isPremium,
+      isPremium: isPremium,
       chatIds: chatIds,
     );
   }
@@ -85,6 +87,7 @@ const $AppUser = _$AppUserTearOff();
 mixin _$AppUser {
   String get id => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
+  String? get stripCustomerId => throw _privateConstructorUsedError;
   String? get token => throw _privateConstructorUsedError;
   String get userType => throw _privateConstructorUsedError;
   String get shopId => throw _privateConstructorUsedError;
@@ -120,6 +123,7 @@ abstract class $AppUserCopyWith<$Res> {
   $Res call(
       {String id,
       String? email,
+      String? stripCustomerId,
       String? token,
       String userType,
       String shopId,
@@ -156,6 +160,7 @@ class _$AppUserCopyWithImpl<$Res> implements $AppUserCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? email = freezed,
+    Object? stripCustomerId = freezed,
     Object? token = freezed,
     Object? userType = freezed,
     Object? shopId = freezed,
@@ -187,6 +192,10 @@ class _$AppUserCopyWithImpl<$Res> implements $AppUserCopyWith<$Res> {
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stripCustomerId: stripCustomerId == freezed
+          ? _value.stripCustomerId
+          : stripCustomerId // ignore: cast_nullable_to_non_nullable
               as String?,
       token: token == freezed
           ? _value.token
@@ -288,6 +297,7 @@ abstract class _$AppUserCopyWith<$Res> implements $AppUserCopyWith<$Res> {
   $Res call(
       {String id,
       String? email,
+      String? stripCustomerId,
       String? token,
       String userType,
       String shopId,
@@ -325,6 +335,7 @@ class __$AppUserCopyWithImpl<$Res> extends _$AppUserCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? email = freezed,
+    Object? stripCustomerId = freezed,
     Object? token = freezed,
     Object? userType = freezed,
     Object? shopId = freezed,
@@ -356,6 +367,10 @@ class __$AppUserCopyWithImpl<$Res> extends _$AppUserCopyWithImpl<$Res>
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stripCustomerId: stripCustomerId == freezed
+          ? _value.stripCustomerId
+          : stripCustomerId // ignore: cast_nullable_to_non_nullable
               as String?,
       token: token == freezed
           ? _value.token
@@ -455,6 +470,7 @@ class _$_AppUser implements _AppUser {
   _$_AppUser(
       {required this.id,
       this.email,
+      this.stripCustomerId,
       required this.token,
       this.userType = 'buyer',
       this.shopId = '',
@@ -485,6 +501,8 @@ class _$_AppUser implements _AppUser {
   final String id;
   @override
   final String? email;
+  @override
+  final String? stripCustomerId;
   @override
   final String? token;
   @JsonKey(defaultValue: 'buyer')
@@ -551,7 +569,7 @@ class _$_AppUser implements _AppUser {
 
   @override
   String toString() {
-    return 'AppUser(id: $id, email: $email, token: $token, userType: $userType, shopId: $shopId, referCode: $referCode, username: $username, fullName: $fullName, phoneNumber: $phoneNumber, gender: $gender, dateOfBirth: $dateOfBirth, followers: $followers, following: $following, imageId: $imageId, imageUrl: $imageUrl, skip: $skip, purchases: $purchases, referrals: $referrals, earnByRef: $earnByRef, earnBySell: $earnBySell, address: $address, postCode: $postCode, isPremium: $isPremium, chatIds: $chatIds)';
+    return 'AppUser(id: $id, email: $email,stripCustomerId:$stripCustomerId token: $token, userType: $userType, shopId: $shopId, referCode: $referCode, username: $username, fullName: $fullName, phoneNumber: $phoneNumber, gender: $gender, dateOfBirth: $dateOfBirth, followers: $followers, following: $following, imageId: $imageId, imageUrl: $imageUrl, skip: $skip, purchases: $purchases, referrals: $referrals, earnByRef: $earnByRef, earnBySell: $earnBySell, address: $address, postCode: $postCode, isPremium: $isPremium, chatIds: $chatIds)';
   }
 
   @override
@@ -562,6 +580,8 @@ class _$_AppUser implements _AppUser {
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)) &&
+                (identical(other.stripCustomerId, stripCustomerId) ||
+                const DeepCollectionEquality().equals(other.stripCustomerId, stripCustomerId)) &&
             (identical(other.token, token) ||
                 const DeepCollectionEquality().equals(other.token, token)) &&
             (identical(other.userType, userType) ||
@@ -630,6 +650,7 @@ class _$_AppUser implements _AppUser {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(email) ^
+      const DeepCollectionEquality().hash(stripCustomerId) ^
       const DeepCollectionEquality().hash(token) ^
       const DeepCollectionEquality().hash(userType) ^
       const DeepCollectionEquality().hash(shopId) ^
@@ -668,6 +689,7 @@ abstract class _AppUser implements AppUser {
   factory _AppUser(
       {required String id,
       String? email,
+      String? stripCustomerId,
       required String? token,
       String userType,
       String shopId,
@@ -697,6 +719,8 @@ abstract class _AppUser implements AppUser {
   String get id => throw _privateConstructorUsedError;
   @override
   String? get email => throw _privateConstructorUsedError;
+  @override
+  String? get stripCustomerId => throw _privateConstructorUsedError;
   @override
   String? get token => throw _privateConstructorUsedError;
   @override

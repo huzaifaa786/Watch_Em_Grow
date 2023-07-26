@@ -10,6 +10,7 @@ _$_AppUser _$_$_AppUserFromJson(Map<String, dynamic> json) {
   return _$_AppUser(
     id: json['id'] as String,
     email: json['email'] as String?,
+    stripCustomerId: json['stripCustomerId'] as String?,
     token: json['token'] as String?,
     userType: json['userType'] as String? ?? 'buyer',
     shopId: json['shopId'] as String? ?? '',
@@ -40,6 +41,7 @@ Map<String, dynamic> _$_$_AppUserToJson(_$_AppUser instance) =>
     <String, dynamic>{
       'id': instance.id,
       'email': instance.email,
+      'stripCustomerId': instance.stripCustomerId,
       'token': instance.token,
       'userType': instance.userType,
       'shopId': instance.shopId,

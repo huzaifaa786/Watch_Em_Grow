@@ -15,13 +15,14 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();   
-  Stripe.publishableKey ='pk_test_51JvIZ1Ey3DjpASZjPAzcOwqhblOq2hbchp6i56BsjapvhWcooQXqh33XwCrKiULfAe7NKFwKUhn2nqURE7VZcXXf00wMDzp4YN';
+  WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey =
+      'pk_test_51JvIZ1Ey3DjpASZjPAzcOwqhblOq2hbchp6i56BsjapvhWcooQXqh33XwCrKiULfAe7NKFwKUhn2nqURE7VZcXXf00wMDzp4YN';
   Stripe.merchantIdentifier = 'merchant.flutter.stripe';
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
   SystemChrome.setSystemUIOverlayStyle(
-  SystemUiOverlayStyle(systemNavigationBarColor: Color(4281348144)));
+      SystemUiOverlayStyle(systemNavigationBarColor: Color(4281348144)));
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   if (Platform.isIOS) FirebaseMessaging.instance.requestPermission();

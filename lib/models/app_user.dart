@@ -8,6 +8,7 @@ class AppUser with _$AppUser {
   factory AppUser({
     required String id,
     String? email,
+    @Default('') String? stripCustomerId,
     required String? token,
     @Default('buyer') String userType,
     @Default('') String shopId,

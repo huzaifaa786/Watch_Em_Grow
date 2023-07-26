@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/ui/service/inputaddress_viewmodel.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
 import 'package:mipromo/ui/shared/helpers/validators.dart';
@@ -8,10 +11,17 @@ import 'package:stacked/stacked.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class InputAddressView extends StatelessWidget {
+  final ShopService service;
+
+  const InputAddressView({
+    Key? key,
+    required this.service,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<InputAddressViewModel>.reactive(
-      onModelReady: (model) => model.init(),
+      onModelReady: (model) => model.init(service),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: const Text('Checkout'),

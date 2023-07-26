@@ -26,22 +26,25 @@ class InputAddressViewModel extends BaseViewModel {
   String fullName = '';
   String address = '';
   String postCode = '';
+  String serviceAmount = '';
   int step = 0;
   String paymentIntent = '';
   final client = http.Client();
-  late ShopService service;
+  var responceData;
+  ShopService? service;
   static Map<String, String> headers = {
     'Authorization':
         'Bearer sk_test_51IVZcBDoZl8DJ0XN2B6ryI8a1tssqoDcso3P1IDP7GxJ1qtmPnCGh9Ywap5fBwmQkGB5LIX4luKiWLlg202VvuJU00KKpdAkHt',
     'Content-Type': 'application/x-www-form-urlencoded'
   };
-  Future<void> init() async {
+  Future<void> init(ShopService myservice) async {
     setBusy(true);
     await _userService.syncUser();
     user = _userService.currentUser;
     fullName = user!.fullName;
     address = user!.address;
     postCode = user!.postCode;
+    service = myservice;
     notifyListeners();
     setBusy(false);
   }
@@ -73,7 +76,12 @@ class InputAddressViewModel extends BaseViewModel {
       postCode: postCode,
     )
         .then((value) {
-      confirmPayment();
+      // createCustomer(
+      //   user!.email.toString(),
+      //   user!.phoneNumber.toString(),
+      //   user!.fullName.toString(),
+      // );
+      createPaymentIntent(service!.price.toInt());
       setBusy(false);
     });
     // } else {
@@ -81,6 +89,97 @@ class InputAddressViewModel extends BaseViewModel {
     // }
   }
 
+  /// STRIPE RECURRING PAYMENT////////
+  ///
+
+  Future<dynamic> createCustomer(
+      String email, String name, String phone) async {
+    log(user!.phoneNumber.toString());
+    final response = await http.post(
+      Uri.parse('https://api.stripe.com/v1/customers'),
+      headers: {
+        'Authorization':
+            'Bearer sk_test_51JvIZ1Ey3DjpASZjmQpp61o9MDwfEnXHyZIbVE08CiJf3XxMKN93bOlu5MSxiw07yPJwX9kvDezuEugwSNZNkddy00ZCa33RpG',
+      },
+      body: {
+        'email': email,
+        'name': fullName,
+        // 'phone': phone,
+        // 'address': customerAddress
+      },
+    );
+    final responceData = json.decode(response.body);
+    // setBusy(true);
+
+    // log(responceData.toString());
+    return responceData;
+  }
+
+  Future<dynamic> createPaymentIntent(int amount) async {
+    final data = await createCustomer(
+      user!.email.toString(),
+      user!.phoneNumber.toString(),
+      user!.fullName.toString(),
+    );
+    // log(data.toString());
+    // log(data.toString());
+    final response = await http.post(
+      Uri.parse('https://api.stripe.com/v1/payment_intents'),
+      headers: {
+        'Authorization':
+            'Bearer sk_test_51JvIZ1Ey3DjpASZjmQpp61o9MDwfEnXHyZIbVE08CiJf3XxMKN93bOlu5MSxiw07yPJwX9kvDezuEugwSNZNkddy00ZCa33RpG',
+      },
+      body: {
+        'amount': amount.toString(),
+        'currency': 'GBP',
+        'customer': data['id']
+      },
+    );
+    final reponceData = json.decode(response.body);
+    // log(reponceData.toString());
+    await _databaseApi.updateStripeId(
+      userId: user!.id,
+      stripeCustomerId: data['id'].toString(),
+    );
+    log(user!.stripCustomerId.toString());
+    await createPaymentMethod();
+    await processPayment(service!.price.toInt(), data!['id'].toString(),
+        reponceData!['client_secret'].toString());
+    return reponceData;
+  }
+
+  Future<void> processPayment(
+      int amount, String customerId, String clientSecret) async {
+    // log(clientSecret.toString());
+    await Stripe.instance.initPaymentSheet(
+      paymentSheetParameters: SetupPaymentSheetParameters(
+        paymentIntentClientSecret: clientSecret,
+        customerId: customerId,
+        applePay: true,
+        googlePay: true,
+        style: ThemeMode.dark,
+      ),
+    );
+    await Stripe.instance.presentPaymentSheet();
+  }
+
+  Future<dynamic> createPaymentMethod() async {
+    final response = await http.get(
+      Uri.parse('https://api.stripe.com/v1/customers/' +
+          user!.stripCustomerId.toString() +
+          '/payment_methods'),
+      headers: {
+        'Authorization':
+            'Bearer sk_test_51JvIZ1Ey3DjpASZjmQpp61o9MDwfEnXHyZIbVE08CiJf3XxMKN93bOlu5MSxiw07yPJwX9kvDezuEugwSNZNkddy00ZCa33RpG',
+      },
+    );
+    final reponceData = json.decode(response.body);
+    log(reponceData.toString());
+
+    return reponceData;
+  }
+
+///////////////Strip RECURRING////////
   Future _createTestPaymentSheet() async {
     log('finaly in create payment');
     // log(service.depositAmount.toString());
@@ -97,8 +196,9 @@ class InputAddressViewModel extends BaseViewModel {
     //     'connected_account': 'acct_1M7iQrRTmuR2qUZU'
     //   }),
     // );
+    log(service!.price.toString());
     var url = 'https://watchemgrow.klickwash.net/api/create/payment';
-    var data = {'price': service.depositAmount}; // add service price
+    var data = {'price': service!.price.toString()}; // add service price
     var responses = await Api.execute(url: url, data: data);
     if (responses['error'] == false) {
       return responses['intent'];
@@ -160,14 +260,13 @@ class InputAddressViewModel extends BaseViewModel {
 
   Future<bool> confirmPayment() async {
     print("Asdfasdfsdfasfd");
+
     final x;
     try {
       // 3. display the payment sheet.
       await initPaymentSheet();
       await Stripe.instance.presentPaymentSheet();
-
       step = 0;
-
       Fluttertoast.showToast(msg: 'Payment succesfully completed');
       return true;
     } on Exception catch (e) {
