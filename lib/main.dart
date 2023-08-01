@@ -17,7 +17,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey =
-      'pk_test_51JvIZ1Ey3DjpASZjPAzcOwqhblOq2hbchp6i56BsjapvhWcooQXqh33XwCrKiULfAe7NKFwKUhn2nqURE7VZcXXf00wMDzp4YN';
+      'pk_test_51JvIZ1Ey3DjpASZjPAzcOwqhblOq2hbchp6i56BsjapvhWcooQXqh33XwCrKiULfAe7NKFwKUhn2nqURE7VZcXXf00wMDzp4';
   Stripe.merchantIdentifier = 'merchant.flutter.stripe';
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();

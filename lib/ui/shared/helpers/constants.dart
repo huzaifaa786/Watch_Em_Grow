@@ -26,7 +26,8 @@ class Constants {
   static const String nextLabel = 'Next';
   static const String backLabel = 'Back';
 
-  static const String bySigningLabel = "By signing up you accept MiyPromo's ";
+  static const String bySigningLabel =
+      "By signing up you accept Watch-Em-Grow ";
   static const String tAndCLabel = "Terms of Service";
   static const String andLabel = " and ";
   static const String privacyPolicyLabel = "Privacy Policy";

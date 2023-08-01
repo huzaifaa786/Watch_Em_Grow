@@ -13,6 +13,8 @@ import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/services/user_service.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
+import 'package:mipromo/ui/shared/helpers/validators.dart';
+import 'package:mipromo/ui/value/stripe_key.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:http/http.dart' as http;
@@ -21,20 +23,28 @@ import 'package:webview_flutter/webview_flutter.dart';
 class InputAddressViewModel extends BaseViewModel {
   final _userService = locator<UserService>();
   final _databaseApi = locator<DatabaseApi>();
+  final _snackbarService = locator<SnackbarService>();
+  final _dialogService = locator<DialogService>();
   final _navigationService = locator<NavigationService>();
   AppUser? user;
   String fullName = '';
   String address = '';
   String postCode = '';
+  String cardNum = '';
+  String expYears = '';
+  String expMonths = '';
+  String cardCvc = '';
   String serviceAmount = '';
+  String productKey = '';
+  String productPrice = '';
   int step = 0;
   String paymentIntent = '';
+  bool validateForm = false;
   final client = http.Client();
   var responceData;
   ShopService? service;
   static Map<String, String> headers = {
-    'Authorization':
-        'Bearer sk_test_51IVZcBDoZl8DJ0XN2B6ryI8a1tssqoDcso3P1IDP7GxJ1qtmPnCGh9Ywap5fBwmQkGB5LIX4luKiWLlg202VvuJU00KKpdAkHt',
+    'Authorization': private_key,
     'Content-Type': 'application/x-www-form-urlencoded'
   };
   Future<void> init(ShopService myservice) async {
@@ -54,6 +64,31 @@ class InputAddressViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void setcardNumber(String cardNumber) {
+    cardNum = cardNumber;
+    notifyListeners();
+  }
+
+  void setproductKey(String producyKey) {
+    productKey = producyKey;
+    notifyListeners();
+  }
+
+  void setexpYear(String expYear) {
+    expYears = expYear;
+    notifyListeners();
+  }
+
+  void setexpMonth(String expMonth) {
+    expMonths = expMonth;
+    notifyListeners();
+  }
+
+  void setCvv(String cvc) {
+    cardCvc = cvc;
+    notifyListeners();
+  }
+
   void setAddress(String address) {
     this.address = address;
     notifyListeners();
@@ -66,316 +101,255 @@ class InputAddressViewModel extends BaseViewModel {
 
   Future updateAddress() async {
     log('sdsddsdsndsndsnidsidsndisdnidisndi');
+    log(cardNum.toString());
+    log(expYears.toString());
+    log(expMonths.toString());
+    log(cardCvc.toString());
+    subscriptions();
+
     // if (fullName != user!.fullName) {
-    setBusy(true);
-    _databaseApi
-        .updateAddress(
-      userId: user!.id,
-      fullName: fullName,
-      address: address,
-      postCode: postCode,
-    )
-        .then((value) {
-      // createCustomer(
-      //   user!.email.toString(),
-      //   user!.phoneNumber.toString(),
-      //   user!.fullName.toString(),
-      // );
-      createPaymentIntent(service!.price.toInt());
-      setBusy(false);
-    });
+    // setBusy(true);
+    // _databaseApi
+    //     .updateAddress(
+    //   userId: user!.id,
+    //   fullName: fullName,
+    //   address: address,
+    //   postCode: postCode,
+    // )
+    //     .then((value) {
+    //   // createCustomer(
+    //   //   user!.email.toString(),
+    //   //   user!.phoneNumber.toString(),
+    //   //   user!.fullName.toString(),
+    //   // );
+    //   subscriptions();
+    //   // createPaymentIntent(service!.price.toInt());
+    //   setBusy(false);
+    // });
     // } else {
     //   _navigationService.back(result: true);
     // }
   }
 
   /// STRIPE RECURRING PAYMENT////////
-  ///
+
+  void _init() {
+    Stripe.publishableKey =
+        'pk_test_51JvIZ1Ey3DjpASZjPAzcOwqhblOq2hbchp6i56BsjapvhWcooQXqh33XwCrKiULfAe7NKFwKUhn2nqURE7VZcXXf00wMDzp4';
+  }
 
   Future<dynamic> createCustomer(
       String email, String name, String phone) async {
     log(user!.phoneNumber.toString());
     final response = await http.post(
       Uri.parse('https://api.stripe.com/v1/customers'),
-      headers: {
-        'Authorization':
-            'Bearer sk_test_51JvIZ1Ey3DjpASZjmQpp61o9MDwfEnXHyZIbVE08CiJf3XxMKN93bOlu5MSxiw07yPJwX9kvDezuEugwSNZNkddy00ZCa33RpG',
-      },
+      headers: {'Authorization': private_key},
       body: {
         'email': email,
         'name': fullName,
-        // 'phone': phone,
-        // 'address': customerAddress
       },
     );
     final responceData = json.decode(response.body);
-    // setBusy(true);
-
-    // log(responceData.toString());
     return responceData;
   }
 
-  Future<dynamic> createPaymentIntent(int amount) async {
-    final data = await createCustomer(
-      user!.email.toString(),
-      user!.phoneNumber.toString(),
-      user!.fullName.toString(),
-    );
-    // log(data.toString());
-    // log(data.toString());
-    final response = await http.post(
-      Uri.parse('https://api.stripe.com/v1/payment_intents'),
-      headers: {
-        'Authorization':
-            'Bearer sk_test_51JvIZ1Ey3DjpASZjmQpp61o9MDwfEnXHyZIbVE08CiJf3XxMKN93bOlu5MSxiw07yPJwX9kvDezuEugwSNZNkddy00ZCa33RpG',
-      },
+  void showErrors() {
+    validateForm = true;
+    notifyListeners();
+  }
+
+  Future<void> subscriptions() async {
+    setBusy(true);
+    final bool isFormNotEmpty = cardNum.isNotEmpty &&
+        expMonths.isNotEmpty &&
+        expYears.isNotEmpty &&
+        cardCvc.isNotEmpty;
+    final bool isFormValid = Validators.emptyStringValidator(
+                cardNum, "Card Num can't be Empty ") ==
+            null &&
+        Validators.emptyStringValidator(cardCvc, "Card CVC can't be Empty ") ==
+            null &&
+        Validators.emptyStringValidator(
+                expMonths, "Exp.Month can't be Empty ") ==
+            null &&
+        Validators.emptyStringValidator(expYears, "Exp.Year can't be Empty ") ==
+            null;
+    if (isFormValid) {
+      _init();
+      final _customer = await createCustomer(
+        user!.email.toString(),
+        user!.phoneNumber.toString(),
+        user!.fullName.toString(),
+      );
+      await createProduct();
+      await createProductPrice();
+      final _paymentMethod = await _createPaymentMethod(
+          number: cardNum,
+          expMonth: expMonths,
+          expYear: expYears,
+          cvc: cardCvc);
+      await _attachPaymentMethod(
+          _paymentMethod['id'].toString(), _customer['id'].toString());
+      await _updateCustomer(
+          _paymentMethod['id'].toString(), _customer['id'].toString());
+      setBusy(false);
+      await _createSubscriptions(_customer['id'].toString());
+    } else {
+      showErrors();
+    }
+  }
+
+  Future _createPaymentMethod(
+      {required String number,
+      required String expMonth,
+      required String expYear,
+      required String cvc}) async {
+    final String url = 'https://api.stripe.com/v1/payment_methods';
+    var response = await client.post(
+      Uri.parse(url),
+      headers: {'Authorization': private_key},
       body: {
-        'amount': amount.toString(),
-        'currency': 'GBP',
-        'customer': data['id']
+        'type': 'card',
+        'card[number]': '$number',
+        'card[exp_month]': '$expMonth',
+        'card[exp_year]': '$expYear',
+        'card[cvc]': '$cvc',
       },
     );
-    final reponceData = json.decode(response.body);
-    // log(reponceData.toString());
-    await _databaseApi.updateStripeId(
-      userId: user!.id,
-      stripeCustomerId: data['id'].toString(),
-    );
-    log(user!.stripCustomerId.toString());
-    await createPaymentMethod();
-    await processPayment(service!.price.toInt(), data!['id'].toString(),
-        reponceData!['client_secret'].toString());
-    return reponceData;
+    if (response.statusCode == 200) {
+      print(response.body);
+      return json.decode(response.body);
+    } else {
+      await _dialogService.showCustomDialog(
+          variant: AlertType.error,
+          title: 'Alert',
+          description: "Please Provide Correct Detail.");
+      print(json.decode(response.body));
+      throw 'Failed to create PaymentMethod.';
+    }
   }
 
-  Future<void> processPayment(
-      int amount, String customerId, String clientSecret) async {
-    // log(clientSecret.toString());
-    await Stripe.instance.initPaymentSheet(
-      paymentSheetParameters: SetupPaymentSheetParameters(
-        paymentIntentClientSecret: clientSecret,
-        customerId: customerId,
-        applePay: true,
-        googlePay: true,
-        style: ThemeMode.dark,
-      ),
-    );
-    await Stripe.instance.presentPaymentSheet();
-  }
-
-  Future<dynamic> createPaymentMethod() async {
-    final response = await http.get(
-      Uri.parse('https://api.stripe.com/v1/customers/' +
-          user!.stripCustomerId.toString() +
-          '/payment_methods'),
-      headers: {
-        'Authorization':
-            'Bearer sk_test_51JvIZ1Ey3DjpASZjmQpp61o9MDwfEnXHyZIbVE08CiJf3XxMKN93bOlu5MSxiw07yPJwX9kvDezuEugwSNZNkddy00ZCa33RpG',
+  Future _attachPaymentMethod(String paymentMethodId, String customerId) async {
+    final String url =
+        'https://api.stripe.com/v1/payment_methods/$paymentMethodId/attach';
+    var response = await client.post(
+      Uri.parse(url),
+      headers: {'Authorization': private_key},
+      body: {
+        'customer': customerId,
       },
     );
-    final reponceData = json.decode(response.body);
-    log(reponceData.toString());
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      await _dialogService.showCustomDialog(
+          variant: AlertType.error,
+          title: 'Alert',
+          description: "Failed During Attach Payment Method.");
+      print(json.decode(response.body));
+      throw 'Failed to attach PaymentMethod.';
+    }
+  }
 
-    return reponceData;
+  Future _updateCustomer(String paymentMethodId, String customerId) async {
+    final String url = 'https://api.stripe.com/v1/customers/$customerId';
+
+    var response = await client.post(
+      Uri.parse(url),
+      headers: {'Authorization': private_key},
+      body: {
+        'invoice_settings[default_payment_method]': paymentMethodId,
+      },
+    );
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      await _dialogService.showCustomDialog(
+          variant: AlertType.error,
+          title: 'Alert',
+          description: "Failed During Update Subscription Plan.");
+      print(json.decode(response.body));
+      throw 'Failed to update Customer.';
+    }
+  }
+
+  Future createProduct() async {
+    final String url = 'https://api.stripe.com/v1/products';
+    var response = await client.post(Uri.parse(url), headers: {
+      'Authorization': private_key
+    }, body: {
+      'name': service!.name,
+    });
+    if (response.statusCode == 200) {
+      print(json.decode(response.body));
+      final data = json.decode(response.body);
+      productKey = data['id'].toString();
+      return json.decode(response.body);
+    } else {
+      await _dialogService.showCustomDialog(
+          variant: AlertType.error,
+          title: 'Alert',
+          description: "Failed During Product Creation.");
+      print(json.decode(response.body));
+      throw 'Failed to update Customer.';
+    }
+  }
+
+  Future createProductPrice() async {
+    final String url = 'https://api.stripe.com/v1/prices';
+    var response = await client.post(
+      Uri.parse(url),
+      headers: {'Authorization': private_key},
+      body: <String, dynamic>{
+        'product': productKey,
+        'unit_amount': (service!.price * 100)
+            .toStringAsFixed(0), // Replace with the price amount (in cents)
+        'currency': 'GBP', // Replace with your preferred currency code
+        'recurring[interval]': 'month'
+      }, // Replace with desired interval (month, week, etc.)
+    );
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      productPrice = data['id'].toString();
+      return json.decode(response.body);
+    } else {
+      await _dialogService.showCustomDialog(
+          variant: AlertType.error,
+          title: 'Alert',
+          description: "Failed During Price Creation.");
+      print(json.decode(response.body));
+      throw 'Failed to update Customer.';
+    }
+  }
+
+  Future<dynamic> _createSubscriptions(String customerId) async {
+    final String url = 'https://api.stripe.com/v1/subscriptions';
+    setBusy(true);
+    Map<String, dynamic> body = {
+      'customer': customerId,
+      'items[0][price]': productPrice,
+    };
+
+    var response = await client.post(Uri.parse(url),
+        headers: {'Authorization': private_key}, body: body);
+    if (response.statusCode == 200) {
+      setBusy(false);
+      await _dialogService.showCustomDialog(
+          variant: AlertType.success,
+          title: 'Success',
+          description: "Subscription will be Made.");
+      return json.decode(response.body);
+    } else {
+      setBusy(false);
+      await _dialogService.showCustomDialog(
+          variant: AlertType.error,
+          title: 'Alert',
+          description: "Failed During Subscription Payment.");
+      print(json.decode(response.body));
+      throw 'Failed to register as a subscriber.';
+    }
   }
 
 ///////////////Strip RECURRING////////
-  Future _createTestPaymentSheet() async {
-    log('finaly in create payment');
-    // log(service.depositAmount.toString());
-    // final url =
-    //     Uri.parse('https://watchemgrow.klickwash.net/api/create/payment');
-    // final response = await http.post(
-    //   url,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: json.encode({
-    //     'a': 'a',
-    //     'price': 100,
-    //     'connected_account': 'acct_1M7iQrRTmuR2qUZU'
-    //   }),
-    // );
-    log(service!.price.toString());
-    var url = 'https://watchemgrow.klickwash.net/api/create/payment';
-    var data = {'price': service!.price.toString()}; // add service price
-    var responses = await Api.execute(url: url, data: data);
-    if (responses['error'] == false) {
-      return responses['intent'];
-    }
-    // final body = json.decode(response.body);
-    // final data = jsonDecode(body['intent'].toString());
-    // paymentIntent = data['intent']['id'].toString();
-
-    // return data;
-  }
-
-  Future<void> initPaymentSheet() async {
-    log('i am here dear');
-    try {
-      // 1. create payment intent on the server
-
-      final data = await _createTestPaymentSheet();
-
-      // create some billingdetails
-      final billingDetails = BillingDetails(
-        name: 'Flutter Stripe',
-        email: 'email@stripe.com',
-        phone: '+48888000888',
-        address: Address(
-          city: 'Houston',
-          country: 'Uk',
-          line1: '1459  Circle Drive',
-          line2: '',
-          state: 'Texas',
-          postalCode: '77063',
-        ),
-      ); // mocked data for tests
-
-      // 2. initialize the payment sheet
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          // Main params
-          paymentIntentClientSecret: data['paymentIntent'].toString(),
-
-          merchantDisplayName: 'Watch_Em_Grow',
-          // Customer params
-          customerId: data['customer'].toString(),
-          customerEphemeralKeySecret: data['ephemeralKey'].toString(),
-          // Extra params
-          applePay: true,
-          googlePay: true,
-          style: ThemeMode.dark,
-          // billingDetails: billingDetails,
-          testEnv: true,
-          merchantCountryCode: 'GBP',
-        ),
-      );
-      step = 1;
-    } catch (e) {
-      Fluttertoast.showToast(msg: 'Error: $e');
-      rethrow;
-    }
-  }
-
-  Future<bool> confirmPayment() async {
-    print("Asdfasdfsdfasfd");
-
-    final x;
-    try {
-      // 3. display the payment sheet.
-      await initPaymentSheet();
-      await Stripe.instance.presentPaymentSheet();
-      step = 0;
-      Fluttertoast.showToast(msg: 'Payment succesfully completed');
-      return true;
-    } on Exception catch (e) {
-      if (e is StripeException) {
-        Fluttertoast.showToast(
-            msg: 'Error from Stripe: ${e.error.localizedMessage}');
-        return false;
-      } else {
-        Fluttertoast.showToast(msg: 'Unforeseen error: ${e}');
-        return false;
-      }
-    }
-  }
-
-//  NavigationDecision handleWebViewUrlProduct(NavigationRequest request) {
-//     // if (request.url.contains(PaypalApi.returnURL)) {
-//     //   final uri = Uri.parse(request.url);
-//     //   final payerID = uri.queryParameters['PayerID'];
-//       // if () {
-//         // _paypalApi.capturePayment(paymentId!, accessToken!).then((response) {
-//         //   if (response['statusCode'] != 201) {
-//         //     _dialogService.showCustomDialog(
-//         //       variant: AlertType.error,
-//         //       title: response['message'] as String,
-//         //     );
-//         //     return;
-//         //   }
-//           // final capture = response['purchase_units'][0]['payments']['captures'][0];
-
-//           // final String captureId = capture['id'] as String;
-//           // final String timeString = capture['update_time'] as String;
-//           final String orderId = DateTime.now().microsecondsSinceEpoch.toString();
-//           final order = Order(
-//               type: OrderType.product,
-//               paymentMethod: MPaymentMethod.paypal,
-//               orderId: orderId,
-//               paymentId: paymentId,
-//               shopId: service.shopId,
-//               captureId: captureId,
-//               service: service,
-//               userId: user.id,
-//               status: OrderStatus.progress,
-//               rate: 0,
-//               name: user.fullName,
-//               address: user.address,
-//               postCode: user.postCode,
-//               time: DateTime.parse(timeString).microsecondsSinceEpoch,
-//               selectedSize: selectedSize);
-//           _databaseApi.createOrder(order).then((value) async {
-//             var token = await _databaseApi.getToken(order.service.ownerId);
-//             if (token != null) {
-//               Shop shopDetails = await _databaseApi.getShop(order.service.shopId);
-//               var test = _databaseApi.postNotification(
-//                   orderID: order.orderId,
-//                   title: 'New Order',
-//                   body: '${order.name} has made order ${order.service.name} on ${shopDetails.name}',
-//                   forRole: 'order',
-//                   userID: '',
-//                   receiverToken: token.toString());
-
-//               Map<String, dynamic> postMap = {
-//                 "userId": user.id,
-//                 "orderID": order.orderId,
-//                 "title": 'New Order',
-//                 "body": '${order.name} has made order ${order.service.name}',
-//                 "id": DateTime.now().millisecondsSinceEpoch.toString(),
-//                 "read": false,
-//                 "image": user.imageUrl,
-//                 "time": DateTime.now().millisecondsSinceEpoch.toString(),
-//                 "sound": "default"
-//               };
-
-//               _databaseApi.postNotificationCollection(shopDetails.ownerId, postMap);
-//             }
-//             if (await _navigationService.navigateTo(Routes.orderSuccessView) == true) {
-//               _navigationService.back();
-//               _navigationService.back();
-//               navigateToOrderDetailView(order);
-//             } else {
-//               _navigationService.back();
-//               _navigationService.back();
-//             }
-//             /*final response = await _dialogService.showConfirmationDialog(
-//               title: 'Success',
-//               description: 'Payment is completed.',
-//               confirmationTitle: 'View Order',
-//               cancelTitle: 'Close',
-//             );
-//             if (response?.confirmed ?? false) {
-//               _navigationService.back();
-//               _navigationService.back();
-//               navigateToOrderDetailView(order);
-//             } else {
-//               _navigationService.back();
-//               _navigationService.back();
-//             }*/
-//           }, onError: (error) async {
-//             await _dialogService.showCustomDialog(
-//               variant: AlertType.error,
-//               title: 'Payment failed',
-//               description: error.toString(),
-//             );
-//             _navigationService.back();
-//           });
-//         }
-//       // } else {
-//       //   _navigationService.back();
-//       // }
-//     }
-//     // return NavigationDecision.navigate;
 
 }

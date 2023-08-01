@@ -268,7 +268,7 @@ class MainViewModel extends BaseViewModel {
     //     dialogText:
     //         'A new version of Miypromo is available. Please update to continue',
     //   );
-      
+
     // }
     await _userService.updateToken();
     final result = await _userService.syncUser();

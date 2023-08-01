@@ -57,10 +57,11 @@ class LoginViewModel extends BaseViewModel {
 
   /// Login
   Future<void> login() async {
-    final bool isFormNotEmpty = loginEmail.isNotEmpty && loginPassword.isNotEmpty;
+    final bool isFormNotEmpty =
+        loginEmail.isNotEmpty && loginPassword.isNotEmpty;
 
-    final bool isFormValid =
-        Validators.emailValidator(loginEmail) == null && Validators.passwordValidator(loginPassword) == null;
+    final bool isFormValid = Validators.emailValidator(loginEmail) == null &&
+        Validators.passwordValidator(loginPassword) == null;
 
     if (isFormNotEmpty && isFormValid) {
       await _login();
@@ -90,10 +91,12 @@ class LoginViewModel extends BaseViewModel {
         'This channel is used for important notifications.', // description
         importance: Importance.max,
       );
-      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+          FlutterLocalNotificationsPlugin();
 
       await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(channel);
     }
   }
@@ -152,7 +155,7 @@ class LoginViewModel extends BaseViewModel {
           await setCurrentUser(user.uid);
           Future.delayed(Duration(milliseconds: 400), () async {
             // if (await verifiedemail(loginEmail) == true) {
-              await _navigateToMainView();
+            await _navigateToMainView();
             // } else {
             //   final DialogResponse? dialogResponse = await _dialogService.showCustomDialog(
             //     variant: AlertType.error,
@@ -211,7 +214,8 @@ class LoginViewModel extends BaseViewModel {
   }
 
   Future _navigateToEmailverifyView(code, email) async {
-    await _navigationService.navigateTo(Routes.emailVerify, arguments: EmailVerifyArguments(code: code, email: email));
+    await _navigationService.navigateTo(Routes.emailVerify,
+        arguments: EmailVerifyArguments(code: code, email: email));
   }
 
   Future<void> _navigateToMainView() async {
@@ -220,8 +224,9 @@ class LoginViewModel extends BaseViewModel {
       await _navigationService.replaceWith(Routes.mainView);
     } else {
       // await _navigationService.replaceWith(Routes.discoverPage);
+      setBusy(true);
       await _navigationService.replaceWith(Routes.mainView);
-
+      setBusy(false);
     }
   }
 
@@ -233,7 +238,8 @@ class LoginViewModel extends BaseViewModel {
 
   /// Forgot Password
   Future forgotPassword() async {
-    if (forgotPasswordEmail.isNotEmpty && Validators.emailValidator(forgotPasswordEmail) == null) {
+    if (forgotPasswordEmail.isNotEmpty &&
+        Validators.emailValidator(forgotPasswordEmail) == null) {
       _forgotPassword();
     } else {
       showErrors();
@@ -249,12 +255,14 @@ class LoginViewModel extends BaseViewModel {
       );
 
       if (result) {
-        final DialogResponse? dialogResponse = await _dialogService.showCustomDialog(
+        final DialogResponse? dialogResponse =
+            await _dialogService.showCustomDialog(
           variant: AlertType.info,
           title: 'Password reset',
           customData: CustomDialogData(
             hasRichDescription: true,
-            richDescription: 'A password reset link has been sent to ${forgotPasswordEmail}',
+            richDescription:
+                'A password reset link has been sent to ${forgotPasswordEmail}',
             richData: '',
           ),
         );

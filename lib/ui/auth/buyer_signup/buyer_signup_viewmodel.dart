@@ -10,6 +10,7 @@ import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/app/app.router.dart';
 import 'package:mipromo/exceptions/auth_api_exception.dart';
 import 'package:mipromo/ui/auth/buyer_signup/email_verify.dart';
+import 'package:mipromo/ui/auth/login/login_view.dart';
 import 'package:mipromo/ui/shared/helpers/alerts.dart';
 import 'package:mipromo/ui/shared/helpers/data_models.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
@@ -57,7 +58,10 @@ class BuyerSignupViewModel extends BaseViewModel {
 
     if (isFormNotEmpty && isFormValid) {
       if (termsCheckBoxValue == true) {
+        setBusy(true);
         _signUpBuyer();
+        _navigateToLoginView();
+        setBusy(false);
       } else {
         _snackbarService.showCustomSnackBar(
           variant: AlertType.error,
@@ -70,8 +74,7 @@ class BuyerSignupViewModel extends BaseViewModel {
     }
   }
 
-  Future verify(code,email) async {
-  
+  Future verify(code, email) async {
     if (code.toString() == code1) {
       // await verifiedemail(email);
       _navigateToLoginView();
@@ -98,13 +101,13 @@ class BuyerSignupViewModel extends BaseViewModel {
         int number = rand.toInt();
         String? email = user.email;
         Dio dio = Dio();
-
+        // return LoginView();
         // var url = 'http://tritec.store/mipromo/public/api/account/verify';
         // var data = {'email': email,'code':number};
 
         // var result = await dio.post(url, data: data);
         // var response = jsonDecode(result.toString());
-       
+
         // if (response['error'] == false) {
         //   _navigateToEmailverifyView(number,user.email);
         // }
@@ -145,14 +148,16 @@ class BuyerSignupViewModel extends BaseViewModel {
 
   Future verifiedemail(email) async {
     setBusy(true);
-   
-        Dio dio = Dio();
 
-        var url = 'http://tritec.store/mipromo/public/api/add/verify/email';
-        var data = {'email': email,};
+    Dio dio = Dio();
 
-        var result = await dio.post(url, data: data);
-        var response = jsonDecode(result.toString());
+    var url = 'http://tritec.store/mipromo/public/api/add/verify/email';
+    var data = {
+      'email': email,
+    };
+
+    var result = await dio.post(url, data: data);
+    var response = jsonDecode(result.toString());
 
     setBusy(false);
   }
@@ -167,8 +172,8 @@ class BuyerSignupViewModel extends BaseViewModel {
     );
   }
 
-  Future _navigateToEmailverifyView(code,email) async {
+  Future _navigateToEmailverifyView(code, email) async {
     await _navigationService.navigateTo(Routes.emailVerify,
-        arguments: EmailVerifyArguments(code: code,email: email));
+        arguments: EmailVerifyArguments(code: code, email: email));
   }
 }

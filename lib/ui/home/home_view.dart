@@ -46,7 +46,13 @@ class _HomeViewState extends State<HomeView> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              BannerCard(onPressed: () {})
+                              BannerCard(onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const SearchView()),
+                                );
+                              })
                               //              Card(
                               //   child: ListTile(
                               //     title: TextField(

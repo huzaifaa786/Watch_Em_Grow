@@ -24,7 +24,7 @@ class InputAddressView extends StatelessWidget {
       onModelReady: (model) => model.init(service),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
-          title: const Text('Checkout'),
+          title: const Text('Buy Subscription'),
         ),
         body: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -40,63 +40,104 @@ class InputAddressView extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      InputField(
-                        labelText: Constants.fullNameLabel,
-                        initialValue: model.fullName,
-                        maxLength: 70,
-                        counter: "",
-                        onChanged: (name) {
-                          model.setName(name);
-                        },
-                        validator: (name) => Validators.emptyStringValidator(
-                          name,
-                          'Name',
-                        ),
+                      SizedBox(
+                        height: 50,
                       ),
+                      Container(
+                          height: 50,
+                          child: Image.asset('assets/images/stripe_logo.png')),
+                      20.heightBox,
                       InputField(
-                        labelText: Constants.addressLabel,
-                        initialValue: model.address,
-                        maxLength: 70,
+                        labelText: 'Card Number',
+                        initialValue: model.cardNum,
+                        maxLength: 16,
+                        textInputType: TextInputType.number,
                         counter: "",
-                        onChanged: (address) {
-                          model.setAddress(address);
+                        onChanged: (cardNumber) {
+                          model.setcardNumber(cardNumber);
                         },
-                        validator: (address) => Validators.emptyStringValidator(
-                          address,
-                          'Address',
-                        ),
-                      ),
-                      InputField(
-                        labelText: Constants.postCodeLabel,
-                        initialValue: model.postCode,
-                        onChanged: (postCode) {
-                          model.setPostCode(postCode);
-                        },
-                        validator: (postCode) =>
+                        validator: (cardNumber) =>
                             Validators.emptyStringValidator(
-                          postCode,
-                          'Postcode',
+                          cardNumber,
+                          'Card Number',
+                        ),
+                      ),
+                      Row(
+                        children: [],
+                      ),
+                      InputField(
+                        labelText: 'Month',
+                        initialValue: model.expMonths,
+                        textInputType: TextInputType.number,
+                        maxLength: 2,
+                        counter: "",
+                        onChanged: (expMonth) {
+                          model.setexpMonth(expMonth);
+                        },
+                        validator: (month) => Validators.emptyStringValidator(
+                          month,
+                          'Month',
+                        ),
+                      ),
+                      InputField(
+                        labelText: 'Year',
+                        initialValue: model.expYears,
+                        textInputType: TextInputType.number,
+                        maxLength: 2,
+                        counter: "",
+                        onChanged: (expYear) {
+                          model.setexpYear(expYear);
+                        },
+                        validator: (expYear) => Validators.emptyStringValidator(
+                          expYear,
+                          'Year',
+                        ),
+                      ),
+                      InputField(
+                        labelText: 'Cvc',
+                        initialValue: model.cardCvc,
+                        maxLength: 3,
+                        counter: "",
+                        textInputType: TextInputType.number,
+                        onChanged: (cvc) {
+                          model.setCvv(cvc);
+                        },
+                        validator: (cvc) => Validators.emptyStringValidator(
+                          cvc,
+                          'Cvc',
                         ),
                       ),
                       MaterialButton(
                         color: Color(4291861070),
-                        onPressed: (model.address.isNotEmpty &&
-                                model.postCode.isNotEmpty)
+                        onPressed: (model.cardNum.isNotEmpty &&
+                                model.cardCvc.isNotEmpty &&
+                                model.expMonths.isNotEmpty &&
+                                model.expYears.isNotEmpty)
                             ? () {
-                                model.updateAddress();
+                                model.subscriptions();
                               }
                             : null,
-                        child: const Text(
-                          'Confirm',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Color(4291861070),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 10, bottom: 10),
+                              child: const Text(
+                                'Confirm',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      20.heightBox,
-                      Container(
-                          height: 50,
-                          child: Image.asset('assets/images/stripe_logo.png')),
-                      150.heightBox,
+                      50.heightBox,
                       Container(
                           height: 70,
                           child: Image.asset('assets/icon/app_icon.png')),
@@ -104,7 +145,7 @@ class InputAddressView extends StatelessWidget {
                           height: 30,
                           child: Image.asset('assets/icon/shield.png')),
                       10.heightBox,
-                      "We'll keep your funds safe until you confirm that you've received the service"
+                      "We'll keep your information Secure"
                           .text
                           .center
                           .color(Colors.grey)
