@@ -22,6 +22,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
 import 'package:badges/badges.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class MainView extends StatefulWidget {
   const MainView({Key? key, this.selectedIndex = 0}) : super(key: key);
   final int selectedIndex;
@@ -34,7 +35,7 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainViewModel>.reactive(
-      onModelReady: (model) => model.init(widget.selectedIndex,context),
+      onModelReady: (model) => model.init(widget.selectedIndex, context),
       builder: (context, model, child) =>
           viewSelector(model, widget.selectedIndex),
       viewModelBuilder: () => MainViewModel(),
@@ -46,14 +47,13 @@ class _MainViewState extends State<MainView> {
     if (model.isBusy) {
       return const BasicLoader();
     } else {
-      
       if (model.currentUser.username.isEmpty) {
         return const CreateUsernameView();
-      // } else if (model.currentUser.imageUrl.isEmpty &&
-      //     model.currentUser.skip == 0) {
-      //   return ProfileUpdate(user: model.currentUser);
-      // } 
-      }else {
+        // } else if (model.currentUser.imageUrl.isEmpty &&
+        //     model.currentUser.skip == 0) {
+        //   return ProfileUpdate(user: model.currentUser);
+        // }
+      } else {
         return _MainView();
       }
     }
@@ -106,61 +106,66 @@ class _MainView extends HookViewModelWidget<MainViewModel> {
           const Divider(),
           Stack(
             children: [
-             BottomNavigationBar(
-              key: mkey,
-              type: BottomNavigationBarType.fixed,
-              currentIndex: model.currentIndex,
-              selectedItemColor: Styles.kcPrimaryColor,
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    model.currentIndex == 0 ? Icons.home : Icons.home_outlined,
-                  ),
-                  label: '',
-                ),
-                const BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.search,
-                  ),
-                  label: '',
-                ),
-                const BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: EdgeInsets.only(right:8.0),
-                    child: Icon(
-                      FontAwesomeIcons.shirt,
-                      size: 50,
+              BottomNavigationBar(
+                key: mkey,
+                type: BottomNavigationBarType.fixed,
+                currentIndex: model.currentIndex,
+                selectedItemColor: Styles.kcPrimaryColor,
+                items: <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      model.currentIndex == 0
+                          ? Icons.home
+                          : Icons.home_outlined,
                     ),
+                    label: '',
                   ),
-                  label: 'SELL',
-                ),
-                BottomNavigationBarItem(
-                  icon: model.badgeCnt == 0
-                      ? Icon(model.currentIndex == 2
-                          ? Icons.mail
-                          : Icons.mail_outlined)
-                      : Badge(
-                          badgeContent: Text('${model.badgeCnt}'),
-                          child: Icon(
-                            model.currentIndex == 2
-                                ? Icons.mail
-                                : Icons.mail_outlined,
+                  const BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.search,
+                    ),
+                    label: '',
+                  ),
+                  const BottomNavigationBarItem(
+                    icon: Padding(
+                      padding: EdgeInsets.only(right: 8.0),
+                      child: Icon(
+                        FontAwesomeIcons.shirt,
+                        size: 50,
+                      ),
+                    ),
+                    label: 'SELL',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: model.badgeCnt == 0
+                        ? Icon(model.currentIndex == 2
+                            ? Icons.mail
+                            : Icons.mail_outlined)
+                        : Badge(
+                            badgeContent: Text('${model.badgeCnt}'),
+                            child: Icon(
+                              model.currentIndex == 2
+                                  ? Icons.mail
+                                  : Icons.mail_outlined,
+                            ),
                           ),
-                        ),
-                  label: '',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    model.currentIndex == 3 ? Icons.person : Icons.person_outline,
+                    label: '',
                   ),
-                  label: '',
-                ),
-              ],
-              onTap: (index) {
-                changePage(index);
-              },
-            ),
-         ], ),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      model.currentIndex == 3
+                          ? Icons.person
+                          : Icons.person_outline,
+                    ),
+                    label: '',
+                  ),
+                ],
+                onTap: (index) {
+                  changePage(index);
+                },
+              ),
+            ],
+          ),
         ],
       ),
     );

@@ -12,6 +12,7 @@ import 'package:mipromo/models/order.dart';
 import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/services/user_service.dart';
+import 'package:mipromo/ui/home/home_view.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
 import 'package:mipromo/ui/shared/helpers/validators.dart';
 import 'package:mipromo/ui/value/stripe_key.dart';
@@ -99,37 +100,33 @@ class InputAddressViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future updateAddress() async {
-    log('sdsddsdsndsndsnidsidsndisdnidisndi');
-    log(cardNum.toString());
-    log(expYears.toString());
-    log(expMonths.toString());
-    log(cardCvc.toString());
-    subscriptions();
+  // Future updateAddress() async {
 
-    // if (fullName != user!.fullName) {
-    // setBusy(true);
-    // _databaseApi
-    //     .updateAddress(
-    //   userId: user!.id,
-    //   fullName: fullName,
-    //   address: address,
-    //   postCode: postCode,
-    // )
-    //     .then((value) {
-    //   // createCustomer(
-    //   //   user!.email.toString(),
-    //   //   user!.phoneNumber.toString(),
-    //   //   user!.fullName.toString(),
-    //   // );
-    //   subscriptions();
-    //   // createPaymentIntent(service!.price.toInt());
-    //   setBusy(false);
-    // });
-    // } else {
-    //   _navigationService.back(result: true);
-    // }
-  }
+  //   subscriptions();
+
+  //   // if (fullName != user!.fullName) {
+  //   // setBusy(true);
+  //   // _databaseApi
+  //   //     .updateAddress(
+  //   //   userId: user!.id,
+  //   //   fullName: fullName,
+  //   //   address: address,
+  //   //   postCode: postCode,
+  //   // )
+  //   //     .then((value) {
+  //   //   // createCustomer(
+  //   //   //   user!.email.toString(),
+  //   //   //   user!.phoneNumber.toString(),
+  //   //   //   user!.fullName.toString(),
+  //   //   // );
+  //   //   subscriptions();
+  //   //   // createPaymentIntent(service!.price.toInt());
+  //   //   setBusy(false);
+  //   // });
+  //   // } else {
+  //   //   _navigationService.back(result: true);
+  //   // }
+  // }
 
   /// STRIPE RECURRING PAYMENT////////
 
@@ -195,6 +192,7 @@ class InputAddressViewModel extends BaseViewModel {
       setBusy(false);
       await _createSubscriptions(_customer['id'].toString());
     } else {
+      setBusy(false);
       showErrors();
     }
   }
@@ -220,6 +218,7 @@ class InputAddressViewModel extends BaseViewModel {
       print(response.body);
       return json.decode(response.body);
     } else {
+      setBusy(false);
       await _dialogService.showCustomDialog(
           variant: AlertType.error,
           title: 'Alert',
@@ -242,6 +241,7 @@ class InputAddressViewModel extends BaseViewModel {
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
+      setBusy(false);
       await _dialogService.showCustomDialog(
           variant: AlertType.error,
           title: 'Alert',
@@ -264,6 +264,7 @@ class InputAddressViewModel extends BaseViewModel {
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
+      setBusy(false);
       await _dialogService.showCustomDialog(
           variant: AlertType.error,
           title: 'Alert',
@@ -286,6 +287,7 @@ class InputAddressViewModel extends BaseViewModel {
       productKey = data['id'].toString();
       return json.decode(response.body);
     } else {
+      setBusy(false);
       await _dialogService.showCustomDialog(
           variant: AlertType.error,
           title: 'Alert',
@@ -313,6 +315,7 @@ class InputAddressViewModel extends BaseViewModel {
       productPrice = data['id'].toString();
       return json.decode(response.body);
     } else {
+      setBusy(false);
       await _dialogService.showCustomDialog(
           variant: AlertType.error,
           title: 'Alert',
@@ -329,15 +332,93 @@ class InputAddressViewModel extends BaseViewModel {
       'customer': customerId,
       'items[0][price]': productPrice,
     };
-
     var response = await client.post(Uri.parse(url),
         headers: {'Authorization': private_key}, body: body);
+    log(response.toString());
     if (response.statusCode == 200) {
       setBusy(false);
+
+      final String timeString =
+          DateTime.utc(2023).microsecondsSinceEpoch.toString();
+      final String orderId = DateTime.now().microsecondsSinceEpoch.toString();
+      final order = Order(
+        type: OrderType.product,
+        paymentMethod: MPaymentMethod.stripe,
+        orderId: orderId,
+        paymentId: productKey,
+        shopId: service!.shopId,
+        service: service!,
+        userId: user!.id,
+        status: OrderStatus.bookRequested,
+        rate: 0,
+        name: user!.fullName,
+        address: user!.address,
+        postCode: user!.postCode,
+        time: DateTime.utc(2023).microsecondsSinceEpoch,
+      );
+      _databaseApi.createOrder(order).then((value) async {
+        var token = await _databaseApi.getToken(order.service.ownerId);
+        if (token != null) {
+          Shop shopDetails = await _databaseApi.getShop(order.service.shopId);
+
+          var test = _databaseApi.postNotification(
+              orderID: order.orderId,
+              title: 'New Booking',
+              body:
+                  '${order.name} has booked ${order.service.name}(£${order.service.price}) from ${shopDetails.name}',
+              forRole: 'order',
+              userID: '',
+              receiverToken: token.toString());
+
+          Map<String, dynamic> postMap = {
+            "userId": user!.id,
+            "orderID": order.orderId,
+            "title": 'New Booking',
+            "body":
+                '${order.name} has booked ${order.service.name}(£${order.service.price})',
+            "id": DateTime.now().millisecondsSinceEpoch.toString(),
+            "read": false,
+            "image": user!.imageUrl,
+            "time": DateTime.utc(
+              2023,
+            ).millisecondsSinceEpoch.toString(),
+            "sound": "default"
+          };
+
+          _databaseApi.postNotificationCollection(shopDetails.ownerId, postMap);
+        }
+
+        // if (await _navigationService.orderSuccessView) {
+        // _navigationService.back();
+        // navigateToOrderDetailView(order);
+        // } else {
+        //   _navigationService.back();
+        //   _navigationService.back();
+        // }
+        /* if (response?.confirmed ?? false) {
+              _navigationService.back();
+              _navigationService.back();
+              navigateToOrderDetailView(order);
+            } else {
+              _navigationService.back();
+              _navigationService.back();
+            }*/
+      }, onError: (error) async {
+        setBusy(false);
+        await _dialogService.showCustomDialog(
+          variant: AlertType.error,
+          title: 'Payment failed',
+          description: error.toString(),
+        );
+        // _navigationService.back();
+      });
+
       await _dialogService.showCustomDialog(
           variant: AlertType.success,
           title: 'Success',
           description: "Subscription will be Made.");
+      _navigationService.back();
+      _navigationService.back();
       return json.decode(response.body);
     } else {
       setBusy(false);
