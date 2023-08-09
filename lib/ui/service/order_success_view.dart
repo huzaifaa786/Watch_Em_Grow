@@ -59,13 +59,6 @@ class OrderSuccessView extends StatelessWidget {
                     .make()
                     .px(40),
                 10.heightBox,
-                "We’ll keep your funds safe until you’ve confirmed that you have received the service"
-                    .text
-                    .center
-                    .color(Colors.grey)
-                    .make()
-                    .px(40),
-                10.heightBox,
                 InkWell(
                   onTap: () {
                     model.navigateToOrder();

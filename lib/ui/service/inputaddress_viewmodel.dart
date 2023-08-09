@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mipromo/api/api.dart';
+import 'package:mipromo/api/auth_api.dart';
+import 'package:mipromo/app/app.router.dart';
 import 'package:mipromo/api/database_api.dart';
 import 'package:mipromo/app/app.locator.dart';
 import 'package:mipromo/models/app_user.dart';
@@ -13,6 +15,7 @@ import 'package:mipromo/models/shop.dart';
 import 'package:mipromo/models/shop_service.dart';
 import 'package:mipromo/services/user_service.dart';
 import 'package:mipromo/ui/home/home_view.dart';
+import 'package:mipromo/ui/shared/helpers/alerts.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
 import 'package:mipromo/ui/shared/helpers/validators.dart';
 import 'package:mipromo/ui/value/stripe_key.dart';
@@ -22,11 +25,17 @@ import 'package:http/http.dart' as http;
 import 'package:webview_flutter/webview_flutter.dart';
 
 class InputAddressViewModel extends BaseViewModel {
+  final _authApi = locator<AuthApi>();
   final _userService = locator<UserService>();
   final _databaseApi = locator<DatabaseApi>();
   final _snackbarService = locator<SnackbarService>();
   final _dialogService = locator<DialogService>();
   final _navigationService = locator<NavigationService>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late final paymentMethod;
+  TextEditingController cardNumberController = TextEditingController();
+  TextEditingController expiryDateController = TextEditingController();
+  TextEditingController cvvController = TextEditingController();
   AppUser? user;
   String fullName = '';
   String address = '';
@@ -157,21 +166,7 @@ class InputAddressViewModel extends BaseViewModel {
 
   Future<void> subscriptions() async {
     setBusy(true);
-    final bool isFormNotEmpty = cardNum.isNotEmpty &&
-        expMonths.isNotEmpty &&
-        expYears.isNotEmpty &&
-        cardCvc.isNotEmpty;
-    final bool isFormValid = Validators.emptyStringValidator(
-                cardNum, "Card Num can't be Empty ") ==
-            null &&
-        Validators.emptyStringValidator(cardCvc, "Card CVC can't be Empty ") ==
-            null &&
-        Validators.emptyStringValidator(
-                expMonths, "Exp.Month can't be Empty ") ==
-            null &&
-        Validators.emptyStringValidator(expYears, "Exp.Year can't be Empty ") ==
-            null;
-    if (isFormValid) {
+    try {
       _init();
       final _customer = await createCustomer(
         user!.email.toString(),
@@ -181,20 +176,34 @@ class InputAddressViewModel extends BaseViewModel {
       await createProduct();
       await createProductPrice();
       final _paymentMethod = await _createPaymentMethod(
-          number: cardNum,
-          expMonth: expMonths,
-          expYear: expYears,
-          cvc: cardCvc);
+          number: cardNumberController.text,
+          expMonth:
+              int.parse(expiryDateController.text.split("/")[0]).toString(),
+          expYear:
+              int.parse(expiryDateController.text.split("/")[1]).toString(),
+          cvc: cvvController.text);
+      // final _paymentMethod = await _createPaymentMethod(
+      //     number: cardNum, expMonth: expMonths, expYear: expYears, cvc: cardCvc);
       await _attachPaymentMethod(
           _paymentMethod['id'].toString(), _customer['id'].toString());
       await _updateCustomer(
           _paymentMethod['id'].toString(), _customer['id'].toString());
       setBusy(false);
       await _createSubscriptions(_customer['id'].toString());
-    } else {
-      setBusy(false);
-      showErrors();
+
+      final userId = _authApi.currentUser!.uid;
+      await _databaseApi.updateUserStatus(userId);
+
+      await _dialogService.showCustomDialog(
+          variant: AlertType.success,
+          title: 'Success',
+          description: 'Watch Em Grow Product' +
+              service!.name.toString() +
+              'Subscribed Successfully');
+    } catch (e) {
+      Alerts.showErrorSnackbar('Payment Failed');
     }
+    setBusy(false);
   }
 
   Future _createPaymentMethod(
@@ -373,7 +382,7 @@ class InputAddressViewModel extends BaseViewModel {
           Map<String, dynamic> postMap = {
             "userId": user!.id,
             "orderID": order.orderId,
-            "title": 'New Booking',
+            "title": 'New Order',
             "body":
                 '${order.name} has booked ${order.service.name}(£${order.service.price})',
             "id": DateTime.now().millisecondsSinceEpoch.toString(),
@@ -386,6 +395,15 @@ class InputAddressViewModel extends BaseViewModel {
           };
 
           _databaseApi.postNotificationCollection(shopDetails.ownerId, postMap);
+        }
+        if (await _navigationService.navigateTo(Routes.orderSuccessView) ==
+            true) {
+          _navigationService.back();
+          _navigationService.back();
+          navigateToOrderDetailView(order);
+        } else {
+          _navigationService.back();
+          _navigationService.back();
         }
 
         // if (await _navigationService.orderSuccessView) {
@@ -412,13 +430,6 @@ class InputAddressViewModel extends BaseViewModel {
         );
         // _navigationService.back();
       });
-
-      await _dialogService.showCustomDialog(
-          variant: AlertType.success,
-          title: 'Success',
-          description: "Subscription will be Made.");
-      _navigationService.back();
-      _navigationService.back();
       return json.decode(response.body);
     } else {
       setBusy(false);
@@ -428,6 +439,20 @@ class InputAddressViewModel extends BaseViewModel {
           description: "Failed During Subscription Payment.");
       print(json.decode(response.body));
       throw 'Failed to register as a subscriber.';
+    }
+  }
+
+  Future navigateToOrderDetailView(Order order) async {
+    final shopId = order.service.shopId;
+    if (shopId.isNotEmpty) {
+      _databaseApi.getShop(shopId).then((shopData) {
+        _navigationService.navigateTo(Routes.orderDetailView,
+            arguments: OrderDetailViewArguments(
+                order: order,
+                color: shopData.color,
+                currentUser: user!,
+                fontStyle: shopData.fontStyle));
+      });
     }
   }
 

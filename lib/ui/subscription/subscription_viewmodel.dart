@@ -13,6 +13,7 @@ import 'package:mipromo/ui/shared/helpers/alerts.dart';
 import 'package:mipromo/ui/shared/helpers/constants.dart';
 import 'package:mipromo/ui/shared/helpers/enums.dart';
 import 'package:mipromo/ui/shared/helpers/validators.dart';
+import 'package:mipromo/ui/value/stripe_key.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:uuid/uuid.dart';
@@ -34,8 +35,7 @@ class SubscriptionViewModel extends BaseViewModel {
   TextEditingController cvvController = TextEditingController();
   final client = http.Client();
   static Map<String, String> headers = {
-    'Authorization':
-        'Bearer sk_test_51LMrcMIyrTaw9WhhtWlvhUnHmylcBY5T3aueLNXurC12srsvfUp0756TaVZqPDxGvtcnFMdaRKdeuzSD1Tnp8tRp00u9SHZmf7',
+    'Authorization': private_key,
     'Content-Type': 'application/x-www-form-urlencoded'
   };
 
@@ -43,7 +43,7 @@ class SubscriptionViewModel extends BaseViewModel {
     setBusy(true);
 
     currentUser = user;
-  
+
     notifyListeners();
 
     setBusy(false);
@@ -75,7 +75,7 @@ class SubscriptionViewModel extends BaseViewModel {
       await _dialogService.showCustomDialog(
           variant: AlertType.success,
           title: 'Success',
-          description: 'MiyPromo Premium Subscribed Successfully');
+          description: 'Watch Em Grow Premium Subscribed Successfully');
     } catch (e) {
       Alerts.showErrorSnackbar('Payment Failed');
     }

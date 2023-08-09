@@ -434,9 +434,9 @@ class SellerProfileView extends StatelessWidget {
                                 // 10.heightBox,
                                 // 10.heightBox,
                                 // model.shop!.description.text.center.make(),
-                                // const Divider(
-                                //   thickness: 1,
-                                // ),
+                                const Divider(
+                                  thickness: 1,
+                                ),
                                 if (model.services.isEmpty &&
                                     model.shop!.ownerId == model.currentUser.id)
                                   Column(
@@ -487,8 +487,8 @@ class SellerProfileView extends StatelessWidget {
                                       gridDelegate:
                                           const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
-                                        crossAxisSpacing: 3.0,
-                                        mainAxisSpacing: 3.0,
+                                        crossAxisSpacing: 1.0,
+                                        mainAxisSpacing: 1.0,
                                         childAspectRatio: 1,
                                       ),
                                       itemCount: model.shop!.ownerId ==
@@ -540,9 +540,8 @@ class SellerProfileView extends StatelessWidget {
                                               CrossAxisAlignment.center,
                                           children: [
                                             Container(
-                                              height:
-                                                  context.screenHeight / 6.5,
-                                              width: context.screenHeight / 5.2,
+                                              height: context.screenHeight / 6,
+                                              width: context.screenWidth / 2.5,
                                               child: Stack(
                                                 children: [
                                                   Positioned.fill(
@@ -565,7 +564,7 @@ class SellerProfileView extends StatelessWidget {
                                                                 .services[index]
                                                                 .imageUrl3,
                                                           ),
-                                                          fit: BoxFit.cover,
+                                                          fit: BoxFit.fill,
                                                           errorWidget: (context,
                                                                   url, error) =>
                                                               const Icon(
@@ -586,8 +585,8 @@ class SellerProfileView extends StatelessWidget {
                                                           padding:
                                                               const EdgeInsets
                                                                       .only(
-                                                                  left: 10.0,
-                                                                  bottom: 10),
+                                                                  left: 8.0,
+                                                                  bottom: 8.0),
                                                           child: Container(
                                                             decoration:
                                                                 BoxDecoration(
@@ -602,7 +601,13 @@ class SellerProfileView extends StatelessWidget {
                                                             child: Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                      .all(8.0),
+                                                                          .only(
+                                                                      left: 8.0,
+                                                                      top: 5.0,
+                                                                      bottom:
+                                                                          5.0,
+                                                                      right:
+                                                                          10.0),
                                                               child: Text(
                                                                 'New',
                                                                 style: TextStyle(

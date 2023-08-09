@@ -58,7 +58,7 @@ class SellerEditProfileViewModel extends BaseViewModel {
     }
   }
 
-  void setLoading(bool loading){
+  void setLoading(bool loading) {
     isLoading = loading;
     notifyListeners();
   }
@@ -143,13 +143,12 @@ class SellerEditProfileViewModel extends BaseViewModel {
 
     final croppedImage = await ImageCropper.cropImage(
       sourcePath: tempImage.path,
-      aspectRatio: const CropAspectRatio(ratioX: 1.0,ratioY: 1.0),
-
+      aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
       androidUiSettings: const AndroidUiSettings(
         hideBottomControls: true,
       ),
-       iosUiSettings: IOSUiSettings(
-            title: 'Crop Image',
+      iosUiSettings: IOSUiSettings(
+        title: 'Crop Image',
       ),
       cropStyle: CropStyle.circle,
     );
@@ -222,10 +221,16 @@ class SellerEditProfileViewModel extends BaseViewModel {
   }
 
   Future _updateAddress() async {
-    if (address != user.address || postCode != user.postCode || fullName != user.fullName) {
+    if (address != user.address ||
+        postCode != user.postCode ||
+        fullName != user.fullName) {
       setBusy(true);
       await _databaseApi
-          .updateAddress(userId: user.id, fullName: fullName, address: address, postCode: postCode)
+          .updateAddress(
+              userId: user.id,
+              fullName: fullName,
+              address: address,
+              postCode: postCode)
           .then((value) {
         setBusy(false);
         _navigationService.back(result: true);
@@ -276,17 +281,17 @@ class SellerEditProfileViewModel extends BaseViewModel {
 
   Future<void> changePassword() async {
     setLoading(true);
-    final response = await _authApi.verifyOldPassword(oldPasswordController.text, newPasswordController.text);
-    if(response == 0 /*|| response == null*/){
+    final response = await _authApi.verifyOldPassword(
+        oldPasswordController.text, newPasswordController.text);
+    if (response == 0 /*|| response == null*/) {
       setLoading(false);
       Fluttertoast.showToast(
           msg: 'Old password does not match',
           toastLength: Toast.LENGTH_SHORT,
           backgroundColor: Colors.black87,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
-    }else /*if(response == 3)*/{
+          fontSize: 16.0);
+    } else /*if(response == 3)*/ {
       oldPasswordController.clear();
       newPasswordController.clear();
       setLoading(false);
@@ -295,10 +300,8 @@ class SellerEditProfileViewModel extends BaseViewModel {
           toastLength: Toast.LENGTH_SHORT,
           backgroundColor: Colors.black87,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
       _navigationService.back();
     }
   }
-
 }

@@ -294,8 +294,8 @@ class SellerProductView extends StatelessWidget {
                                       gridDelegate:
                                           const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
-                                        crossAxisSpacing: 10.0,
-                                        mainAxisSpacing: 10.0,
+                                        crossAxisSpacing: 1.0,
+                                        mainAxisSpacing: 1.0,
                                         childAspectRatio: 1,
                                       ),
                                       itemCount: model.shop!.ownerId ==
@@ -329,106 +329,113 @@ class SellerProductView extends StatelessWidget {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                  //color: Colors.red,
-                                                  // border: Border.all(color: Colors.white, width: 0.5),
-                                                  // borderRadius: BorderRadius.circular(10)
-                                                  ),
-                                              height:
-                                                  context.screenHeight / 6.5,
-                                              width: context.screenHeight / 5.2,
-                                              child: Stack(
-                                                children: [
-                                                  Positioned.fill(
-                                                    child: AspectRatio(
-                                                      aspectRatio: 1,
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        child:
-                                                            CachedNetworkImage(
-                                                          imageUrl: imageUrl(
-                                                            model
-                                                                .services[index]
-                                                                .imageUrl1,
-                                                            model
-                                                                .services[index]
-                                                                .imageUrl2,
-                                                            model
-                                                                .services[index]
-                                                                .imageUrl3,
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10.0, right: 10.0),
+                                              child: Container(
+                                                height:
+                                                    context.screenHeight / 6,
+                                                width:
+                                                    context.screenWidth / 2.5,
+                                                child: Stack(
+                                                  children: [
+                                                    Positioned.fill(
+                                                      child: AspectRatio(
+                                                        aspectRatio: 1,
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          child:
+                                                              CachedNetworkImage(
+                                                            imageUrl: imageUrl(
+                                                              model
+                                                                  .services[
+                                                                      index]
+                                                                  .imageUrl1,
+                                                              model
+                                                                  .services[
+                                                                      index]
+                                                                  .imageUrl2,
+                                                              model
+                                                                  .services[
+                                                                      index]
+                                                                  .imageUrl3,
+                                                            ),
+                                                            fit: BoxFit.cover,
+                                                            errorWidget: (context,
+                                                                    url,
+                                                                    error) =>
+                                                                const Icon(Icons
+                                                                    .error),
                                                           ),
-                                                          fit: BoxFit.cover,
-                                                          errorWidget: (context,
-                                                                  url, error) =>
-                                                              const Icon(
-                                                                  Icons.error),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Align(
-                                                    alignment:
-                                                        Alignment.bottomRight,
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  top: 10.0,
-                                                                  right: 10.0),
-                                                          child: Container(
-                                                            height: 30,
-                                                            width: 30,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                              color: white,
-                                                            ),
-                                                            child: Icon(
-                                                              Icons
-                                                                  .favorite_border,
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  bottom: 10.0,
-                                                                  right: 10.0),
-                                                          child: Container(
-                                                            height: 30,
-                                                            width: 30,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                              color: white,
-                                                            ),
-                                                            child: Icon(
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.bottomRight,
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 10.0,
+                                                                    right:
+                                                                        10.0),
+                                                            child: Container(
+                                                              height: 30,
+                                                              width: 30,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                              ),
+                                                              child: Icon(
                                                                 Icons
-                                                                    .card_travel,
+                                                                    .favorite_border,
                                                                 color: Colors
-                                                                    .black),
+                                                                    .grey[300],
+                                                              ),
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ],
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    bottom:
+                                                                        10.0,
+                                                                    right:
+                                                                        10.0),
+                                                            child: Container(
+                                                              height: 30,
+                                                              width: 30,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                // color: white,
+                                                              ),
+                                                              child: Icon(
+                                                                  Icons
+                                                                      .card_travel,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      300]),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                             model.services[index].name.text.bold

@@ -45,14 +45,13 @@ class BuyerEditProfileViewModel extends BaseViewModel {
 
       final croppedImage = await ImageCropper.cropImage(
         sourcePath: tempImage.path,
-      aspectRatio: CropAspectRatio(ratioX: 1.0,ratioY: 1.0),
+        aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
         androidUiSettings: const AndroidUiSettings(
           toolbarTitle: 'Crop Image',
           hideBottomControls: true,
         ),
         iosUiSettings: const IOSUiSettings(
           title: 'Crop Image',
-
         ),
         cropStyle: CropStyle.circle,
       );
@@ -79,7 +78,7 @@ class BuyerEditProfileViewModel extends BaseViewModel {
   void init(AppUser cUser) {
     currentUser = cUser;
     username = cUser.username;
-    fullName = cUser.fullName;       
+    fullName = cUser.fullName;
     address = cUser.address;
     postCode = cUser.postCode;
     notifyListeners();
@@ -90,7 +89,10 @@ class BuyerEditProfileViewModel extends BaseViewModel {
         notifyListeners();
 
         if (users.isNotEmpty) {
-          usernames = users.map((user) => user.username).where((u) => u != cUser.username).toList();
+          usernames = users
+              .map((user) => user.username)
+              .where((u) => u != cUser.username)
+              .toList();
           notifyListeners();
         }
       },
@@ -103,7 +105,8 @@ class BuyerEditProfileViewModel extends BaseViewModel {
 
     if (_selectedImage != null) {
       if (url.isEmpty) {
-        final CloudStorageResult storageResult = await _storageApi.uploadProfileImage(
+        final CloudStorageResult storageResult =
+            await _storageApi.uploadProfileImage(
           userId: currentUser.id,
           imageToUpload: _selectedImage!,
         );
@@ -121,7 +124,8 @@ class BuyerEditProfileViewModel extends BaseViewModel {
 
         if (result is bool) {
           if (result) {
-            final CloudStorageResult storageResult = await _storageApi.uploadProfileImage(
+            final CloudStorageResult storageResult =
+                await _storageApi.uploadProfileImage(
               userId: currentUser.id,
               imageToUpload: _selectedImage!,
             );
@@ -149,10 +153,16 @@ class BuyerEditProfileViewModel extends BaseViewModel {
   }
 
   Future _updateAddress(AppUser user) async {
-    if (address != user.address || postCode != user.postCode || fullName != user.fullName) {
+    if (address != user.address ||
+        postCode != user.postCode ||
+        fullName != user.fullName) {
       setBusy(true);
       _databaseApi
-          .updateAddress(userId: user.id, fullName: fullName, address: address, postCode: postCode)
+          .updateAddress(
+              userId: user.id,
+              fullName: fullName,
+              address: address,
+              postCode: postCode)
           .then((value) {
         setBusy(false);
         _navigationService.back(result: true);
@@ -176,16 +186,21 @@ class BuyerEditProfileViewModel extends BaseViewModel {
   Future updateProfile(AppUser user, bool discoverpge) {
     setBusy(true);
 
-    return Future.wait([_updateProfileImage(user), _updateName(user), _updateAddress(user)]).whenComplete(
+    return Future.wait([
+      _updateProfileImage(user),
+      _updateName(user),
+      _updateAddress(user)
+    ]).whenComplete(
       () {
         setBusy(false);
-        if (discoverpge) {
-          _navigationService.replaceWith(Routes.discoverPage);
-          // _navigationService.back();
+        // if (discoverpge) {
+        //   _navigationService.replaceWith(Routes.discoverPage);
+        //   // _navigationService.back();
 
-        } else {
-          _navigationService.back();
-        }
+        // } else {
+        _navigationService.back();
+        _navigationService.back();
+        // }
       },
     );
   }
@@ -197,7 +212,8 @@ class BuyerEditProfileViewModel extends BaseViewModel {
 
   Future<void> changePassword() async {
     setLoading(true);
-    final response = await _authApi.verifyOldPassword(oldPasswordController.text, newPasswordController.text);
+    final response = await _authApi.verifyOldPassword(
+        oldPasswordController.text, newPasswordController.text);
     if (response == 0) {
       setLoading(false);
       Fluttertoast.showToast(

@@ -285,8 +285,8 @@ class CategoryView extends StatelessWidget {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Container(
-                                        height: context.screenHeight / 6.5,
-                                        width: context.screenHeight / 5.2,
+                                        height: context.screenHeight / 6,
+                                        width: context.screenWidth / 2.5,
                                         child: Stack(
                                           children: [
                                             Positioned.fill(
@@ -335,7 +335,11 @@ class CategoryView extends StatelessWidget {
                                                       child: Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .all(8.0),
+                                                                    .only(
+                                                                left: 8.0,
+                                                                right: 10.0,
+                                                                top: 5.0,
+                                                                bottom: 5.0),
                                                         child: Text(
                                                           'New',
                                                           style: TextStyle(

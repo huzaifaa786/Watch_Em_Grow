@@ -7,7 +7,7 @@ class AuthApi {
   /// Fetch the current Firebase User
   User? get currentUser => _firebaseAuth.currentUser;
 
-  /// Signup the user using Email and Password 
+  /// Signup the user using Email and Password
   Future<User> signUpWithEmail({
     required String email,
     required String password,
@@ -115,21 +115,23 @@ class AuthApi {
 
   Future verifyOldPassword(String oldPass, String newPass) async {
     final user = _firebaseAuth.currentUser;
-    if(user != null){
-      final credentials = EmailAuthProvider.credential(email: user.email!, password: oldPass);
+    if (user != null) {
+      final credentials =
+          EmailAuthProvider.credential(email: user.email!, password: oldPass);
       try {
         /*UserCredential userCredentials = */
-        await user.reauthenticateWithCredential(credentials).then((value) async {
-          if(value.user != null){
-            await user.updatePassword(newPass).then((value){
+        await user
+            .reauthenticateWithCredential(credentials)
+            .then((value) async {
+          if (value.user != null) {
+            await user.updatePassword(newPass).then((value) {
               return 3;
-            }).catchError((error){
+            }).catchError((error) {
               return 2;
             });
           }
         });
-
-      }catch(e){
+      } catch (e) {
         print("reauthenticateWithCredential: " + e.toString());
         return 0;
       }

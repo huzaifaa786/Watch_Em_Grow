@@ -62,8 +62,8 @@ class _EditServiceViewState extends State<EditServiceView> {
   Widget build(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
     return ViewModelBuilder<EditServiceViewModel>.reactive(
-      // onModelReady: (model) =>
-      //     model.init(widget.user, widget.shop, widget.service),
+      onModelReady: (model) =>
+          model.init(widget.user, widget.shop, widget.service),
       builder: (context, model, child) => model.isBusy
           ? const BasicLoader()
           : Scaffold(
